@@ -1,0 +1,29 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		maven { url 'https://plugins.gradle.org/m2/' }
+	}
+	dependencies { classpath 'com.blackducksoftware.integration:common-gradle-plugin:0.0.+' }
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.1.5.RELEASE'
+	id 'groovy'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.synopsys.integration'
+version = '0.0.1-SNAPSHOT'
+
+apply plugin: 'com.blackducksoftware.integration.solution'
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.codehaus.groovy:groovy-all:2.4.12'
+
+	implementation 'com.blackducksoftware.integration:integration-common:17.1.0'
+	implementation 'com.opencsv:opencsv:4.6'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
