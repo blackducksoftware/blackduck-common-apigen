@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "values",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The new data to store in the custom field for the given project"
+  } ]
+}
