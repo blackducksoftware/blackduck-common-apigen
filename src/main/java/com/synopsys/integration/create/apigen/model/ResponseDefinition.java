@@ -1,6 +1,8 @@
 package com.synopsys.integration.create.apigen.model;
 
-public class ResponseDefinition {
+import com.synopsys.integration.util.Stringable;
+
+public class ResponseDefinition extends Stringable {
     private String responseSpecificationPath;
     private String name;
     private String mediaType;

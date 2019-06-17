@@ -1,8 +1,10 @@
 package com.synopsys.integration.create.apigen.model;
 
+import com.synopsys.integration.util.Stringable;
+
 import java.util.List;
 
-public class FieldDefinition {
+public class FieldDefinition extends Stringable {
     private String path;
     private String type;
     private boolean optional;

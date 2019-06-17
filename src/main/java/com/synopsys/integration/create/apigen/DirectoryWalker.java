@@ -4,13 +4,19 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.FieldsParser;
+import com.synopsys.integration.create.apigen.parser.ResponseParser;
 import groovy.json.JsonSlurper;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class DirectoryWalker {
 
@@ -21,14 +27,21 @@ public class DirectoryWalker {
 
         System.out.println("\nResource: " + resourceName);
 
-        try {
-            directory = new File(DirectoryWalker.class.getResource(resourceName).toURI()); // Does it matter if we're in a different class?
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        directory = new File(resourceName);
+        System.out.println(directory.isDirectory());
 
-        List<File> files = new ArrayList<File>();
-        for (File file : directory.listFiles() ) {
+        List<File> files = collectFilesHelper(directory, new ArrayList<>(), targetFiles);
+
+        return files;
+    }
+
+    static List<File> collectFilesHelper(File root, List<File> files, List<String> targetFiles) {
+
+
+        for (File file : root.listFiles() ) {
+            if (file.isDirectory()) {
+                files = collectFilesHelper(file, files, targetFiles);
+            }
             if (targetFiles.contains(file.getName())) {
                 files.add(file);
             }
@@ -48,40 +61,74 @@ public class DirectoryWalker {
 
             for (JsonElement field : fields) {
                 JsonObject fieldObject = field.getAsJsonObject();
-                if (fieldObject.get("type").equals("Object")) {
-                    System.out.println(fieldObject.toString());
+
+                if (fieldObject.get("type").getAsString().equals("Object") || fieldObject.get("type").getAsString().equals("Array")) {
+                    System.out.println(file.getAbsolutePath());
+                    System.out.println(fieldObject.get("path").getAsString());
                 }
+            }
+        }
+    }
+
+    /* Print out all Field Objects in a directory */
+
+    static void parseDirectoryForObjects(File rootDirectory, Gson gson) {
+
+        ResponseParser responseParser = new ResponseParser();
+        FieldsParser fieldsParser = new FieldsParser(gson);
+        //Map<String, List<FieldDefinition>> fieldDefinitions = new HashMap<String, List<FieldDefinition>>();
+
+        /* Get response-specification.json files from directory */
+
+        ArrayList<ResponseDefinition> responses = responseParser.parseResponses(rootDirectory);
+
+        /* For each response file, parse the JSON for FieldDefinition objects */
+
+        for (ResponseDefinition response : responses) {
+
+            //System.out.println(response.getName());
+
+            Map<String, List<FieldDefinition>> fieldDefinitions = new HashMap<>();
+            Map<String, String[]> fieldEnums = new HashMap<>();
+
+            String absolutePath = rootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
+            File responseSpecificationFile = new File (absolutePath);
+
+            String jsonText = null;
+            try {
+                jsonText = FileUtils.readFileToString(responseSpecificationFile, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            JsonObject definition = gson.fromJson(jsonText, JsonObject.class);
+            JsonArray fields = definition.getAsJsonArray("fields");
+
+            fieldsParser.populateFieldDefinitions(fieldDefinitions, fieldEnums, response.getName(), fields, 5);
+
+            /* Print out objects in alphabetical order */
+            List<Map.Entry<String, List<FieldDefinition>>> fieldDefinitionsSorted = new ArrayList<>(fieldDefinitions.entrySet());
+            fieldDefinitionsSorted.sort(Map.Entry.comparingByKey());
+            for (Map.Entry<String, List<FieldDefinition>> field : fieldDefinitionsSorted)
+            {
+                //System.out.println(field.getKey() + " => " + field.getValue().toString());
             }
         }
     }
 
     /* Generate a mapping of dependent API classes from directory of JSON files */
 
-
     /* Main method for testing */
 
     public static void main(String args[]) {
 
-        String resourceName = Application.CURRENT_API_SPECIFICATION + "/endpoints/api";
+        String resourceName = "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3";
 
-        /* Get all response-specification.json files */
+        Gson gson = new Gson();
 
-        List<String> response_targets = new ArrayList<String>();
-        response_targets.add("response-specification.json");
-        List<File> responseSpecificationFiles = DirectoryWalker.collectFiles(resourceName, response_targets);
+        //System.out.println(responseSpecificationFiles.toString());
 
-        /* Get all request-specification.json files */
+        parseDirectoryForObjects(new File(resourceName), gson);
 
-        List<String> request_targets = new ArrayList<String>();
-        request_targets.add("request-specification.json");
-        List <File> requestSpecificationFiles = DirectoryWalker.collectFiles(resourceName, request_targets);
-
-        /* Combine lists */
-
-        responseSpecificationFiles.addAll(requestSpecificationFiles);
-
-        /* Print Objects */
-
-        printObjects(responseSpecificationFiles);
     }
 }
