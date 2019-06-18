@@ -1,11 +1,13 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import com.synopsys.integration.create.apigen.Application;
+import com.synopsys.integration.create.apigen.MediaTypes;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.String.join;
 
@@ -48,7 +50,7 @@ public class ResponseParser {
         }
 
         for (File child : children) {
-            if (child.getName().equals("response-specification.json") && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
+            if (child.getName().equals("response-specification.json") && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN) && !child.getName().equals("notifications")) {
 
                 String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 String responseName = getResponseName(responseRelativePath, multipleResponses);
@@ -58,9 +60,9 @@ public class ResponseParser {
 
                 //System.out.println(child.getAbsolutePath().substring(116));
 
-            } else if (child.isDirectory()) {
+            } else if (child.isDirectory() && !child.getName().equals("notifications")) {
                 populateResponses(responses, child, prefixLength);
-            }
+            } 
         }
     }
 
@@ -83,21 +85,19 @@ public class ResponseParser {
                 if (!piece.startsWith("bds")) {
                     // Parse subfolder name and add to list of pieces
                     String[] subPieces = piece.split("_");
-                    List<String> formattedSubPieces = new ArrayList<>();
-                    for (String subPiece : subPieces) {
-                        formattedSubPieces.add(StringUtils.capitalize(subPiece.toLowerCase()));
-                    }
+                    List<String> formattedSubPieces = Arrays.stream(subPieces)
+                            .map(String::toLowerCase)
+                            .map(StringUtils::capitalize)
+                            .collect(Collectors.toList());
+
                     pieceToAdd = join("", formattedSubPieces);
                 } else {
                     // Get # of response (ie. bds_policy_4_json vs bds_policy_5_json) <-- relies on assumption that there will be < 10 numbered responses
-                    pieceToAdd = piece.substring(piece.length()-6, piece.length()-5);
+                    pieceToAdd = piece.substring(piece.length() - 6, piece.length() - 5);
                 }
                 resourceNamePieces.add(pieceToAdd);
                 nextPieceImportant = false;
             }
-
-
-
         }
 
         if (resourceNamePieces.size() > 0) {
@@ -108,14 +108,18 @@ public class ResponseParser {
     }
 
     private String getResponseMediaType(String responsePath) {
-        /* Path should be of format .../<folder>/<file>.<mediaType>, so we can split on a '.' to get the type */
-        int charsBeforeMediaType = 0;
-        for (char c : responsePath.toCharArray()) {
-            if (c == '.') return responsePath.substring(charsBeforeMediaType);
-            charsBeforeMediaType++;
+        /* Path should be of format .../<folder>/<mediaType>/response-specification.json */
+        List<String> pieces = Arrays.asList(responsePath.split("/"));
+        ListIterator<String> iterator = pieces.listIterator();
+        String piece = iterator.next();
+        String lastPiece = null;
+        while (!(piece.equals("response-specification.json")) && iterator.hasNext()) {
+            lastPiece = piece;
+            piece = iterator.next();
         }
 
-        return null;
+        MediaTypes mediaTypes = new MediaTypes();
+        return mediaTypes.getLongName(lastPiece);
     }
 
 }

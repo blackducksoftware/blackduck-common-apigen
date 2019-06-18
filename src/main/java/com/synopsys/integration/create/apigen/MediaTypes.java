@@ -14,7 +14,8 @@ public class MediaTypes {
     private static final Map<String, String> SHORT_TO_LONG = new HashMap<>();
 
     static {
-        String resourceName = Application.CURRENT_API_SPECIFICATION + "/minified-media-types.csv";
+        //String resourceName = Application.CURRENT_API_SPECIFICATION + "/minified-media-types.csv";
+        String resourceName = "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3/minified-media-types.csv";
         InputStream inputStream = MediaTypes.class.getResourceAsStream(resourceName);
         Reader reader = new InputStreamReader(inputStream);
 
@@ -38,19 +39,19 @@ public class MediaTypes {
 
     }
 
-    static Set<String> getShortNames() {
+    public static Set<String> getShortNames() {
         return new HashSet<>(LONG_TO_SHORT.values());
     }
 
-    static Set<String> getLongNames() {
+    public static Set<String> getLongNames() {
         return new HashSet<>(LONG_TO_SHORT.keySet());
     }
 
-    static String getShortName(String longName) {
+    public static String getShortName(String longName) {
         return LONG_TO_SHORT.get(longName);
     }
 
-    static String getLongName(String shortName) {
+    public static String getLongName(String shortName) {
         return SHORT_TO_LONG.get(shortName);
     }
 }

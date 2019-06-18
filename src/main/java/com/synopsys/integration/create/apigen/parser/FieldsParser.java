@@ -40,7 +40,7 @@ public class FieldsParser {
 
         Map<String, List<FieldDefinition>> fieldDefinitions = new HashMap<String, List<FieldDefinition>>();
         Map<String, String[]> fieldEnums = new HashMap<>();
-        fieldsParser.populateFieldDefinitions(fieldDefinitions, fieldEnums, "PolicyRuleView", fields, 5);
+        fieldsParser.populateFieldDefinitions(fieldDefinitions, fieldEnums, "PolicyRuleView", null, fields, 5);
 
         for (Map.Entry<String, List<FieldDefinition>> field : fieldDefinitions.entrySet())
         {
@@ -61,11 +61,10 @@ public class FieldsParser {
         JsonArray fields = definition.getAsJsonArray("fields");
         Map<String, String[]> fieldEnums = new HashMap<>();
 
-        populateFieldDefinitions(fieldDefinitions, fieldEnums, fieldDefinitionName, fields, 5);
+        populateFieldDefinitions(fieldDefinitions, fieldEnums, fieldDefinitionName, null, fields, 5);
     }
 
-    public void populateFieldDefinitions(Map<String, List<FieldDefinition>> fieldDefinitions, Map<String, String[]> fieldEnums, String fieldDefinitionName, JsonArray fields, int spaces) {
-
+    public void populateFieldDefinitions(Map<String, List<FieldDefinition>> fieldDefinitions, Map<String, String[]> fieldEnums, String fieldDefinitionName, FieldDefinition parentField, JsonArray fields, int spaces) {
         if (fieldDefinitions.containsKey(fieldDefinitionName)) {
             return;
         } else {
@@ -74,27 +73,47 @@ public class FieldsParser {
 
         // display
         Boolean redundantPrintOfSubClass = false;
-        if (spaces <= 5) System.out.println("");
-        for (int i = 0; i < spaces-5; i++) System.out.print(" ");
-        System.out.println(fieldDefinitionName);
+
+        //if (spaces <= 5) System.out.println("");
+        //for (int i = 0; i < spaces-5; i++) System.out.print(" ");
+        //System.out.println(fieldDefinitionName);
 
         for (JsonElement field : fields) {
             JsonObject fieldObject = field.getAsJsonObject();
             String path = fieldObject.get("path").getAsString();
+            if (path.equals("data")) {
+                continue;
+            }
             String type = fieldObject.get("type").getAsString();
             boolean optional = fieldObject.get("optional").getAsBoolean();
 
             if (type.equals("Array")) {
-                path = path.replace("s[]", ""); // strip brackets on array field <-- should we leave 's' for non-array fields?
+                // strip brackets on array field <-- should we leave 's' for non-array fields?
+                path = path.replace("s[]", "");
             } else {
                 path = path.replace("[]", "");
             }
 
+            FieldDefinition fieldDefinition = null;
+
             // this field is a new field definition itself
             if ((type.equals("Object") || type.equals("Array")) && fieldObject.has("fields")) {
-                type = fieldDefinitionName + StringUtils.capitalize(path); // append subclass to create new field definition type
-                populateFieldDefinitions(fieldDefinitions, fieldEnums, type, fieldObject.getAsJsonArray("fields"), spaces + 5);
+                // append subclass to create new field definition type
+                type = fieldDefinitionName + StringUtils.capitalize(path);
+                fieldDefinition = new FieldDefinition(path, type, optional);
+                populateFieldDefinitions(fieldDefinitions, fieldEnums, type, fieldDefinition, fieldObject.getAsJsonArray("fields"), spaces + 5);
                 redundantPrintOfSubClass = true;
+            }
+
+            if (type.equals("Number")) {
+                type = "BigDecimal";
+            }
+
+            if (fieldDefinition == null) {
+                fieldDefinition = new FieldDefinition(path, type, optional);
+                if (parentField != null) {
+                    parentField.addSubField(fieldDefinition);
+                }
             }
 
             // If field has allowedValues field, we need to define an enum
@@ -102,16 +121,14 @@ public class FieldsParser {
             String nameOfEnum = null;
             if (allowedValues != null) {
                 nameOfEnum = fieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
-                createEnum(fieldEnums, nameOfEnum, allowedValues.toString(), spaces);
+                createEnum(fieldEnums, nameOfEnum, allowedValues.toString(), fieldDefinition, spaces);
             }
-
-            FieldDefinition fieldDefinition = new FieldDefinition(path, type, optional);
 
             // display
             for (int i = 0; i < spaces; i++) System.out.print(" ");
-            String fieldPrintOutput = nameOfEnum != null ? "" : path;
+            String fieldPrintOutput = nameOfEnum != null ? "" : path + " : " + type ;
             if (!redundantPrintOfSubClass) {
-                System.out.println(fieldPrintOutput);
+                //System.out.println(fieldPrintOutput);
             }
             redundantPrintOfSubClass = false;
 
@@ -139,29 +156,23 @@ public class FieldsParser {
     }
 
     /* Generate Enum (as of now, an array of Strings) for field that has specified set of allowed values */
-    private void createEnum(Map<String, String[]> fieldEnums, String nameOfEnum, String allowedValues, int spaces) {
+    private void createEnum(Map<String, String[]> fieldEnums, String nameOfEnum, String allowedValues, FieldDefinition parent, int spaces) {
 
         if (allowedValues.startsWith("[") && allowedValues.endsWith("]")) allowedValues = allowedValues.substring(1, allowedValues.length()-1); // strip brackets
         String[] allowedValuesEnum = allowedValues.split(",");
         fieldEnums.put(nameOfEnum, allowedValuesEnum);
+        parent.addFieldEnum(nameOfEnum, allowedValuesEnum);
 
-
+        /*
         for (int i = 0; i < spaces; i++) System.out.print(" ");
         System.out.print(nameOfEnum + ": ");
         for (String value: allowedValuesEnum) {
             System.out.print(value + " ");
         }
+        */
+
     }
 
-    /* Make the output of the Responses and Fields indented/reflect dependency hierarchy */
 
-    public void prettyPrintFields(List<FieldDefinition> fields) {
-
-        System.out.println("");
-
-        for (FieldDefinition field : fields) {
-
-        }
-    }
 
 }

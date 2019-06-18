@@ -36,8 +36,6 @@ public class DirectoryWalker {
     }
 
     static List<File> collectFilesHelper(File root, List<File> files, List<String> targetFiles) {
-
-
         for (File file : root.listFiles() ) {
             if (file.isDirectory()) {
                 files = collectFilesHelper(file, files, targetFiles);
@@ -53,7 +51,6 @@ public class DirectoryWalker {
     /* Print All Objects in list of Files */
 
     static void printObjects(List<File> files) {
-
         for (File file : files) {
             /* Parse fields, print if it's an object */
 
@@ -86,7 +83,7 @@ public class DirectoryWalker {
 
         for (ResponseDefinition response : responses) {
 
-            //System.out.println(response.getName());
+            System.out.println("\n**********************************************************\n" + response.getName());
 
             Map<String, List<FieldDefinition>> fieldDefinitions = new HashMap<>();
             Map<String, String[]> fieldEnums = new HashMap<>();
@@ -104,15 +101,24 @@ public class DirectoryWalker {
             JsonObject definition = gson.fromJson(jsonText, JsonObject.class);
             JsonArray fields = definition.getAsJsonArray("fields");
 
-            fieldsParser.populateFieldDefinitions(fieldDefinitions, fieldEnums, response.getName(), fields, 5);
+            fieldsParser.populateFieldDefinitions(fieldDefinitions, fieldEnums, response.getName(), null, fields, 5);
+
+            /* Add fieldDefinitions and fieldEnums to the response object to create object/dependency hierarchy */
+            response.addFields(fieldDefinitions);
+            response.addFieldEnums(fieldEnums);
 
             /* Print out objects in alphabetical order */
+
             List<Map.Entry<String, List<FieldDefinition>>> fieldDefinitionsSorted = new ArrayList<>(fieldDefinitions.entrySet());
             fieldDefinitionsSorted.sort(Map.Entry.comparingByKey());
-            for (Map.Entry<String, List<FieldDefinition>> field : fieldDefinitionsSorted)
+            for (Map.Entry<String, List<FieldDefinition>> entry : fieldDefinitionsSorted)
             {
-                //System.out.println(field.getKey() + " => " + field.getValue().toString());
+                //System.out.println(entry.getKey());
+                for (FieldDefinition field: entry.getValue()) {
+                    field.prettyPrintFieldsAndEnums(10);
+                }
             }
+
         }
     }
 
@@ -122,13 +128,15 @@ public class DirectoryWalker {
 
     public static void main(String args[]) {
 
-        String resourceName = "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3";
+        String rootDirectory= "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3";
 
         Gson gson = new Gson();
 
         //System.out.println(responseSpecificationFiles.toString());
 
-        parseDirectoryForObjects(new File(resourceName), gson);
+        parseDirectoryForObjects(new File(rootDirectory), gson);
+
+
 
     }
 }
