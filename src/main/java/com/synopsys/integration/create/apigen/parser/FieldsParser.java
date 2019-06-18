@@ -44,7 +44,7 @@ public class FieldsParser {
 
         for (Map.Entry<String, List<FieldDefinition>> field : fieldDefinitions.entrySet())
         {
-            System.out.println(field.getKey() + " => " + field.getValue().toString());
+            // System.out.println(field.getKey() + " => " + field.getValue().toString());
         }
     }
 
@@ -73,7 +73,8 @@ public class FieldsParser {
         }
 
         // display
-        System.out.println("");
+        Boolean redundantPrintOfSubClass = false;
+        if (spaces <= 5) System.out.println("");
         for (int i = 0; i < spaces-5; i++) System.out.print(" ");
         System.out.println(fieldDefinitionName);
 
@@ -83,18 +84,24 @@ public class FieldsParser {
             String type = fieldObject.get("type").getAsString();
             boolean optional = fieldObject.get("optional").getAsBoolean();
 
+            if (type.equals("Array")) {
+                path = path.replace("s[]", ""); // strip brackets on array field <-- should we leave 's' for non-array fields?
+            } else {
+                path = path.replace("[]", "");
+            }
+
             // this field is a new field definition itself
             if ((type.equals("Object") || type.equals("Array")) && fieldObject.has("fields")) {
-                path = path.replace("s[]", ""); // strip brackets on array field
-                type = fieldDefinitionName + StringUtils.capitalize(path); // append subclass to create new definition name
+                type = fieldDefinitionName + StringUtils.capitalize(path); // append subclass to create new field definition type
                 populateFieldDefinitions(fieldDefinitions, fieldEnums, type, fieldObject.getAsJsonArray("fields"), spaces + 5);
+                redundantPrintOfSubClass = true;
             }
 
             // If field has allowedValues field, we need to define an enum
             JsonElement allowedValues = fieldObject.get("allowedValues");
             String nameOfEnum = null;
             if (allowedValues != null) {
-                nameOfEnum = fieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Type";
+                nameOfEnum = fieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
                 createEnum(fieldEnums, nameOfEnum, allowedValues.toString(), spaces);
             }
 
@@ -103,7 +110,10 @@ public class FieldsParser {
             // display
             for (int i = 0; i < spaces; i++) System.out.print(" ");
             String fieldPrintOutput = nameOfEnum != null ? "" : path;
-            System.out.println(fieldPrintOutput);
+            if (!redundantPrintOfSubClass) {
+                System.out.println(fieldPrintOutput);
+            }
+            redundantPrintOfSubClass = false;
 
             fieldDefinitions.get(fieldDefinitionName).add(fieldDefinition);
         }
