@@ -83,7 +83,7 @@ public class DirectoryWalker {
 
         for (ResponseDefinition response : responses) {
 
-            System.out.println("\n**********************************************************\n" + response.getName());
+            System.out.println("\n**********************************************************\n" + response.getName() + " : " + response.getMediaType());
 
             Map<String, List<FieldDefinition>> fieldDefinitions = new HashMap<>();
             Map<String, String[]> fieldEnums = new HashMap<>();
@@ -115,7 +115,7 @@ public class DirectoryWalker {
             {
                 //System.out.println(entry.getKey());
                 for (FieldDefinition field: entry.getValue()) {
-                    field.prettyPrintFieldsAndEnums(10);
+                    //field.prettyPrintFieldsAndEnums(10);
                 }
             }
 

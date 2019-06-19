@@ -74,9 +74,9 @@ public class FieldsParser {
         // display
         Boolean redundantPrintOfSubClass = false;
 
-        //if (spaces <= 5) System.out.println("");
-        //for (int i = 0; i < spaces-5; i++) System.out.print(" ");
-        //System.out.println(fieldDefinitionName);
+        if (spaces <= 5) System.out.println("");
+        for (int i = 0; i < spaces-5; i++) System.out.print(" ");
+        System.out.println(fieldDefinitionName);
 
         for (JsonElement field : fields) {
             JsonObject fieldObject = field.getAsJsonObject();
@@ -89,7 +89,7 @@ public class FieldsParser {
 
             if (type.equals("Array")) {
                 // strip brackets on array field <-- should we leave 's' for non-array fields?
-                path = path.replace("s[]", "");
+                path = path.contains("es[]") ? path.replace("es[]", "") : path.replace("s[]", "");
             } else {
                 path = path.replace("[]", "");
             }
@@ -128,7 +128,7 @@ public class FieldsParser {
             for (int i = 0; i < spaces; i++) System.out.print(" ");
             String fieldPrintOutput = nameOfEnum != null ? "" : path + " : " + type ;
             if (!redundantPrintOfSubClass) {
-                //System.out.println(fieldPrintOutput);
+                System.out.println(fieldPrintOutput);
             }
             redundantPrintOfSubClass = false;
 
@@ -163,13 +163,13 @@ public class FieldsParser {
         fieldEnums.put(nameOfEnum, allowedValuesEnum);
         parent.addFieldEnum(nameOfEnum, allowedValuesEnum);
 
-        /*
+
         for (int i = 0; i < spaces; i++) System.out.print(" ");
         System.out.print(nameOfEnum + ": ");
         for (String value: allowedValuesEnum) {
             System.out.print(value + " ");
         }
-        */
+
 
     }
 

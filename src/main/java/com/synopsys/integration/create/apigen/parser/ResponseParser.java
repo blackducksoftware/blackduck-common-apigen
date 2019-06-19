@@ -62,7 +62,7 @@ public class ResponseParser {
 
             } else if (child.isDirectory() && !child.getName().equals("notifications")) {
                 populateResponses(responses, child, prefixLength);
-            } 
+            }
         }
     }
 
@@ -113,7 +113,7 @@ public class ResponseParser {
         ListIterator<String> iterator = pieces.listIterator();
         String piece = iterator.next();
         String lastPiece = null;
-        while (!(piece.equals("response-specification.json")) && iterator.hasNext()) {
+        while (!(piece.equals("response-specification.json"))) {
             lastPiece = piece;
             piece = iterator.next();
         }

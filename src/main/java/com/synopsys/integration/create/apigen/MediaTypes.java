@@ -2,10 +2,7 @@ package com.synopsys.integration.create.apigen;
 
 import com.opencsv.CSVReader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.util.*;
 
 public class MediaTypes {
@@ -15,7 +12,7 @@ public class MediaTypes {
 
     static {
         //String resourceName = Application.CURRENT_API_SPECIFICATION + "/minified-media-types.csv";
-        String resourceName = "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3/minified-media-types.csv";
+        String resourceName = "/api-specification/2019.4.3/minified-media-types.csv";
         InputStream inputStream = MediaTypes.class.getResourceAsStream(resourceName);
         Reader reader = new InputStreamReader(inputStream);
 
@@ -28,10 +25,16 @@ public class MediaTypes {
             e.printStackTrace();
         }
 
-        final String[] LONG = rows.get(0);
-        final String[] SHORT = rows.get(1);
+        int numRows = rows.size();
+        final String[] LONG = new String[numRows];
+        final String[] SHORT = new String[numRows];
+        for (int i = 0; i < numRows; i++) {
+            String[] row = rows.get(i);
+            LONG[i] = row[0];
+            SHORT[i] = row[1];
+        }
 
-        for (int i = 0; i < rows.get(0).length; i++)
+        for (int i = 0; i < rows.size(); i++)
         {
             LONG_TO_SHORT.put(LONG[i], SHORT[i]);
             SHORT_TO_LONG.put(SHORT[i], LONG[i]);
