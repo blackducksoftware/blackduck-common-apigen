@@ -17,31 +17,17 @@ public class ResponseParser {
 
     public static void main(String[] args) {
 
-        ResponseParser parser = new ResponseParser();
-
-        String resourceName = "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3";
-
-        ArrayList<ResponseDefinition> responses = parser.parseResponses(new File(resourceName));
-        for (ResponseDefinition response : responses) {
-            //System.out.println(response.getName());
-        }
     }
 
     public ArrayList<ResponseDefinition> parseResponses(File specificationRootDirectory) {
         File endpointsPath = new File(specificationRootDirectory, "endpoints");
         File apiPath = new File(endpointsPath, "api");
 
-        ArrayList<ResponseDefinition> responseDefinitions = new ArrayList<>();
-        populateResponses(responseDefinitions, apiPath, apiPath.getAbsolutePath().length() + 1);
-
-        return responseDefinitions;
+        return parseResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
     }
 
-    // def --> Object ?
-    private void populateResponses(ArrayList<ResponseDefinition> responses, File parent, int prefixLength) {
-
-        //System.out.println(parent.getAbsolutePath().substring(115));
-
+    private ArrayList<ResponseDefinition> parseResponses(File parent, int prefixLength) {
+        ArrayList<ResponseDefinition> responseDefinitions = new ArrayList<>();
         File[] children = parent.listFiles();
 
         // Deal with case where multiple responses for one request (ie. <...Id>/GET/ is a directory with many response-specification.json files)
@@ -49,21 +35,20 @@ public class ResponseParser {
             multipleResponses = true;
         }
 
+        // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (File child : children) {
             if (child.getName().equals("response-specification.json") && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN) && !child.getName().equals("notifications")) {
-
                 String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 String responseName = getResponseName(responseRelativePath, multipleResponses);
                 String responseMediaType = getResponseMediaType(responseRelativePath);
 
-                responses.add(new ResponseDefinition(responseRelativePath, responseName, responseMediaType));
-
-                //System.out.println(child.getAbsolutePath().substring(116));
+                responseDefinitions.add(new ResponseDefinition(responseRelativePath, responseName, responseMediaType));
 
             } else if (child.isDirectory() && !child.getName().equals("notifications")) {
-                populateResponses(responses, child, prefixLength);
+                responseDefinitions.addAll(parseResponses(child, prefixLength));
             }
         }
+        return responseDefinitions;
     }
 
     private String getResponseName(String responsePath, Boolean multipleResponses) {

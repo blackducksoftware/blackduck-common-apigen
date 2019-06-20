@@ -19,6 +19,7 @@ import java.util.HashMap;
 public class ResponseFieldTypes {
 
     public static void main(String[] args) {
+        /*
         String resourceName = Application.CURRENT_API_SPECIFICATION + "/endpoints/api";
         ArrayList<String> targets = new ArrayList<String>();
         targets.add("response-specification.json");
@@ -37,5 +38,7 @@ public class ResponseFieldTypes {
         for (File file : responseSpecificationFiles) {
             JsonArray fields = FieldsParser.getFieldsAsJsonArray(gson, jsonSlurper, file);
         }
+
+         */
     }
 }

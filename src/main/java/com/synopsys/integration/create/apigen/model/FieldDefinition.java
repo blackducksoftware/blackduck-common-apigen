@@ -49,6 +49,8 @@ public class FieldDefinition extends Stringable {
 
     public void addSubField(FieldDefinition field) { subFields.add(field); }
 
+    public void addSubFields(List<FieldDefinition> fields) { subFields.addAll(fields); }
+
     public Map<String, String[]> getFieldEnums() { return fieldEnums; }
 
     public void addFieldEnum(String name, String[] fieldEnum) { fieldEnums.put(name, fieldEnum); }
@@ -57,29 +59,39 @@ public class FieldDefinition extends Stringable {
 
     /* Make the output of Fields indented/reflect dependency hierarchy */
 
-    public void prettyPrintFieldsAndEnums(int spaces) {
-
-        if (subFields.size() > 0) {
-            System.out.println("");
-
-            for (FieldDefinition subField : subFields) {
-                for (int i = 0; i < spaces - 5; i++) System.out.print(" ");
-                System.out.println(subField.getPath());
-                if ((subField.getType().equals("Object") || subField.getType().equals("Array")) && subField.getSubFields().size() > 0) {
-                    subField.prettyPrintFieldsAndEnums(spaces + 5);
-                }
-            }
+    public void printFieldDefinition(int spaces) {
+        String[] commonTypes = {"String", "Array", "Object", "Number", "BigDecimal", "Boolean"};
+        for (int i = 0; i < spaces; i++) {
+            System.out.print(" ");
         }
 
         if (fieldEnums.size() > 0) {
             for (Map.Entry<String, String[]> fieldEnum : fieldEnums.entrySet()) {
-                for (int i = 0; i < spaces-5; i++) System.out.print(" ");
                 System.out.print(fieldEnum.getKey() + ": ");
                 for (String value: fieldEnum.getValue()) {
                     System.out.print(value + " ");
                 }
             }
-            System.out.println("\n");
+            System.out.println("");
+        } else {
+            if (Arrays.asList(commonTypes).contains(type)) {
+                System.out.println(path + " : " + type);
+            } else {
+                System.out.println(type);
+            }
+        }
+
+        if (subFields.size() > 0) {
+            for (FieldDefinition subField : subFields) {
+                if (subField.getSubFields().size() > 0) {
+                    subField.printFieldDefinition(spaces + 5);
+                } else {
+                    for (int i = 0; i < spaces+5; i++) {
+                        System.out.print(" ");
+                    }
+                    System.out.println(subField.getPath() + " : " + subField.getType());
+                }
+            }
         }
     }
 }

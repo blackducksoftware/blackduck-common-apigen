@@ -8,15 +8,13 @@ public class ResponseDefinition extends Stringable {
     private String responseSpecificationPath;
     private String name;
     private String mediaType;
-    private Map<String, List<FieldDefinition>> fields;
-    private Map<String, String[]> fieldEnums;
+    private List<FieldDefinition> fields;
 
     public ResponseDefinition(String responseSpecificationPath, String name, String mediaType) {
         this.responseSpecificationPath = responseSpecificationPath;
         this.name = name;
         this.mediaType = mediaType;
-        this.fields = new HashMap<>();
-        this.fieldEnums = new HashMap<>();
+        this.fields = new ArrayList<>();
     }
 
     public String getResponseSpecificationPath() {
@@ -31,16 +29,18 @@ public class ResponseDefinition extends Stringable {
         return mediaType;
     }
 
-    public Map<String, List<FieldDefinition>> getFields() { return fields; }
+    public List<FieldDefinition> getFields() { return fields; }
 
-    public void addField(String name, FieldDefinition field) { fields.get(name).add(field); }
+    public void addField(FieldDefinition field) { fields.add(field); }
 
-    public void addFields(Map<String, List<FieldDefinition>> fields) { fields.putAll(fields); }
+    public void addFields(List<FieldDefinition> fieldDefinitionss) { fields.addAll(fieldDefinitionss); }
 
-    public Map<String, String[]> getFieldEnums() { return fieldEnums; }
+    public void printResponseDefinition() {
+        System.out.println("\n**********************************************************\n" + name + " : " + mediaType);
 
-    public void addFieldEnum(String name, String fieldEnum) { Arrays.asList(fieldEnums.get(name)).add(fieldEnum); }
-
-    public void addFieldEnums(Map<String, String[]> fieldEnums) { fieldEnums.putAll(fieldEnums); }
+        for (FieldDefinition field : fields) {
+            field.printFieldDefinition(5);
+        }
+    }
 
 }
