@@ -25,5 +25,7 @@ dependencies {
 	implementation 'com.blackducksoftware.integration:integration-common:17.1.0'
 	implementation 'com.opencsv:opencsv:4.6'
 
+	implementation 'org.freemarker:freemarker:2.3.25-incubating'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

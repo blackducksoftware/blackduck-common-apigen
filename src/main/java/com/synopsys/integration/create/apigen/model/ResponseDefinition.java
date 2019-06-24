@@ -35,12 +35,13 @@ public class ResponseDefinition extends Stringable {
 
     public void addFields(List<FieldDefinition> fieldDefinitionss) { fields.addAll(fieldDefinitionss); }
 
+    /*
     public void printResponseDefinition() {
         System.out.println("\n**********************************************************\n" + name + " : " + mediaType);
 
         for (FieldDefinition field : fields) {
             field.printFieldDefinition(5);
         }
-    }
+    }*/
 
 }

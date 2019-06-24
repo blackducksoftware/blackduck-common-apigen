@@ -6,18 +6,19 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.String.join;
 
 public class ResponseParser {
+    public static final String RESPONSE_SPECIFICATION_JSON = "response-specification.json";
+    boolean multipleResponses = false;
+    MediaTypes mediaTypes = new MediaTypes();
 
-    Boolean multipleResponses = false;
-
-    public static void main(String[] args) {
-
-    }
 
     public ArrayList<ResponseDefinition> parseResponses(File specificationRootDirectory) {
         File endpointsPath = new File(specificationRootDirectory, "endpoints");
@@ -28,23 +29,24 @@ public class ResponseParser {
 
     private ArrayList<ResponseDefinition> parseResponses(File parent, int prefixLength) {
         ArrayList<ResponseDefinition> responseDefinitions = new ArrayList<>();
-        File[] children = parent.listFiles();
+        List<File> children = Arrays.stream(parent.listFiles())
+                .filter(file -> !file.getName().equals("notifications"))
+                .collect(Collectors.toList());
 
         // Deal with case where multiple responses for one request (ie. <...Id>/GET/ is a directory with many response-specification.json files)
-        if (parent.getName().equals("GET") && parent.getParent().endsWith("Id") && children.length > 2) {
-            multipleResponses = true;
-        }
+        // look out for re-usability here!
+        multipleResponses = (parent.getName().equals("GET") && parent.getParent().endsWith("Id") && children.size() > 2);
 
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (File child : children) {
-            if (child.getName().equals("response-specification.json") && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN) && !child.getName().equals("notifications")) {
+            if (child.getName().equals(RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 String responseName = getResponseName(responseRelativePath, multipleResponses);
-                String responseMediaType = getResponseMediaType(responseRelativePath);
+                String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
 
                 responseDefinitions.add(new ResponseDefinition(responseRelativePath, responseName, responseMediaType));
 
-            } else if (child.isDirectory() && !child.getName().equals("notifications")) {
+            } else if (child.isDirectory()) {
                 responseDefinitions.addAll(parseResponses(child, prefixLength));
             }
         }
@@ -53,11 +55,11 @@ public class ResponseParser {
 
     private String getResponseName(String responsePath, Boolean multipleResponses) {
         List<String> resourceNamePieces = new ArrayList<>();
-        Boolean nextPieceImportant = false;
-
+        boolean nextPieceImportant = false;
+        String idSuffix = "Id";
         for (String piece : responsePath.split("/") ) {
-            if (piece.endsWith("Id")) {
-                String pieceToAdd = StringUtils.capitalize(piece.substring(0,piece.length()-2));
+            if (piece.endsWith(idSuffix)) {
+                String pieceToAdd = StringUtils.capitalize(piece.substring(0,piece.length()-idSuffix.length()));
                 String lastPiece = resourceNamePieces.size() > 0 ? resourceNamePieces.get(resourceNamePieces.size()-1) : pieceToAdd;
                 if (resourceNamePieces.size() > 0 && pieceToAdd.startsWith(lastPiece)) {
                     pieceToAdd = pieceToAdd.substring(lastPiece.length());
@@ -65,7 +67,8 @@ public class ResponseParser {
                 resourceNamePieces.add(pieceToAdd);
             } else if (piece.equals("GET") && multipleResponses) {
                 nextPieceImportant = true;
-            } else if (nextPieceImportant) { // Differentiate names of responses tied to a single request
+            } else if (nextPieceImportant) {
+                // Differentiate names of responses tied to a single request
                 String pieceToAdd = null;
                 if (!piece.startsWith("bds")) {
                     // Parse subfolder name and add to list of pieces
@@ -90,21 +93,6 @@ public class ResponseParser {
         } else {
             return "";
         }
-    }
-
-    private String getResponseMediaType(String responsePath) {
-        /* Path should be of format .../<folder>/<mediaType>/response-specification.json */
-        List<String> pieces = Arrays.asList(responsePath.split("/"));
-        ListIterator<String> iterator = pieces.listIterator();
-        String piece = iterator.next();
-        String lastPiece = null;
-        while (!(piece.equals("response-specification.json"))) {
-            lastPiece = piece;
-            piece = iterator.next();
-        }
-
-        MediaTypes mediaTypes = new MediaTypes();
-        return mediaTypes.getLongName(lastPiece);
     }
 
 }

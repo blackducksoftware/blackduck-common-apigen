@@ -5,12 +5,12 @@ import com.synopsys.integration.util.Stringable;
 import java.util.*;
 
 public class FieldDefinition extends Stringable {
-    private String path;
-    private String type;
-    private boolean optional;
-    private List<String> allowedValues;
-    private List<FieldDefinition> subFields;
-    private Map<String, String[]> fieldEnums;
+    private final String path;
+    private final String type;
+    private final boolean optional;
+    private final List<String> allowedValues;
+    private final List<FieldDefinition> subFields;
+    private final Map<String, String[]> fieldEnums;
 
     public FieldDefinition(String path, String type, boolean optional, List<String> allowedValues) {
         this.path = path;
@@ -22,11 +22,7 @@ public class FieldDefinition extends Stringable {
     }
 
     public FieldDefinition(String path, String type, boolean optional) {
-        this.path = path;
-        this.type = type;
-        this.optional = optional;
-        this.subFields = new ArrayList<>();
-        this.fieldEnums = new HashMap<>();
+        this(path, type, optional, Collections.emptyList());
     }
 
     public String getPath() {
@@ -47,20 +43,17 @@ public class FieldDefinition extends Stringable {
 
     public List<FieldDefinition> getSubFields() { return subFields; }
 
-    public void addSubField(FieldDefinition field) { subFields.add(field); }
-
     public void addSubFields(List<FieldDefinition> fields) { subFields.addAll(fields); }
 
     public Map<String, String[]> getFieldEnums() { return fieldEnums; }
 
     public void addFieldEnum(String name, String[] fieldEnum) { fieldEnums.put(name, fieldEnum); }
 
-    public void addFieldEnums(Map<String, String[]> fieldEnums) { fieldEnums.putAll(fieldEnums); }
-
     /* Make the output of Fields indented/reflect dependency hierarchy */
 
+    /*
     public void printFieldDefinition(int spaces) {
-        String[] commonTypes = {"String", "Array", "Object", "Number", "BigDecimal", "Boolean"};
+        Set<String> commonTypes = new HashSet<>(); {"String", "Array", "Object", "Number", "BigDecimal", "Boolean"});
         for (int i = 0; i < spaces; i++) {
             System.out.print(" ");
         }
@@ -94,4 +87,5 @@ public class FieldDefinition extends Stringable {
             }
         }
     }
+    */
 }

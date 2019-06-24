@@ -1,16 +1,30 @@
 package com.synopsys.integration.create.apigen;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.FieldsParser;
 import com.synopsys.integration.create.apigen.parser.ResponseParser;
+import com.synopsys.integration.util.ResourceUtil;
+
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 
 public class DirectoryWalker {
 
-    static void parseDirectoryForObjects(File rootDirectory, Gson gson) {
+    private File rootDirectory;
+    private Gson gson;
+
+    public DirectoryWalker(File rootDirectory, Gson gson) {
+        this.rootDirectory = rootDirectory;
+        this.gson = gson;
+    }
+
+    public List<ResponseDefinition> parseDirectoryForObjects() {
         ResponseParser responseParser = new ResponseParser();
         FieldsParser fieldsParser = new FieldsParser(gson);
 
@@ -22,20 +36,22 @@ public class DirectoryWalker {
             String absolutePath = rootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             File responseSpecificationFile = new File (absolutePath);
 
-            JsonArray fields = FieldsParser.getFieldsAsJsonArray(gson, responseSpecificationFile);
-            response.addFields(fieldsParser.parseFieldDefinitions(response.getName(), fields));
+            List<RawFieldDefinition> fields = fieldsParser.getFieldsAsRawFieldDefinitions(gson, responseSpecificationFile);
 
-            response.printResponseDefinition();
+            response.addFields(fieldsParser.parseFieldDefinitions(response.getName(), fields));
+            System.out.println("***********************\n" + gson.toJson(response));
         }
+
+        return responseDefinitions;
     }
 
     /* Main method for testing */
 
-    public static void main(String args[]) {
-
-        String rootDirectory= "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/resources/api-specification/2019.4.3";
-        Gson gson = new Gson();
-
-        parseDirectoryForObjects(new File(rootDirectory), gson);
+    public static void main(String args[]) throws URISyntaxException {
+        // Replace with environment variable
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        URL rootDirectory = DirectoryWalker.class.getClassLoader().getResource("api-specification/2019.4.3");
+        DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
+        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects();
     }
 }
