@@ -24,7 +24,7 @@ public class DirectoryWalker {
         this.gson = gson;
     }
 
-    public List<ResponseDefinition> parseDirectoryForObjects() {
+    public List<ResponseDefinition> parseDirectoryForObjects(boolean showOutput) {
         ResponseParser responseParser = new ResponseParser();
         FieldsParser fieldsParser = new FieldsParser(gson);
 
@@ -39,7 +39,9 @@ public class DirectoryWalker {
             List<RawFieldDefinition> fields = fieldsParser.getFieldsAsRawFieldDefinitions(gson, responseSpecificationFile);
 
             response.addFields(fieldsParser.parseFieldDefinitions(response.getName(), fields));
-            System.out.println("***********************\n" + gson.toJson(response));
+            if (showOutput) {
+                System.out.println("***********************\n" + gson.toJson(response));
+            }
         }
 
         return responseDefinitions;
@@ -52,6 +54,6 @@ public class DirectoryWalker {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         URL rootDirectory = DirectoryWalker.class.getClassLoader().getResource("api-specification/2019.4.3");
         DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
-        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects();
+        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(true);
     }
 }
