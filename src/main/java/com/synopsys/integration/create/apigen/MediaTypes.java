@@ -1,9 +1,16 @@
 package com.synopsys.integration.create.apigen;
 
-import com.opencsv.CSVReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.io.*;
-import java.util.*;
+import com.opencsv.CSVReader;
 
 public class MediaTypes {
 
@@ -12,30 +19,29 @@ public class MediaTypes {
 
     static {
         //String resourceName = Application.CURRENT_API_SPECIFICATION + "/minified-media-types.csv";
-        String resourceName = "/" + Application.API_SPECIFICATION_VERSION + "/minified-media-types.csv";
-        InputStream inputStream = MediaTypes.class.getResourceAsStream(resourceName);
-        Reader reader = new InputStreamReader(inputStream);
+        final String resourceName = "/" + Application.API_SPECIFICATION_VERSION + "/minified-media-types.csv";
+        final InputStream inputStream = MediaTypes.class.getResourceAsStream(resourceName);
+        final Reader reader = new InputStreamReader(inputStream);
 
-        CSVReader csvReader = new CSVReader(reader);
+        final CSVReader csvReader = new CSVReader(reader);
         List<String[]> rows = null;
 
         try {
             rows = csvReader.readAll();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
 
-        int numRows = rows.size();
+        final int numRows = rows.size();
         final String[] LONG = new String[numRows];
         final String[] SHORT = new String[numRows];
         for (int i = 0; i < numRows; i++) {
-            String[] row = rows.get(i);
+            final String[] row = rows.get(i);
             LONG[i] = row[0];
             SHORT[i] = row[1];
         }
 
-        for (int i = 0; i < rows.size(); i++)
-        {
+        for (int i = 0; i < rows.size(); i++) {
             LONG_TO_SHORT.put(LONG[i], SHORT[i]);
             SHORT_TO_LONG.put(SHORT[i], LONG[i]);
         }
@@ -50,11 +56,11 @@ public class MediaTypes {
         return new HashSet<>(LONG_TO_SHORT.keySet());
     }
 
-    public static String getShortName(String longName) {
+    public static String getShortName(final String longName) {
         return LONG_TO_SHORT.get(longName);
     }
 
-    public static String getLongName(String shortName) {
+    public static String getLongName(final String shortName) {
         return SHORT_TO_LONG.get(shortName);
     }
 }

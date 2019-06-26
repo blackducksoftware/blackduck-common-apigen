@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
 public class ResponseNameParser {
-    public String getResponseName(String responsePath, Boolean multipleResponses) {
-        List<String> resourceNamePieces = new ArrayList<>();
+    public String getResponseName(final String responsePath, final Boolean multipleResponses) {
+        final List<String> resourceNamePieces = new ArrayList<>();
         boolean nextPieceImportant = false;
-        String idSuffix = "Id";
-        for (String piece : responsePath.split("/") ) {
+        final String idSuffix = "Id";
+        for (final String piece : responsePath.split("/")) {
             if (piece.endsWith(idSuffix)) {
-                String pieceToAdd = StringUtils.capitalize(piece.substring(0,piece.length()-idSuffix.length()));
-                String lastPiece = resourceNamePieces.size() > 0 ? resourceNamePieces.get(resourceNamePieces.size()-1) : pieceToAdd;
+                String pieceToAdd = StringUtils.capitalize(piece.substring(0, piece.length() - idSuffix.length()));
+                final String lastPiece = resourceNamePieces.size() > 0 ? resourceNamePieces.get(resourceNamePieces.size() - 1) : pieceToAdd;
                 if (resourceNamePieces.size() > 0 && pieceToAdd.startsWith(lastPiece)) {
                     pieceToAdd = pieceToAdd.substring(lastPiece.length());
                 }
@@ -29,8 +29,8 @@ public class ResponseNameParser {
                 String pieceToAdd = null;
                 if (!piece.startsWith("bds")) {
                     // Parse subfolder name and add to list of pieces
-                    String[] subPieces = piece.split("_");
-                    List<String> formattedSubPieces = Arrays.stream(subPieces)
+                    final String[] subPieces = piece.split("_");
+                    final List<String> formattedSubPieces = Arrays.stream(subPieces)
                                                           .map(String::toLowerCase)
                                                           .map(StringUtils::capitalize)
                                                           .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class ResponseNameParser {
         }
 
         if (resourceNamePieces.size() > 0) {
-            return join("",resourceNamePieces) + "View";
+            return join("", resourceNamePieces) + "View";
         } else {
             return "";
         }

@@ -1,8 +1,12 @@
 package com.synopsys.integration.create.apigen.model;
 
-import com.synopsys.integration.util.Stringable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import java.util.*;
+import com.synopsys.integration.util.Stringable;
 
 public class FieldDefinition extends Stringable {
     private final String path;
@@ -12,7 +16,7 @@ public class FieldDefinition extends Stringable {
     private final List<FieldDefinition> fields;
     private final Map<String, String[]> fieldEnums;
 
-    public FieldDefinition(String path, String type, boolean optional, List<String> allowedValues) {
+    public FieldDefinition(final String path, final String type, final boolean optional, final List<String> allowedValues) {
         this.path = path;
         this.type = type;
         this.optional = optional;
@@ -21,7 +25,7 @@ public class FieldDefinition extends Stringable {
         this.fieldEnums = new HashMap<>();
     }
 
-    public FieldDefinition(String path, String type, boolean optional) {
+    public FieldDefinition(final String path, final String type, final boolean optional) {
         this(path, type, optional, Collections.emptyList());
     }
 
@@ -43,11 +47,11 @@ public class FieldDefinition extends Stringable {
 
     public List<FieldDefinition> getSubFields() { return fields; }
 
-    public void addSubFields(List<FieldDefinition> fields) { fields.addAll(fields); }
+    public void addSubFields(final List<FieldDefinition> fields) { fields.addAll(fields); }
 
     public Map<String, String[]> getFieldEnums() { return fieldEnums; }
 
-    public void addFieldEnum(String name, String[] fieldEnum) { fieldEnums.put(name, fieldEnum); }
+    public void addFieldEnum(final String name, final String[] fieldEnum) { fieldEnums.put(name, fieldEnum); }
 
     /* Make the output of Fields indented/reflect dependency hierarchy */
 

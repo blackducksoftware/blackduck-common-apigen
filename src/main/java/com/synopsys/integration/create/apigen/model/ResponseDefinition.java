@@ -1,16 +1,17 @@
 package com.synopsys.integration.create.apigen.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.synopsys.integration.util.Stringable;
 
-import java.util.*;
-
 public class ResponseDefinition extends Stringable {
-    private String responseSpecificationPath;
-    private String name;
-    private String mediaType;
-    private List<FieldDefinition> fields;
+    private final String responseSpecificationPath;
+    private final String name;
+    private final String mediaType;
+    private final List<FieldDefinition> fields;
 
-    public ResponseDefinition(String responseSpecificationPath, String name, String mediaType) {
+    public ResponseDefinition(final String responseSpecificationPath, final String name, final String mediaType) {
         this.responseSpecificationPath = responseSpecificationPath;
         this.name = name;
         this.mediaType = mediaType;
@@ -31,17 +32,8 @@ public class ResponseDefinition extends Stringable {
 
     public List<FieldDefinition> getFields() { return fields; }
 
-    public void addField(FieldDefinition field) { fields.add(field); }
+    public void addField(final FieldDefinition field) { fields.add(field); }
 
-    public void addFields(List<FieldDefinition> fieldDefinitionss) { fields.addAll(fieldDefinitionss); }
-
-    /*
-    public void printResponseDefinition() {
-        System.out.println("\n**********************************************************\n" + name + " : " + mediaType);
-
-        for (FieldDefinition field : fields) {
-            field.printFieldDefinition(5);
-        }
-    }*/
+    public void addFields(final List<FieldDefinition> fieldDefinitionss) { fields.addAll(fieldDefinitionss); }
 
 }
