@@ -12,7 +12,7 @@ public class MediaTypes {
 
     static {
         //String resourceName = Application.CURRENT_API_SPECIFICATION + "/minified-media-types.csv";
-        String resourceName = "/api-specification/2019.4.3/minified-media-types.csv";
+        String resourceName = "/" + Application.API_SPECIFICATION_VERSION + "/minified-media-types.csv";
         InputStream inputStream = MediaTypes.class.getResourceAsStream(resourceName);
         Reader reader = new InputStreamReader(inputStream);
 

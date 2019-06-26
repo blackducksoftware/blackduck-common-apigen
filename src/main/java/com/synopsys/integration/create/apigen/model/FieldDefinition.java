@@ -9,7 +9,7 @@ public class FieldDefinition extends Stringable {
     private final String type;
     private final boolean optional;
     private final List<String> allowedValues;
-    private final List<FieldDefinition> subFields;
+    private final List<FieldDefinition> fields;
     private final Map<String, String[]> fieldEnums;
 
     public FieldDefinition(String path, String type, boolean optional, List<String> allowedValues) {
@@ -17,7 +17,7 @@ public class FieldDefinition extends Stringable {
         this.type = type;
         this.optional = optional;
         this.allowedValues = allowedValues;
-        this.subFields = new ArrayList<>();
+        this.fields = new ArrayList<>();
         this.fieldEnums = new HashMap<>();
     }
 
@@ -41,9 +41,9 @@ public class FieldDefinition extends Stringable {
         return allowedValues;
     }
 
-    public List<FieldDefinition> getSubFields() { return subFields; }
+    public List<FieldDefinition> getSubFields() { return fields; }
 
-    public void addSubFields(List<FieldDefinition> fields) { subFields.addAll(fields); }
+    public void addSubFields(List<FieldDefinition> fields) { fields.addAll(fields); }
 
     public Map<String, String[]> getFieldEnums() { return fieldEnums; }
 

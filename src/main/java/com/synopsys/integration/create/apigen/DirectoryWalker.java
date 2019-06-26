@@ -15,7 +15,6 @@ import java.net.URL;
 import java.util.*;
 
 public class DirectoryWalker {
-
     private File rootDirectory;
     private Gson gson;
 
@@ -43,16 +42,13 @@ public class DirectoryWalker {
                 System.out.println("***********************\n" + gson.toJson(response));
             }
         }
-
         return responseDefinitions;
     }
-
-    /* Main method for testing */
 
     public static void main(String args[]) throws URISyntaxException {
         // Replace with environment variable
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        URL rootDirectory = DirectoryWalker.class.getClassLoader().getResource("api-specification/2019.4.3");
+        URL rootDirectory = DirectoryWalker.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
         List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(true);
     }

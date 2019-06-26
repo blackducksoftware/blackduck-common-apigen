@@ -15,6 +15,7 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.tools.corba.se.idl.EnumGen;
+import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.DirectoryWalker;
 import com.synopsys.integration.create.apigen.MediaTypes;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -26,28 +27,31 @@ import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
     public class Generator {
-
-        public static final String ENUM_PACKAGE = "com.synopsys.integration.blackduck.api.generated.enumeration";
-        public static final String VIEW_PACKAGE = "com.synopsys.integration.blackduck.api.generated.view";
-        public static final String VIEW_BASE_CLASS = "BlackDuckView";
         public static final Set<String> COMMON_TYPES = new HashSet<>();
+        public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
+        public static final String ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "enumeration";
+        public static final String VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "view";
+        public static final String VIEW_BASE_CLASS = "BlackDuckView";
+        public static final String COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "component";
+        public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
 
         public static void main(String[] args) throws Exception {
-
             Generator Generator = new Generator();
             Configuration config = Generator.configureFreeMarker();
 
-            URL rootDirectory = DirectoryWalker.class.getClassLoader().getResource("api-specification/2019.4.3");
+            URL rootDirectory = Generator.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
             List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(false);
 
             Template enumTemplate = config.getTemplate("EnumTemplate.ftl");
-            //Generator.generateEnumFiles(responses, enumTemplate);
+            Generator.generateEnumFiles(responses, enumTemplate);
 
             Template viewTemplate = config.getTemplate("ViewTemplate.ftl");
             Generator.generateViewFiles(responses, viewTemplate);
 
+            Template componentTemplate = config.getTemplate("ViewTemplate.ftl");
+            //Generator.generateComponentFiles(responses, componentTemplate);
         }
 
         private Configuration configureFreeMarker() throws URISyntaxException, IOException {
@@ -78,7 +82,8 @@ import freemarker.template.Version;
                         String className = fieldEnum.getKey();
                         Map<String, Object> input = getEnumInputData(ENUM_PACKAGE, className, fieldEnum.getValue());
 
-                        writeFile(className, template, input);
+                        String pathToEnumFiles = Application.PATH_TO_GENERATED_FILES + "enumeration";
+                        writeFile(className, template, input, pathToEnumFiles);
                     }
                 }
             }
@@ -86,51 +91,52 @@ import freemarker.template.Version;
 
         private void generateViewFiles(List<ResponseDefinition> responses, Template template) throws Exception {
             MediaTypes mediaTypes = new MediaTypes();
-            Set<String> longMediaTypeNames = mediaTypes.getLongNames();
+            Set<String> longMediaTypes = mediaTypes.getLongNames();
 
             for (ResponseDefinition response : responses) {
-                if (longMediaTypeNames.contains(response.getMediaType())) {
+                if (longMediaTypes.contains(response.getMediaType())) {
                     List<String> imports = new ArrayList<>();
                     for (FieldDefinition field : response.getFields()) {
                         for (String enumName : field.getFieldEnums().keySet()) {
-                            imports.add(enumName);
+                            imports.add(GENERATED_CLASS_PATH_PREFIX + enumName);
                         }
                         String fieldType = field.getType();
                         if (!COMMON_TYPES.contains(fieldType)) {
-                            imports.add(fieldType);
+                            imports.add(GENERATED_CLASS_PATH_PREFIX + fieldType);
                         }
                     }
-                    Map<String, Object> input = getViewInputData(VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
+                    Map<String, Object> input = getViewInputData("view", VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
 
-                    writeFile(response.getName(), template, input);
+                    String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + "view";
+                    writeFile(response.getName(), template, input, pathToViewFiles);
                 }
             }
-
         }
-        /*
-        private void generateComponentFiles(List<ResponseDefinition> responses, Template template) throws Exception {
-            MediaTypes mediaTypes = new MediaTypes();
-            Set<String> longMediaTypeNames = mediaTypes.getLongNames();
 
+        private void generateComponentFiles(List<ResponseDefinition> responses, Template template) throws Exception {
             for (ResponseDefinition response : responses) {
-                if (longMediaTypeNames.contains(response.getMediaType())) {
-                    List<String> imports = new ArrayList<>();
                     for (FieldDefinition field : response.getFields()) {
-                        for (String enumName : field.getFieldEnums().keySet()) {
-                            imports.add(enumName);
-                        }
-                        String fieldType = field.getType();
-                        if (!COMMON_TYPES.contains(fieldType)) {
-                            imports.add(fieldType);
+                        String componentType = field.getType();
+                        if (!COMMON_TYPES.contains(componentType)) {
+                            List<String> componentImports = new ArrayList<>();
+                            List<FieldDefinition> subFields = field.getSubFields();
+                            for (FieldDefinition subField : subFields) {
+                                for (String enumName : subField.getFieldEnums().keySet()) {
+                                    componentImports.add(GENERATED_CLASS_PATH_PREFIX + enumName);
+                                }
+                                String subFieldType = subField.getType();
+                                if (!COMMON_TYPES.contains(subFieldType)) {
+                                    componentImports.add(GENERATED_CLASS_PATH_PREFIX + subFieldType);
+                                }
+                            }
+                            Map<String, Object> input = getViewInputData("component", COMPONENT_PACKAGE, componentImports, componentType, COMPONENT_BASE_CLASS, subFields);
+
+                            String pathToComponentFiles = Application.PATH_TO_GENERATED_FILES + "component";
+                            writeFile(response.getName(), template, input, pathToComponentFiles);
                         }
                     }
-                    Map<String, Object> input = getViewInputData(VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
-
-                    writeFile(response.getName(), template, input);
-                }
             }
-
-        }*/
+        }
 
         private Map<String, Object> getEnumInputData(String enumPackage, String enumClassName, String[] enumValues) {
             Map<String, Object> inputData = new HashMap<>();
@@ -142,10 +148,10 @@ import freemarker.template.Version;
             return inputData;
         }
 
-        private Map<String, Object> getViewInputData(String viewPackage, List<String> imports, String className, String baseClass, List<FieldDefinition> classFields) {
+        private Map<String, Object> getViewInputData(String viewOrComponent, String viewPackage, List<String> imports, String className, String baseClass, List<FieldDefinition> classFields) {
             Map<String, Object> inputData = new HashMap<>();
 
-            inputData.put("viewPackage", viewPackage);
+            inputData.put(viewOrComponent + "Package", viewPackage);
             inputData.put("imports", imports);
             inputData.put("className", className);
             inputData.put("baseClass", baseClass);
@@ -154,9 +160,11 @@ import freemarker.template.Version;
             return inputData;
         }
 
-        private void writeFile(String className, Template template, Map<String, Object> input) throws Exception {
+        private void writeFile(String className, Template template, Map<String, Object> input, String destination) throws Exception {
             // Write output into a file:
-            Writer fileWriter = new FileWriter(new File(className + ".java"));
+            File testFile = new File(destination);
+            testFile.mkdirs();
+            Writer fileWriter = new FileWriter(new File(testFile,className + ".java"));
             try {
                 template.process(input, fileWriter);
             } finally {
