@@ -2,10 +2,10 @@ package com.synopsys.integration.blackduck.api.generated.view;
 
     import com.synopsys.integration.blackduck.api.core.BlackDuckView;
     import java.math.BigDecimal;
-    import com.synopsys.integration.blackduck.api.generated.enumeration.CustomFieldTypeEnum;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.CustomField4TypeEnum;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
-public class CustomFieldView extends BlackDuckView {
+public class CustomField4View extends BlackDuckView {
     private String createdAt;
     private Object updatedBy;
     private Object createdBy;
@@ -14,7 +14,7 @@ public class CustomFieldView extends BlackDuckView {
     private Object _meta;
     private BigDecimal position;
     private String label;
-    private CustomFieldTypeEnum type;
+    private CustomField4TypeEnum type;
     private String updatedAt;
 
     public String getCreatedAt() {
@@ -81,11 +81,11 @@ public class CustomFieldView extends BlackDuckView {
     this.label = label;
     }
 
-    public CustomFieldTypeEnum getType() {
+    public CustomField4TypeEnum getType() {
     return type;
     }
 
-    public void setType(CustomFieldTypeEnum type) {
+    public void setType(CustomField4TypeEnum type) {
     this.type = type;
     }
 

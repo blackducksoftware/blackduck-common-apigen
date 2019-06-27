@@ -1,32 +1,32 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
     import com.synopsys.integration.blackduck.api.core.BlackDuckView;
-    import com.synopsys.integration.blackduck.api.generated.enumeration.PolicyRuleSeverityEnum;
-    import com.synopsys.integration.blackduck.api.generated.component.PolicyRuleViewExpression;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.PolicyRule4SeverityEnum;
+    import com.synopsys.integration.blackduck.api.generated.component.PolicyRule4ViewExpression;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
-public class PolicyRuleView extends BlackDuckView {
-    private PolicyRuleSeverityEnum severity;
-    private PolicyRuleViewExpression expression;
+public class PolicyRule4View extends BlackDuckView {
+    private PolicyRule4SeverityEnum severity;
+    private PolicyRule4ViewExpression expression;
     private String name;
     private Boolean overridable;
     private String description;
     private Object _meta;
     private Boolean enabled;
 
-    public PolicyRuleSeverityEnum getSeverity() {
+    public PolicyRule4SeverityEnum getSeverity() {
     return severity;
     }
 
-    public void setSeverity(PolicyRuleSeverityEnum severity) {
+    public void setSeverity(PolicyRule4SeverityEnum severity) {
     this.severity = severity;
     }
 
-    public PolicyRuleViewExpression getExpression() {
+    public PolicyRule4ViewExpression getExpression() {
     return expression;
     }
 
-    public void setExpression(PolicyRuleViewExpression expression) {
+    public void setExpression(PolicyRule4ViewExpression expression) {
     this.expression = expression;
     }
 

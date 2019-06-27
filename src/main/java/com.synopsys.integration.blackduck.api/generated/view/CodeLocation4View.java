@@ -4,7 +4,7 @@ package com.synopsys.integration.blackduck.api.generated.view;
     import java.math.BigDecimal;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
-public class CodeLocationView extends BlackDuckView {
+public class CodeLocation4View extends BlackDuckView {
     private String createdAt;
     private BigDecimal scanSize;
     private String mappedProjectVersion;

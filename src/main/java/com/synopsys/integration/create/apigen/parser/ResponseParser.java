@@ -25,12 +25,20 @@ public class ResponseParser {
     private ArrayList<ResponseDefinition> parseResponses(final File parent, final int prefixLength) {
         final ArrayList<ResponseDefinition> responseDefinitions = new ArrayList<>();
         final List<File> children = Arrays.stream(parent.listFiles())
-                                  .filter(file -> !file.getName().equals("notifications"))
-                                  .collect(Collectors.toList());
+                                        .filter(file -> !file.getName().equals("notifications"))
+                                        .collect(Collectors.toList());
 
         // Deal with case where multiple responses for one request (ie. <...Id>/GET/ is a directory with many response-specification.json files)
-        // look out for re-usability here!
-        multipleResponses = (parent.getName().equals("GET") && parent.getParent().endsWith("Id") && children.size() > 2);
+        // debug
+        final String parentName = parent.getName();
+        final String grandParentName = parent.getParent();
+        final int numChildren = children.size();
+        if (parentName.equals("policyRuleId")) {
+            System.out.println("nop");
+        }
+        if (multipleResponses == false) {
+            multipleResponses = (parent.getName().equals("GET") && parent.getParent().endsWith("Id") && children.size() >= 2);
+        }
 
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
