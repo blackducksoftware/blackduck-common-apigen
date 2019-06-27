@@ -4,12 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -23,6 +22,8 @@ public class FieldsParser {
     public static final String NUMBER = "Number";
     public static final String BIG_DECIMAL = "BigDecimal";
     public static final String OBJECT = "Object";
+    public static final String FIELDS = "fields";
+    public static final String STRING = "String";
     private final Gson gson;
 
     public FieldsParser(final Gson gson) {
@@ -68,19 +69,33 @@ public class FieldsParser {
                 // append subclass to create new field definition type
                 type = fieldDefinitionName + StringUtils.capitalize(path);
                 fieldDefinition = new FieldDefinition(path, type, optional);
-                fieldDefinition.addSubFields(parseFieldDefinitions(type, field.getSubFields()));
+                final List<FieldDefinition> subFields = parseFieldDefinitions(type, field.getSubFields());
+                fieldDefinition.addSubFields(subFields);
             }
+
+            // Variables to hold info on potential enum fields
+            final List<String> allowedValues = field.getAllowedValues();
+            final String nameOfEnum = fieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
 
             // If field is not another object, just add it to list of subfields
             if (fieldDefinition == null) {
-                fieldDefinition = new FieldDefinition(path, type, optional);
-            }
-
-            // If field has allowedValues field, we need to define an Enum before linking it to the field
-            final List<String> allowedValues = field.getAllowedValues();
-            if (allowedValues != null) {
-                final String nameOfEnum = fieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
-                fieldDefinition.addFieldEnum(nameOfEnum, createEnum(nameOfEnum, allowedValues.toString()));
+                // For fields with type 'Array', change type to a Java List<E>
+                if (type.equals(ARRAY)) {
+                    if (!path.endsWith("s")) {
+                        path += "s";
+                    } else if (path.endsWith("ss")) {
+                        path += "es";
+                    }
+                    fieldDefinition = allowedValues == null ? new FieldDefinition(path, "java.util.List<" + STRING + ">", optional) : new FieldDefinition(path, "java.util.List<" + nameOfEnum + ">", optional, allowedValues);
+                } else {
+                    if (allowedValues == null) {
+                        fieldDefinition = new FieldDefinition(path, type, optional);
+                    } else if (NumberUtils.isCreatable(allowedValues.get(0))) {
+                        fieldDefinition = new FieldDefinition(path, "Integer", optional);
+                    } else {
+                        fieldDefinition = new FieldDefinition(path, nameOfEnum, optional, allowedValues);
+                    }
+                }
             }
             fieldDefinitions.add(fieldDefinition);
         }
@@ -97,26 +112,13 @@ public class FieldsParser {
 
         final JsonObject json = gson.fromJson(jsonText, JsonObject.class);
         final List<RawFieldDefinition> rawFieldDefinitions = new ArrayList<>();
-        if (json != null && json.has("fields")) {
-            for (final JsonElement jsonElement : json.getAsJsonArray("fields")) {
+        if (json != null && json.has(FIELDS)) {
+            for (final JsonElement jsonElement : json.getAsJsonArray(FIELDS)) {
                 final RawFieldDefinition rawFieldDefinition = gson.fromJson(jsonElement, RawFieldDefinition.class);
                 rawFieldDefinitions.add(rawFieldDefinition);
             }
         }
         return rawFieldDefinitions;
-    }
-
-    /* Generate Enum (as of now, an array of Strings) for field that has specified set of allowed values */
-    private String[] createEnum(final String nameOfEnum, String allowedValues) {
-        if (allowedValues.startsWith("[") && allowedValues.endsWith("]")) {
-            // strip brackets from list of values
-            allowedValues = allowedValues.substring(1, allowedValues.length() - 1);
-        }
-        final String[] allowedValuesEnum = allowedValues.split(",");
-        final Map<String, String[]> newEnum = new HashMap<>();
-        newEnum.put(nameOfEnum, allowedValuesEnum);
-
-        return allowedValuesEnum;
     }
 
 }

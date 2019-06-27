@@ -1,4 +1,4 @@
-package com.synopsys.integration.create.apigen.generator;
+package com.synopsys.integration.create.apigen;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,9 +16,6 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.DirectoryWalker;
-import com.synopsys.integration.create.apigen.MediaTypes;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
@@ -30,11 +27,16 @@ import freemarker.template.Version;
 public class Generator {
     public static final Set<String> COMMON_TYPES = new HashSet<>();
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
-    public static final String ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "enumeration";
+    public static final String BASE_CLASS_PACKAGE = "com.synopsys.integration.blackduck.api.core.";
+    public static final String ENUMERATION = "enumeration";
+    public static final String ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + ENUMERATION;
     public static final String VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "view";
     public static final String VIEW_BASE_CLASS = "BlackDuckView";
     public static final String COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "component";
     public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
+    public static final String VIEW = "view";
+    public static final String COMPONENT = "component";
+    public static final String JAVA_LIST = "java.util.List<";
 
     public static void main(final String[] args) throws Exception {
         final Generator Generator = new Generator();
@@ -51,8 +53,8 @@ public class Generator {
         final Template viewTemplate = config.getTemplate("ViewTemplate.ftl");
         Generator.generateViewFiles(responses, viewTemplate);
 
-        final Template componentTemplate = config.getTemplate("ViewTemplate.ftl");
-        //Generator.generateComponentFiles(responses, componentTemplate);
+        //final Template componentTemplate = config.getTemplate("ViewTemplate.ftl");
+        //Generator.generateComponentFiles(responses, viewTemplate);
     }
 
     private Configuration configureFreeMarker() throws URISyntaxException, IOException {
@@ -72,6 +74,7 @@ public class Generator {
         COMMON_TYPES.add("Boolean");
         COMMON_TYPES.add("BigDecimal");
         COMMON_TYPES.add("String");
+        COMMON_TYPES.add("Integer");
 
         return cfg;
     }
@@ -79,12 +82,12 @@ public class Generator {
     private void generateEnumFiles(final List<ResponseDefinition> responses, final Template template) throws Exception {
         for (final ResponseDefinition response : responses) {
             for (final FieldDefinition field : response.getFields()) {
-                for (final Map.Entry<String, String[]> fieldEnum : field.getFieldEnums().entrySet()) {
-                    final String className = fieldEnum.getKey();
-                    final Map<String, Object> input = getEnumInputData(ENUM_PACKAGE, className, fieldEnum.getValue());
+                final String classType = field.getType().replace(JAVA_LIST, "").replace(">", "");
+                if (classType.contains("Enum")) {
+                    final Map<String, Object> input = getEnumInputData(ENUM_PACKAGE, classType, field.getAllowedValues());
 
-                    final String pathToEnumFiles = Application.PATH_TO_GENERATED_FILES + "enumeration";
-                    writeFile(className, template, input, pathToEnumFiles);
+                    final String pathToEnumFiles = Application.PATH_TO_GENERATED_FILES + ENUMERATION;
+                    writeFile(classType, template, input, pathToEnumFiles);
                 }
             }
         }
@@ -97,49 +100,48 @@ public class Generator {
         for (final ResponseDefinition response : responses) {
             if (longMediaTypes.contains(response.getMediaType())) {
                 final List<String> imports = new ArrayList<>();
+                imports.add(BASE_CLASS_PACKAGE + VIEW_BASE_CLASS);
                 for (final FieldDefinition field : response.getFields()) {
-                    for (final String enumName : field.getFieldEnums().keySet()) {
-                        imports.add(GENERATED_CLASS_PATH_PREFIX + enumName);
-                    }
-                    final String fieldType = field.getType();
-                    if (!COMMON_TYPES.contains(fieldType)) {
-                        imports.add(GENERATED_CLASS_PATH_PREFIX + fieldType);
+                    final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
+                    if (fieldType.contains("Enum")) {
+                        imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + fieldType);
+                    } else if (!COMMON_TYPES.contains(fieldType)) {
+                        imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + fieldType);
+                        generateComponentFile(field, template);
+                    } else if (fieldType.equals("BigDecimal")) {
+                        imports.add("java.math.BigDecimal");
                     }
                 }
-                final Map<String, Object> input = getViewInputData("view", VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
+                final Map<String, Object> input = getViewInputData(VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
 
-                final String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + "view";
+                final String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + VIEW;
                 writeFile(response.getName(), template, input, pathToViewFiles);
             }
         }
     }
 
-    private void generateComponentFiles(final List<ResponseDefinition> responses, final Template template) throws Exception {
-        for (final ResponseDefinition response : responses) {
-            for (final FieldDefinition field : response.getFields()) {
-                final String componentType = field.getType();
-                if (!COMMON_TYPES.contains(componentType)) {
-                    final List<String> componentImports = new ArrayList<>();
-                    final List<FieldDefinition> subFields = field.getSubFields();
-                    for (final FieldDefinition subField : subFields) {
-                        for (final String enumName : subField.getFieldEnums().keySet()) {
-                            componentImports.add(GENERATED_CLASS_PATH_PREFIX + enumName);
-                        }
-                        final String subFieldType = subField.getType();
-                        if (!COMMON_TYPES.contains(subFieldType)) {
-                            componentImports.add(GENERATED_CLASS_PATH_PREFIX + subFieldType);
-                        }
-                    }
-                    final Map<String, Object> input = getViewInputData("component", COMPONENT_PACKAGE, componentImports, componentType, COMPONENT_BASE_CLASS, subFields);
-
-                    final String pathToComponentFiles = Application.PATH_TO_GENERATED_FILES + "component";
-                    writeFile(response.getName(), template, input, pathToComponentFiles);
-                }
+    private void generateComponentFile(final FieldDefinition field, final Template template) throws Exception {
+        final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
+        final List<String> imports = new ArrayList<>();
+        imports.add(BASE_CLASS_PACKAGE + COMPONENT_BASE_CLASS);
+        final List<FieldDefinition> subFields = field.getSubFields();
+        for (final FieldDefinition subField : subFields) {
+            final String subFieldType = subField.getType().replace(JAVA_LIST, "").replace(">", "");
+            if (subFieldType.contains("Enum")) {
+                imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + subFieldType);
+            }
+            if (!COMMON_TYPES.contains(subFieldType)) {
+                imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + subFieldType);
+                generateComponentFile(subField, template);
             }
         }
+        final Map<String, Object> input = getViewInputData(COMPONENT_PACKAGE, imports, fieldType, COMPONENT_BASE_CLASS, subFields);
+
+        final String pathToComponentFiles = Application.PATH_TO_GENERATED_FILES + COMPONENT;
+        writeFile(fieldType, template, input, pathToComponentFiles);
     }
 
-    private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final String[] enumValues) {
+    private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues) {
         final Map<String, Object> inputData = new HashMap<>();
 
         inputData.put("enumPackage", enumPackage);
@@ -149,10 +151,10 @@ public class Generator {
         return inputData;
     }
 
-    private Map<String, Object> getViewInputData(final String viewOrComponent, final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields) {
+    private Map<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields) {
         final Map<String, Object> inputData = new HashMap<>();
 
-        inputData.put(viewOrComponent + "Package", viewPackage);
+        inputData.put("viewPackage", viewPackage);
         inputData.put("imports", imports);
         inputData.put("className", className);
         inputData.put("baseClass", baseClass);

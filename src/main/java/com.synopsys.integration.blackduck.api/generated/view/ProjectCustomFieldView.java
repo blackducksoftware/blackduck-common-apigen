@@ -1,22 +1,24 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
-    import com.synopsys.integration.blackduck.api.generated.ProjectCustomFieldTypeEnum;
+    import com.synopsys.integration.blackduck.api.core.BlackDuckView;
+    import java.math.BigDecimal;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.ProjectCustomFieldTypeEnum;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ProjectCustomFieldView extends BlackDuckView {
-    private Array values;
+    private java.util.List<String> values;
     private String description;
     private Boolean active;
     private Object _meta;
     private BigDecimal position;
     private String label;
-    private String type;
+    private ProjectCustomFieldTypeEnum type;
 
-    public Array getValues() {
+    public java.util.List<String> getValues() {
     return values;
     }
 
-    public void setValues(Array values) {
+    public void setValues(java.util.List<String> values) {
     this.values = values;
     }
 
@@ -60,11 +62,11 @@ public class ProjectCustomFieldView extends BlackDuckView {
     this.label = label;
     }
 
-    public String getType() {
+    public ProjectCustomFieldTypeEnum getType() {
     return type;
     }
 
-    public void setType(String type) {
+    public void setType(ProjectCustomFieldTypeEnum type) {
     this.type = type;
     }
 

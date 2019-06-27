@@ -1,25 +1,26 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
-    import com.synopsys.integration.blackduck.api.generated.ComponentApprovalStatusEnum;
-    import com.synopsys.integration.blackduck.api.generated.ComponentSourceEnum;
+    import com.synopsys.integration.blackduck.api.core.BlackDuckView;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.ComponentApprovalStatusEnum;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.ComponentSourceEnum;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ComponentView extends BlackDuckView {
-    private String approvalStatus;
+    private ComponentApprovalStatusEnum approvalStatus;
     private String notes;
     private String name;
     private String description;
     private Object _meta;
-    private String source;
+    private ComponentSourceEnum source;
     private String url;
     private String primaryLanguage;
-    private Array additionalHomepages;
+    private java.util.List<String> additionalHomepages;
 
-    public String getApprovalStatus() {
+    public ComponentApprovalStatusEnum getApprovalStatus() {
     return approvalStatus;
     }
 
-    public void setApprovalStatus(String approvalStatus) {
+    public void setApprovalStatus(ComponentApprovalStatusEnum approvalStatus) {
     this.approvalStatus = approvalStatus;
     }
 
@@ -55,11 +56,11 @@ public class ComponentView extends BlackDuckView {
     this._meta = _meta;
     }
 
-    public String getSource() {
+    public ComponentSourceEnum getSource() {
     return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(ComponentSourceEnum source) {
     this.source = source;
     }
 
@@ -79,11 +80,11 @@ public class ComponentView extends BlackDuckView {
     this.primaryLanguage = primaryLanguage;
     }
 
-    public Array getAdditionalHomepages() {
+    public java.util.List<String> getAdditionalHomepages() {
     return additionalHomepages;
     }
 
-    public void setAdditionalHomepages(Array additionalHomepages) {
+    public void setAdditionalHomepages(java.util.List<String> additionalHomepages) {
     this.additionalHomepages = additionalHomepages;
     }
 

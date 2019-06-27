@@ -1,12 +1,12 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
-    import com.synopsys.integration.blackduck.api.generated.ProjectProjectTierEnum;
-    import com.synopsys.integration.blackduck.api.generated.ProjectCloneCategoriesEnum;
+    import com.synopsys.integration.blackduck.api.core.BlackDuckView;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.ProjectCloneCategoriesEnum;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ProjectView extends BlackDuckView {
     private String updatedByUser;
-    private BigDecimal projectTier;
+    private Integer projectTier;
     private String updatedBy;
     private String createdByUser;
     private Boolean projectLevelAdjustments;
@@ -16,7 +16,7 @@ public class ProjectView extends BlackDuckView {
     private String createdBy;
     private String name;
     private String projectOwner;
-    private Array cloneCategories;
+    private java.util.List<ProjectCloneCategoriesEnum> cloneCategories;
     private Boolean customSignatureEnabled;
     private String updatedAt;
 
@@ -28,11 +28,11 @@ public class ProjectView extends BlackDuckView {
     this.updatedByUser = updatedByUser;
     }
 
-    public BigDecimal getProjectTier() {
+    public Integer getProjectTier() {
     return projectTier;
     }
 
-    public void setProjectTier(BigDecimal projectTier) {
+    public void setProjectTier(Integer projectTier) {
     this.projectTier = projectTier;
     }
 
@@ -108,11 +108,11 @@ public class ProjectView extends BlackDuckView {
     this.projectOwner = projectOwner;
     }
 
-    public Array getCloneCategories() {
+    public java.util.List<ProjectCloneCategoriesEnum> getCloneCategories() {
     return cloneCategories;
     }
 
-    public void setCloneCategories(Array cloneCategories) {
+    public void setCloneCategories(java.util.List<ProjectCloneCategoriesEnum> cloneCategories) {
     this.cloneCategories = cloneCategories;
     }
 

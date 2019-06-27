@@ -45,7 +45,7 @@ public class DirectoryWalker {
 
     public static void main(final String[] args) throws URISyntaxException {
         // Replace with environment variable
-        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         final URL rootDirectory = DirectoryWalker.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(true);

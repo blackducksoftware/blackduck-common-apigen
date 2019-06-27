@@ -1,11 +1,12 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
-    import com.synopsys.integration.blackduck.api.generated.PolicyRuleSeverityEnum;
-    import com.synopsys.integration.blackduck.api.generated.PolicyRuleViewExpression;
+    import com.synopsys.integration.blackduck.api.core.BlackDuckView;
+    import com.synopsys.integration.blackduck.api.generated.enumeration.PolicyRuleSeverityEnum;
+    import com.synopsys.integration.blackduck.api.generated.component.PolicyRuleViewExpression;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class PolicyRuleView extends BlackDuckView {
-    private String severity;
+    private PolicyRuleSeverityEnum severity;
     private PolicyRuleViewExpression expression;
     private String name;
     private Boolean overridable;
@@ -13,11 +14,11 @@ public class PolicyRuleView extends BlackDuckView {
     private Object _meta;
     private Boolean enabled;
 
-    public String getSeverity() {
+    public PolicyRuleSeverityEnum getSeverity() {
     return severity;
     }
 
-    public void setSeverity(String severity) {
+    public void setSeverity(PolicyRuleSeverityEnum severity) {
     this.severity = severity;
     }
 

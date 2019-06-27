@@ -2,9 +2,7 @@ package com.synopsys.integration.create.apigen.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RawFieldDefinition {
 
@@ -13,18 +11,16 @@ public class RawFieldDefinition {
     private final boolean optional;
     private final List<String> allowedValues;
     private final List<RawFieldDefinition> fields;
-    private final Map<String, String[]> fieldEnums;
 
-    public RawFieldDefinition(String path, String type, boolean optional, List<String> allowedValues) {
+    public RawFieldDefinition(final String path, final String type, final boolean optional, final List<String> allowedValues) {
         this.path = path;
         this.type = type;
         this.optional = optional;
         this.allowedValues = allowedValues;
         this.fields = new ArrayList<>();
-        this.fieldEnums = new HashMap<>();
     }
 
-    public RawFieldDefinition(String path, String type, boolean optional) {
+    public RawFieldDefinition(final String path, final String type, final boolean optional) {
         this(path, type, optional, Collections.emptyList());
     }
 
@@ -45,8 +41,6 @@ public class RawFieldDefinition {
     }
 
     public List<RawFieldDefinition> getSubFields() { return fields; }
-
-    public Map<String, String[]> getFieldEnums() { return fieldEnums; }
 
     @Override
     public String toString() {
