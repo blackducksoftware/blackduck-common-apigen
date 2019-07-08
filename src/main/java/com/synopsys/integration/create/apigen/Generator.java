@@ -25,7 +25,6 @@ import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
 public class Generator {
-    public static final Set<String> COMMON_TYPES = new HashSet<>();
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
     public static final String BASE_CLASS_PACKAGE = "com.synopsys.integration.blackduck.api.core.";
     public static final String ENUMERATION = "enumeration";
@@ -35,8 +34,14 @@ public class Generator {
     public static final String COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "component";
     public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
     public static final String VIEW = "view";
+    public static final String ENUM = "Enum";
     public static final String COMPONENT = "component";
     public static final String JAVA_LIST = "java.util.List<";
+    public static final String CLASS_NAME = "className";
+
+    public static final Set<String> COMMON_TYPES = new HashSet<>();
+    public static Set<String> MEDIA_VERSION_NUMBERS = new HashSet<>();
+    private static Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
 
     public static void main(final String[] args) throws Exception {
         final Generator Generator = new Generator();
@@ -52,9 +57,6 @@ public class Generator {
 
         final Template viewTemplate = config.getTemplate("ViewTemplate.ftl");
         Generator.generateViewFiles(responses, viewTemplate);
-
-        //final Template componentTemplate = config.getTemplate("ViewTemplate.ftl");
-        //Generator.generateComponentFiles(responses, viewTemplate);
     }
 
     private Configuration configureFreeMarker() throws URISyntaxException, IOException {
@@ -76,6 +78,17 @@ public class Generator {
         COMMON_TYPES.add("String");
         COMMON_TYPES.add("Integer");
 
+        // Assuming no more than 9 mediaVersions per View class
+        MEDIA_VERSION_NUMBERS.add("1");
+        MEDIA_VERSION_NUMBERS.add("2");
+        MEDIA_VERSION_NUMBERS.add("3");
+        MEDIA_VERSION_NUMBERS.add("4");
+        MEDIA_VERSION_NUMBERS.add("5");
+        MEDIA_VERSION_NUMBERS.add("6");
+        MEDIA_VERSION_NUMBERS.add("7");
+        MEDIA_VERSION_NUMBERS.add("8");
+        MEDIA_VERSION_NUMBERS.add("9");
+
         return cfg;
     }
 
@@ -83,7 +96,7 @@ public class Generator {
         for (final ResponseDefinition response : responses) {
             for (final FieldDefinition field : response.getFields()) {
                 final String classType = field.getType().replace(JAVA_LIST, "").replace(">", "");
-                if (classType.contains("Enum")) {
+                if (classType.contains(ENUM)) {
                     final Map<String, Object> input = getEnumInputData(ENUM_PACKAGE, classType, field.getAllowedValues());
 
                     final String pathToEnumFiles = Application.PATH_TO_GENERATED_FILES + ENUMERATION;
@@ -96,6 +109,7 @@ public class Generator {
     private void generateViewFiles(final List<ResponseDefinition> responses, final Template template) throws Exception {
         final MediaTypes mediaTypes = new MediaTypes();
         final Set<String> longMediaTypes = mediaTypes.getLongNames();
+        final String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + VIEW;
 
         for (final ResponseDefinition response : responses) {
             if (longMediaTypes.contains(response.getMediaType())) {
@@ -103,7 +117,7 @@ public class Generator {
                 imports.add(BASE_CLASS_PACKAGE + VIEW_BASE_CLASS);
                 for (final FieldDefinition field : response.getFields()) {
                     final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
-                    if (fieldType.contains("Enum")) {
+                    if (fieldType.contains(ENUM)) {
                         imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + fieldType);
                     } else if (!COMMON_TYPES.contains(fieldType)) {
                         imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + fieldType);
@@ -112,11 +126,20 @@ public class Generator {
                         imports.add("java.math.BigDecimal");
                     }
                 }
-                final Map<String, Object> input = getViewInputData(VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
+                final HashMap<String, Object> input = getViewInputData(VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
+                final String viewName = response.getName();
 
-                final String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + VIEW;
-                writeFile(response.getName(), template, input, pathToViewFiles);
+                final HashMap<String, Object> clonedInput = (HashMap<String, Object>) input.clone();
+                LATEST_VIEW_MEDIA_VERSIONS = getUpdatedViewClassMediaVersions(LATEST_VIEW_MEDIA_VERSIONS, viewName, clonedInput);
+                writeFile(viewName, template, input, pathToViewFiles);
             }
+        }
+
+        // Create View classes for most recent Media Version of that View
+        for (final ViewMediaVersionHelper latestViewMediaVersion : LATEST_VIEW_MEDIA_VERSIONS.values()) {
+            final String viewClassName = latestViewMediaVersion.getViewClass();
+            final Map<String, Object> viewInput = latestViewMediaVersion.getInput();
+            writeFile(viewClassName, template, viewInput, pathToViewFiles);
         }
     }
 
@@ -127,7 +150,7 @@ public class Generator {
         final List<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
             final String subFieldType = subField.getType().replace(JAVA_LIST, "").replace(">", "");
-            if (subFieldType.contains("Enum")) {
+            if (subFieldType.contains(ENUM)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + subFieldType);
             }
             if (!COMMON_TYPES.contains(subFieldType)) {
@@ -151,8 +174,8 @@ public class Generator {
         return inputData;
     }
 
-    private Map<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields) {
-        final Map<String, Object> inputData = new HashMap<>();
+    private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields) {
+        final HashMap<String, Object> inputData = new HashMap<>();
 
         inputData.put("viewPackage", viewPackage);
         inputData.put("imports", imports);
@@ -164,7 +187,6 @@ public class Generator {
     }
 
     private void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
-        // Write output into a file:
         final File testFile = new File(destination);
         testFile.mkdirs();
         final Writer fileWriter = new FileWriter(new File(testFile, className + ".java"));
@@ -174,4 +196,55 @@ public class Generator {
             fileWriter.close();
         }
     }
+
+    private Map<String, ViewMediaVersionHelper> getUpdatedViewClassMediaVersions(final Map<String, ViewMediaVersionHelper> viewClassMediaVersions, final String viewName, final Map<String, Object> input) {
+        final ViewMediaVersionHelper newHelper = getMediaVersion(viewName, input);
+        final String viewClass = newHelper.getViewClass();
+        final Integer mediaVersion = newHelper.getMediaVersion();
+        final ViewMediaVersionHelper oldHelper = viewClassMediaVersions.get(viewClass);
+
+        if (mediaVersion != null) {
+            if (oldHelper == null || mediaVersion > oldHelper.getMediaVersion()) {
+                viewClassMediaVersions.put(viewClass, newHelper);
+            }
+        }
+        return viewClassMediaVersions;
+    }
+
+    private ViewMediaVersionHelper getMediaVersion(final String viewName, final Map<String, Object> input) {
+        Integer mediaVersion = null;
+        String viewClass = null;
+        for (final String number : MEDIA_VERSION_NUMBERS) {
+            if (viewName.contains(number)) {
+                mediaVersion = Integer.decode(number);
+                viewClass = viewName.replace(number, "");
+                input.put(CLASS_NAME, viewClass);
+            }
+        }
+        return new ViewMediaVersionHelper(viewClass, mediaVersion, input);
+    }
+
+    private class ViewMediaVersionHelper {
+        private final String viewClass;
+        private final Integer mediaVersion;
+        private final Map<String, Object> input;
+
+        public ViewMediaVersionHelper(final String viewClass, final Integer mediaVersion, final Map<String, Object> input) {
+            this.viewClass = viewClass;
+            this.mediaVersion = mediaVersion;
+            this.input = input;
+        }
+
+        public String getViewClass() { return this.viewClass; }
+
+        public Integer getMediaVersion() { return this.mediaVersion; }
+
+        public Map<String, Object> getInput() { return this.input; }
+
+        public String toString() {
+            return this.viewClass + "\n" + this.mediaVersion + "\n\t" + this.input.get(CLASS_NAME);
+        }
+
+    }
+
 }

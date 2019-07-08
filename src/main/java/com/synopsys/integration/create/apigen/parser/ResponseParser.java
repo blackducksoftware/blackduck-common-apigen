@@ -33,9 +33,7 @@ public class ResponseParser {
         final String parentName = parent.getName();
         final String grandParentName = parent.getParent();
         final int numChildren = children.size();
-        if (parentName.equals("policyRuleId")) {
-            System.out.println("nop");
-        }
+
         if (multipleResponses == false) {
             multipleResponses = (parent.getName().equals("GET") && parent.getParent().endsWith("Id") && children.size() >= 2);
         }
