@@ -11,6 +11,7 @@ public class RawFieldDefinition {
     private final boolean optional;
     private final List<String> allowedValues;
     private final List<RawFieldDefinition> fields;
+    private final List<LinkDefinition> links;
 
     public RawFieldDefinition(final String path, final String type, final boolean optional, final List<String> allowedValues) {
         this.path = path;
@@ -18,6 +19,7 @@ public class RawFieldDefinition {
         this.optional = optional;
         this.allowedValues = allowedValues;
         this.fields = new ArrayList<>();
+        this.links = new ArrayList<>();
     }
 
     public RawFieldDefinition(final String path, final String type, final boolean optional) {
@@ -41,6 +43,8 @@ public class RawFieldDefinition {
     }
 
     public List<RawFieldDefinition> getSubFields() { return fields; }
+
+    public List<LinkDefinition> getLinks() { return links; }
 
     @Override
     public String toString() {

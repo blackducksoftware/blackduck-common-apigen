@@ -17,6 +17,7 @@ import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 import freemarker.template.Configuration;
@@ -26,22 +27,30 @@ import freemarker.template.Version;
 
 public class Generator {
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
-    public static final String BASE_CLASS_PACKAGE = "com.synopsys.integration.blackduck.api.core.";
+    public static final String CORE_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.core.";
+    public static final String MANUAL_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.manual.";
     public static final String ENUMERATION = "enumeration";
-    public static final String ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + ENUMERATION;
-    public static final String VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "view";
-    public static final String VIEW_BASE_CLASS = "BlackDuckView";
-    public static final String COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "component";
-    public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
     public static final String VIEW = "view";
     public static final String ENUM = "Enum";
     public static final String COMPONENT = "component";
+    public static final String RESPONSE = "response";
+    public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + ENUMERATION;
+    public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + VIEW;
+    public static final String GENERATED_COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + COMPONENT;
+    public static final String GENERATED_RESPONSE_PACKAGE = GENERATED_CLASS_PATH_PREFIX + RESPONSE;
+    public static final String VIEW_BASE_CLASS = "BlackDuckView";
+    public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
+    public static final String RESPONSE_BASE_CLASS = "BlackDuckResponse";
     public static final String JAVA_LIST = "java.util.List<";
     public static final String CLASS_NAME = "className";
+    public static Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
+    public static Set<String> LINK_CLASS_NAMES = new HashSet<>();
 
-    public static final Set<String> COMMON_TYPES = new HashSet<>();
     public static Set<String> MEDIA_VERSION_NUMBERS = new HashSet<>();
     private static Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
+    private static final LinkResponseDefinitions LINK_RESPONSE_DEFINITIONS = new LinkResponseDefinitions();
+    private static final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> LINK_RESPONSE_DEFINITIONS_LIST = LINK_RESPONSE_DEFINITIONS.getDefinitions();
+    private final ClassCategories CLASS_CATEGORIES = new ClassCategories();
 
     public static void main(final String[] args) throws Exception {
         final Generator Generator = new Generator();
@@ -56,7 +65,8 @@ public class Generator {
         Generator.generateEnumFiles(responses, enumTemplate);
 
         final Template viewTemplate = config.getTemplate("ViewTemplate.ftl");
-        Generator.generateViewFiles(responses, viewTemplate);
+        final Template randomTemplate = config.getTemplate("RandomTemplate.ftl");
+        Generator.generateViewFiles(responses, viewTemplate, randomTemplate);
     }
 
     private Configuration configureFreeMarker() throws URISyntaxException, IOException {
@@ -70,13 +80,6 @@ public class Generator {
         cfg.setDefaultEncoding("UTF-8");
         cfg.setLocale(Locale.US);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
-        COMMON_TYPES.add("Array");
-        COMMON_TYPES.add("Object");
-        COMMON_TYPES.add("Boolean");
-        COMMON_TYPES.add("BigDecimal");
-        COMMON_TYPES.add("String");
-        COMMON_TYPES.add("Integer");
 
         // Assuming no more than 9 mediaVersions per View class
         MEDIA_VERSION_NUMBERS.add("1");
@@ -97,7 +100,7 @@ public class Generator {
             for (final FieldDefinition field : response.getFields()) {
                 final String classType = field.getType().replace(JAVA_LIST, "").replace(">", "");
                 if (classType.contains(ENUM)) {
-                    final Map<String, Object> input = getEnumInputData(ENUM_PACKAGE, classType, field.getAllowedValues());
+                    final Map<String, Object> input = getEnumInputData(GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues());
 
                     final String pathToEnumFiles = Application.PATH_TO_GENERATED_FILES + ENUMERATION;
                     writeFile(classType, template, input, pathToEnumFiles);
@@ -106,62 +109,97 @@ public class Generator {
         }
     }
 
-    private void generateViewFiles(final List<ResponseDefinition> responses, final Template template) throws Exception {
+    private void generateViewFiles(final List<ResponseDefinition> responses, final Template viewTemplate, final Template randomTemplate) throws Exception {
         final MediaTypes mediaTypes = new MediaTypes();
         final Set<String> longMediaTypes = mediaTypes.getLongNames();
         final String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + VIEW;
 
         for (final ResponseDefinition response : responses) {
             if (longMediaTypes.contains(response.getMediaType())) {
-                final List<String> imports = new ArrayList<>();
-                imports.add(BASE_CLASS_PACKAGE + VIEW_BASE_CLASS);
-                for (final FieldDefinition field : response.getFields()) {
-                    final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
-                    if (fieldType.contains(ENUM)) {
-                        imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + fieldType);
-                    } else if (!COMMON_TYPES.contains(fieldType)) {
-                        imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + fieldType);
-                        generateComponentFile(field, template);
-                    } else if (fieldType.equals("BigDecimal")) {
-                        imports.add("java.math.BigDecimal");
-                    }
-                }
-                final HashMap<String, Object> input = getViewInputData(VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields());
+                List<String> imports = new ArrayList<>();
+                imports = getFieldImports(imports, response, viewTemplate);
+                final LinksAndImportsHelper helper = getLinkImports(imports, response);
+                imports = helper.getImports();
+                final List<LinkHelper> links = helper.getLinks();
+
+                final HashMap<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links);
                 final String viewName = response.getName();
 
                 final HashMap<String, Object> clonedInput = (HashMap<String, Object>) input.clone();
                 LATEST_VIEW_MEDIA_VERSIONS = getUpdatedViewClassMediaVersions(LATEST_VIEW_MEDIA_VERSIONS, viewName, clonedInput);
-                writeFile(viewName, template, input, pathToViewFiles);
+                writeFile(viewName, viewTemplate, input, pathToViewFiles);
+                NON_LINK_CLASS_NAMES.add(viewName);
             }
         }
 
-        // Create View classes for most recent Media Version of that View
+        generateMostRecentViewMediaVersions(viewTemplate, pathToViewFiles);
+
+        generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
+    }
+
+    private void generateMostRecentViewMediaVersions(final Template viewTemplate, final String pathToViewFiles) throws Exception {
         for (final ViewMediaVersionHelper latestViewMediaVersion : LATEST_VIEW_MEDIA_VERSIONS.values()) {
             final String viewClassName = latestViewMediaVersion.getViewClass();
             final Map<String, Object> viewInput = latestViewMediaVersion.getInput();
-            writeFile(viewClassName, template, viewInput, pathToViewFiles);
+            writeFile(viewClassName, viewTemplate, viewInput, pathToViewFiles);
+            NON_LINK_CLASS_NAMES.add(viewClassName);
+        }
+    }
+
+    private void generateDummyClassesForReferencedButUndefinedObjects(final Template randomTemplate) throws Exception {
+        for (final String linkClassName : LINK_CLASS_NAMES) {
+            if (!CLASS_CATEGORIES.isManual(linkClassName) && !CLASS_CATEGORIES.isCommonType(linkClassName)) {
+                final Map<String, Object> randomInput = new HashMap<>();
+                randomInput.put("className", linkClassName);
+                final String packageName;
+                final String destinationSuffix;
+                final String importPath;
+                final String parentClass;
+                if (CLASS_CATEGORIES.isView(linkClassName)) {
+                    packageName = GENERATED_VIEW_PACKAGE;
+                    destinationSuffix = VIEW;
+                    parentClass = VIEW_BASE_CLASS;
+                } else if (CLASS_CATEGORIES.isResponse(linkClassName)) {
+                    packageName = GENERATED_RESPONSE_PACKAGE;
+                    destinationSuffix = RESPONSE;
+                    parentClass = RESPONSE_BASE_CLASS;
+                } else {
+                    packageName = GENERATED_COMPONENT_PACKAGE;
+                    destinationSuffix = COMPONENT;
+                    parentClass = COMPONENT_BASE_CLASS;
+                }
+                importPath = CORE_CLASS_PATH_PREFIX + parentClass;
+                randomInput.put("parentClass", parentClass);
+                randomInput.put("packageName", packageName);
+                randomInput.put("importPath", importPath);
+                if (!NON_LINK_CLASS_NAMES.contains(linkClassName)) {
+                    writeFile(linkClassName, randomTemplate, randomInput, Application.PATH_TO_GENERATED_FILES + destinationSuffix);
+                }
+            }
         }
     }
 
     private void generateComponentFile(final FieldDefinition field, final Template template) throws Exception {
         final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
         final List<String> imports = new ArrayList<>();
-        imports.add(BASE_CLASS_PACKAGE + COMPONENT_BASE_CLASS);
+        imports.add(CORE_CLASS_PATH_PREFIX + COMPONENT_BASE_CLASS);
         final List<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
             final String subFieldType = subField.getType().replace(JAVA_LIST, "").replace(">", "");
             if (subFieldType.contains(ENUM)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + subFieldType);
             }
-            if (!COMMON_TYPES.contains(subFieldType)) {
+            if (!CLASS_CATEGORIES.isCommonType(subFieldType)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + subFieldType);
                 generateComponentFile(subField, template);
             }
         }
-        final Map<String, Object> input = getViewInputData(COMPONENT_PACKAGE, imports, fieldType, COMPONENT_BASE_CLASS, subFields);
+        final Map<String, Object> input = getViewInputData(GENERATED_COMPONENT_PACKAGE, imports, fieldType, COMPONENT_BASE_CLASS, subFields);
 
         final String pathToComponentFiles = Application.PATH_TO_GENERATED_FILES + COMPONENT;
+
         writeFile(fieldType, template, input, pathToComponentFiles);
+        NON_LINK_CLASS_NAMES.add(fieldType);
     }
 
     private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues) {
@@ -184,6 +222,97 @@ public class Generator {
         inputData.put("classFields", classFields);
 
         return inputData;
+    }
+
+    private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final List<LinkHelper> links) {
+        final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields);
+
+        if (links != null && links.size() > 0) {
+            inputData.put("hasLinksWithResults", true);
+            inputData.put("hasLinks", true);
+            inputData.put("links", links);
+        }
+
+        return inputData;
+    }
+
+    private List<String> getFieldImports(final List<String> imports, final ResponseDefinition response, final Template template) throws Exception {
+        imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
+        for (final FieldDefinition field : response.getFields()) {
+            final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
+            if (fieldType.contains(ENUM)) {
+                imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + fieldType);
+            } else if (!CLASS_CATEGORIES.isCommonType(fieldType)) {
+                imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + fieldType);
+                generateComponentFile(field, template);
+            } else if (fieldType.equals("BigDecimal")) {
+                imports.add("java.math.BigDecimal");
+            }
+        }
+        return imports;
+    }
+
+    private LinksAndImportsHelper getLinkImports(final List<String> imports, final ResponseDefinition response) {
+        final List<LinkDefinition> rawLinks = response.getLinks();
+        final List<LinkHelper> links = new ArrayList<>();
+        final String responseName = response.getName();
+
+        if (rawLinks.size() > 0) {
+            imports.add(CORE_CLASS_PATH_PREFIX + "LinkResponse");
+        }
+
+        System.out.println("******** " + responseName + " *********");
+
+        for (final LinkDefinition rawLink : rawLinks) {
+            final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName);
+            final String linkType = link.linkType();
+            final String linkImportType;
+            final String resultClass;
+            String resultImportType = null;
+            String resultImportPath = null;
+
+            if (linkType.contains("LinkMultipleResponses")) {
+                linkImportType = "LinkMultipleResponses";
+            } else if (linkType.contains("LinkSingleResponse")) {
+                linkImportType = "LinkSingleResponse";
+            } else {
+                linkImportType = "LinkStringResponse";
+            }
+            final String linkImport = CORE_CLASS_PATH_PREFIX + linkImportType;
+            if (!imports.contains(linkImport)) {
+                imports.add(linkImport);
+            }
+
+            boolean shouldAddImport = true;
+            resultClass = link.resultClass();
+            if (!resultClass.equals("NULL") && !CLASS_CATEGORIES.isCommonType(resultClass)) {
+                if (CLASS_CATEGORIES.isView(resultClass)) {
+                    resultImportType = VIEW;
+                } else if (CLASS_CATEGORIES.isResponse(resultClass)) {
+                    resultImportType = RESPONSE;
+                } else if (CLASS_CATEGORIES.isComponent(resultClass)) {
+                    resultImportType = COMPONENT;
+                } else {
+                    System.out.println(resultClass);
+                    shouldAddImport = false;
+                }
+
+                if (CLASS_CATEGORIES.isManual(resultClass)) {
+                    resultImportPath = MANUAL_CLASS_PATH_PREFIX;
+                } else if (CLASS_CATEGORIES.isGenerated(resultClass)) {
+                    resultImportPath = GENERATED_CLASS_PATH_PREFIX;
+                } else {
+                    System.out.println("@@ " + resultClass);
+                    shouldAddImport = false;
+                }
+
+                if (shouldAddImport) {
+                    imports.add(resultImportPath + resultImportType + "." + resultClass);
+                }
+            }
+            links.add(link);
+        }
+        return new LinksAndImportsHelper(links, imports);
     }
 
     private void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
@@ -224,6 +353,10 @@ public class Generator {
         return new ViewMediaVersionHelper(viewClass, mediaVersion, input);
     }
 
+    /* *****************************************************
+                        Helper Classes
+    *******************************************************/
+
     private class ViewMediaVersionHelper {
         private final String viewClass;
         private final Integer mediaVersion;
@@ -245,6 +378,60 @@ public class Generator {
             return this.viewClass + "\n" + this.mediaVersion + "\n\t" + this.input.get(CLASS_NAME);
         }
 
+    }
+
+    public class LinkHelper {
+        public final String javaConstant;
+        public final String label;
+        private final boolean hasMultipleResults;
+        public final String resultClass;
+        public final String linkType;
+
+        public LinkHelper(final String label, final String responseName) {
+            this.label = label;
+            this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
+            final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = LINK_RESPONSE_DEFINITIONS_LIST.get(responseName).get(label);
+            this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();
+            final String result_class = linkResponseDefinitionItem.getResultClass();
+            this.resultClass = result_class != null ? result_class : "NULL";
+            LINK_CLASS_NAMES.add(result_class);
+            if (this.resultClass.equals("String")) {
+                this.linkType = "LinkStringResponse";
+            } else {
+                this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";
+            }
+        }
+
+        public String javaConstant() { return this.javaConstant; }
+
+        public String getLabel() { return this.label; }
+
+        public String resultClass() { return this.resultClass; }
+
+        public String linkType() { return this.linkType; }
+
+        public boolean hasMultipleResults() { return this.hasMultipleResults; }
+
+    }
+
+    private class LinksAndImportsHelper {
+        private final List<LinkHelper> links;
+        private final List<String> imports;
+
+        public LinksAndImportsHelper(final List<LinkHelper> links, final List<String> imports) {
+            this.links = links;
+            this.imports = imports;
+        }
+
+        public List<LinkHelper> getLinks() { return this.links; }
+
+        public List<String> getImports() { return this.imports; }
+
+    }
+
+    private enum LinkResponseType {
+        SINGLE,
+        MULTIPLE;
     }
 
 }

@@ -7,9 +7,11 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.FieldsParser;
+import com.synopsys.integration.create.apigen.parser.LinksParser;
 import com.synopsys.integration.create.apigen.parser.ResponseParser;
 
 public class DirectoryWalker {
@@ -23,7 +25,8 @@ public class DirectoryWalker {
 
     public List<ResponseDefinition> parseDirectoryForObjects(final boolean showOutput) {
         final ResponseParser responseParser = new ResponseParser();
-        final FieldsParser fieldsParser = new FieldsParser(gson);
+        final FieldsParser fieldsParser = new FieldsParser();
+        final LinksParser linksParser = new LinksParser();
 
         // Get response-specification.json files from directory
         final List<ResponseDefinition> responseDefinitions = responseParser.parseResponses(rootDirectory);
@@ -34,8 +37,10 @@ public class DirectoryWalker {
             final File responseSpecificationFile = new File(absolutePath);
 
             final List<RawFieldDefinition> fields = fieldsParser.getFieldsAsRawFieldDefinitions(gson, responseSpecificationFile);
+            final List<LinkDefinition> links = linksParser.getLinksAsLinkDefinition(gson, responseSpecificationFile);
 
             response.addFields(fieldsParser.parseFieldDefinitions(response.getName(), fields));
+            response.addLinks(links);
             if (showOutput) {
                 System.out.println("***********************\n" + gson.toJson(response));
             }

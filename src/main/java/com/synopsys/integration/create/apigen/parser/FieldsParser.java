@@ -24,11 +24,9 @@ public class FieldsParser {
     public static final String OBJECT = "Object";
     public static final String FIELDS = "fields";
     public static final String STRING = "String";
-    private final Gson gson;
+    //private final Gson gson;
 
-    public FieldsParser(final Gson gson) {
-        this.gson = gson;
-    }
+    public FieldsParser() { }
 
     public static void main(final String[] args) throws IOException {
 

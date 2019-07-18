@@ -1,11 +1,56 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
+    import java.util.HashMap;
+    import java.util.Map;
+
     import com.synopsys.integration.blackduck.api.core.BlackDuckView;
     import com.synopsys.integration.blackduck.api.generated.enumeration.ComponentApprovalStatusEnum;
     import com.synopsys.integration.blackduck.api.generated.enumeration.ComponentSourceEnum;
+    import com.synopsys.integration.blackduck.api.core.LinkResponse;
+    import com.synopsys.integration.blackduck.api.core.LinkMultipleResponses;
+    import com.synopsys.integration.blackduck.api.manual.view.ComponentVersionView;
+    import com.synopsys.integration.blackduck.api.generated.response.HomepageView;
+    import com.synopsys.integration.blackduck.api.generated.response.OpenHubView;
+    import com.synopsys.integration.blackduck.api.manual.view.VulnerabilityView;
+    import com.synopsys.integration.blackduck.api.generated.response.LogoView;
+    import com.synopsys.integration.blackduck.api.generated.response.LogoView;
+    import com.synopsys.integration.blackduck.api.manual.view.TagView;
+    import com.synopsys.integration.blackduck.api.generated.view.CustomFieldView;
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ComponentView extends BlackDuckView {
+    public static final Map
+    <String, LinkResponse> links = new HashMap<>();
+
+        public static final String VERSIONS_LINK = "versions";
+        public static final String HOMEPAGE_LINK = "homepage";
+        public static final String OPENHUB_LINK = "openhub";
+        public static final String VULNERABILITIES_LINK = "vulnerabilities";
+        public static final String SMALLLOGO_LINK = "smallLogo";
+        public static final String MEDIUMLOGO_LINK = "mediumLogo";
+        public static final String TAGS_LINK = "tags";
+        public static final String CUSTOM_FIELDS_LINK = "custom-fields";
+
+            public static final LinkMultipleResponses<ComponentVersionView> VERSIONS_LINK_RESPONSE = new LinkMultipleResponses<ComponentVersionView>(VERSIONS_LINK, ComponentVersionView.class);
+            public static final LinkMultipleResponses<HomepageView> HOMEPAGE_LINK_RESPONSE = new LinkMultipleResponses<HomepageView>(HOMEPAGE_LINK, HomepageView.class);
+            public static final LinkMultipleResponses<OpenHubView> OPENHUB_LINK_RESPONSE = new LinkMultipleResponses<OpenHubView>(OPENHUB_LINK, OpenHubView.class);
+            public static final LinkMultipleResponses<VulnerabilityView> VULNERABILITIES_LINK_RESPONSE = new LinkMultipleResponses<VulnerabilityView>(VULNERABILITIES_LINK, VulnerabilityView.class);
+            public static final LinkMultipleResponses<LogoView> SMALLLOGO_LINK_RESPONSE = new LinkMultipleResponses<LogoView>(SMALLLOGO_LINK, LogoView.class);
+            public static final LinkMultipleResponses<LogoView> MEDIUMLOGO_LINK_RESPONSE = new LinkMultipleResponses<LogoView>(MEDIUMLOGO_LINK, LogoView.class);
+            public static final LinkMultipleResponses<TagView> TAGS_LINK_RESPONSE = new LinkMultipleResponses<TagView>(TAGS_LINK, TagView.class);
+            public static final LinkMultipleResponses<CustomFieldView> CUSTOM_FIELDS_LINK_RESPONSE = new LinkMultipleResponses<CustomFieldView>(CUSTOM_FIELDS_LINK, CustomFieldView.class);
+
+    static {
+            links.put(VERSIONS_LINK, VERSIONS_LINK_RESPONSE);
+            links.put(HOMEPAGE_LINK, HOMEPAGE_LINK_RESPONSE);
+            links.put(OPENHUB_LINK, OPENHUB_LINK_RESPONSE);
+            links.put(VULNERABILITIES_LINK, VULNERABILITIES_LINK_RESPONSE);
+            links.put(SMALLLOGO_LINK, SMALLLOGO_LINK_RESPONSE);
+            links.put(MEDIUMLOGO_LINK, MEDIUMLOGO_LINK_RESPONSE);
+            links.put(TAGS_LINK, TAGS_LINK_RESPONSE);
+            links.put(CUSTOM_FIELDS_LINK, CUSTOM_FIELDS_LINK_RESPONSE);
+    }
+
     private ComponentApprovalStatusEnum approvalStatus;
     private String notes;
     private String name;
