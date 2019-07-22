@@ -43,6 +43,12 @@ public class Generator {
     public static final String RESPONSE_BASE_CLASS = "BlackDuckResponse";
     public static final String JAVA_LIST = "java.util.List<";
     public static final String CLASS_NAME = "className";
+    public static String BLACKDUCK_COMMON_API_BASE_DIRECTORY;
+    public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
+    public static final String VIEW_DIRECTORY_SUFFIX = "/view";
+    public static final String RESPONSE_DIRECTORY_SUFFIX = "/response";
+    public static final String COMPONENT_DIRECTORY_SUFFIX = "/component";
+
     public static Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
     public static Set<String> LINK_CLASS_NAMES = new HashSet<>();
 
@@ -69,17 +75,32 @@ public class Generator {
         Generator.generateViewFiles(responses, viewTemplate, randomTemplate);
     }
 
+    // taken from SwaggerHub
+    public static File getBaseDirectory() {
+        final String baseDirectory = System.getenv(Application.PATH_TO_GENERATED_FILES_KEY);
+        if (baseDirectory == null) {
+            System.out.println("Please set Environment variable 'BLACKDUCK_COMMON_API_BASE_DIRECTORY' to directory in which generated files will live");
+            for (final Map.Entry<String, String> var : System.getenv().entrySet()) {
+                System.out.println(var.getKey() + " : " + var.getValue());
+            }
+            System.exit(0);
+        }
+        return new File(baseDirectory);
+    }
+
     private Configuration configureFreeMarker() throws URISyntaxException, IOException {
         final Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
 
         // Where do we load the templates from:
         final URL templateDirectory = Generator.class.getClassLoader().getResource("templates");
-        cfg.setDirectoryForTemplateLoading(new File(templateDirectory.toURI())); // hmmm can't find the template for some reason...
+        cfg.setDirectoryForTemplateLoading(new File(templateDirectory.toURI()));
         // Other Settings
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
         cfg.setDefaultEncoding("UTF-8");
         cfg.setLocale(Locale.US);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+
+        BLACKDUCK_COMMON_API_BASE_DIRECTORY = getBaseDirectory().getAbsolutePath();
 
         // Assuming no more than 9 mediaVersions per View class
         MEDIA_VERSION_NUMBERS.add("1");
@@ -102,7 +123,8 @@ public class Generator {
                 if (classType.contains(ENUM)) {
                     final Map<String, Object> input = getEnumInputData(GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues());
 
-                    final String pathToEnumFiles = Application.PATH_TO_GENERATED_FILES + ENUMERATION;
+                    final String pathToEnumFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
+
                     writeFile(classType, template, input, pathToEnumFiles);
                 }
             }
@@ -112,7 +134,7 @@ public class Generator {
     private void generateViewFiles(final List<ResponseDefinition> responses, final Template viewTemplate, final Template randomTemplate) throws Exception {
         final MediaTypes mediaTypes = new MediaTypes();
         final Set<String> longMediaTypes = mediaTypes.getLongNames();
-        final String pathToViewFiles = Application.PATH_TO_GENERATED_FILES + VIEW;
+        final String pathToViewFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
 
         for (final ResponseDefinition response : responses) {
             if (longMediaTypes.contains(response.getMediaType())) {
@@ -150,22 +172,22 @@ public class Generator {
         for (final String linkClassName : LINK_CLASS_NAMES) {
             if (!CLASS_CATEGORIES.isManual(linkClassName) && !CLASS_CATEGORIES.isCommonType(linkClassName)) {
                 final Map<String, Object> randomInput = new HashMap<>();
-                randomInput.put("className", linkClassName);
+                randomInput.put(CLASS_NAME, linkClassName);
                 final String packageName;
                 final String destinationSuffix;
                 final String importPath;
                 final String parentClass;
                 if (CLASS_CATEGORIES.isView(linkClassName)) {
                     packageName = GENERATED_VIEW_PACKAGE;
-                    destinationSuffix = VIEW;
+                    destinationSuffix = VIEW_DIRECTORY_SUFFIX;
                     parentClass = VIEW_BASE_CLASS;
                 } else if (CLASS_CATEGORIES.isResponse(linkClassName)) {
                     packageName = GENERATED_RESPONSE_PACKAGE;
-                    destinationSuffix = RESPONSE;
+                    destinationSuffix = RESPONSE_DIRECTORY_SUFFIX;
                     parentClass = RESPONSE_BASE_CLASS;
                 } else {
                     packageName = GENERATED_COMPONENT_PACKAGE;
-                    destinationSuffix = COMPONENT;
+                    destinationSuffix = COMPONENT_DIRECTORY_SUFFIX;
                     parentClass = COMPONENT_BASE_CLASS;
                 }
                 importPath = CORE_CLASS_PATH_PREFIX + parentClass;
@@ -173,7 +195,7 @@ public class Generator {
                 randomInput.put("packageName", packageName);
                 randomInput.put("importPath", importPath);
                 if (!NON_LINK_CLASS_NAMES.contains(linkClassName)) {
-                    writeFile(linkClassName, randomTemplate, randomInput, Application.PATH_TO_GENERATED_FILES + destinationSuffix);
+                    writeFile(linkClassName, randomTemplate, randomInput, BLACKDUCK_COMMON_API_BASE_DIRECTORY + destinationSuffix);
                 }
             }
         }
@@ -196,7 +218,7 @@ public class Generator {
         }
         final Map<String, Object> input = getViewInputData(GENERATED_COMPONENT_PACKAGE, imports, fieldType, COMPONENT_BASE_CLASS, subFields);
 
-        final String pathToComponentFiles = Application.PATH_TO_GENERATED_FILES + COMPONENT;
+        final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
 
         writeFile(fieldType, template, input, pathToComponentFiles);
         NON_LINK_CLASS_NAMES.add(fieldType);
