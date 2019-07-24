@@ -1,0 +1,168 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "matchTypes",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The types of matches made to the component within the project "
+  }, {
+    "path" : "approvalStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The approval status of the component"
+  }, {
+    "path" : "securityRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the security risks associated with the component",
+    "fields" : [ {
+      "path" : "counts",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "A collection of the number of risks at each severity level",
+      "fields" : [ {
+        "path" : "countType",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The severity level"
+      }, {
+        "path" : "count",
+        "type" : "Number",
+        "optional" : false,
+        "description" : "The number of risks at this severity level"
+      } ]
+    } ]
+  }, {
+    "path" : "componentModification",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Description of component modification"
+  }, {
+    "path" : "versionRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the version risks associated with the component"
+  }, {
+    "path" : "licenseRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the license risks associated with the component"
+  }, {
+    "path" : "policyStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The policy status of the component"
+  }, {
+    "path" : "releasedOn",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date the component was released"
+  }, {
+    "path" : "totalFileMatchCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total file match count for each component version "
+  }, {
+    "path" : "activityRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the activity risks associated with the component"
+  }, {
+    "path" : "component",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to the representation of the component"
+  }, {
+    "path" : "licenses",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The combination of licenses assigned to the component",
+    "fields" : [ {
+      "path" : "license",
+      "type" : "String",
+      "optional" : false,
+      "description" : "URL to the representation of the license"
+    }, {
+      "path" : "licenseType",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The relation of contained licenses. Possible Values: [CONJUNCTIVE, DISJUNCTIVE]"
+    }, {
+      "path" : "licenses",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "Related licenses which follow the same structure as the license field"
+    } ]
+  }, {
+    "path" : "operationalRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the operational risks associated with the component"
+  }, {
+    "path" : "componentPurpose",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The purpose of the component within the project"
+  }, {
+    "path" : "activityData",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the components activity"
+  }, {
+    "path" : "reviewedDetails",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "A summary of the component review"
+  }, {
+    "path" : "origins",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The distribution origin(s) identified ",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the origin"
+    }, {
+      "path" : "origin",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the representation of the origin"
+    }, {
+      "path" : "externalNamespace",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Namespace of the origin"
+    }, {
+      "path" : "externalId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "External ID associated with the origin"
+    }, {
+      "path" : "externalNamespaceDistribution",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "External namespace distribution"
+    } ]
+  }, {
+    "path" : "componentModified",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Indicator if the component in the project has been modified"
+  }, {
+    "path" : "reviewStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The review status of the component"
+  }, {
+    "path" : "componentName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Description of development activity on the component "
+  }, {
+    "path" : "usages",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The usages of the component within the project "
+  } ]
+}

@@ -51,6 +51,7 @@ public class Generator {
 
     public static Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
     public static Set<String> LINK_CLASS_NAMES = new HashSet<>();
+    public static Set<String> RANDOM_LINK_CLASS_NAMES = new HashSet<>();
 
     public static Set<String> MEDIA_VERSION_NUMBERS = new HashSet<>();
     private static Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
@@ -73,6 +74,10 @@ public class Generator {
         final Template viewTemplate = config.getTemplate("ViewTemplate.ftl");
         final Template randomTemplate = config.getTemplate("RandomTemplate.ftl");
         Generator.generateViewFiles(responses, viewTemplate, randomTemplate);
+
+        for (final String randomClassName : RANDOM_LINK_CLASS_NAMES) {
+            System.out.println(randomClassName);
+        }
     }
 
     // taken from SwaggerHub
@@ -194,8 +199,9 @@ public class Generator {
                 randomInput.put("parentClass", parentClass);
                 randomInput.put("packageName", packageName);
                 randomInput.put("importPath", importPath);
-                if (!NON_LINK_CLASS_NAMES.contains(linkClassName)) {
+                if (!NON_LINK_CLASS_NAMES.contains(linkClassName) && !RANDOM_LINK_CLASS_NAMES.contains(linkClassName)) {
                     writeFile(linkClassName, randomTemplate, randomInput, BLACKDUCK_COMMON_API_BASE_DIRECTORY + destinationSuffix);
+                    RANDOM_LINK_CLASS_NAMES.add(linkClassName);
                 }
             }
         }
@@ -283,8 +289,6 @@ public class Generator {
             imports.add(CORE_CLASS_PATH_PREFIX + "LinkResponse");
         }
 
-        System.out.println("******** " + responseName + " *********");
-
         for (final LinkDefinition rawLink : rawLinks) {
             final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName);
             final String linkType = link.linkType();
@@ -324,7 +328,6 @@ public class Generator {
                 } else if (CLASS_CATEGORIES.isGenerated(resultClass)) {
                     resultImportPath = GENERATED_CLASS_PATH_PREFIX;
                 } else {
-                    System.out.println("@@ " + resultClass);
                     shouldAddImport = false;
                 }
 
@@ -412,7 +415,18 @@ public class Generator {
         public LinkHelper(final String label, final String responseName) {
             this.label = label;
             this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
-            final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = LINK_RESPONSE_DEFINITIONS_LIST.get(responseName).get(label);
+
+            final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = LINK_RESPONSE_DEFINITIONS_LIST.get(responseName);
+            //debug
+            if (linkResponseDefinitionsMap == null) {
+                System.out.println("nop");
+            }
+            final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(label);
+            //debug
+            if (linkResponseDefinitionItem == null) {
+                System.out.println("nop");
+            }
+
             this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();
             final String result_class = linkResponseDefinitionItem.getResultClass();
             this.resultClass = result_class != null ? result_class : "NULL";

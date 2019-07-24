@@ -7,10 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
-    public static final String CURRENT_API_SPECIFICATION = "/api-specification/2019.6.0";
     public static final String RESPONSE_TOKEN = "Id" + File.separator + "GET" + File.separator;
-    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.4.3";
-    public static final String PATH_TO_GENERATED_FILES_NATIVE = "/Users/crowley/Documents/source/blackduck-common-apigen/src/main/java/com.synopsys.integration.blackduck.api/generated/";
+    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.6.0";
     static final String PATH_TO_GENERATED_FILES_KEY = "BLACKDUCK_COMMON_API_BASE_DIRECTORY";
 
     static void main(final String[] args) {

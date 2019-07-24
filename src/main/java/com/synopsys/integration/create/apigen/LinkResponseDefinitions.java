@@ -124,7 +124,7 @@ public class LinkResponseDefinitions {
         projectVersionViewDefinitions.put("custom-fields", pvvCustomFieldsDefinition);
         final LinkResponseDefinitionItem pvvAttachmentsDefinition = new LinkResponseDefinitionItem(true, "VersionBomAttachmentView");
         projectVersionViewDefinitions.put("attachments", pvvAttachmentsDefinition);
-        definitions.put("ProjectVersionView", projectVersionViewDefinitions);
+        definitions.put("ProjectVersion5View", projectVersionViewDefinitions);
 
         // ProjectCustomFieldView - not from definitions_with_links.txt
         final Map<String, LinkResponseDefinitionItem> projectCustomFieldViewDefinitions = new HashMap<>();

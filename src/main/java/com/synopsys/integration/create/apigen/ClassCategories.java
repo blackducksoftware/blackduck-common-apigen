@@ -158,32 +158,50 @@ public class ClassCategories {
     private Set<String> populateManual() {
         final Set<String> manualClasses = new HashSet<>();
 
-        manualClasses.add("AssignableUserGroupView");
-        manualClasses.add("AssignableUserView");
-        manualClasses.add("AssignedUserRequest");
-        manualClasses.add("AssignedUserGroupRequest");
-        manualClasses.add("ComplexLicenseView");
-        manualClasses.add("ComponentVersionReferenceView");
-        manualClasses.add("ComponentVersionRiskView");
-        manualClasses.add("ComponentVersionView");
-        manualClasses.add("CweView");
-        manualClasses.add("HierarchicalVersionBomComponentView");
-        manualClasses.add("IssueView");
-        manualClasses.add("MatchedFileView");
-        manualClasses.add("OriginView");
-        manualClasses.add("ProjectMappingView");
-        manualClasses.add("ReportView");
-        manualClasses.add("RiskProfileView");
-        manualClasses.add("TagView");
-        manualClasses.add("UserCommentView");
-        manualClasses.add("VersionBomComponentDiffView");
-        manualClasses.add("VersionBomComponentView");
-        manualClasses.add("VersionBomPolicyRuleView");
-        manualClasses.add("VersionBomPolicyStatusView");
-        manualClasses.add("VersionRiskProfileView");
-        manualClasses.add("VulnerabilityView");
-        manualClasses.add("VulnerabilityWithRemediationView");
-        manualClasses.add("VulnerableComponentView");
+        // Component
+        manualClasses.add("AffectedProjectVersion");
+        manualClasses.add("BomEditNotificationContent");
+        manualClasses.add("ComponentVersionStatus");
+        manualClasses.add("LicenseLimitNotificationContent");
+        manualClasses.add("NotificationContentComponent");
+        manualClasses.add("PolicyInfo");
+        manualClasses.add("PolicyOverrideNotificationContent");
+        manualClasses.add("ProjectNotificationContent");
+        manualClasses.add("ProjectVersionNotificationContent");
+        manualClasses.add("RuleViolationClearedNotificationContent");
+        manualClasses.add("RuleViolationNotificationContent");
+        manualClasses.add("VersionBomCodeLocationBomComputedNotificationContent");
+        manualClasses.add("VulnerabilityNotificationContent");
+        manualClasses.add("VulnerabilitySourceQualifiedId");
+        // Contract
+        manualClasses.add("NotificationContentData");
+        manualClasses.add("NotificationViewData");
+        // Enumeration
+        manualClasses.add("LicenseLimitType");
+        manualClasses.add("OperationType");
+        manualClasses.add("ScanSummaryStatusType");
+        // View
+        manualClasses.add("BomEditNotificationUserView");
+        manualClasses.add("BomEditNotificationView");
+        manualClasses.add("LicenseLimitNotificationUserView");
+        manualClasses.add("LicenseLimitNotificationView");
+        manualClasses.add("NotificationUserView");
+        manualClasses.add("NotificationView");
+        manualClasses.add("PolicyOverrideNotificationUserView");
+        manualClasses.add("PolicyOverrideNotificationView");
+        manualClasses.add("ProjectNotificationView");
+        manualClasses.add("ProjectNotificationUserView");
+        manualClasses.add("ProjectVersionNotificationView");
+        manualClasses.add("ProjectVersionNotificationUserView");
+        manualClasses.add("RuleViolationClearedNotificationUserView");
+        manualClasses.add("RuleViolationClearedNotificationView");
+        manualClasses.add("RuleViolationNotificationUserView");
+        manualClasses.add("RuleViolationNotificationView");
+        manualClasses.add("ScanSummaryView");
+        manualClasses.add("VersionBomCodeLocationBomComputedNotificationUserView");
+        manualClasses.add("VersionBomCodeLocationBomComputedNotificationView");
+        manualClasses.add("VulnerabilityNotificationUserView");
+        manualClasses.add("VulnerabilityNotificationView");
 
         return manualClasses;
     }
