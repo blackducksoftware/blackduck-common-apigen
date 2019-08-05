@@ -29,11 +29,6 @@ public class ResponseParser {
                                         .collect(Collectors.toList());
 
         // Deal with case where multiple responses for one request (ie. <...Id>/GET/ is a directory with many response-specification.json files)
-        // debug
-        final String parentName = parent.getName();
-        final String grandParentName = parent.getParent();
-        final int numChildren = children.size();
-
         if (multipleResponses == false) {
             multipleResponses = (parent.getName().equals("GET") && parent.getParent().endsWith("Id") && children.size() >= 2);
         }
@@ -43,7 +38,7 @@ public class ResponseParser {
             if (child.getName().equals(RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 final ResponseNameParser responseNameParser = new ResponseNameParser();
-                final String responseName = responseNameParser.getResponseName(responseRelativePath, multipleResponses);
+                String responseName = responseNameParser.getResponseName(responseRelativePath, multipleResponses);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
 
                 responseDefinitions.add(new ResponseDefinition(responseRelativePath, responseName, responseMediaType));

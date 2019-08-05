@@ -1,4 +1,4 @@
-package ${enumPackage};
+package ${packageName};
 
 import com.synopsys.integration.util.EnumUtils;
 

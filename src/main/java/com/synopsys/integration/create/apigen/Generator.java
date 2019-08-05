@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.ResponseNameParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -68,13 +69,14 @@ public class Generator {
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(false);
 
-        final Template enumTemplate = config.getTemplate("EnumTemplate.ftl");
+        final Template enumTemplate = config.getTemplate("enumTemplate.ftl");
         Generator.generateEnumFiles(responses, enumTemplate);
 
-        final Template viewTemplate = config.getTemplate("ViewTemplate.ftl");
-        final Template randomTemplate = config.getTemplate("RandomTemplate.ftl");
+        final Template viewTemplate = config.getTemplate("viewTemplate.ftl");
+        final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         Generator.generateViewFiles(responses, viewTemplate, randomTemplate);
 
+        System.out.println("Classes that are referenced but have no definition in the API specs");
         for (final String randomClassName : RANDOM_LINK_CLASS_NAMES) {
             System.out.println(randomClassName);
         }
@@ -156,20 +158,34 @@ public class Generator {
                 LATEST_VIEW_MEDIA_VERSIONS = getUpdatedViewClassMediaVersions(LATEST_VIEW_MEDIA_VERSIONS, viewName, clonedInput);
                 writeFile(viewName, viewTemplate, input, pathToViewFiles);
                 NON_LINK_CLASS_NAMES.add(viewName);
+                NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewName));
             }
         }
 
-        generateMostRecentViewMediaVersions(viewTemplate, pathToViewFiles);
+        generateMostRecentViewMediaVersions(randomTemplate, pathToViewFiles);
 
         generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
     }
 
-    private void generateMostRecentViewMediaVersions(final Template viewTemplate, final String pathToViewFiles) throws Exception {
+    private void generateMostRecentViewMediaVersions(final Template randomTemplate, final String pathToViewFiles) throws Exception {
         for (final ViewMediaVersionHelper latestViewMediaVersion : LATEST_VIEW_MEDIA_VERSIONS.values()) {
             final String viewClassName = latestViewMediaVersion.getViewClass();
-            final Map<String, Object> viewInput = latestViewMediaVersion.getInput();
-            writeFile(viewClassName, viewTemplate, viewInput, pathToViewFiles);
+            final Map<String, Object> input = latestViewMediaVersion.getInput();
+            input.put("parentClass", latestViewMediaVersion.getVersionedClassName());
+            final String parentClass;
+            if (CLASS_CATEGORIES.isView(viewClassName)) {
+                parentClass = VIEW_BASE_CLASS;
+            } else if (CLASS_CATEGORIES.isResponse(viewClassName)) {
+                parentClass = RESPONSE_BASE_CLASS;
+            } else {
+                parentClass = COMPONENT_BASE_CLASS;
+            }
+            final String importPath = CORE_CLASS_PATH_PREFIX + parentClass;
+            input.put("importPath", importPath);
+            input.put(CLASS_NAME, viewClassName);
+            writeFile(viewClassName, randomTemplate, input, pathToViewFiles);
             NON_LINK_CLASS_NAMES.add(viewClassName);
+            NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewClassName));
         }
     }
 
@@ -199,6 +215,7 @@ public class Generator {
                 randomInput.put("parentClass", parentClass);
                 randomInput.put("packageName", packageName);
                 randomInput.put("importPath", importPath);
+
                 if (!NON_LINK_CLASS_NAMES.contains(linkClassName) && !RANDOM_LINK_CLASS_NAMES.contains(linkClassName)) {
                     writeFile(linkClassName, randomTemplate, randomInput, BLACKDUCK_COMMON_API_BASE_DIRECTORY + destinationSuffix);
                     RANDOM_LINK_CLASS_NAMES.add(linkClassName);
@@ -228,12 +245,13 @@ public class Generator {
 
         writeFile(fieldType, template, input, pathToComponentFiles);
         NON_LINK_CLASS_NAMES.add(fieldType);
+        NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(fieldType));
     }
 
     private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues) {
         final Map<String, Object> inputData = new HashMap<>();
 
-        inputData.put("enumPackage", enumPackage);
+        inputData.put("packageName", enumPackage);
         inputData.put("enumClassName", enumClassName);
         inputData.put("enumValues", enumValues);
 
@@ -243,7 +261,7 @@ public class Generator {
     private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields) {
         final HashMap<String, Object> inputData = new HashMap<>();
 
-        inputData.put("viewPackage", viewPackage);
+        inputData.put("packageName", viewPackage);
         inputData.put("imports", imports);
         inputData.put("className", className);
         inputData.put("baseClass", baseClass);
@@ -291,51 +309,56 @@ public class Generator {
 
         for (final LinkDefinition rawLink : rawLinks) {
             final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName);
-            final String linkType = link.linkType();
-            final String linkImportType;
-            final String resultClass;
-            String resultImportType = null;
-            String resultImportPath = null;
+            try {
+                final String linkType = link.linkType();
+                final String linkImportType;
+                final String resultClass;
+                String resultImportType = null;
+                String resultImportPath = null;
 
-            if (linkType.contains("LinkMultipleResponses")) {
-                linkImportType = "LinkMultipleResponses";
-            } else if (linkType.contains("LinkSingleResponse")) {
-                linkImportType = "LinkSingleResponse";
-            } else {
-                linkImportType = "LinkStringResponse";
-            }
-            final String linkImport = CORE_CLASS_PATH_PREFIX + linkImportType;
-            if (!imports.contains(linkImport)) {
-                imports.add(linkImport);
-            }
-
-            boolean shouldAddImport = true;
-            resultClass = link.resultClass();
-            if (!resultClass.equals("NULL") && !CLASS_CATEGORIES.isCommonType(resultClass)) {
-                if (CLASS_CATEGORIES.isView(resultClass)) {
-                    resultImportType = VIEW;
-                } else if (CLASS_CATEGORIES.isResponse(resultClass)) {
-                    resultImportType = RESPONSE;
-                } else if (CLASS_CATEGORIES.isComponent(resultClass)) {
-                    resultImportType = COMPONENT;
+                if (linkType.contains("LinkMultipleResponses")) {
+                    linkImportType = "LinkMultipleResponses";
+                } else if (linkType.contains("LinkSingleResponse")) {
+                    linkImportType = "LinkSingleResponse";
                 } else {
-                    System.out.println(resultClass);
-                    shouldAddImport = false;
+                    linkImportType = "LinkStringResponse";
+                }
+                final String linkImport = CORE_CLASS_PATH_PREFIX + linkImportType;
+                if (!imports.contains(linkImport)) {
+                    imports.add(linkImport);
                 }
 
-                if (CLASS_CATEGORIES.isManual(resultClass)) {
-                    resultImportPath = MANUAL_CLASS_PATH_PREFIX;
-                } else if (CLASS_CATEGORIES.isGenerated(resultClass)) {
-                    resultImportPath = GENERATED_CLASS_PATH_PREFIX;
+                boolean shouldAddImport = true;
+                resultClass = link.resultClass();
+                if (resultClass != null && !CLASS_CATEGORIES.isCommonType(resultClass)) {
+                    if (CLASS_CATEGORIES.isView(resultClass)) {
+                        resultImportType = VIEW;
+                    } else if (CLASS_CATEGORIES.isResponse(resultClass)) {
+                        resultImportType = RESPONSE;
+                    } else if (CLASS_CATEGORIES.isComponent(resultClass)) {
+                        resultImportType = COMPONENT;
+                    } else {
+                        shouldAddImport = false;
+                    }
+
+                    if (CLASS_CATEGORIES.isManual(resultClass)) {
+                        resultImportPath = MANUAL_CLASS_PATH_PREFIX;
+                    } else if (CLASS_CATEGORIES.isGenerated(resultClass)) {
+                        resultImportPath = GENERATED_CLASS_PATH_PREFIX;
+                    } else {
+                        shouldAddImport = false;
+                    }
+
+                    if (shouldAddImport) {
+                        imports.add(resultImportPath + resultImportType + "." + resultClass);
+                    }
+                    links.add(link);
                 } else {
-                    shouldAddImport = false;
+                    System.out.println("Null Result Class: " + linkType);
                 }
-
-                if (shouldAddImport) {
-                    imports.add(resultImportPath + resultImportType + "." + resultClass);
-                }
+            } catch (final NullPointerException e) {
+                System.out.println("NullPointer Exception: " + rawLink.getRel());
             }
-            links.add(link);
         }
         return new LinksAndImportsHelper(links, imports);
     }
@@ -388,7 +411,7 @@ public class Generator {
         private final Map<String, Object> input;
 
         public ViewMediaVersionHelper(final String viewClass, final Integer mediaVersion, final Map<String, Object> input) {
-            this.viewClass = viewClass;
+            this.viewClass = viewClass.replace("ViewV", "View");
             this.mediaVersion = mediaVersion;
             this.input = input;
         }
@@ -399,6 +422,8 @@ public class Generator {
 
         public Map<String, Object> getInput() { return this.input; }
 
+        public String getVersionedClassName() { return this.viewClass + "V" + this.mediaVersion.toString(); }
+
         public String toString() {
             return this.viewClass + "\n" + this.mediaVersion + "\n\t" + this.input.get(CLASS_NAME);
         }
@@ -408,33 +433,35 @@ public class Generator {
     public class LinkHelper {
         public final String javaConstant;
         public final String label;
-        private final boolean hasMultipleResults;
-        public final String resultClass;
-        public final String linkType;
+        private boolean hasMultipleResults;
+        public String resultClass;
+        public String linkType;
 
         public LinkHelper(final String label, final String responseName) {
             this.label = label;
             this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
 
-            final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = LINK_RESPONSE_DEFINITIONS_LIST.get(responseName);
-            //debug
-            if (linkResponseDefinitionsMap == null) {
-                System.out.println("nop");
-            }
-            final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(label);
-            //debug
-            if (linkResponseDefinitionItem == null) {
-                System.out.println("nop");
-            }
+            try {
+                final String nonVersionedResponseName = ResponseNameParser.getNonVersionedName(responseName);
+                final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = LINK_RESPONSE_DEFINITIONS_LIST.get(nonVersionedResponseName);
+                final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(label);
 
-            this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();
-            final String result_class = linkResponseDefinitionItem.getResultClass();
-            this.resultClass = result_class != null ? result_class : "NULL";
-            LINK_CLASS_NAMES.add(result_class);
-            if (this.resultClass.equals("String")) {
-                this.linkType = "LinkStringResponse";
-            } else {
-                this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";
+                this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();
+                final String result_class = linkResponseDefinitionItem.getResultClass();
+
+                this.resultClass = result_class;
+                LINK_CLASS_NAMES.add(result_class);
+
+                if (result_class.equals("String")) {
+                    this.linkType = "LinkStringResponse";
+                } else {
+                    this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";
+                }
+
+            } catch (final NullPointerException e) {
+                this.hasMultipleResults = false;
+                this.resultClass = null;
+                this.linkType = null;
             }
         }
 

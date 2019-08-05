@@ -34,6 +34,8 @@ public class FieldsParser {
 
     public List<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final List<RawFieldDefinition> fields) {
         final List<FieldDefinition> fieldDefinitions = new ArrayList<>();
+        final String mediaVersion = ResponseNameParser.getMediaVersion(fieldDefinitionName);
+        final String nonVersionedFieldDefinitionName = ResponseNameParser.getNonVersionedName(fieldDefinitionName);
 
         for (final RawFieldDefinition field : fields) {
             String path = field.getPath();
@@ -66,6 +68,9 @@ public class FieldsParser {
             if ((type.equals(OBJECT) || type.equals(ARRAY)) && rawSubFields != null) {
                 // append subclass to create new field definition type
                 type = fieldDefinitionName + StringUtils.capitalize(path);
+                if (mediaVersion != null) {
+                    type = type.replace("V" + mediaVersion, "") + "V" + mediaVersion;
+                }
                 fieldDefinition = new FieldDefinition(path, type, optional);
                 final List<FieldDefinition> subFields = parseFieldDefinitions(type, field.getSubFields());
                 fieldDefinition.addSubFields(subFields);
@@ -73,7 +78,10 @@ public class FieldsParser {
 
             // Variables to hold info on potential enum fields
             final List<String> allowedValues = field.getAllowedValues();
-            final String nameOfEnum = fieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
+            String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
+            if (mediaVersion != null) {
+                nameOfEnum = nameOfEnum.replace("V" + mediaVersion, "") + "V" + mediaVersion;
+            }
 
             // If field is not another object, just add it to list of subfields
             if (fieldDefinition == null) {

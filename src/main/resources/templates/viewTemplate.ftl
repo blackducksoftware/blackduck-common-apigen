@@ -1,4 +1,4 @@
-package ${viewPackage};
+package ${packageName};
 
 <#if hasLinksWithResults??>
     import java.util.HashMap;
