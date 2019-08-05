@@ -157,11 +157,11 @@ public class Generator {
                 imports = helper.getImports();
                 final List<LinkHelper> links = helper.getLinks();
 
-                final HashMap<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links, response.getMediaType());
+                final Map<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links, response.getMediaType());
                 final String viewName = response.getName();
 
-                final HashMap<String, Object> clonedInput = (HashMap<String, Object>) input.clone();
-                LATEST_VIEW_MEDIA_VERSIONS = getUpdatedViewClassMediaVersions(LATEST_VIEW_MEDIA_VERSIONS, viewName, clonedInput);
+                //final Map<String, Object> clonedInput = input;
+                updateViewClassMediaVersions(viewName, input);
                 writeFile(viewName, viewTemplate, input, pathToViewFiles);
                 NON_LINK_CLASS_NAMES.add(viewName);
                 NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewName));
@@ -383,18 +383,17 @@ public class Generator {
         }
     }
 
-    private Map<String, ViewMediaVersionHelper> getUpdatedViewClassMediaVersions(final Map<String, ViewMediaVersionHelper> viewClassMediaVersions, final String viewName, final Map<String, Object> input) {
+    private void updateViewClassMediaVersions(final String viewName, final Map<String, Object> input) {
         final ViewMediaVersionHelper newHelper = getMediaVersion(viewName, input);
         final String viewClass = newHelper.getViewClass();
         final Integer mediaVersion = newHelper.getMediaVersion();
-        final ViewMediaVersionHelper oldHelper = viewClassMediaVersions.get(viewClass);
+        final ViewMediaVersionHelper oldHelper = LATEST_VIEW_MEDIA_VERSIONS.get(viewClass);
 
         if (mediaVersion != null) {
             if (oldHelper == null || mediaVersion > oldHelper.getMediaVersion()) {
-                viewClassMediaVersions.put(viewClass, newHelper);
+                LATEST_VIEW_MEDIA_VERSIONS.put(viewClass, newHelper);
             }
         }
-        return viewClassMediaVersions;
     }
 
     private ViewMediaVersionHelper getMediaVersion(final String viewName, final Map<String, Object> input) {
