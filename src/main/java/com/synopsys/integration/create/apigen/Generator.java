@@ -134,7 +134,7 @@ public class Generator {
             for (final FieldDefinition field : response.getFields()) {
                 final String classType = field.getType().replace(JAVA_LIST, "").replace(">", "");
                 if (classType.contains(ENUM)) {
-                    final Map<String, Object> input = getEnumInputData(GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues());
+                    final Map<String, Object> input = getEnumInputData(GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), response.getMediaType());
 
                     final String pathToEnumFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
 
@@ -157,7 +157,7 @@ public class Generator {
                 imports = helper.getImports();
                 final List<LinkHelper> links = helper.getLinks();
 
-                final HashMap<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links);
+                final HashMap<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links, response.getMediaType());
                 final String viewName = response.getName();
 
                 final HashMap<String, Object> clonedInput = (HashMap<String, Object>) input.clone();
@@ -230,7 +230,7 @@ public class Generator {
         }
     }
 
-    private void generateComponentFile(final FieldDefinition field, final Template template) throws Exception {
+    private void generateComponentFile(final FieldDefinition field, final Template template, final String responseMediaType) throws Exception {
         final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
         final List<String> imports = new ArrayList<>();
         imports.add(CORE_CLASS_PATH_PREFIX + COMPONENT_BASE_CLASS);
@@ -242,10 +242,10 @@ public class Generator {
             }
             if (!CLASS_CATEGORIES.isCommonType(subFieldType)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + subFieldType);
-                generateComponentFile(subField, template);
+                generateComponentFile(subField, template, responseMediaType);
             }
         }
-        final Map<String, Object> input = getViewInputData(GENERATED_COMPONENT_PACKAGE, imports, fieldType, COMPONENT_BASE_CLASS, subFields);
+        final Map<String, Object> input = getViewInputData(GENERATED_COMPONENT_PACKAGE, imports, fieldType, COMPONENT_BASE_CLASS, subFields, responseMediaType);
 
         final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
 
@@ -254,17 +254,18 @@ public class Generator {
         NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(fieldType));
     }
 
-    private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues) {
+    private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
 
         inputData.put("packageName", enumPackage);
         inputData.put("enumClassName", enumClassName);
         inputData.put("enumValues", enumValues);
+        inputData.put("mediaType", mediaType);
 
         return inputData;
     }
 
-    private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields) {
+    private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final String mediaType) {
         final HashMap<String, Object> inputData = new HashMap<>();
 
         inputData.put("packageName", viewPackage);
@@ -272,12 +273,14 @@ public class Generator {
         inputData.put("className", className);
         inputData.put("baseClass", baseClass);
         inputData.put("classFields", classFields);
+        inputData.put("mediaType", mediaType);
 
         return inputData;
     }
 
-    private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final List<LinkHelper> links) {
-        final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields);
+    private HashMap<String, Object> getViewInputData(final String viewPackage, final List<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final List<LinkHelper> links,
+        final String mediaType) {
+        final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields, mediaType);
 
         if (links != null && links.size() > 0) {
             inputData.put("hasLinksWithResults", true);
@@ -296,7 +299,7 @@ public class Generator {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + fieldType);
             } else if (!CLASS_CATEGORIES.isCommonType(fieldType)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + fieldType);
-                generateComponentFile(field, template);
+                generateComponentFile(field, template, response.getMediaType());
             } else if (fieldType.equals("BigDecimal")) {
                 imports.add("java.math.BigDecimal");
             }
