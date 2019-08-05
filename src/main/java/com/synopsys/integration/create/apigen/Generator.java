@@ -53,6 +53,7 @@ public class Generator {
     public static Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
     public static Set<String> LINK_CLASS_NAMES = new HashSet<>();
     public static Set<String> RANDOM_LINK_CLASS_NAMES = new HashSet<>();
+    public static Set<String> NULL_LINK_RESULT_CLASSES = new HashSet<>();
 
     public static Set<String> MEDIA_VERSION_NUMBERS = new HashSet<>();
     private static Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
@@ -76,9 +77,14 @@ public class Generator {
         final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         Generator.generateViewFiles(responses, viewTemplate, randomTemplate);
 
-        System.out.println("Classes that are referenced but have no definition in the API specs");
+        System.out.println("\n******************************\nClasses that are referenced but have no definition in the API specs: \n");
         for (final String randomClassName : RANDOM_LINK_CLASS_NAMES) {
             System.out.println(randomClassName);
+        }
+
+        System.out.println("\n******************************\nClasses that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
+        for (final String nullLinkResultClass : NULL_LINK_RESULT_CLASSES) {
+            System.out.println(nullLinkResultClass);
         }
     }
 
@@ -354,10 +360,10 @@ public class Generator {
                     }
                     links.add(link);
                 } else {
-                    System.out.println("Null Result Class: " + linkType);
+                    NULL_LINK_RESULT_CLASSES.add(linkType);
                 }
             } catch (final NullPointerException e) {
-                System.out.println("NullPointer Exception: " + rawLink.getRel());
+                NULL_LINK_RESULT_CLASSES.add(rawLink.getRel());
             }
         }
         return new LinksAndImportsHelper(links, imports);
