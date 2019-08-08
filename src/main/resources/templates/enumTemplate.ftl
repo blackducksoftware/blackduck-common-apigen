@@ -6,7 +6,7 @@ import com.synopsys.integration.util.EnumUtils;
 public enum ${enumClassName} {
 	${enumValues?join(",\n\t")};
 
-	private String mediaType = ${mediaType};
+	private String mediaType = "${mediaType}";
 
 	public String getMediaType() {
 	return mediaType;

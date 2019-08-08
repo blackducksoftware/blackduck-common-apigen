@@ -52,11 +52,11 @@ public class Generator {
 
     public static Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
     public static Set<String> LINK_CLASS_NAMES = new HashSet<>();
-    public static Set<String> RANDOM_LINK_CLASS_NAMES = new HashSet<>();
-    public static Set<String> NULL_LINK_RESULT_CLASSES = new HashSet<>();
+    public static List<String> RANDOM_LINK_CLASS_NAMES = new ArrayList<>();
+    public static Map<String, String> NULL_LINK_RESULT_CLASSES = new HashMap<>();
 
     public static Set<String> MEDIA_VERSION_NUMBERS = new HashSet<>();
-    private static Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
+    private static final Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
     private static final LinkResponseDefinitions LINK_RESPONSE_DEFINITIONS = new LinkResponseDefinitions();
     private static final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> LINK_RESPONSE_DEFINITIONS_LIST = LINK_RESPONSE_DEFINITIONS.getDefinitions();
     private final ClassCategories CLASS_CATEGORIES = new ClassCategories();
@@ -77,14 +77,14 @@ public class Generator {
         final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         Generator.generateViewFiles(responses, viewTemplate, randomTemplate);
 
-        System.out.println("\n******************************\nClasses that are referenced but have no definition in the API specs: \n");
+        System.out.println("\n******************************\nThere are " + RANDOM_LINK_CLASS_NAMES.size() + " classes that are referenced but have no definition in the API specs: \n");
         for (final String randomClassName : RANDOM_LINK_CLASS_NAMES) {
             System.out.println(randomClassName);
         }
 
-        System.out.println("\n******************************\nClasses that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
-        for (final String nullLinkResultClass : NULL_LINK_RESULT_CLASSES) {
-            System.out.println(nullLinkResultClass);
+        System.out.println("\n******************************\nThere are " + NULL_LINK_RESULT_CLASSES.size() + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
+        for (final Map.Entry nullLinkResultClass : NULL_LINK_RESULT_CLASSES.entrySet()) {
+            System.out.println(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
         }
     }
 
@@ -160,7 +160,6 @@ public class Generator {
                 final Map<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links, response.getMediaType());
                 final String viewName = response.getName();
 
-                //final Map<String, Object> clonedInput = input;
                 updateViewClassMediaVersions(viewName, input);
                 writeFile(viewName, viewTemplate, input, pathToViewFiles);
                 NON_LINK_CLASS_NAMES.add(viewName);
@@ -339,7 +338,7 @@ public class Generator {
 
                 boolean shouldAddImport = true;
                 resultClass = link.resultClass();
-                if (resultClass != null && !CLASS_CATEGORIES.isCommonType(resultClass)) {
+                if (resultClass != null) {
                     if (CLASS_CATEGORIES.isView(resultClass)) {
                         resultImportType = VIEW;
                     } else if (CLASS_CATEGORIES.isResponse(resultClass)) {
@@ -363,10 +362,10 @@ public class Generator {
                     }
                     links.add(link);
                 } else {
-                    NULL_LINK_RESULT_CLASSES.add(linkType);
+                    NULL_LINK_RESULT_CLASSES.put(responseName, linkType);
                 }
             } catch (final NullPointerException e) {
-                NULL_LINK_RESULT_CLASSES.add(rawLink.getRel());
+                NULL_LINK_RESULT_CLASSES.put(responseName, rawLink.getRel());
             }
         }
         return new LinksAndImportsHelper(links, imports);

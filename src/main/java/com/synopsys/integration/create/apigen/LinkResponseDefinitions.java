@@ -32,6 +32,7 @@ public class LinkResponseDefinitions {
         definitions.put("CodeLocationView", codeLocationViewDefinitions);
 
         // ComponentVersionView ***
+
         final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
         componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
@@ -46,6 +47,7 @@ public class LinkResponseDefinitions {
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
 
         // ComponentView ***
+
         final Map<String, LinkResponseDefinitionItem> componentViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem cvVersionsDefinition = new LinkResponseDefinitionItem(true, "ComponentVersionView");
         componentViewDefinitions.put("versions", cvVersionsDefinition);
@@ -66,16 +68,20 @@ public class LinkResponseDefinitions {
         definitions.put("ComponentView", componentViewDefinitions);
 
         // ComponentCustomFieldView ***
+        /*
         final Map<String, LinkResponseDefinitionItem> componentCustomFieldViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem ccfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
         componentCustomFieldViewDefinitions.put("custom-field-option-list", ccfvCustomFieldOptionListDefinition);
         definitions.put("ComponentCustomFieldView", componentCustomFieldViewDefinitions);
+        */
 
         // CustomFieldView **
+        /*
         final Map<String, LinkResponseDefinitionItem> customFieldViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem cfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
         customFieldViewDefinitions.put("custom-field-option-list", cfvCustomFieldOptionListDefinition);
         definitions.put("CustomFieldView", customFieldViewDefinitions);
+        */
 
         // ProjectView
         final Map<String, LinkResponseDefinitionItem> projectViewDefinitions = new HashMap<>();
@@ -85,10 +91,10 @@ public class LinkResponseDefinitions {
         projectViewDefinitions.put("canonicalVersion", pvCanonicalVersionDefinition);
         //final LinkResponseDefinitionItem pvProjectMappingsDefinition = new LinkResponseDefinitionItem(true, "ProjectMappingView"); *
         //projectViewDefinitions.put("project-mappings", pvProjectMappingsDefinition);
-        //final LinkResponseDefinitionItem pvTagsDefinition = new LinkResponseDefinitionItem(true, "TagView"); *
-        //projectViewDefinitions.put("tags", pvTagsDefinition);
-        //final LinkResponseDefinitionItem pvUsersDefinition = new LinkResponseDefinitionItem(true, "AssignedUserRequest"); ****
-        //projectViewDefinitions.put("users", pvUsersDefinition);
+        final LinkResponseDefinitionItem pvTagsDefinition = new LinkResponseDefinitionItem(true, "TagView"); // *
+        projectViewDefinitions.put("tags", pvTagsDefinition);
+        final LinkResponseDefinitionItem pvUsersDefinition = new LinkResponseDefinitionItem(true, "UserView");
+        projectViewDefinitions.put("users", pvUsersDefinition);
         //final LinkResponseDefinitionItem pvUserGroupsDefinition = new LinkResponseDefinitionItem(true, "AssignedUserGroupView"); ****
         //projectViewDefinitions.put("usergroups", pvUserGroupsDefinition);
         /*
@@ -98,8 +104,8 @@ public class LinkResponseDefinitions {
         //projectViewDefinitions.put("assignable-users", pvAssignableUsersDefinition);
         //final LinkResponseDefinitionItem pvAssignableUserGroupsDefinition = new LinkResponseDefinitionItem(true, "AssignableUserGroupView");
         //projectViewDefinitions.put("assignable-usergroups", pvAssignableUserGroupsDefinition);
-        //final LinkResponseDefinitionItem pvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectCustomFieldView");
-        //projectViewDefinitions.put("custom-fields", pvCustomFieldsDefinition);
+        final LinkResponseDefinitionItem pvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectCustomFieldView");
+        projectViewDefinitions.put("custom-fields", pvCustomFieldsDefinition);
         //final LinkResponseDefinitionItem pvProjectJournalDefinition = new LinkResponseDefinitionItem(true, "ProjectJournalView");
         //projectViewDefinitions.put("project-journal", pvProjectJournalDefinition);
         definitions.put("ProjectView", projectViewDefinitions);
@@ -129,15 +135,21 @@ public class LinkResponseDefinitions {
         //projectVersionViewDefinitions.put("hierarchical-components", pvvHierarchicalComponentsDefinition);
         //final LinkResponseDefinitionItem pvvComparisonDefinition = new LinkResponseDefinitionItem(true, "VersionBomComponentDiffView");
         //projectVersionViewDefinitions.put("comparison", pvvComparisonDefinition);
-        //final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
-        //projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
-        //final LinkResponseDefinitionItem pvvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionCustomFieldView");
-        //projectVersionViewDefinitions.put("custom-fields", pvvCustomFieldsDefinition);
+        final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
+        final LinkResponseDefinitionItem pvvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionCustomFieldView");
+        projectVersionViewDefinitions.put("custom-fields", pvvCustomFieldsDefinition);
         //final LinkResponseDefinitionItem pvvAttachmentsDefinition = new LinkResponseDefinitionItem(true, "VersionBomAttachmentView");
         //projectVersionViewDefinitions.put("attachments", pvvAttachmentsDefinition);
         //final LinkResponseDefinitionItem pvvProjectVersionJournalDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionJournalView");
         //projectVersionViewDefinitions.put("project-version-journal", pvvProjectVersionJournalDefinition);
         definitions.put("ProjectVersionView", projectVersionViewDefinitions);
+
+        // ProjectVersionComponentView
+        final Map<String, LinkResponseDefinitionItem> projectVersionComponentViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem pvcvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
+        projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
+        definitions.put("ProjectVersionComponentView", projectVersionComponentViewDefinitions);
 
         // ProjectCustomFieldView - not from definitions_with_links.txt
         //final Map<String, LinkResponseDefinitionItem> projectCustomFieldViewDefinitions = new HashMap<>();
@@ -146,10 +158,12 @@ public class LinkResponseDefinitions {
         //definitions.put("ProjectCustomFieldView", projectCustomFieldViewDefinitions);
 
         // ProjectVersionCustomFieldView - **
+        /*
         final Map<String, LinkResponseDefinitionItem> projectVersionCustomFieldViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem pvcfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
         projectVersionCustomFieldViewDefinitions.put("custom-field-option-list", pvcfvCustomFieldOptionListDefinition);
         definitions.put("ProjectVersionCustomFieldView", projectVersionCustomFieldViewDefinitions);
+        */
 
         // UserView
         final Map<String, LinkResponseDefinitionItem> userViewDefinitions = new HashMap<>();

@@ -1,19 +1,17 @@
 package ${packageName};
 
 <#if hasLinksWithResults??>
-    import java.util.HashMap;
-    import java.util.Map;
-
+import java.util.HashMap;
+import java.util.Map;
 </#if>
 <#list imports as import>
-    import ${import};
+import ${import};
 </#list>
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ${className} extends ${baseClass} <#if buildable??>implements Buildable </#if>{
 <#if hasLinksWithResults??>
     public static final Map<String, LinkResponse> links = new HashMap<>();
-
 </#if>
 <#if hasLinks??>
     <#list links as link>
@@ -21,9 +19,9 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
     </#list>
 
     <#list links as link>
-        <#if link.resultClass??>
+    <#if link.resultClass??>
     public static final ${link.linkType()} ${link.javaConstant()}_RESPONSE = new ${link.linkType()}(${link.javaConstant()}, ${link.resultClass()}.class);
-        </#if>
+    </#if>
     </#list>
 
 </#if>
@@ -40,7 +38,7 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 <#list classFields as field>
     private ${field.type} ${field.path};
 </#list>
-	private String mediaType = ${mediaType};
+    private String mediaType = "${mediaType}";
 
 <#if buildable??>
     public static ${className}Builder newBuilder() {
@@ -58,8 +56,8 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
     }
 
 </#list>
-
 	public String getMediaType() {
 	return mediaType;
 	}
+
 }
