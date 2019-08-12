@@ -1,3 +1,25 @@
+/**
+ * blackduck-common-apigen
+ *
+ * Copyright (c) 2019 Synopsys, Inc.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package com.synopsys.integration.create.apigen;
 
 import java.io.File;
@@ -48,8 +70,6 @@ public class Generator {
     public static List<String> RANDOM_LINK_CLASS_NAMES = new ArrayList<>();
     public static Map<String, String> NULL_LINK_RESULT_CLASSES = new HashMap<>();
 
-    // Assuming no more than 9 mediaVersions per View class
-    public static String[] MEDIA_VERSION_NUMBERS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     private static final Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
     private static final LinkResponseDefinitions LINK_RESPONSE_DEFINITIONS = new LinkResponseDefinitions();
     private static final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> LINK_RESPONSE_DEFINITIONS_LIST = LINK_RESPONSE_DEFINITIONS.getDefinitions();
@@ -273,7 +293,10 @@ public class Generator {
         for (final LinkDefinition rawLink : rawLinks) {
             final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName);
             try {
-                LINK_CLASS_NAMES.add(link.resultClass());
+                final String result_class = link.resultClass();
+                if (result_class != null) {
+                    LINK_CLASS_NAMES.add(link.resultClass());
+                }
                 final String linkType = link.linkType();
                 final String linkImportType;
                 final String resultClass;
@@ -328,7 +351,7 @@ public class Generator {
     }
 
     private void updateViewClassMediaVersions(final String viewName, final Map<String, Object> input) {
-        final ViewMediaVersionHelper newHelper = getMediaVersion(viewName, input);
+        final ViewMediaVersionHelper newHelper = getMediaVersionHelper(viewName, input);
         final String viewClass = newHelper.getViewClass();
         final Integer mediaVersion = newHelper.getMediaVersion();
         final ViewMediaVersionHelper oldHelper = LATEST_VIEW_MEDIA_VERSIONS.get(viewClass);
@@ -340,14 +363,17 @@ public class Generator {
         }
     }
 
-    private ViewMediaVersionHelper getMediaVersion(final String viewName, final Map<String, Object> input) {
+    private ViewMediaVersionHelper getMediaVersionHelper(final String viewName, final Map<String, Object> input) {
         Integer mediaVersion = null;
         String viewClass = null;
+        // Assuming no more than 9 mediaVersions per View class
+        final String[] MEDIA_VERSION_NUMBERS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
         for (final String number : MEDIA_VERSION_NUMBERS) {
             if (viewName.contains(number)) {
                 mediaVersion = Integer.decode(number);
                 viewClass = viewName.replace(number, "");
-                input.put(CLASS_NAME, viewClass);
+                input.put(CLASS_NAME, viewName);
             }
         }
         return new ViewMediaVersionHelper(viewClass, mediaVersion, input);
