@@ -47,4 +47,33 @@ public class MediaVersionHelper {
         return this.nonVersionedClass + "\n" + this.mediaVersion + "\n\t" + this.input.get("className");
     }
 
+    public static void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionHelper> latestMediaVersions) {
+        final MediaVersionHelper newHelper = getMediaVersionHelper(className, input);
+        final String nonVersionedClass = newHelper.getNonVersionedClass();
+        final Integer mediaVersion = newHelper.getMediaVersion();
+        final MediaVersionHelper oldHelper = latestMediaVersions.get(nonVersionedClass);
+
+        if (mediaVersion != null) {
+            if (oldHelper == null || mediaVersion > oldHelper.getMediaVersion()) {
+                latestMediaVersions.put(nonVersionedClass, newHelper);
+            }
+        }
+    }
+
+    private static MediaVersionHelper getMediaVersionHelper(final String className, final Map<String, Object> input) {
+        Integer mediaVersion = null;
+        String nonVersionedClassName = null;
+        // Assuming no more than 9 mediaVersions per View class
+        final String[] MEDIA_VERSION_NUMBERS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+        for (final String number : MEDIA_VERSION_NUMBERS) {
+            if (className.contains(number)) {
+                mediaVersion = Integer.decode(number);
+                nonVersionedClassName = className.replace(number, "");
+                input.put("className", className);
+            }
+        }
+        return new MediaVersionHelper(nonVersionedClassName, mediaVersion, input);
+    }
+
 }

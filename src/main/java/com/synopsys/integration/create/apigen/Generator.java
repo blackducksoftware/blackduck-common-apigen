@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.create.apigen;
 
+import static com.synopsys.integration.create.apigen.MediaVersionHelper.updateLatestMediaVersions;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -149,69 +151,6 @@ public class Generator {
         generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
     }
 
-    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles, final String pathToEnumFiles)
-        throws Exception {
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, LATEST_VIEW_MEDIA_VERSIONS.values());
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, LATEST_COMPONENT_MEDIA_VERSIONS.values());
-    }
-
-    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
-        for (final MediaVersionHelper latestMediaVersion : latestMediaVersions) {
-            final Map<String, Object> input = latestMediaVersion.getInput();
-            final String className = latestMediaVersion.getNonVersionedClass();
-            input.put(CLASS_NAME, className);
-            input.put("parentClass", latestMediaVersion.getVersionedClassName());
-            String importClass = null;
-            if (CLASS_CATEGORIES.isView(className)) {
-                importClass = VIEW_BASE_CLASS;
-            } else if (CLASS_CATEGORIES.isResponse(className)) {
-                importClass = RESPONSE_BASE_CLASS;
-            } else if (CLASS_CATEGORIES.isComponent(className)) {
-                importClass = COMPONENT_BASE_CLASS;
-            }
-            final String importPath = CORE_CLASS_PATH_PREFIX + importClass;
-            input.put("importPath", importPath);
-            FreeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
-            NON_LINK_CLASS_NAMES.add(className);
-            NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(className));
-        }
-    }
-
-    private void generateDummyClassesForReferencedButUndefinedObjects(final Template randomTemplate) throws Exception {
-        for (final String linkClassName : LINK_CLASS_NAMES) {
-            if (!CLASS_CATEGORIES.isManual(linkClassName) && !CLASS_CATEGORIES.isCommonType(linkClassName)) {
-                final Map<String, Object> randomInput = new HashMap<>();
-                randomInput.put(CLASS_NAME, linkClassName);
-                final String packageName;
-                final String destinationSuffix;
-                final String importPath;
-                final String parentClass;
-                if (CLASS_CATEGORIES.isView(linkClassName)) {
-                    packageName = GENERATED_VIEW_PACKAGE;
-                    destinationSuffix = VIEW_DIRECTORY_SUFFIX;
-                    parentClass = VIEW_BASE_CLASS;
-                } else if (CLASS_CATEGORIES.isResponse(linkClassName)) {
-                    packageName = GENERATED_RESPONSE_PACKAGE;
-                    destinationSuffix = RESPONSE_DIRECTORY_SUFFIX;
-                    parentClass = RESPONSE_BASE_CLASS;
-                } else {
-                    packageName = GENERATED_COMPONENT_PACKAGE;
-                    destinationSuffix = COMPONENT_DIRECTORY_SUFFIX;
-                    parentClass = COMPONENT_BASE_CLASS;
-                }
-                importPath = CORE_CLASS_PATH_PREFIX + parentClass;
-                randomInput.put("parentClass", parentClass);
-                randomInput.put("packageName", packageName);
-                randomInput.put("importPath", importPath);
-
-                if (!NON_LINK_CLASS_NAMES.contains(linkClassName) && !RANDOM_LINK_CLASS_NAMES.contains(linkClassName)) {
-                    FreeMarkerHelper.writeFile(linkClassName, randomTemplate, randomInput, BLACKDUCK_COMMON_API_BASE_DIRECTORY + destinationSuffix);
-                    RANDOM_LINK_CLASS_NAMES.add(linkClassName);
-                }
-            }
-        }
-    }
-
     private void generateComponentFile(final FieldDefinition field, final Template template, final String responseMediaType) throws Exception {
         final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
         final List<String> imports = new ArrayList<>();
@@ -231,7 +170,7 @@ public class Generator {
 
         final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
 
-        updateLatestMediaVersions(fieldType, input, LATEST_COMPONENT_MEDIA_VERSIONS);
+        MediaVersionHelper.updateLatestMediaVersions(fieldType, input, LATEST_COMPONENT_MEDIA_VERSIONS);
         FreeMarkerHelper.writeFile(fieldType, template, input, pathToComponentFiles);
         NON_LINK_CLASS_NAMES.add(fieldType);
         NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(fieldType));
@@ -359,33 +298,67 @@ public class Generator {
         return new LinksAndImportsHelper(links, imports);
     }
 
-    private void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionHelper> latestMediaVersions) {
-        final MediaVersionHelper newHelper = getMediaVersionHelper(className, input);
-        final String nonVersionedClass = newHelper.getNonVersionedClass();
-        final Integer mediaVersion = newHelper.getMediaVersion();
-        final MediaVersionHelper oldHelper = latestMediaVersions.get(nonVersionedClass);
+    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles, final String pathToEnumFiles)
+        throws Exception {
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, LATEST_VIEW_MEDIA_VERSIONS.values());
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, LATEST_COMPONENT_MEDIA_VERSIONS.values());
+    }
 
-        if (mediaVersion != null) {
-            if (oldHelper == null || mediaVersion > oldHelper.getMediaVersion()) {
-                latestMediaVersions.put(nonVersionedClass, newHelper);
+    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
+        for (final MediaVersionHelper latestMediaVersion : latestMediaVersions) {
+            final Map<String, Object> input = latestMediaVersion.getInput();
+            final String className = latestMediaVersion.getNonVersionedClass();
+            input.put(CLASS_NAME, className);
+            input.put("parentClass", latestMediaVersion.getVersionedClassName());
+            String importClass = null;
+            if (CLASS_CATEGORIES.isView(className)) {
+                importClass = VIEW_BASE_CLASS;
+            } else if (CLASS_CATEGORIES.isResponse(className)) {
+                importClass = RESPONSE_BASE_CLASS;
+            } else if (CLASS_CATEGORIES.isComponent(className)) {
+                importClass = COMPONENT_BASE_CLASS;
             }
+            final String importPath = CORE_CLASS_PATH_PREFIX + importClass;
+            input.put("importPath", importPath);
+            FreeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
+            NON_LINK_CLASS_NAMES.add(className);
+            NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(className));
         }
     }
 
-    private MediaVersionHelper getMediaVersionHelper(final String className, final Map<String, Object> input) {
-        Integer mediaVersion = null;
-        String nonVersionedClassName = null;
-        // Assuming no more than 9 mediaVersions per View class
-        final String[] MEDIA_VERSION_NUMBERS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+    private void generateDummyClassesForReferencedButUndefinedObjects(final Template randomTemplate) throws Exception {
+        for (final String linkClassName : LINK_CLASS_NAMES) {
+            if (!CLASS_CATEGORIES.isManual(linkClassName) && !CLASS_CATEGORIES.isCommonType(linkClassName)) {
+                final Map<String, Object> randomInput = new HashMap<>();
+                randomInput.put(CLASS_NAME, linkClassName);
+                final String packageName;
+                final String destinationSuffix;
+                final String importPath;
+                final String parentClass;
+                if (CLASS_CATEGORIES.isView(linkClassName)) {
+                    packageName = GENERATED_VIEW_PACKAGE;
+                    destinationSuffix = VIEW_DIRECTORY_SUFFIX;
+                    parentClass = VIEW_BASE_CLASS;
+                } else if (CLASS_CATEGORIES.isResponse(linkClassName)) {
+                    packageName = GENERATED_RESPONSE_PACKAGE;
+                    destinationSuffix = RESPONSE_DIRECTORY_SUFFIX;
+                    parentClass = RESPONSE_BASE_CLASS;
+                } else {
+                    packageName = GENERATED_COMPONENT_PACKAGE;
+                    destinationSuffix = COMPONENT_DIRECTORY_SUFFIX;
+                    parentClass = COMPONENT_BASE_CLASS;
+                }
+                importPath = CORE_CLASS_PATH_PREFIX + parentClass;
+                randomInput.put("parentClass", parentClass);
+                randomInput.put("packageName", packageName);
+                randomInput.put("importPath", importPath);
 
-        for (final String number : MEDIA_VERSION_NUMBERS) {
-            if (className.contains(number)) {
-                mediaVersion = Integer.decode(number);
-                nonVersionedClassName = className.replace(number, "");
-                input.put(CLASS_NAME, className);
+                if (!NON_LINK_CLASS_NAMES.contains(linkClassName) && !RANDOM_LINK_CLASS_NAMES.contains(linkClassName)) {
+                    FreeMarkerHelper.writeFile(linkClassName, randomTemplate, randomInput, BLACKDUCK_COMMON_API_BASE_DIRECTORY + destinationSuffix);
+                    RANDOM_LINK_CLASS_NAMES.add(linkClassName);
+                }
             }
         }
-        return new MediaVersionHelper(nonVersionedClassName, mediaVersion, input);
     }
 
 }
