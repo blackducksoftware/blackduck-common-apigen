@@ -50,6 +50,7 @@ public class ClassCategories {
         views.add("CodeLocationView");
         views.add("CodeLocation4View");
         views.add("ComplexLicenseView");
+        views.add("ComponentCustomFieldView");
         views.add("ComponentDetailsView");
         views.add("ComponentSearchResultView");
         views.add("ComponentVersionView");
@@ -70,7 +71,12 @@ public class ClassCategories {
         views.add("OriginView");
         views.add("PolicyRuleView");
         views.add("PolicyStatusView");
+        views.add("ProjectCustomFieldView");
         views.add("ProjectDashboardRiskAmalgamation");
+        views.add("ProjectVersionComponentCustomFieldView");
+        views.add("ProjectVersionComponentVersionCustomFieldView");
+        views.add("ProjectVersionComponentView");
+        views.add("ProjectVersionCustomFieldView");
         views.add("ProjectVersionView");
         views.add("ProjectView");
         views.add("RegistrationAttributesInternalView");
@@ -82,6 +88,7 @@ public class ClassCategories {
         views.add("RoleAssignmentView");
         views.add("TagView");
         views.add("UserGroupView");
+        views.add("UserRoleAssignmentView");
         views.add("UserView");
         views.add("VersionBomComponentView");
         views.add("VersionBomPolicyStatusView");
@@ -138,8 +145,15 @@ public class ClassCategories {
         components.add("CweCommonConsequenceView");
         components.add("LicenseFamilySummaryView");
         components.add("NameValuePairView");
+        components.add("PolicyRuleViewExpression"); //
+        components.add("PolicyRuleViewExpressionExpression"); //
+        components.add("PolicyRuleViewExpressionExpressionParameters"); //
         components.add("PolicyRuleExpressionSetView");
         components.add("PolicyRuleExpressionView");
+        components.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary"); //
+        components.add("ProjectVersionComponentViewLicenses"); //
+        components.add("ProjectVersionViewLicense"); //
+        components.add("ProjectVersionViewLicenseLicense"); //
         components.add("ResourceLink");
         components.add("ResourceMetadata");
         components.add("ReviewedDetails");

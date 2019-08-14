@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -70,7 +71,9 @@ public class Generator {
     public static List<String> RANDOM_LINK_CLASS_NAMES = new ArrayList<>();
     public static Map<String, String> NULL_LINK_RESULT_CLASSES = new HashMap<>();
 
-    private static final Map<String, ViewMediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
+    private static final Map<String, MediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
+    private static final Map<String, MediaVersionHelper> LATEST_COMPONENT_MEDIA_VERSIONS = new HashMap<>();
+
     private static final LinkResponseDefinitions LINK_RESPONSE_DEFINITIONS = new LinkResponseDefinitions();
     private static final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> LINK_RESPONSE_DEFINITIONS_LIST = LINK_RESPONSE_DEFINITIONS.getDefinitions();
     private final ClassCategories CLASS_CATEGORIES = new ClassCategories();
@@ -110,9 +113,7 @@ public class Generator {
                 final String classType = field.getType().replace(JAVA_LIST, "").replace(">", "");
                 if (classType.contains(ENUM)) {
                     final Map<String, Object> input = getEnumInputData(GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), response.getMediaType());
-
                     final String pathToEnumFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
-
                     FreeMarkerHelper.writeFile(classType, template, input, pathToEnumFiles);
                 }
             }
@@ -123,7 +124,8 @@ public class Generator {
         final MediaTypes mediaTypes = new MediaTypes();
         final Set<String> longMediaTypes = mediaTypes.getLongNames();
         final String pathToViewFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
-
+        final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
+        final String pathToEnumFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
         for (final ResponseDefinition response : responses) {
             if (longMediaTypes.contains(response.getMediaType())) {
                 List<String> imports = new ArrayList<>();
@@ -135,37 +137,43 @@ public class Generator {
                 final Map<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links, response.getMediaType());
                 final String viewName = response.getName();
 
-                updateViewClassMediaVersions(viewName, input);
+                updateLatestMediaVersions(viewName, input, LATEST_VIEW_MEDIA_VERSIONS);
                 FreeMarkerHelper.writeFile(viewName, viewTemplate, input, pathToViewFiles);
                 NON_LINK_CLASS_NAMES.add(viewName);
                 NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewName));
             }
         }
 
-        generateMostRecentViewMediaVersions(randomTemplate, pathToViewFiles);
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, pathToComponentFiles, pathToEnumFiles);
 
         generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
     }
 
-    private void generateMostRecentViewMediaVersions(final Template randomTemplate, final String pathToViewFiles) throws Exception {
-        for (final ViewMediaVersionHelper latestViewMediaVersion : LATEST_VIEW_MEDIA_VERSIONS.values()) {
-            final String viewClassName = latestViewMediaVersion.getViewClass();
-            final Map<String, Object> input = latestViewMediaVersion.getInput();
-            input.put("parentClass", latestViewMediaVersion.getVersionedClassName());
-            final String parentClass;
-            if (CLASS_CATEGORIES.isView(viewClassName)) {
-                parentClass = VIEW_BASE_CLASS;
-            } else if (CLASS_CATEGORIES.isResponse(viewClassName)) {
-                parentClass = RESPONSE_BASE_CLASS;
-            } else {
-                parentClass = COMPONENT_BASE_CLASS;
+    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles, final String pathToEnumFiles)
+        throws Exception {
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, LATEST_VIEW_MEDIA_VERSIONS.values());
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, LATEST_COMPONENT_MEDIA_VERSIONS.values());
+    }
+
+    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
+        for (final MediaVersionHelper latestMediaVersion : latestMediaVersions) {
+            final Map<String, Object> input = latestMediaVersion.getInput();
+            final String className = latestMediaVersion.getNonVersionedClass();
+            input.put(CLASS_NAME, className);
+            input.put("parentClass", latestMediaVersion.getVersionedClassName());
+            String importClass = null;
+            if (CLASS_CATEGORIES.isView(className)) {
+                importClass = VIEW_BASE_CLASS;
+            } else if (CLASS_CATEGORIES.isResponse(className)) {
+                importClass = RESPONSE_BASE_CLASS;
+            } else if (CLASS_CATEGORIES.isComponent(className)) {
+                importClass = COMPONENT_BASE_CLASS;
             }
-            final String importPath = CORE_CLASS_PATH_PREFIX + parentClass;
+            final String importPath = CORE_CLASS_PATH_PREFIX + importClass;
             input.put("importPath", importPath);
-            input.put(CLASS_NAME, viewClassName);
-            FreeMarkerHelper.writeFile(viewClassName, randomTemplate, input, pathToViewFiles);
-            NON_LINK_CLASS_NAMES.add(viewClassName);
-            NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewClassName));
+            FreeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
+            NON_LINK_CLASS_NAMES.add(className);
+            NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(className));
         }
     }
 
@@ -223,6 +231,7 @@ public class Generator {
 
         final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
 
+        updateLatestMediaVersions(fieldType, input, LATEST_COMPONENT_MEDIA_VERSIONS);
         FreeMarkerHelper.writeFile(fieldType, template, input, pathToComponentFiles);
         NON_LINK_CLASS_NAMES.add(fieldType);
         NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(fieldType));
@@ -350,33 +359,33 @@ public class Generator {
         return new LinksAndImportsHelper(links, imports);
     }
 
-    private void updateViewClassMediaVersions(final String viewName, final Map<String, Object> input) {
-        final ViewMediaVersionHelper newHelper = getMediaVersionHelper(viewName, input);
-        final String viewClass = newHelper.getViewClass();
+    private void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionHelper> latestMediaVersions) {
+        final MediaVersionHelper newHelper = getMediaVersionHelper(className, input);
+        final String nonVersionedClass = newHelper.getNonVersionedClass();
         final Integer mediaVersion = newHelper.getMediaVersion();
-        final ViewMediaVersionHelper oldHelper = LATEST_VIEW_MEDIA_VERSIONS.get(viewClass);
+        final MediaVersionHelper oldHelper = latestMediaVersions.get(nonVersionedClass);
 
         if (mediaVersion != null) {
             if (oldHelper == null || mediaVersion > oldHelper.getMediaVersion()) {
-                LATEST_VIEW_MEDIA_VERSIONS.put(viewClass, newHelper);
+                latestMediaVersions.put(nonVersionedClass, newHelper);
             }
         }
     }
 
-    private ViewMediaVersionHelper getMediaVersionHelper(final String viewName, final Map<String, Object> input) {
+    private MediaVersionHelper getMediaVersionHelper(final String className, final Map<String, Object> input) {
         Integer mediaVersion = null;
-        String viewClass = null;
+        String nonVersionedClassName = null;
         // Assuming no more than 9 mediaVersions per View class
         final String[] MEDIA_VERSION_NUMBERS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
         for (final String number : MEDIA_VERSION_NUMBERS) {
-            if (viewName.contains(number)) {
+            if (className.contains(number)) {
                 mediaVersion = Integer.decode(number);
-                viewClass = viewName.replace(number, "");
-                input.put(CLASS_NAME, viewName);
+                nonVersionedClassName = className.replace(number, "");
+                input.put(CLASS_NAME, className);
             }
         }
-        return new ViewMediaVersionHelper(viewClass, mediaVersion, input);
+        return new MediaVersionHelper(nonVersionedClassName, mediaVersion, input);
     }
 
 }

@@ -97,9 +97,6 @@ public class FieldsParser {
             // Variables to hold info on potential enum fields
             final List<String> allowedValues = field.getAllowedValues();
             String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
-            if (mediaVersion != null) {
-                nameOfEnum = nameOfEnum.replace("V" + mediaVersion, "") + "V" + mediaVersion;
-            }
 
             // If field is not another object, just add it to list of subfields
             if (fieldDefinition == null) {
