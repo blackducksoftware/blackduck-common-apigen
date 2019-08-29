@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.MediaTypes;
+import com.synopsys.integration.create.apigen.definitions.MediaTypes;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class ResponseParser {
@@ -60,7 +60,7 @@ public class ResponseParser {
             if (child.getName().equals(RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 final ResponseNameParser responseNameParser = new ResponseNameParser();
-                String responseName = responseNameParser.getResponseName(responseRelativePath, multipleResponses);
+                final String responseName = responseNameParser.getResponseName(responseRelativePath, multipleResponses);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
 
                 responseDefinitions.add(new ResponseDefinition(responseRelativePath, responseName, responseMediaType));

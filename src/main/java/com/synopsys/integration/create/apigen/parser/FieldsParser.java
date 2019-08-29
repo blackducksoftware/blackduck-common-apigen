@@ -35,6 +35,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.synopsys.integration.create.apigen.definitions.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
@@ -46,7 +48,11 @@ public class FieldsParser {
     public static final String OBJECT = "Object";
     public static final String FIELDS = "fields";
     public static final String STRING = "String";
+    public static final String META = "_meta";
     //private final Gson gson;
+    private final String ENUM = "Type";
+    private final TypeTranslator TYPE_TRANSLATOR = new TypeTranslator();
+    private final MissingFieldsAndLinks MISSING_FIELDS_AND_LINKS = new MissingFieldsAndLinks();
 
     public FieldsParser() { }
 
@@ -54,7 +60,6 @@ public class FieldsParser {
         final List<FieldDefinition> fieldDefinitions = new ArrayList<>();
         final String mediaVersion = ResponseNameParser.getMediaVersion(fieldDefinitionName);
         final String nonVersionedFieldDefinitionName = ResponseNameParser.getNonVersionedName(fieldDefinitionName);
-
         for (final RawFieldDefinition field : fields) {
             String path = field.getPath();
             String type = field.getType();
@@ -62,8 +67,8 @@ public class FieldsParser {
 
             FieldDefinition fieldDefinition = null;
 
-            // Ignore 'data' fields
-            if (path.equals(DATA)) {
+            // Ignore 'data' and '_meta' fields
+            if (path.equals(DATA) || path.equals(META)) {
                 continue;
             }
 
@@ -81,6 +86,12 @@ public class FieldsParser {
                 type = BIG_DECIMAL;
             }
 
+            // Deal with special Swaggerhub - Apigen naming convention conflicts
+            final String swaggerName = TYPE_TRANSLATOR.getFieldSwaggerName(nonVersionedFieldDefinitionName, field.getPath(), type);
+            if (swaggerName != null) {
+                type = swaggerName;
+            }
+
             // If field has subfields, recursively parse and link its subfields
             final List<RawFieldDefinition> rawSubFields = field.getSubFields();
             if ((type.equals(OBJECT) || type.equals(ARRAY)) && rawSubFields != null) {
@@ -96,7 +107,7 @@ public class FieldsParser {
 
             // Variables to hold info on potential enum fields
             final List<String> allowedValues = field.getAllowedValues();
-            String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + "Enum";
+            final String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + ENUM;
 
             // If field is not another object, just add it to list of subfields
             if (fieldDefinition == null) {
@@ -117,6 +128,10 @@ public class FieldsParser {
                         fieldDefinition = new FieldDefinition(path, nameOfEnum, optional, allowedValues);
                     }
                 }
+            }
+            final List<FieldDefinition> missingFields = MISSING_FIELDS_AND_LINKS.getMissingFields(ResponseNameParser.getNonVersionedName(type));
+            if (missingFields.size() > 0) {
+                fieldDefinition.addSubFields(missingFields);
             }
             fieldDefinitions.add(fieldDefinition);
         }

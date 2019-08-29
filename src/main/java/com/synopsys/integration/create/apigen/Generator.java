@@ -22,8 +22,6 @@
  */
 package com.synopsys.integration.create.apigen;
 
-import static com.synopsys.integration.create.apigen.MediaVersionHelper.updateLatestMediaVersions;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -36,9 +34,17 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.MediaTypes;
+import com.synopsys.integration.create.apigen.definitions.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
+import com.synopsys.integration.create.apigen.helper.LinkHelper;
+import com.synopsys.integration.create.apigen.helper.LinksAndImportsHelper;
+import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
 import com.synopsys.integration.create.apigen.parser.ResponseNameParser;
 
 import freemarker.template.Configuration;
@@ -50,7 +56,7 @@ public class Generator {
     public static final String MANUAL_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.manual.";
     public static final String ENUMERATION = "enumeration";
     public static final String VIEW = "view";
-    public static final String ENUM = "Enum";
+    public static final String ENUM = "Type";
     public static final String COMPONENT = "component";
     public static final String RESPONSE = "response";
     public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + ENUMERATION;
@@ -61,6 +67,7 @@ public class Generator {
     public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
     public static final String RESPONSE_BASE_CLASS = "BlackDuckResponse";
     public static final String JAVA_LIST = "java.util.List<";
+    public static final String LIST = "List<";
     public static final String CLASS_NAME = "className";
     public static String BLACKDUCK_COMMON_API_BASE_DIRECTORY;
     public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
@@ -76,9 +83,8 @@ public class Generator {
     private static final Map<String, MediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
     private static final Map<String, MediaVersionHelper> LATEST_COMPONENT_MEDIA_VERSIONS = new HashMap<>();
 
-    private static final LinkResponseDefinitions LINK_RESPONSE_DEFINITIONS = new LinkResponseDefinitions();
-    private static final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> LINK_RESPONSE_DEFINITIONS_LIST = LINK_RESPONSE_DEFINITIONS.getDefinitions();
     private final ClassCategories CLASS_CATEGORIES = new ClassCategories();
+    private final MissingFieldsAndLinks MISSING_FIELDS_AND_LINKS = new MissingFieldsAndLinks();
 
     public static void main(final String[] args) throws Exception {
         final Generator Generator = new Generator();
@@ -90,6 +96,19 @@ public class Generator {
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(false);
+
+        // ********* Where does this go??? **********
+        for (final ResponseDefinition response : responses) {
+            final String responseName = ResponseNameParser.getNonVersionedName(response.getName());
+            final List<FieldDefinition> missingFields = Generator.MISSING_FIELDS_AND_LINKS.getMissingFields(responseName);
+            if (missingFields.size() > 0) {
+                response.addFields(missingFields);
+            }
+            final List<LinkDefinition> missingLinks = Generator.MISSING_FIELDS_AND_LINKS.getMissingLinks(responseName);
+            if (missingLinks.size() > 0) {
+                response.addLinks(missingLinks);
+            }
+        }
 
         final Template enumTemplate = config.getTemplate("enumTemplate.ftl");
         Generator.generateEnumFiles(responses, enumTemplate);
@@ -113,10 +132,13 @@ public class Generator {
         for (final ResponseDefinition response : responses) {
             for (final FieldDefinition field : response.getFields()) {
                 final String classType = field.getType().replace(JAVA_LIST, "").replace(">", "");
-                if (classType.contains(ENUM)) {
+                if (classType.contains(ENUM) && !CLASS_CATEGORIES.isNonEnumClassEndingInType(classType) && !CLASS_CATEGORIES.isThrowaway(classType)) {
                     final Map<String, Object> input = getEnumInputData(GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), response.getMediaType());
                     final String pathToEnumFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
                     FreeMarkerHelper.writeFile(classType, template, input, pathToEnumFiles);
+                }
+                if (classType.contains(ENUM)) {
+                    System.out.println("** " + classType);
                 }
             }
         }
@@ -127,7 +149,6 @@ public class Generator {
         final Set<String> longMediaTypes = mediaTypes.getLongNames();
         final String pathToViewFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
         final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
-        final String pathToEnumFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
         for (final ResponseDefinition response : responses) {
             if (longMediaTypes.contains(response.getMediaType())) {
                 List<String> imports = new ArrayList<>();
@@ -139,26 +160,31 @@ public class Generator {
                 final Map<String, Object> input = getViewInputData(GENERATED_VIEW_PACKAGE, imports, response.getName(), VIEW_BASE_CLASS, response.getFields(), links, response.getMediaType());
                 final String viewName = response.getName();
 
-                updateLatestMediaVersions(viewName, input, LATEST_VIEW_MEDIA_VERSIONS);
+                MediaVersionHelper.updateLatestMediaVersions(viewName, input, LATEST_VIEW_MEDIA_VERSIONS);
                 FreeMarkerHelper.writeFile(viewName, viewTemplate, input, pathToViewFiles);
                 NON_LINK_CLASS_NAMES.add(viewName);
                 NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewName));
             }
         }
 
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, pathToComponentFiles, pathToEnumFiles);
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, pathToComponentFiles);
 
         generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
     }
 
     private void generateComponentFile(final FieldDefinition field, final Template template, final String responseMediaType) throws Exception {
-        final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
+        final String fieldType = field.getType().replace(JAVA_LIST, "").replace(LIST, "").replace(">", "");
         final List<String> imports = new ArrayList<>();
         imports.add(CORE_CLASS_PATH_PREFIX + COMPONENT_BASE_CLASS);
         final List<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
-            final String subFieldType = subField.getType().replace(JAVA_LIST, "").replace(">", "");
-            if (subFieldType.contains(ENUM)) {
+            String subFieldType = subField.getType().replace(JAVA_LIST, "").replace(">", "");
+            if (subFieldType.contains(LIST)) {
+                subFieldType = subFieldType.replace(LIST, "");
+                imports.add(JAVA_LIST.replace("<", ""));
+            }
+            subFieldType = ResponseNameParser.getNonVersionedName(subFieldType);
+            if (subFieldType.contains(ENUM) && !CLASS_CATEGORIES.isNonEnumClassEndingInType(subFieldType)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + subFieldType);
             }
             if (!CLASS_CATEGORIES.isCommonType(subFieldType)) {
@@ -171,6 +197,7 @@ public class Generator {
         final String pathToComponentFiles = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
 
         MediaVersionHelper.updateLatestMediaVersions(fieldType, input, LATEST_COMPONENT_MEDIA_VERSIONS);
+
         FreeMarkerHelper.writeFile(fieldType, template, input, pathToComponentFiles);
         NON_LINK_CLASS_NAMES.add(fieldType);
         NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(fieldType));
@@ -194,8 +221,14 @@ public class Generator {
         inputData.put("imports", imports);
         inputData.put("className", className);
         inputData.put("baseClass", baseClass);
-        inputData.put("classFields", classFields);
         inputData.put("mediaType", mediaType);
+
+        for (final FieldDefinition classField : classFields) {
+            final String oldType = classField.getType();
+            final String newType = ResponseNameParser.getNonVersionedName(oldType);
+            classField.setType(newType);
+        }
+        inputData.put("classFields", classFields);
 
         return inputData;
     }
@@ -215,12 +248,15 @@ public class Generator {
 
     private List<String> getFieldImports(final List<String> imports, final ResponseDefinition response, final Template template) throws Exception {
         imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
+
         for (final FieldDefinition field : response.getFields()) {
-            final String fieldType = field.getType().replace(JAVA_LIST, "").replace(">", "");
-            if (fieldType.contains("Enum")) {
-                imports.add(GENERATED_CLASS_PATH_PREFIX + ENUMERATION + "." + fieldType);
+            String fieldType = field.getType().replace(JAVA_LIST, "").replace(LIST, "").replace(">", "");
+            fieldType = ResponseNameParser.getNonVersionedName(fieldType);
+            final String importPathPrefix = CLASS_CATEGORIES.isThrowaway(fieldType) ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
+            if (fieldType.contains(ENUM) && !CLASS_CATEGORIES.isNonEnumClassEndingInType(fieldType)) {
+                imports.add(importPathPrefix + ENUMERATION + "." + fieldType);
             } else if (!CLASS_CATEGORIES.isCommonType(fieldType)) {
-                imports.add(GENERATED_CLASS_PATH_PREFIX + COMPONENT + "." + fieldType);
+                imports.add(importPathPrefix + COMPONENT + "." + fieldType);
                 generateComponentFile(field, template, response.getMediaType());
             } else if (fieldType.equals("BigDecimal")) {
                 imports.add("java.math.BigDecimal");
@@ -241,13 +277,12 @@ public class Generator {
         for (final LinkDefinition rawLink : rawLinks) {
             final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName);
             try {
-                final String result_class = link.resultClass();
-                if (result_class != null) {
-                    LINK_CLASS_NAMES.add(link.resultClass());
+                final String resultClass = link.resultClass();
+                if (resultClass != null) {
+                    LINK_CLASS_NAMES.add(resultClass);
                 }
                 final String linkType = link.linkType();
                 final String linkImportType;
-                final String resultClass;
                 String resultImportType = null;
                 String resultImportPath = null;
 
@@ -264,7 +299,6 @@ public class Generator {
                 }
 
                 boolean shouldAddImport = true;
-                resultClass = link.resultClass();
                 if (resultClass != null) {
                     if (CLASS_CATEGORIES.isView(resultClass)) {
                         resultImportType = VIEW;
@@ -278,6 +312,8 @@ public class Generator {
 
                     if (CLASS_CATEGORIES.isManual(resultClass)) {
                         resultImportPath = MANUAL_CLASS_PATH_PREFIX;
+                    } else if (CLASS_CATEGORIES.isThrowaway(resultClass)) {
+                        resultImportPath = MANUAL_CLASS_PATH_PREFIX + "throwaway.generated.";
                     } else if (CLASS_CATEGORIES.isGenerated(resultClass)) {
                         resultImportPath = GENERATED_CLASS_PATH_PREFIX;
                     } else {
@@ -298,7 +334,7 @@ public class Generator {
         return new LinksAndImportsHelper(links, imports);
     }
 
-    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles, final String pathToEnumFiles)
+    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles)
         throws Exception {
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, LATEST_VIEW_MEDIA_VERSIONS.values());
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, LATEST_COMPONENT_MEDIA_VERSIONS.values());
@@ -328,7 +364,7 @@ public class Generator {
 
     private void generateDummyClassesForReferencedButUndefinedObjects(final Template randomTemplate) throws Exception {
         for (final String linkClassName : LINK_CLASS_NAMES) {
-            if (!CLASS_CATEGORIES.isManual(linkClassName) && !CLASS_CATEGORIES.isCommonType(linkClassName)) {
+            if (!CLASS_CATEGORIES.isManual(linkClassName) && !CLASS_CATEGORIES.isThrowaway(linkClassName) && !CLASS_CATEGORIES.isCommonType(linkClassName)) {
                 final Map<String, Object> randomInput = new HashMap<>();
                 randomInput.put(CLASS_NAME, linkClassName);
                 final String packageName;

@@ -20,21 +20,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen;
+package com.synopsys.integration.create.apigen.helper;
 
-import java.io.File;
+import java.util.List;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.synopsys.integration.create.apigen.helper.LinkHelper;
 
-@SpringBootApplication
-public class Application {
-    public static final String RESPONSE_TOKEN = "Id" + File.separator + "GET" + File.separator;
-    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.6.0";
-    public static final String PATH_TO_GENERATED_FILES_KEY = "BLACKDUCK_COMMON_API_BASE_DIRECTORY";
+public class LinksAndImportsHelper {
+    private final List<LinkHelper> links;
+    private final List<String> imports;
 
-    static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
+    public LinksAndImportsHelper(final List<LinkHelper> links, final List<String> imports) {
+        this.links = links;
+        this.imports = imports;
     }
+
+    public List<LinkHelper> getLinks() { return this.links; }
+
+    public List<String> getImports() { return this.imports; }
 
 }

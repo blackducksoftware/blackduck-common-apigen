@@ -30,7 +30,7 @@ import com.synopsys.integration.util.Stringable;
 
 public class FieldDefinition extends Stringable {
     private final String path;
-    private final String type;
+    private String type;
     private final boolean optional;
     private final List<String> allowedValues;
     private final List<FieldDefinition> fields;
@@ -54,6 +54,8 @@ public class FieldDefinition extends Stringable {
     public String getType() {
         return type;
     }
+
+    public void setType(String newType) { this.type = newType; }
 
     public boolean isOptional() {
         return optional;

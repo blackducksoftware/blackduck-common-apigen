@@ -10,6 +10,8 @@ import ${import};
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ${className} extends ${baseClass} <#if buildable??>implements Buildable </#if>{
+    public static final String mediaType = "${mediaType}";
+
 <#if hasLinksWithResults??>
     public static final Map<String, LinkResponse> links = new HashMap<>();
 </#if>
@@ -38,7 +40,6 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 <#list classFields as field>
     private ${field.type} ${field.path};
 </#list>
-    private String mediaType = "${mediaType}";
 
 <#if buildable??>
     public static ${className}Builder newBuilder() {
