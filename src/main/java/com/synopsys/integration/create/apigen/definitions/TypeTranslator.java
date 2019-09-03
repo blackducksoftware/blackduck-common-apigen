@@ -37,20 +37,29 @@ public class TypeTranslator {
         final Map<String, String> classTranslations = new HashMap<>();
 
         // swaggerName, api_genName
+        classTranslations.put("ActivityDataView", "ProjectVersionComponentViewActivityData");
         classTranslations.put("ComplexLicenseView", "ProjectVersionViewLicenseLicense");
         classTranslations.put("CustomFieldType", "CustomFieldTypeType");
+        classTranslations.put("CustomFieldType", "ComponentCustomFieldTypeType");
+        classTranslations.put("CustomFieldType", "ProjectCustomFieldTypeType");
+        classTranslations.put("CustomFieldType", "ProjectVersionCustomFieldTypeType");
+        classTranslations.put("CustomFieldType", "ProjectVersionComponentCustomFieldTypeType");
+        classTranslations.put("CustomFieldView", "ProjectVersionCustomFieldView");
+        classTranslations.put("CustomFieldView", "ProjectVersionComponentVersionCustomFieldView");
         classTranslations.put("LicenseFamilySummaryView", "ProjectVersionViewLicenseLicenseLicenseFamilySummary");
+        classTranslations.put("OriginSourceType", "ComponentSourceType");
         classTranslations.put("PolicyRuleExpressionSetView", "PolicyRuleViewExpression");
         classTranslations.put("PolicyRuleExpressionParameter", "PolicyRuleViewExpressionExpressionParameters");
         classTranslations.put("PolicyRuleExpressionView", "PolicyRuleViewExpressionExpression");
+        classTranslations.put("ReportFormatType", "ProjectVersionReportReportFormatType");
+        classTranslations.put("ReportFormatType", "ReportReportFormatType");
+        classTranslations.put("RiskProfileView", "ProjectVersionComponentViewActivityRiskProfile");
+        classTranslations.put("RiskProfileView", "ProjectVersionComponentViewLicenseRiskProfile");
+        classTranslations.put("RiskProfileView", "ProjectVersionComponentViewOperationalRiskProfile");
+        classTranslations.put("ReviewedDetails", "ProjectVersionComponentViewReviewedDetails");
         classTranslations.put("RoleAssignmentView", "UserRoleAssignmentView");
         classTranslations.put("VersionBomLicenseView", "ProjectVersionComponentViewLicenses");
-        classTranslations.put("", "");
-        classTranslations.put("", "");
-        classTranslations.put("", "");
-        classTranslations.put("", "");
-        classTranslations.put("", "");
-        classTranslations.put("", "");
+        classTranslations.put("VersionBomComponentView", "ProjectVersionComponentView");
 
         return classTranslations;
     }
@@ -67,6 +76,10 @@ public class TypeTranslator {
             }
         }
         return null;
+    }
+
+    public String getApiGenClassName(final String swaggerName) {
+        return classTranslations.get(swaggerName);
     }
 
     private class FieldTranslation {

@@ -233,19 +233,44 @@ public class ClassCategories {
     private Set<String> populateGenerated() {
         final Set<String> generatedClasses = new HashSet<>();
 
-        generatedClasses.add("AssignedUserGroupView");
+        // component
+        generatedClasses.add("PolicyRuleViewExpression");
+        generatedClasses.add("PolicyRuleViewExpressionExpression");
+        generatedClasses.add("PolicyRuleViewExpressionParameters");
+        generatedClasses.add("ProjectVersionComponentViewLicenses");
+        generatedClasses.add("ProjectVersionViewLicense");
+        generatedClasses.add("ProjectVersionViewLicenseLicense");
+        generatedClasses.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary");
+
+        // enumeration
+        generatedClasses.add("ComponentApprovalStatusType");
+        generatedClasses.add("ComponentCustomFieldTypeType");
+        generatedClasses.add("ComponentSourceType");
+        generatedClasses.add("CustomFieldTypeType");
+        generatedClasses.add("PolicyRuleSeverityType");
+        generatedClasses.add("ProjectCloneCategoriesType");
+        generatedClasses.add("ProjectCustomFieldTypeType");
+        generatedClasses.add("ProjectVersionComponentCustomFieldTypeType");
+        generatedClasses.add("ProjectVersionComponentVersionCustomFieldTypeType");
+        generatedClasses.add("ProjectVersionCustomFieldTypeType");
+
+        // views
         generatedClasses.add("CodeLocationView");
-        generatedClasses.add("CodeLocation4View");
         generatedClasses.add("CustomFieldView");
-        generatedClasses.add("CustomField4View");
-        generatedClasses.add("HomepageView");
-        generatedClasses.add("LogoView");
-        generatedClasses.add("OpenHubView");
+        generatedClasses.add("CustomFieldView");
+        generatedClasses.add("PolicyRuleView");
+        generatedClasses.add("ProjectCustomFieldView");
         generatedClasses.add("ProjectJournalView");
         generatedClasses.add("ProjectMappingView");
+        generatedClasses.add("ProjectVersionComponentCustomFieldView");
+        generatedClasses.add("ProjectVersionComponentVersionCustomFieldView");
         generatedClasses.add("ProjectView");
         generatedClasses.add("ProjectVersionView");
-        generatedClasses.add("ReportView");
+        generatedClasses.add("ProjectVersionComponentView");
+        generatedClasses.add("RoleView");
+        generatedClasses.add("UserView");
+        generatedClasses.add("UserGroupView");
+        generatedClasses.add("UserRoleAssignmentView");
         generatedClasses.add("VersionBomAttachmentView");
 
         return generatedClasses;
@@ -253,6 +278,19 @@ public class ClassCategories {
 
     private Set<String> populateManual() {
         final Set<String> manualClasses = new HashSet<>();
+
+        // core
+        manualClasses.add("BlackDuckComponent");
+        manualClasses.add("BlackDuckResponse");
+        manualClasses.add("BlackDuckPath");
+        manualClasses.add("BlackDuckPathMultipleResponses");
+        manualClasses.add("BlackDuckPathSingleResponse");
+        manualClasses.add("BlackDuckResponse");
+        manualClasses.add("BlackDuckView");
+        manualClasses.add("LinkMultipleResponses");
+        manualClasses.add("LinkResponse");
+        manualClasses.add("LinkStringResponse");
+        manualClasses.add("LinkSingleResponse");
 
         // Component
         manualClasses.add("AffectedProjectVersion");
@@ -272,6 +310,10 @@ public class ClassCategories {
         // Contract
         manualClasses.add("NotificationContentData");
         manualClasses.add("NotificationViewData");
+
+        // discovery
+        manualClasses.add("ApiDiscovery");
+
         // Enumeration
         manualClasses.add("LicenseLimitType");
         manualClasses.add("OperationType");

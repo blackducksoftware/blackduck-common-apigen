@@ -39,7 +39,7 @@ public class DirectoryWalker {
         this.gson = gson;
     }
 
-    public List<ResponseDefinition> parseDirectoryForObjects(final boolean showOutput) {
+    public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput) {
         final ResponseParser responseParser = new ResponseParser();
         final FieldsParser fieldsParser = new FieldsParser();
         final LinksParser linksParser = new LinksParser();

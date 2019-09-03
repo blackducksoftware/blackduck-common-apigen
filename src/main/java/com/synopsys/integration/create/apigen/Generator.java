@@ -95,7 +95,7 @@ public class Generator {
         final URL rootDirectory = Generator.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForObjects(false);
+        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false);
 
         // ********* Where does this go??? **********
         for (final ResponseDefinition response : responses) {
