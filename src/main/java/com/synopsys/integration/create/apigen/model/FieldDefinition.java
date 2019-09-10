@@ -26,9 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.synopsys.integration.util.Stringable;
-
-public class FieldDefinition extends Stringable {
+public class FieldDefinition extends Definition {
     private final String path;
     private String type;
     private final boolean optional;
@@ -55,7 +53,7 @@ public class FieldDefinition extends Stringable {
         return type;
     }
 
-    public void setType(String newType) { this.type = newType; }
+    public void setType(final String newType) { this.type = newType; }
 
     public boolean isOptional() {
         return optional;

@@ -11,6 +11,7 @@ public class TypeTranslator {
     private Map<String, String> classTranslations = new HashMap<>();
 
     public TypeTranslator() {
+        // FIXME - create getInstance method (there should only be one instance of TypeTranslator)
         this.fieldTranslations = populateFieldTranslations();
         this.classTranslations = populateClassTranslations();
     }

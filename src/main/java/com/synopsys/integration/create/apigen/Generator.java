@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.create.apigen;
 
+import static java.lang.System.exit;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 public class Generator {
+    // Evaluate the scope of these variables!
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
     public static final String CORE_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.core.";
     public static final String MANUAL_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.manual.";
@@ -69,16 +72,16 @@ public class Generator {
     public static final String JAVA_LIST = "java.util.List<";
     public static final String LIST = "List<";
     public static final String CLASS_NAME = "className";
-    public static String BLACKDUCK_COMMON_API_BASE_DIRECTORY;
+    public static final String BLACKDUCK_COMMON_API_BASE_DIRECTORY = FreeMarkerHelper.getBaseDirectory().getAbsolutePath();
     public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
     public static final String VIEW_DIRECTORY_SUFFIX = "/view";
     public static final String RESPONSE_DIRECTORY_SUFFIX = "/response";
     public static final String COMPONENT_DIRECTORY_SUFFIX = "/component";
 
-    public static Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
-    public static Set<String> LINK_CLASS_NAMES = new HashSet<>();
-    public static List<String> RANDOM_LINK_CLASS_NAMES = new ArrayList<>();
-    public static Map<String, String> NULL_LINK_RESULT_CLASSES = new HashMap<>();
+    public static final Set<String> NON_LINK_CLASS_NAMES = new HashSet<>();
+    public static final Set<String> LINK_CLASS_NAMES = new HashSet<>();
+    public static final List<String> RANDOM_LINK_CLASS_NAMES = new ArrayList<>();
+    public static final Map<String, String> NULL_LINK_RESULT_CLASSES = new HashMap<>();
 
     private static final Map<String, MediaVersionHelper> LATEST_VIEW_MEDIA_VERSIONS = new HashMap<>();
     private static final Map<String, MediaVersionHelper> LATEST_COMPONENT_MEDIA_VERSIONS = new HashMap<>();
@@ -89,15 +92,16 @@ public class Generator {
     public static void main(final String[] args) throws Exception {
         final Generator Generator = new Generator();
         final FreeMarkerHelper freeMarkerHelper = new FreeMarkerHelper();
-        BLACKDUCK_COMMON_API_BASE_DIRECTORY = freeMarkerHelper.getBaseDirectory().getAbsolutePath();
         final Configuration config = freeMarkerHelper.configureFreeMarker();
 
         final URL rootDirectory = Generator.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false);
 
-        // ********* Where does this go??? **********
+        //debug
+        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(true, false);
+        exit(0);
+
         for (final ResponseDefinition response : responses) {
             final String responseName = ResponseNameParser.getNonVersionedName(response.getName());
             final List<FieldDefinition> missingFields = Generator.MISSING_FIELDS_AND_LINKS.getMissingFields(responseName);

@@ -25,9 +25,7 @@ package com.synopsys.integration.create.apigen.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.synopsys.integration.util.Stringable;
-
-public class ResponseDefinition extends Stringable {
+public class ResponseDefinition extends Definition {
     private final String responseSpecificationPath;
     private final String name;
     private final String mediaType;

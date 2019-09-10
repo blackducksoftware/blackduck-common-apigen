@@ -22,7 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.model;
 
-public class LinkDefinition {
+public class LinkDefinition extends ThirdPartyDefinition {
 
     private final String rel;
     private final boolean optional;

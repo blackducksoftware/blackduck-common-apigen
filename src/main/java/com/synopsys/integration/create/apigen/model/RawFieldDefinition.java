@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RawFieldDefinition {
+public class RawFieldDefinition extends ThirdPartyDefinition {
 
     private final String path;
     private final String type;

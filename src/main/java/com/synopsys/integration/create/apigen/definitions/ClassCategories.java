@@ -66,6 +66,7 @@ public class ClassCategories {
         views.add("ExternalExtensionView");
         views.add("FilterView");
         views.add("IssueView");
+        views.add("JobView");
         views.add("LicenseFamilyView");
         views.add("LicenseTermCategoryView");
         views.add("LicenseTermView");
@@ -84,6 +85,7 @@ public class ClassCategories {
         views.add("ProjectVersionComponentVersionCustomFieldView");
         views.add("ProjectVersionComponentView");
         views.add("ProjectVersionCustomFieldView");
+        views.add("ProjectVersionReportView");
         views.add("ProjectVersionView");
         views.add("ProjectView");
         views.add("RegistrationAttributesInternalView");
@@ -93,6 +95,7 @@ public class ClassCategories {
         views.add("RiskProfileView");
         views.add("RoleView");
         views.add("RoleAssignmentView");
+        views.add("ScanView");
         views.add("TagView");
         views.add("UserGroupView");
         views.add("UserRoleAssignmentView");
@@ -180,6 +183,8 @@ public class ClassCategories {
         components.add("LicenseFamilySummaryView");
         components.add("LicenseFamilyRiskRuleView");
         components.add("LicenseTermCategorySummaryView");
+        components.add("LicenseViewCreatedBy");
+        components.add("LicenseViewUpdatedBy");
         components.add("NameValuePairView");
         components.add("PolicyRuleViewExpression"); //
         components.add("PolicyRuleViewExpressionParameter");
@@ -192,6 +197,13 @@ public class ClassCategories {
         components.add("ProjectRiskProfile");
         components.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary"); //
         components.add("ProjectVersionComponentViewLicenses"); //
+        components.add("ProjectVersionComponentViewActivityData");
+        components.add("ProjectVersionComponentViewLicenseRiskProfile");
+        components.add("ProjectVersionComponentViewReviewedDetails");
+        components.add("ProjectVersionComponentViewReviewedDetailsReviewingUser");
+        components.add("ProjectVersionComponentViewOperationalRiskProfile");
+        components.add("ProjectVersionComponentViewSecurityRiskProfile");
+        components.add("ProjectVersionComponentViewVersionRiskProfile");
         components.add("ProjectVersionViewLicense"); //
         components.add("ProjectVersionViewLicenseLicense"); //
         components.add("ProjectVersionRequest");

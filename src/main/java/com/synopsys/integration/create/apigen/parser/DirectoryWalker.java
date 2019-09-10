@@ -23,9 +23,11 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -39,10 +41,9 @@ public class DirectoryWalker {
         this.gson = gson;
     }
 
-    public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput) {
+    public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
         final ResponseParser responseParser = new ResponseParser();
-        final FieldsParser fieldsParser = new FieldsParser();
-        final LinksParser linksParser = new LinksParser();
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor();
 
         // Get response-specification.json files from directory
         final List<ResponseDefinition> responseDefinitions = responseParser.parseResponses(rootDirectory);
@@ -51,15 +52,20 @@ public class DirectoryWalker {
         for (final ResponseDefinition response : responseDefinitions) {
             final String absolutePath = rootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             final File responseSpecificationFile = new File(absolutePath);
+            final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
 
-            final List<RawFieldDefinition> fields = fieldsParser.getFieldsAsRawFieldDefinitions(gson, responseSpecificationFile);
-            final List<LinkDefinition> links = linksParser.getLinksAsLinkDefinition(gson, responseSpecificationFile);
+            final List<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+            final List<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
 
-            response.addFields(fieldsParser.parseFieldDefinitions(response.getName(), fields));
+            response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
             if (showOutput) {
                 System.out.println("***********************\n" + gson.toJson(response));
             }
+        }
+        // Write output of FieldsParser to test data file
+        if (controlRun) {
+            FieldsParserTestDataCollector.writeControlData(gson, responseDefinitions);
         }
         return responseDefinitions;
     }

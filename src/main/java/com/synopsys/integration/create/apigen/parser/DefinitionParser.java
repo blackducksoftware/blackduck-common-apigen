@@ -33,31 +33,35 @@ import org.apache.commons.io.FileUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.synopsys.integration.create.apigen.model.LinkDefinition;
+import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
+import com.synopsys.integration.create.apigen.model.ThirdPartyDefinition;
 
-public class LinksParser {
+public class DefinitionParser {
+    private final Gson gson;
+    private final File definitionFile;
 
-    private final String LINKS = "links";
+    public DefinitionParser(final Gson gson, final File definitionFile) {
+        this.gson = gson;
+        this.definitionFile = definitionFile;
+    }
 
-    public LinksParser() { }
-
-    public List<LinkDefinition> getLinksAsLinkDefinition(final Gson gson, final File file) {
+    public <T extends ThirdPartyDefinition> List<T> getDefinitions(final DefinitionParseParameters<T> parameters) {
         String jsonText = null;
         try {
-            jsonText = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            jsonText = FileUtils.readFileToString(definitionFile, StandardCharsets.UTF_8);
         } catch (final IOException e) {
             e.printStackTrace();
         }
 
         final JsonObject json = gson.fromJson(jsonText, JsonObject.class);
-        final List<LinkDefinition> linkDefinitions = new ArrayList<>();
-        if (json != null && json.has(LINKS)) {
-            for (final JsonElement jsonElement : json.getAsJsonArray(LINKS)) {
-                final LinkDefinition linkDefinition = gson.fromJson(jsonElement, LinkDefinition.class);
-                linkDefinitions.add(linkDefinition);
+        final List<T> definitions = new ArrayList<>();
+        if (json != null && json.has(parameters.getJsonField())) {
+            for (final JsonElement jsonElement : json.getAsJsonArray(parameters.getJsonField())) {
+                final T definition = gson.fromJson(jsonElement, parameters.getResultClass());
+                definitions.add(definition);
             }
         }
-        return linkDefinitions;
+        return definitions;
     }
 
 }
