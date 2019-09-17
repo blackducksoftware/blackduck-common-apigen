@@ -62,8 +62,8 @@ public class ResponseParser {
                 final ResponseNameParser responseNameParser = new ResponseNameParser();
                 final String responseName = responseNameParser.getResponseName(responseRelativePath, multipleResponses);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
-
-                responseDefinitions.add(new ResponseDefinition(responseRelativePath, responseName, responseMediaType));
+                final ResponseDefinition response = new ResponseDefinition(responseRelativePath, responseName, responseMediaType);
+                responseDefinitions.add(response);
 
             } else if (child.isDirectory()) {
                 responseDefinitions.addAll(parseResponses(child, prefixLength));

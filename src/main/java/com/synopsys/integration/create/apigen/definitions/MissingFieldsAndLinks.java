@@ -20,9 +20,9 @@ public class MissingFieldsAndLinks {
         final Map<String, MissingFieldAndLinkHelper> missingFieldAndLinkMap = new HashMap<>();
 
         // PolicyRuleViewExpression
-        final MissingFieldAndLinkHelper prveFieldsAndLinks = new MissingFieldAndLinkHelper();
-        prveFieldsAndLinks.addField(new FieldDefinition("expressions", "List<PolicyRuleViewExpressionExpression>", false));
-        missingFieldAndLinkMap.put("PolicyRuleViewExpression", prveFieldsAndLinks);
+        //final MissingFieldAndLinkHelper prveFieldsAndLinks = new MissingFieldAndLinkHelper();
+        //prveFieldsAndLinks.addField(new FieldDefinition("expression", "PolicyRuleViewExpressionExpression", false));
+        //missingFieldAndLinkMap.put("PolicyRuleViewExpression", prveFieldsAndLinks);
 
         // UserView
         final MissingFieldAndLinkHelper uvFieldsAndLinks = new MissingFieldAndLinkHelper();

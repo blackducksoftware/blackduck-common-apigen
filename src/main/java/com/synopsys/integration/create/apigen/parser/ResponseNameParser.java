@@ -102,10 +102,14 @@ public class ResponseNameParser {
 
     public static String getMediaVersion(final String responseName) {
         for (final String digit : DIGIT_STRINGS) {
-            if (responseName.endsWith(digit)) {
+            if (responseName.contains(digit)) {
                 return digit;
             }
         }
         return null;
+    }
+
+    public static String stripListNotation(final String responseName) {
+        return responseName.replace("java.util.List<", "").replace(">", "");
     }
 }

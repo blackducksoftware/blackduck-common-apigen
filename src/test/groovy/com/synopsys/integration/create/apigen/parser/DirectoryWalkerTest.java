@@ -17,19 +17,21 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.synopsys.integration.create.apigen.Application;
 
-public class FieldsParserTest {
+public class DirectoryWalkerTest {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final URL rootDirectory = FieldsParserTest.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
+    private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
 
-    public FieldsParserTest() throws URISyntaxException { }
+    public DirectoryWalkerTest() throws URISyntaxException { }
 
     @Test
     public void test() throws IOException, URISyntaxException {
         FieldsParserTestDataCollector.writeTestData(gson, directoryWalker.parseDirectoryForResponses(false, false));
-        final File controlFile = new File(FieldsParserTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
-        final File testFile = new File(FieldsParserTest.class.getClassLoader().getResource("FieldsParserTestTestingData.txt").toURI());
+        final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
+        final File testFile = new File(Application.PATH_TO_TEST_RESOURCES + "FieldsParserTestTestingData.txt");
+        System.out.println(testFile.lastModified());
+
         String controlData = null;
         String testData = null;
         try {
@@ -42,11 +44,13 @@ public class FieldsParserTest {
         final JsonArray control = gson.fromJson(controlData, JsonElement.class).getAsJsonArray();
         final JsonArray test = gson.fromJson(testData, JsonElement.class).getAsJsonArray();
 
-        for (final JsonElement element : control) {
-            assertTrue(element.toString(), test.contains(element));
-        }
         for (final JsonElement element : test) {
             assertTrue(element.toString(), control.contains(element));
+        }
+
+        for (final JsonElement element : control) {
+            //System.out.println(gson.toJson(element));
+            assertTrue(element.toString(), test.contains(element));
         }
     }
 }

@@ -1,0 +1,30 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "approvalStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The level of approval given for use of the component.",
+    "allowedValues" : [ "UNREVIEWED", "APPROVED", "REJECTED", "LIMITED_APPROVAL", "DEPRECATED" ]
+  }, {
+    "path" : "notes",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Any user-specified notes on the component"
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the component"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Summary of what the component represents in terms of functionality and use"
+  }, {
+    "path" : "url",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Resource where more information on the component may be found"
+  } ]
+}

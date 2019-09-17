@@ -184,20 +184,26 @@ public class ClassCategories {
         components.add("LicenseFamilyRiskRuleView");
         components.add("LicenseTermCategorySummaryView");
         components.add("LicenseViewCreatedBy");
+        components.add("LicenseViewLicenseFamily");
+        components.add("LicenseViewStatusUpdatedBy");
         components.add("LicenseViewUpdatedBy");
         components.add("NameValuePairView");
         components.add("PolicyRuleViewExpression"); //
         components.add("PolicyRuleViewExpressionParameter");
         components.add("PolicyRuleViewExpressionExpression"); //
+        components.add("PolicyRuleViewExpressionExpressions");
         components.add("PolicyRuleViewExpressionExpressionParameters"); //
+        components.add("PolicyRuleViewExpressionExpressionsParameters");
         components.add("PolicyRuleExpressionSetView");
         components.add("PolicyRuleExpressionView");
         components.add("PolicyStatusSummary");
         components.add("ProjectData");
         components.add("ProjectRiskProfile");
         components.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary"); //
+        components.add("ProjectVersionViewLicenseLicensesLicenseFamilySummary");
         components.add("ProjectVersionComponentViewLicenses"); //
         components.add("ProjectVersionComponentViewActivityData");
+        components.add("ProjectVersionComponentViewActivityRiskProfile");
         components.add("ProjectVersionComponentViewLicenseRiskProfile");
         components.add("ProjectVersionComponentViewReviewedDetails");
         components.add("ProjectVersionComponentViewReviewedDetailsReviewingUser");
@@ -206,6 +212,7 @@ public class ClassCategories {
         components.add("ProjectVersionComponentViewVersionRiskProfile");
         components.add("ProjectVersionViewLicense"); //
         components.add("ProjectVersionViewLicenseLicense"); //
+        components.add("ProjectVersionViewLicenseLicenses");
         components.add("ProjectVersionRequest");
         components.add("RegistrationAttributeView");
         components.add("RegistrationFeatureView");
@@ -493,6 +500,7 @@ public class ClassCategories {
         commonTypes.add("Integer");
         commonTypes.add("Boolean");
         commonTypes.add("java.util.Date");
+        commonTypes.add("Number");
 
         return commonTypes;
     }

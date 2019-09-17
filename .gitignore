@@ -13,3 +13,5 @@ out/
 # build tool
 .gradle/
 build/
+
+missing_stuff1.txt

@@ -22,6 +22,16 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
+/*
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.ARRAY;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.BIG_DECIMAL;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.DATA;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.NUMBER;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.OBJECT;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.STRING;
+
+ */
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -56,9 +66,9 @@ public class DirectoryWalker {
 
             final List<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
             final List<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
-
             response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
+
             if (showOutput) {
                 System.out.println("***********************\n" + gson.toJson(response));
             }
@@ -69,4 +79,5 @@ public class DirectoryWalker {
         }
         return responseDefinitions;
     }
+
 }

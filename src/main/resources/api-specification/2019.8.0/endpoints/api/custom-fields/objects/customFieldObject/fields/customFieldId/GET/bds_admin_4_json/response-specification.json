@@ -1,0 +1,59 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date/time when the custom field was created"
+  }, {
+    "path" : "updatedBy",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The user who updated the custom field, as described in <<userSummary,User Summary>>"
+  }, {
+    "path" : "createdBy",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The user who created the custom field, as described in <<userSummary,User Summary>>"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : true,
+    "description" : "A more detailed description of the custom field"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the custom field is active or not. Inactive custom fields are not displayed on their target objects"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "position",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The position the custom field will appear in a list of custom fields"
+  }, {
+    "path" : "label",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the custom field"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The datatype of the custom field.",
+    "allowedValues" : [ "TEXT", "TEXTAREA", "DROPDOWN", "RADIO", "MULTISELECT", "BOOLEAN", "DATE" ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date/time when the custom field was last updated"
+  } ],
+  "links" : [ {
+    "rel" : "custom-field-option-list",
+    "optional" : true,
+    "description" : "Resource listing options for the custom field. Will only be present if the custom field is of a type that supports options"
+  } ]
+}
