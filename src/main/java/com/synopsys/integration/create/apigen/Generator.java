@@ -46,7 +46,7 @@ import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
-import com.synopsys.integration.create.apigen.parser.ResponseNameParser;
+import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -98,7 +98,7 @@ public class Generator {
         //exit(0);
 
         for (final ResponseDefinition response : responses) {
-            final String responseName = ResponseNameParser.getNonVersionedName(response.getName());
+            final String responseName = NameParser.getNonVersionedName(response.getName());
             final List<FieldDefinition> missingFields = Generator.MISSING_FIELDS_AND_LINKS.getMissingFields(responseName);
             if (missingFields.size() > 0) {
                 response.addFields(missingFields);
@@ -166,7 +166,7 @@ public class Generator {
                 MediaVersionHelper.updateLatestMediaVersions(viewName, input, LATEST_VIEW_MEDIA_VERSIONS);
                 FreeMarkerHelper.writeFile(viewName, viewTemplate, input, pathToViewFiles);
                 NON_LINK_CLASS_NAMES.add(viewName);
-                NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(viewName));
+                NON_LINK_CLASS_NAMES.add(NameParser.getNonVersionedName(viewName));
             }
         }
 
@@ -188,7 +188,7 @@ public class Generator {
             } else if (subFieldType.contains(UtilStrings.BIG_DECIMAL)) {
                 imports.add("java.math.BigDecimal");
             }
-            subFieldType = ResponseNameParser.getNonVersionedName(subFieldType);
+            subFieldType = NameParser.getNonVersionedName(subFieldType);
             if (subFieldType.contains(UtilStrings.ENUM) && !CLASS_CATEGORIES.isNonEnumClassEndingInType(subFieldType)) {
                 imports.add(GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION + "." + subFieldType);
             } else if (!CLASS_CATEGORIES.isCommonType(subFieldType)) {
@@ -204,7 +204,7 @@ public class Generator {
 
         FreeMarkerHelper.writeFile(fieldType, template, input, pathToComponentFiles);
         NON_LINK_CLASS_NAMES.add(fieldType);
-        NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(fieldType));
+        NON_LINK_CLASS_NAMES.add(NameParser.getNonVersionedName(fieldType));
     }
 
     private Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues, final String mediaType) {
@@ -229,7 +229,7 @@ public class Generator {
 
         for (final FieldDefinition classField : classFields) {
             final String oldType = classField.getType();
-            final String newType = ResponseNameParser.getNonVersionedName(oldType);
+            final String newType = NameParser.getNonVersionedName(oldType);
             classField.setType(newType);
         }
         inputData.put("classFields", classFields);
@@ -255,7 +255,7 @@ public class Generator {
 
         for (final FieldDefinition field : response.getFields()) {
             String fieldType = field.getType().replace(JAVA_LIST, "").replace(LIST, "").replace(">", "");
-            fieldType = ResponseNameParser.getNonVersionedName(fieldType);
+            fieldType = NameParser.getNonVersionedName(fieldType);
             final String importPathPrefix = CLASS_CATEGORIES.isThrowaway(fieldType) ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
             if (fieldType.contains(UtilStrings.ENUM) && !CLASS_CATEGORIES.isNonEnumClassEndingInType(fieldType)) {
                 imports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
@@ -362,7 +362,7 @@ public class Generator {
             input.put("importPath", importPath);
             FreeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
             NON_LINK_CLASS_NAMES.add(className);
-            NON_LINK_CLASS_NAMES.add(ResponseNameParser.getNonVersionedName(className));
+            NON_LINK_CLASS_NAMES.add(NameParser.getNonVersionedName(className));
         }
     }
 

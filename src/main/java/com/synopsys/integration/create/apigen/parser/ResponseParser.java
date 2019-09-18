@@ -57,14 +57,20 @@ public class ResponseParser {
 
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
+            /*
+                As of 9/17/19 the Generator does not look at response-specification files that don't have a path that contains <...>Id/GET/... (ie. parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)
+                This algorithm causes it to miss spec files that detail relevant objects, but do not have the token in their path
+                To resolve this, the token requirement has been edited
+                Now, ResponseParser will look at all response-specification.json files, and only discard them if they are 'dud' responses (only contain fields "items[]", "_meta", and "totalCount")
+                The issue this raises is the potential for duplicate names of files...
+             */
             if (child.getName().equals(RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
-                final ResponseNameParser responseNameParser = new ResponseNameParser();
-                final String responseName = responseNameParser.getResponseName(responseRelativePath, multipleResponses);
+                final NameParser nameParser = new NameParser();
+                final String responseName = nameParser.getResponseNameV2(responseRelativePath, multipleResponses);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
                 final ResponseDefinition response = new ResponseDefinition(responseRelativePath, responseName, responseMediaType);
                 responseDefinitions.add(response);
-
             } else if (child.isDirectory()) {
                 responseDefinitions.addAll(parseResponses(child, prefixLength));
             }

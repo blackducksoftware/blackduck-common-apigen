@@ -34,6 +34,7 @@ import static com.synopsys.integration.create.apigen.helper.UtilStrings.STRING;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -54,9 +55,11 @@ public class DirectoryWalker {
     public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
         final ResponseParser responseParser = new ResponseParser();
         final FieldDefinitionProcessor processor = new FieldDefinitionProcessor();
+        boolean actuallyShowOutput = showOutput;
 
         // Get response-specification.json files from directory
         final List<ResponseDefinition> responseDefinitions = responseParser.parseResponses(rootDirectory);
+        final List<ResponseDefinition> finalResponseDefinitions = new ArrayList<>();
 
         // For each response file, parse the JSON for FieldDefinition objects
         for (final ResponseDefinition response : responseDefinitions) {
@@ -69,15 +72,24 @@ public class DirectoryWalker {
             response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
 
-            if (showOutput) {
+            // Filter out 'Dud' responses
+            if (DudResponseIdentifier.isDudResponse2(response)) {
+                actuallyShowOutput = false;
+            } else {
+                finalResponseDefinitions.add(response);
+            }
+
+            if (actuallyShowOutput) {
                 System.out.println("***********************\n" + gson.toJson(response));
             }
+            actuallyShowOutput = showOutput;
+
         }
         // Write output of FieldsParser to test data file
         if (controlRun) {
             FieldsParserTestDataCollector.writeControlData(gson, responseDefinitions);
         }
-        return responseDefinitions;
+        return finalResponseDefinitions;
     }
 
 }

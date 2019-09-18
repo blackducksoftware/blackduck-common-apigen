@@ -52,31 +52,39 @@ public class ClassCategories {
 
         views.add("AssignedUserView");
         views.add("CodeLocationView");
-        views.add("CodeLocation4View");
+        views.add("CodelocationsCodelocationView"); //
         views.add("ComplexLicenseView");
         views.add("ComponentCustomFieldView");
         views.add("ComponentDetailsView");
         views.add("ComponentSearchResultView");
         views.add("ComponentVersionView");
         views.add("ComponentView");
+        views.add("ComponentsComponentView"); //
+        views.add("CurrentUserView");
         views.add("CustomFieldObjectView");
         views.add("CustomFieldView");
+        views.add("FieldsCustomFieldView"); //
+        views.add("CustomFieldsCustomFieldView"); //
         views.add("ExternalExtensionConfigValueView");
         views.add("ExternalExtensionUserView");
         views.add("ExternalExtensionView");
         views.add("FilterView");
         views.add("IssueView");
         views.add("JobView");
+        views.add("JobsJobView"); //
         views.add("LicenseFamilyView");
         views.add("LicenseTermCategoryView");
         views.add("LicenseTermView");
+        views.add("LicenseTermsLicenseTermView"); //
         views.add("LicenseTextView");
         views.add("LicenseView");
+        views.add("LicensesLicenseView"); //
         views.add("MatchedFileView");
         views.add("NotificationView");
         views.add("NotificationUserView");
         views.add("OriginView");
         views.add("PolicyRuleView");
+        views.add("PolicyRulesPolicyruleView"); //
         views.add("PolicyStatusView");
         views.add("ProjectCustomFieldView");
         views.add("ProjectDashboardRiskAmalgamation");
@@ -87,25 +95,36 @@ public class ClassCategories {
         views.add("ProjectVersionCustomFieldView");
         views.add("ProjectVersionReportView");
         views.add("ProjectVersionView");
+        views.add("VersionsProjectversionView"); //
         views.add("ProjectView");
+        views.add("ProjectsProjectView"); //
         views.add("RegistrationAttributesInternalView");
         views.add("RegistrationSummaryInternalView");
         views.add("RegistrationView");
         views.add("ReportView");
+        views.add("ReportsReportView"); //
+        views.add("LicenseReportsReportView");  //
+        views.add("ReportContentsView"); //
         views.add("RiskProfileView");
         views.add("RoleView");
+        views.add("RolesRoleView"); //
         views.add("RoleAssignmentView");
+        views.add("RolesRoleassignmentView"); //
         views.add("ScanView");
+        views.add("ScanSummariesScanView"); //
         views.add("TagView");
         views.add("UserGroupView");
+        views.add("UsergroupsUsergroupView"); //
         views.add("UserRoleAssignmentView");
         views.add("UserView");
+        views.add("UsersUserView"); //
         views.add("VersionBomComponentView");
         views.add("VersionBomPolicyRoleView");
         views.add("VersionBomPolicyStatusView");
         views.add("VulnerabilityView");
         views.add("VulnerabilityWithRemediationView");
         views.add("VulnerableComponentView");
+        views.add("VulnerabilityReportsReportView"); //
 
         return views;
     }
@@ -156,6 +175,15 @@ public class ClassCategories {
         components.add("CodeLocationProgress");
         components.add("CommentUserData");
         components.add("ComponentHit");
+        components.add("ComponentViewLicenses");
+        components.add("ComponentViewActivityRiskProfile"); //
+        components.add("ComponentViewActivityData"); //
+        components.add("ComponentViewLicenseRiskProfile"); //
+        components.add("ComponentViewOperationalRiskProfile"); //
+        components.add("ComponentViewSecurityRiskProfile"); //
+        components.add("ComponentViewReviewedDetails"); //
+        components.add("ComponentViewReviewedDetailsReviewingUser"); //
+        components.add("ComponentViewVersionRiskProfile"); //
         components.add("ComplexLicenseRequest");
         components.add("ComponentVersionPolicyViolationDetails");
         components.add("CompositePathWithArchiveContext");
@@ -183,24 +211,31 @@ public class ClassCategories {
         components.add("LicenseFamilySummaryView");
         components.add("LicenseFamilyRiskRuleView");
         components.add("LicenseTermCategorySummaryView");
+        components.add("LicensesLicenseViewCreatedBy");
         components.add("LicenseViewCreatedBy");
         components.add("LicenseViewLicenseFamily");
+        components.add("LicensesLicenseViewLicenseFamily"); //
+        components.add("LicensesLicenseViewUpdatedBy");
         components.add("LicenseViewStatusUpdatedBy");
+        components.add("LicensesLicenseViewStatusUpdatedBy"); //
         components.add("LicenseViewUpdatedBy");
         components.add("NameValuePairView");
+        components.add("PolicyRulesPolicyruleViewExpressionExpressions"); //
         components.add("PolicyRuleViewExpression"); //
+        components.add("PolicyRulesPolicyruleViewExpression"); //
         components.add("PolicyRuleViewExpressionParameter");
         components.add("PolicyRuleViewExpressionExpression"); //
         components.add("PolicyRuleViewExpressionExpressions");
         components.add("PolicyRuleViewExpressionExpressionParameters"); //
-        components.add("PolicyRuleViewExpressionExpressionsParameters");
+        components.add("PolicyRuleViewExpressionExpressionsParameters"); //
+        components.add("PolicyRulesPolicyruleViewExpressionExpressionsParameters"); //
         components.add("PolicyRuleExpressionSetView");
         components.add("PolicyRuleExpressionView");
         components.add("PolicyStatusSummary");
         components.add("ProjectData");
         components.add("ProjectRiskProfile");
         components.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary"); //
-        components.add("ProjectVersionViewLicenseLicensesLicenseFamilySummary");
+        components.add("ProjectVersionViewLicenseLicensesLicenseFamilySummary"); //
         components.add("ProjectVersionComponentViewLicenses"); //
         components.add("ProjectVersionComponentViewActivityData");
         components.add("ProjectVersionComponentViewActivityRiskProfile");
@@ -212,14 +247,18 @@ public class ClassCategories {
         components.add("ProjectVersionComponentViewVersionRiskProfile");
         components.add("ProjectVersionViewLicense"); //
         components.add("ProjectVersionViewLicenseLicense"); //
-        components.add("ProjectVersionViewLicenseLicenses");
+        components.add("ProjectVersionViewLicenseLicenses"); //
         components.add("ProjectVersionRequest");
         components.add("RegistrationAttributeView");
+        components.add("RegistrationViewAttributes"); //
         components.add("RegistrationFeatureView");
         components.add("RegistrationMessageView");
+        components.add("RegistrationViewFeatures");
+        components.add("RegistrationViewMessages"); //
         components.add("ReleaseData");
         components.add("RemediatingVersionView");
         components.add("ReportFileContent");
+        components.add("ReportContentsViewReportContent"); //
         components.add("ResourceMetadata");
         components.add("ResourceLink");
         components.add("ReviewedDetails");
@@ -242,6 +281,10 @@ public class ClassCategories {
         components.add("VersionBomLicenseView");
         components.add("VersionBomOriginView");
         components.add("VersionDataView");
+        components.add("VersionsProjectversionViewLicense");
+        components.add("VersionsProjectversionViewLicenseLicenses"); //
+        components.add("VersionsProjectversionViewLicenseLicensesLicenseFamilySummary"); //
+        components.add("ComponentsComponentViewSecurityRiskProfile"); //
         components.add("VulnerabilityClassificationView");
         components.add("VulnerabilityCvss2View");
         components.add("VulnerabilityCvss3View");

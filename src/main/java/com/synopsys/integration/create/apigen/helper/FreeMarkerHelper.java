@@ -70,7 +70,7 @@ public class FreeMarkerHelper {
     }
 
     public static void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
-        if (className.equals("null")) {
+        if (className.equals("null") || className.equals("")) {
             return;
         }
         final File testFile = new File(destination);

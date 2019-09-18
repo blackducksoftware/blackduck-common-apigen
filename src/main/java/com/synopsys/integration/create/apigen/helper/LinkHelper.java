@@ -25,7 +25,7 @@ package com.synopsys.integration.create.apigen.helper;
 import java.util.Map;
 
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
-import com.synopsys.integration.create.apigen.parser.ResponseNameParser;
+import com.synopsys.integration.create.apigen.parser.NameParser;
 
 public class LinkHelper {
     public final String javaConstant;
@@ -41,7 +41,7 @@ public class LinkHelper {
         this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
 
         try {
-            final String nonVersionedResponseName = ResponseNameParser.getNonVersionedName(responseName);
+            final String nonVersionedResponseName = NameParser.getNonVersionedName(responseName);
             final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = LINK_RESPONSE_DEFINITIONS_LIST.get(nonVersionedResponseName);
             final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(label);
 

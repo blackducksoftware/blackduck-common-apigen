@@ -35,8 +35,8 @@ public class FieldData {
     }
 
     public String getProcessedType() {
-        final String mediaVersion = ResponseNameParser.getMediaVersion(fieldDefinitionName);
-        final String nonVersionedFieldDefinitionName = ResponseNameParser.getNonVersionedName(fieldDefinitionName);
+        final String mediaVersion = NameParser.getMediaVersion(fieldDefinitionName);
+        final String nonVersionedFieldDefinitionName = NameParser.getNonVersionedName(fieldDefinitionName);
 
         // Deal with fields of type 'Number'
         if (type.equals("Number")) {
@@ -56,6 +56,7 @@ public class FieldData {
         if ((type.equals("Object") || type.equals("Array")) && hasSubFields) {
             // append subclass to create new field definition type
             final String processedType = nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath());
+            //processedType = NameParser.reorderViewInName(processedType);
             if (mediaVersion != null) {
                 return processedType + "V" + mediaVersion;
             }
@@ -65,7 +66,7 @@ public class FieldData {
     }
 
     public String getNonVersionedFieldDefinitionName() {
-        return ResponseNameParser.getNonVersionedName(fieldDefinitionName);
+        return NameParser.getNonVersionedName(fieldDefinitionName);
     }
 
     public boolean isArray() {

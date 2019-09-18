@@ -49,7 +49,7 @@ public class FieldDefinitionBuilder {
             }
         }
         fieldDefinition.addSubFields(subFields);
-        final List<FieldDefinition> missingFields = MISSING_FIELDS_AND_LINKS.getMissingFields(ResponseNameParser.getNonVersionedName(type));
+        final List<FieldDefinition> missingFields = MISSING_FIELDS_AND_LINKS.getMissingFields(NameParser.getNonVersionedName(type));
         if (missingFields.size() > 0) {
             fieldDefinition.addSubFields(missingFields);
         }

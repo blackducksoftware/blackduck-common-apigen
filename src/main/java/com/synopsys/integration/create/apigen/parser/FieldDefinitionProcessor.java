@@ -34,7 +34,7 @@ public class FieldDefinitionProcessor {
             if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && field.getSubFields() != null) {
 
                 // append subclass to create new field definition type
-                final List<FieldDefinition> subFields = parseFieldDefinitions(ResponseNameParser.stripListNotation(fieldDefinition.getType()), field.getSubFields());
+                final List<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), field.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }
             fieldDefinitions.add(fieldDefinition);
