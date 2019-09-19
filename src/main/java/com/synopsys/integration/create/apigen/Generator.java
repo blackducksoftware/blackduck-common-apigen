@@ -92,10 +92,7 @@ public class Generator {
         final URL rootDirectory = Generator.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
-
-        //debug
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
-        //exit(0);
 
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());

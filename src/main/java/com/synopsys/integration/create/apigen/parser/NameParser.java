@@ -39,7 +39,7 @@ public class NameParser {
     public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
 
-    public String getResponseNameV2(final String responsePath, final Boolean multipleResponses) {
+    public String getResponseName(final String responsePath, final Boolean multipleResponses) {
         final List<String> resourceNamePieces = new ArrayList<>();
         String firstPiece = null;
         String lastPiece = null;
@@ -54,7 +54,7 @@ public class NameParser {
         if (pathPieces.hasNext()) {
             final String mediaType = pathPieces.next();
             mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
-            final String responseName = getResponseNameV2JoinHelper(firstPiece, lastPiece, mediaVersion);
+            final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
             return stripRedundantNamePrefix(responseName);
         } else {
             return "";
@@ -65,7 +65,7 @@ public class NameParser {
         return StringUtils.capitalize(concatHyphenatedString(piece.replace("Id", "")));
     }
 
-    private String getResponseNameV2JoinHelper(final String firstPiece, final String lastPiece, final String mediaVersion) {
+    private String getResponseNameJoinHelper(final String firstPiece, final String lastPiece, final String mediaVersion) {
         String responseName;
         if (lastPiece == null) {
             return "";
@@ -132,7 +132,11 @@ public class NameParser {
     }
 
     public static String reorderViewInName(final String name) {
-        return name.replace("View", "") + "View";
+        if (name.contains("View")) {
+            return name.replace("View", "") + "View";
+        } else {
+            return name;
+        }
     }
 
     public static String stripListNotation(final String string) {

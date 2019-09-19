@@ -30,7 +30,6 @@ public class DirectoryWalkerTest {
         FieldsParserTestDataCollector.writeTestData(gson, directoryWalker.parseDirectoryForResponses(false, false));
         final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
         final File testFile = new File(Application.PATH_TO_TEST_RESOURCES + "FieldsParserTestTestingData.txt");
-        System.out.println(testFile.lastModified());
 
         String controlData = null;
         String testData = null;
@@ -49,7 +48,6 @@ public class DirectoryWalkerTest {
         }
 
         for (final JsonElement element : control) {
-            //System.out.println(gson.toJson(element));
             assertTrue(element.toString(), test.contains(element));
         }
     }

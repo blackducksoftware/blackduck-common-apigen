@@ -67,7 +67,7 @@ public class ResponseParser {
             if (child.getName().equals(RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 final NameParser nameParser = new NameParser();
-                final String responseName = nameParser.getResponseNameV2(responseRelativePath, multipleResponses);
+                final String responseName = nameParser.getResponseName(responseRelativePath, multipleResponses);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
                 final ResponseDefinition response = new ResponseDefinition(responseRelativePath, responseName, responseMediaType);
                 responseDefinitions.add(response);

@@ -55,8 +55,7 @@ public class FieldData {
 
         if ((type.equals("Object") || type.equals("Array")) && hasSubFields) {
             // append subclass to create new field definition type
-            final String processedType = nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath());
-            //processedType = NameParser.reorderViewInName(processedType);
+            final String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
             if (mediaVersion != null) {
                 return processedType + "V" + mediaVersion;
             }

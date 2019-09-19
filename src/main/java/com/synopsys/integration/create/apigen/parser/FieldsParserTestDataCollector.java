@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class FieldsParserTestDataCollector {
 
     public static void writeControlData(final Gson gson, final List<ResponseDefinition> responses) throws IOException {
-        //writeData(gson, responses, "FieldsParserTestControlData.txt");
-        writeData(gson, responses, "Test - NoStrippingOrAdding.txt");
+        writeData(gson, responses, "FieldsParserTestControlData.txt");
     }
 
     public static void writeTestData(final Gson gson, final List<ResponseDefinition> responses) throws IOException {
@@ -21,8 +21,7 @@ public class FieldsParserTestDataCollector {
     }
 
     public static void writeData(final Gson gson, final List<ResponseDefinition> responses, final String fileName) throws IOException {
-        //final File dataFile = new File(Application.PATH_TO_TEST_RESOURCES + fileName);
-        final File dataFile = new File("/Users/Crowley/Documents/source/" + fileName);
+        final File dataFile = new File(Application.PATH_TO_TEST_RESOURCES + fileName);
         final FileWriter writer = new FileWriter(dataFile);
         dataFile.mkdirs();
         System.out.println();
