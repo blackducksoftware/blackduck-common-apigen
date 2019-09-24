@@ -26,8 +26,9 @@ import java.util.Map;
 
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.parser.NameParser;
+import com.synopsys.integration.util.Stringable;
 
-public class LinkHelper {
+public class LinkHelper extends Stringable {
     public final String javaConstant;
     public final String label;
     private boolean hasMultipleResults;
@@ -50,7 +51,7 @@ public class LinkHelper {
 
             this.resultClass = result_class;
 
-            if (result_class.equals("String")) {
+            if (result_class.equals(UtilStrings.STRING)) {
                 this.linkType = "LinkStringResponse";
             } else {
                 this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";

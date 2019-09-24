@@ -3,6 +3,9 @@ package com.synopsys.integration.create.apigen.helper;
 public class UtilStrings {
 
     public static final String BIG_DECIMAL = "BigDecimal";
+    public static final String JAVA_BIG_DECIMAL = "java.math." + BIG_DECIMAL;
+    public static final String JAVA_LIST = "java.util.List<";
+    public static final String LIST = "List<";
     public static final String ARRAY = "Array";
     public static final String STRING = "String";
     public static final String NUMBER = "Number";
@@ -10,6 +13,9 @@ public class UtilStrings {
     public static final String META = "_meta";
     public static final String OBJECT = "Object";
     public static final String INTEGER = "Integer";
+
+    public static final String LINKS = "links";
+    public static final String FIELDS = "fields";
 
     public static final String VIEW = "view";
     public static final String COMPONENT = "component";

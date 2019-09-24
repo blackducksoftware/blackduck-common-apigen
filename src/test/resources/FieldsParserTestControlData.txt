@@ -94,7 +94,7 @@
   "fields": [
     {
       "path": "attributes",
-      "type": "java.util.List\u003cRegistrationViewAttributesV4\u003e",
+      "type": "java.util.List\u003cRegistrationAttributesViewV4\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -146,7 +146,7 @@
     },
     {
       "path": "messages",
-      "type": "java.util.List\u003cRegistrationViewMessagesV4\u003e",
+      "type": "java.util.List\u003cRegistrationMessagesViewV4\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -198,7 +198,7 @@
     },
     {
       "path": "features",
-      "type": "java.util.List\u003cRegistrationViewFeaturesV4\u003e",
+      "type": "java.util.List\u003cRegistrationFeaturesViewV4\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -267,7 +267,7 @@
     },
     {
       "path": "updatedBy",
-      "type": "LicenseViewUpdatedByV5",
+      "type": "LicenseUpdatedByViewV5",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -310,7 +310,7 @@
     },
     {
       "path": "licenseFamily",
-      "type": "LicenseViewLicenseFamilyV5",
+      "type": "LicenseLicenseFamilyViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -350,7 +350,7 @@
     },
     {
       "path": "createdBy",
-      "type": "LicenseViewCreatedByV5",
+      "type": "LicenseCreatedByViewV5",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -423,7 +423,7 @@
     },
     {
       "path": "statusUpdatedBy",
-      "type": "LicenseViewStatusUpdatedByV5",
+      "type": "LicenseStatusUpdatedByViewV5",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -827,7 +827,7 @@
     },
     {
       "path": "license",
-      "type": "ProjectVersionViewLicenseV5",
+      "type": "ProjectVersionLicenseViewV5",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -840,7 +840,7 @@
         },
         {
           "path": "licenses",
-          "type": "java.util.List\u003cProjectVersionViewLicenseLicensesV5\u003e",
+          "type": "java.util.List\u003cProjectVersionLicenseLicensesViewV5\u003e",
           "optional": true,
           "allowedValues": [],
           "fields": [
@@ -860,7 +860,7 @@
             },
             {
               "path": "licenseFamilySummary",
-              "type": "ProjectVersionViewLicenseLicensesLicenseFamilySummaryV5",
+              "type": "ProjectVersionLicenseLicensesLicenseFamilySummaryViewV5",
               "optional": true,
               "allowedValues": [],
               "fields": [
@@ -1056,7 +1056,7 @@
     },
     {
       "path": "license",
-      "type": "ProjectVersionViewLicenseV4",
+      "type": "ProjectVersionLicenseViewV4",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -1069,7 +1069,7 @@
         },
         {
           "path": "licenses",
-          "type": "java.util.List\u003cProjectVersionViewLicenseLicensesV4\u003e",
+          "type": "java.util.List\u003cProjectVersionLicenseLicensesViewV4\u003e",
           "optional": true,
           "allowedValues": [],
           "fields": [
@@ -1291,7 +1291,7 @@
   "fields": [
     {
       "path": "securityRiskProfile",
-      "type": "ComponentViewSecurityRiskProfileV5",
+      "type": "ComponentSecurityRiskProfileViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1313,7 +1313,7 @@
     },
     {
       "path": "versionRiskProfile",
-      "type": "ComponentViewVersionRiskProfileV5",
+      "type": "ComponentVersionRiskProfileViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1349,7 +1349,7 @@
     },
     {
       "path": "operationalRiskProfile",
-      "type": "ComponentViewOperationalRiskProfileV5",
+      "type": "ComponentOperationalRiskProfileViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1364,7 +1364,7 @@
     },
     {
       "path": "activityData",
-      "type": "ComponentViewActivityDataV5",
+      "type": "ComponentActivityDataViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1412,7 +1412,7 @@
     },
     {
       "path": "reviewedDetails",
-      "type": "ComponentViewReviewedDetailsV5",
+      "type": "ComponentReviewedDetailsViewV5",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -1432,7 +1432,7 @@
         },
         {
           "path": "reviewingUser",
-          "type": "ComponentViewReviewedDetailsReviewingUserV5",
+          "type": "ComponentReviewedDetailsReviewingUserViewV5",
           "optional": true,
           "allowedValues": [],
           "fields": [
@@ -1519,7 +1519,7 @@
     },
     {
       "path": "licenseRiskProfile",
-      "type": "ComponentViewLicenseRiskProfileV5",
+      "type": "ComponentLicenseRiskProfileViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1555,7 +1555,7 @@
     },
     {
       "path": "activityRiskProfile",
-      "type": "ComponentViewActivityRiskProfileV5",
+      "type": "ComponentActivityRiskProfileViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1577,7 +1577,7 @@
     },
     {
       "path": "licenses",
-      "type": "java.util.List\u003cComponentViewLicensesV5\u003e",
+      "type": "java.util.List\u003cComponentLicensesViewV5\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1700,7 +1700,7 @@
     },
     {
       "path": "securityRiskProfile",
-      "type": "ComponentViewSecurityRiskProfileV4",
+      "type": "ComponentSecurityRiskProfileViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1715,7 +1715,7 @@
     },
     {
       "path": "versionRiskProfile",
-      "type": "ComponentViewVersionRiskProfileV4",
+      "type": "ComponentVersionRiskProfileViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1730,7 +1730,7 @@
     },
     {
       "path": "licenseRiskProfile",
-      "type": "ComponentViewLicenseRiskProfileV4",
+      "type": "ComponentLicenseRiskProfileViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1780,7 +1780,7 @@
     },
     {
       "path": "activityRiskProfile",
-      "type": "ComponentViewActivityRiskProfileV4",
+      "type": "ComponentActivityRiskProfileViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1802,7 +1802,7 @@
     },
     {
       "path": "licenses",
-      "type": "java.util.List\u003cComponentViewLicensesV4\u003e",
+      "type": "java.util.List\u003cComponentLicensesViewV4\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1838,7 +1838,7 @@
     },
     {
       "path": "operationalRiskProfile",
-      "type": "ComponentViewOperationalRiskProfileV4",
+      "type": "ComponentOperationalRiskProfileViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1860,7 +1860,7 @@
     },
     {
       "path": "activityData",
-      "type": "ComponentViewActivityDataV4",
+      "type": "ComponentActivityDataViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -1908,7 +1908,7 @@
     },
     {
       "path": "reviewedDetails",
-      "type": "ComponentViewReviewedDetailsV4",
+      "type": "ComponentReviewedDetailsViewV4",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -1992,7 +1992,7 @@
   "fields": [
     {
       "path": "securityRiskProfile",
-      "type": "ComponentViewSecurityRiskProfileV6",
+      "type": "ComponentSecurityRiskProfileViewV6",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -2014,7 +2014,7 @@
     },
     {
       "path": "versionRiskProfile",
-      "type": "ComponentViewVersionRiskProfileV6",
+      "type": "ComponentVersionRiskProfileViewV6",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -2050,7 +2050,7 @@
     },
     {
       "path": "operationalRiskProfile",
-      "type": "ComponentViewOperationalRiskProfileV6",
+      "type": "ComponentOperationalRiskProfileViewV6",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -2065,7 +2065,7 @@
     },
     {
       "path": "activityData",
-      "type": "ComponentViewActivityDataV6",
+      "type": "ComponentActivityDataViewV6",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -2113,7 +2113,7 @@
     },
     {
       "path": "reviewedDetails",
-      "type": "ComponentViewReviewedDetailsV6",
+      "type": "ComponentReviewedDetailsViewV6",
       "optional": true,
       "allowedValues": [],
       "fields": [
@@ -2133,7 +2133,7 @@
         },
         {
           "path": "reviewingUser",
-          "type": "ComponentViewReviewedDetailsReviewingUserV6",
+          "type": "ComponentReviewedDetailsReviewingUserViewV6",
           "optional": true,
           "allowedValues": [],
           "fields": [
@@ -2220,7 +2220,7 @@
     },
     {
       "path": "licenseRiskProfile",
-      "type": "ComponentViewLicenseRiskProfileV6",
+      "type": "ComponentLicenseRiskProfileViewV6",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -2256,7 +2256,7 @@
     },
     {
       "path": "activityRiskProfile",
-      "type": "ComponentViewActivityRiskProfileV6",
+      "type": "ComponentActivityRiskProfileViewV6",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -2278,7 +2278,7 @@
     },
     {
       "path": "licenses",
-      "type": "java.util.List\u003cComponentViewLicensesV6\u003e",
+      "type": "java.util.List\u003cComponentLicensesViewV6\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -3421,7 +3421,7 @@
     },
     {
       "path": "expression",
-      "type": "PolicyRuleViewExpressionV4",
+      "type": "PolicyRuleExpressionViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -3434,7 +3434,7 @@
         },
         {
           "path": "expressions",
-          "type": "java.util.List\u003cPolicyRuleViewExpressionExpressionsV4\u003e",
+          "type": "java.util.List\u003cPolicyRuleExpressionExpressionsViewV4\u003e",
           "optional": false,
           "allowedValues": [],
           "fields": [
@@ -3454,7 +3454,7 @@
             },
             {
               "path": "parameters",
-              "type": "PolicyRuleViewExpressionExpressionsParametersV4",
+              "type": "PolicyRuleExpressionExpressionsParametersViewV4",
               "optional": false,
               "allowedValues": [],
               "fields": [
@@ -3523,7 +3523,7 @@
     },
     {
       "path": "expression",
-      "type": "PolicyRuleViewExpressionV5",
+      "type": "PolicyRuleExpressionViewV5",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -3536,7 +3536,7 @@
         },
         {
           "path": "expressions",
-          "type": "java.util.List\u003cPolicyRuleViewExpressionExpressionsV5\u003e",
+          "type": "java.util.List\u003cPolicyRuleExpressionExpressionsViewV5\u003e",
           "optional": false,
           "allowedValues": [],
           "fields": [
@@ -3556,7 +3556,7 @@
             },
             {
               "path": "parameters",
-              "type": "PolicyRuleViewExpressionExpressionsParametersV5",
+              "type": "PolicyRuleExpressionExpressionsParametersViewV5",
               "optional": false,
               "allowedValues": [],
               "fields": [
@@ -3948,7 +3948,7 @@
   "fields": [
     {
       "path": "reportContent",
-      "type": "java.util.List\u003cReportContentsViewReportContentV4\u003e",
+      "type": "java.util.List\u003cReportContentsReportContentViewV4\u003e",
       "optional": false,
       "allowedValues": [],
       "fields": [

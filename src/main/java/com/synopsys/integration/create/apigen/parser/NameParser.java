@@ -24,7 +24,6 @@ package com.synopsys.integration.create.apigen.parser;
 
 import static java.lang.String.join;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -34,16 +33,18 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.synopsys.integration.create.apigen.helper.UtilStrings;
+
 public class NameParser {
 
     public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
+    private static final String VIEWV = "ViewV";
 
-    public String getResponseName(final String responsePath, final Boolean multipleResponses) {
-        final List<String> resourceNamePieces = new ArrayList<>();
+    public String getResponseName(final String responsePath) {
         String firstPiece = null;
         String lastPiece = null;
-        String mediaVersion = null;
+        final String mediaVersion;
         final ListIterator<String> pathPieces = Arrays.asList(responsePath.split("/")).listIterator();
         String nextPiece = getGroomedPiece(pathPieces.next());
         while (!nextPiece.equals("GET") && pathPieces.hasNext()) {
@@ -70,14 +71,14 @@ public class NameParser {
         if (lastPiece == null) {
             return "";
         } else if (firstPiece == null) {
-            responseName = lastPiece + "ViewV" + mediaVersion;
+            responseName = lastPiece + VIEWV + mediaVersion;
         } else {
-            responseName = firstPiece + lastPiece + "ViewV" + mediaVersion;
+            responseName = firstPiece + lastPiece + VIEWV + mediaVersion;
         }
 
-        if (responseName.endsWith("ViewV")) {
+        if (responseName.endsWith(VIEWV)) {
             System.out.println("***** " + responseName);
-            responseName = responseName.replace("ViewV", "View");
+            responseName = responseName.replace(VIEWV, UtilStrings.VIEW);
         }
         return responseName;
     }
@@ -88,7 +89,7 @@ public class NameParser {
         if (mediaVersion != null) {
             return responseName.replace("V" + mediaVersion, "");
         } else {
-            return responseName.replace("ViewV", "View");
+            return responseName.replace(VIEWV, UtilStrings.VIEW);
         }
     }
 
@@ -140,7 +141,7 @@ public class NameParser {
     }
 
     public static String stripListNotation(final String string) {
-        return string.replace("java.util.List<", "").replace(">", "");
+        return string.replace(UtilStrings.JAVA_LIST, "").replace(UtilStrings.LIST, "").replace(">", "");
     }
 
     public static String concatHyphenatedString(final String string) {

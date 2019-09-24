@@ -19,7 +19,7 @@ public class FieldDefinitionProcessor {
 
             final FieldData fieldData = new FieldData(path, type, fieldDefinitionName, field.getSubFields() != null);
 
-            FieldDefinition fieldDefinition = null;
+            final FieldDefinition fieldDefinition;
 
             // Ignore 'data' and '_meta' fields
             if (path.equals(UtilStrings.DATA) || path.equals(UtilStrings.META)) {

@@ -22,21 +22,19 @@
  */
 package com.synopsys.integration.create.apigen.helper;
 
-import java.util.List;
-
-import com.synopsys.integration.create.apigen.helper.LinkHelper;
+import java.util.Set;
 
 public class LinksAndImportsHelper {
-    private final List<LinkHelper> links;
-    private final List<String> imports;
+    private final Set<LinkHelper> links;
+    private final Set<String> imports;
 
-    public LinksAndImportsHelper(final List<LinkHelper> links, final List<String> imports) {
+    public LinksAndImportsHelper(final Set<LinkHelper> links, final Set<String> imports) {
         this.links = links;
         this.imports = imports;
     }
 
-    public List<LinkHelper> getLinks() { return this.links; }
+    public Set<LinkHelper> getLinks() { return this.links; }
 
-    public List<String> getImports() { return this.imports; }
+    public Set<String> getImports() { return this.imports; }
 
 }

@@ -3,6 +3,7 @@ package com.synopsys.integration.create.apigen.parser;
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
+import com.synopsys.integration.create.apigen.helper.UtilStrings;
 
 public class FieldData {
     private static final TypeTranslator TYPE_TRANSLATOR = new TypeTranslator();
@@ -18,7 +19,7 @@ public class FieldData {
         this.path = path;
         this.type = type;
         this.hasSubFields = hasSubFields;
-        this.isArray = type.equals("Array");
+        this.isArray = type.equals(UtilStrings.ARRAY);
     }
 
     public String getPath() {
@@ -39,8 +40,8 @@ public class FieldData {
         final String nonVersionedFieldDefinitionName = NameParser.getNonVersionedName(fieldDefinitionName);
 
         // Deal with fields of type 'Number'
-        if (type.equals("Number")) {
-            return "BigDecimal";
+        if (type.equals(UtilStrings.NUMBER)) {
+            return UtilStrings.BIG_DECIMAL;
         }
 
         // Deal with special Swaggerhub - Apigen naming convention conflicts
@@ -49,11 +50,7 @@ public class FieldData {
             return swaggerName;
         }
 
-        if (fieldDefinitionName.contains("ProjectVersionViewLicenseLicenseV5")) {
-            System.out.println(fieldDefinitionName + " path: " + path + ", type: " + type);
-        }
-
-        if ((type.equals("Object") || type.equals("Array")) && hasSubFields) {
+        if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && hasSubFields) {
             // append subclass to create new field definition type
             final String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
             if (mediaVersion != null) {

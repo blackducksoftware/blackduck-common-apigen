@@ -1,5 +1,7 @@
 package com.synopsys.integration.create.apigen.model;
 
+import com.synopsys.integration.create.apigen.helper.UtilStrings;
+
 public abstract class DefinitionParseParameters<T extends ThirdPartyDefinition> {
 
     public abstract String getJsonField();
@@ -9,7 +11,7 @@ public abstract class DefinitionParseParameters<T extends ThirdPartyDefinition> 
     public static DefinitionParseParameters<RawFieldDefinition> RAW_FIELD_PARAMETERS = new DefinitionParseParameters<RawFieldDefinition>() {
         @Override
         public String getJsonField() {
-            return "fields";
+            return UtilStrings.FIELDS;
         }
 
         @Override
@@ -21,7 +23,7 @@ public abstract class DefinitionParseParameters<T extends ThirdPartyDefinition> 
     public static DefinitionParseParameters<LinkDefinition> LINK_PARAMETERS = new DefinitionParseParameters<LinkDefinition>() {
         @Override
         public String getJsonField() {
-            return "links";
+            return UtilStrings.LINKS;
         }
 
         @Override

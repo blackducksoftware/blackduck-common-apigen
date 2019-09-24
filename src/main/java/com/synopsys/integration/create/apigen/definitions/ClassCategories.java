@@ -175,15 +175,15 @@ public class ClassCategories {
         components.add("CodeLocationProgress");
         components.add("CommentUserData");
         components.add("ComponentHit");
-        components.add("ComponentViewLicenses");
-        components.add("ComponentViewActivityRiskProfile"); //
-        components.add("ComponentViewActivityData"); //
-        components.add("ComponentViewLicenseRiskProfile"); //
-        components.add("ComponentViewOperationalRiskProfile"); //
-        components.add("ComponentViewSecurityRiskProfile"); //
-        components.add("ComponentViewReviewedDetails"); //
-        components.add("ComponentViewReviewedDetailsReviewingUser"); //
-        components.add("ComponentViewVersionRiskProfile"); //
+        components.add("ComponentLicensesView");
+        components.add("ComponentActivityRiskProfileView"); //
+        components.add("ComponentActivityDataView"); //
+        components.add("ComponentLicenseRiskProfileView"); //
+        components.add("ComponentOperationalRiskProfileView"); //
+        components.add("ComponentSecurityRiskProfileView"); //
+        components.add("ComponentReviewedDetailsView"); //
+        components.add("ComponentReviewedDetailsReviewingUserView"); //
+        components.add("ComponentVersionRiskProfileView"); //
         components.add("ComplexLicenseRequest");
         components.add("ComponentVersionPolicyViolationDetails");
         components.add("CompositePathWithArchiveContext");
@@ -212,30 +212,30 @@ public class ClassCategories {
         components.add("LicenseFamilyRiskRuleView");
         components.add("LicenseTermCategorySummaryView");
         components.add("LicensesLicenseViewCreatedBy");
-        components.add("LicenseViewCreatedBy");
+        components.add("LicenseCreatedByView");
         components.add("LicenseViewLicenseFamily");
-        components.add("LicensesLicenseViewLicenseFamily"); //
-        components.add("LicensesLicenseViewUpdatedBy");
-        components.add("LicenseViewStatusUpdatedBy");
+        components.add("LicenseLicenseFamilyView"); //
+        components.add("LicensesLicenseUpdatedByView");
+        components.add("LicenseStatusUpdatedByView");
         components.add("LicensesLicenseViewStatusUpdatedBy"); //
-        components.add("LicenseViewUpdatedBy");
+        components.add("LicenseUpdatedByView");
         components.add("NameValuePairView");
         components.add("PolicyRulesPolicyruleViewExpressionExpressions"); //
         components.add("PolicyRuleViewExpression"); //
         components.add("PolicyRulesPolicyruleViewExpression"); //
         components.add("PolicyRuleViewExpressionParameter");
         components.add("PolicyRuleViewExpressionExpression"); //
-        components.add("PolicyRuleViewExpressionExpressions");
+        components.add("PolicyRuleExpressionExpressionsView");
         components.add("PolicyRuleViewExpressionExpressionParameters"); //
         components.add("PolicyRuleViewExpressionExpressionsParameters"); //
-        components.add("PolicyRulesPolicyruleViewExpressionExpressionsParameters"); //
+        components.add("PolicyRuleExpressionExpressionsParametersView"); //
         components.add("PolicyRuleExpressionSetView");
         components.add("PolicyRuleExpressionView");
         components.add("PolicyStatusSummary");
         components.add("ProjectData");
         components.add("ProjectRiskProfile");
-        components.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary"); //
-        components.add("ProjectVersionViewLicenseLicensesLicenseFamilySummary"); //
+        components.add("ProjectVersionLicenseLicenseLicenseFamilySummaryView"); //
+        components.add("ProjectVersionLicenseLicensesLicenseFamilySummaryView"); //
         components.add("ProjectVersionComponentViewLicenses"); //
         components.add("ProjectVersionComponentViewActivityData");
         components.add("ProjectVersionComponentViewActivityRiskProfile");
@@ -245,20 +245,20 @@ public class ClassCategories {
         components.add("ProjectVersionComponentViewOperationalRiskProfile");
         components.add("ProjectVersionComponentViewSecurityRiskProfile");
         components.add("ProjectVersionComponentViewVersionRiskProfile");
-        components.add("ProjectVersionViewLicense"); //
+        components.add("ProjectVersionLicenseView"); //
         components.add("ProjectVersionViewLicenseLicense"); //
-        components.add("ProjectVersionViewLicenseLicenses"); //
+        components.add("ProjectVersionLicenseLicensesView"); //
         components.add("ProjectVersionRequest");
-        components.add("RegistrationAttributeView");
+        components.add("RegistrationAttributesView");
         components.add("RegistrationViewAttributes"); //
-        components.add("RegistrationFeatureView");
-        components.add("RegistrationMessageView");
+        components.add("RegistrationFeaturesView");
+        components.add("RegistrationMessagesView");
         components.add("RegistrationViewFeatures");
         components.add("RegistrationViewMessages"); //
         components.add("ReleaseData");
         components.add("RemediatingVersionView");
         components.add("ReportFileContent");
-        components.add("ReportContentsViewReportContent"); //
+        components.add("ReportContentsReportContentView"); //
         components.add("ResourceMetadata");
         components.add("ResourceLink");
         components.add("ReviewedDetails");
@@ -296,13 +296,13 @@ public class ClassCategories {
         final Set<String> generatedClasses = new HashSet<>();
 
         // component
-        generatedClasses.add("PolicyRuleViewExpression");
-        generatedClasses.add("PolicyRuleViewExpressionExpression");
-        generatedClasses.add("PolicyRuleViewExpressionParameters");
+        generatedClasses.add("PolicyRuleVExpressionView");
+        generatedClasses.add("PolicyRuleExpressionExpressionView");
+        generatedClasses.add("PolicyRuleExpressionParametersView");
         generatedClasses.add("ProjectVersionComponentViewLicenses");
-        generatedClasses.add("ProjectVersionViewLicense");
-        generatedClasses.add("ProjectVersionViewLicenseLicense");
-        generatedClasses.add("ProjectVersionViewLicenseLicenseLicenseFamilySummary");
+        generatedClasses.add("ProjectVersionLicenseView");
+        generatedClasses.add("ProjectVersionLicenseLicensesView");
+        generatedClasses.add("ProjectVersionLicenseLicensesLicenseFamilySummaryView");
 
         // enumeration
         generatedClasses.add("ComponentApprovalStatusType");
