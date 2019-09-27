@@ -227,8 +227,8 @@ public class ClassCategories {
         components.add("LicensesLicenseViewStatusUpdatedBy"); //
         components.add("LicenseUpdatedByView");
         components.add("NameValuePairView");
-        components.add("PolicyRulesPolicyruleViewExpressionExpressions"); //
-        components.add("PolicyRuleViewExpression"); //
+        components.add("PolicyRuleExpressionExpressionsView"); //
+        components.add("PolicyRuleExpressionView"); //
         components.add("PolicyRulesPolicyruleViewExpression"); //
         components.add("PolicyRuleViewExpressionParameter");
         components.add("PolicyRuleViewExpressionExpression"); //
@@ -499,7 +499,6 @@ public class ClassCategories {
         throwawayClasses.add("NameValuePairView");
         throwawayClasses.add("PolicyRuleExpressionParameter");
         throwawayClasses.add("PolicyRuleExpressionSetView");
-        throwawayClasses.add("PolicyRuleExpressionView");
         throwawayClasses.add("PolicyStatusSummary");
         throwawayClasses.add("ProjectData");
         throwawayClasses.add("ProjectRiskProfile");
