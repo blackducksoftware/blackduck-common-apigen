@@ -1,3 +1,25 @@
+/**
+ * blackduck-common-apigen
+ *
+ * Copyright (c) 2019 Synopsys, Inc.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package com.synopsys.integration.create.apigen;
 
 import java.io.BufferedReader;
@@ -20,8 +42,13 @@ public class MissingDependencyIdentifier {
 
     static Set<String> missingClasses = new HashSet<>();
     static Set<String> bdCommonDependencies = new HashSet<>();
-    static TypeTranslator TYPE_TRANSLATOR = new TypeTranslator();
-    static ClassCategories CLASS_CATEGORIES = new ClassCategories();
+    static TypeTranslator TYPE_TRANSLATOR;
+    static ClassCategories CLASS_CATEGORIES;
+
+    public MissingDependencyIdentifier(final TypeTranslator typeTranslator, final ClassCategories classCategories) {
+        this.TYPE_TRANSLATOR = typeTranslator;
+        this.CLASS_CATEGORIES = classCategories;
+    }
 
     public static void main(final String[] args) throws IOException {
         // Go over bd-common import statements, parse for Class dependencies
@@ -29,7 +56,7 @@ public class MissingDependencyIdentifier {
         final String pathToBlackDuckCommon = "/Users/crowley/Documents/source/blackduck-common/src/main/java/com/synopsys/integration/blackduck/";
         final String pathToAPI = "/Users/crowley/Documents/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/";
         final String pathToThrowaway = pathToAPI + "manual/throwaway/generated/";
-        getDependencies(pathToBlackDuckCommon, true);
+        //getDependencies(pathToBlackDuckCommon, true);
         for (final String bdCommonDependency : bdCommonDependencies) {
             final String pathToFile;
             if (!CLASS_CATEGORIES.isGenerated(bdCommonDependency) && !missingClasses.contains(bdCommonDependency) && TYPE_TRANSLATOR.getApiGenClassName(bdCommonDependency) == null && !CLASS_CATEGORIES.isManual(bdCommonDependency)) {
@@ -44,7 +71,7 @@ public class MissingDependencyIdentifier {
                 }
 
                 final File dependencyFile = new File(pathToFile);
-                parseImports(dependencyFile, false);
+                //parseImports(dependencyFile, false);
             }
         }
 

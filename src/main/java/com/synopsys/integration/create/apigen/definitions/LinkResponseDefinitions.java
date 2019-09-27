@@ -27,11 +27,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class LinkResponseDefinitions {
 
-    private Map<String, Map<String, LinkResponseDefinitionItem>> definitions = new HashMap<>();
+    private final Map<String, Map<String, LinkResponseDefinitionItem>> definitions;
     private final Set<String> resultClasses;
 
+    @Autowired
     public LinkResponseDefinitions() {
         this.resultClasses = new HashSet<>();
         this.definitions = populateDefinitions();

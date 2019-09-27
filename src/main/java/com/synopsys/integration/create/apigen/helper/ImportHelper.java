@@ -1,23 +1,47 @@
+/**
+ * blackduck-common-apigen
+ *
+ * Copyright (c) 2019 Synopsys, Inc.
+ *
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package com.synopsys.integration.create.apigen.helper;
 
-import static com.synopsys.integration.create.apigen.Generator.COMPONENT_BASE_CLASS;
-import static com.synopsys.integration.create.apigen.Generator.CORE_CLASS_PATH_PREFIX;
-import static com.synopsys.integration.create.apigen.Generator.GENERATED_CLASS_PATH_PREFIX;
-import static com.synopsys.integration.create.apigen.Generator.VIEW_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.COMPONENT_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.CORE_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.helper.UtilStrings.VIEW_BASE_CLASS;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import com.synopsys.integration.create.apigen.Generator;
-import com.synopsys.integration.create.apigen.ResultClassData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
+@Component
 public class ImportHelper {
 
     public static final String LINK_RESPONSE = "LinkResponse";
@@ -26,9 +50,14 @@ public class ImportHelper {
     public static final String LINK_STRING_RESPONSE = "LinkStringResponse";
 
     private final ClassCategories classCategories;
+    private final LinkResponseDefinitions linkResponseDefinitions;
+    private final DataManager dataManager;
 
-    public ImportHelper(final ClassCategories classCategories) {
+    @Autowired
+    public ImportHelper(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final DataManager dataManager) {
         this.classCategories = classCategories;
+        this.linkResponseDefinitions = linkResponseDefinitions;
+        this.dataManager = dataManager;
     }
 
     public void addFieldImports(final Set<String> imports, final List<FieldDefinition> fields) {
@@ -54,14 +83,14 @@ public class ImportHelper {
             imports.add(UtilStrings.JAVA_BIG_DECIMAL);
         }
 
-        if (Generator.isEnum(fieldType)) {
+        if (classCategories.isEnum(fieldType)) {
             imports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
         } else if (!classCategories.isCommonType(fieldType)) {
             imports.add(importPathPrefix + UtilStrings.COMPONENT + "." + fieldType);
         }
     }
 
-    public LinksAndImportsHelper getLinkImports(final Set<String> imports, final ResponseDefinition response, final Set<String> linkClassNames, final Map<String, String> nullLinkResultClasses) {
+    public LinksAndImportsHelper getLinkImports(final Set<String> imports, final ResponseDefinition response) {
         final List<LinkDefinition> rawLinks = response.getLinks();
         final Set<LinkHelper> links = new HashSet<>();
         final String responseName = response.getName();
@@ -71,7 +100,7 @@ public class ImportHelper {
         }
 
         for (final LinkDefinition rawLink : rawLinks) {
-            final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName);
+            final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName, linkResponseDefinitions);
             try {
                 final String resultClass = link.resultClass();
                 final String linkType = link.linkType();
@@ -81,9 +110,9 @@ public class ImportHelper {
                 imports.add(linkImport);
 
                 if (resultClass != null) {
-                    linkClassNames.add(resultClass);
+                    dataManager.addLinkClassName(resultClass);
 
-                    final ResultClassData resultClassData = new ResultClassData(resultClass);
+                    final ResultClassData resultClassData = new ResultClassData(resultClass, classCategories);
                     final String resultImportPath = resultClassData.getResultImportPath();
                     final String resultImportType = resultClassData.getResultImportType();
                     final boolean shouldAddImport = resultClassData.shouldAddImport();
@@ -93,10 +122,10 @@ public class ImportHelper {
                     }
                     links.add(link);
                 } else {
-                    nullLinkResultClasses.put(responseName, linkType);
+                    dataManager.addNullLinkResultClass(responseName, linkType);
                 }
             } catch (final NullPointerException e) {
-                nullLinkResultClasses.put(responseName, rawLink.getRel());
+                dataManager.addNullLinkResultClass(responseName, rawLink.getRel());
             }
         }
         return new LinksAndImportsHelper(links, imports);

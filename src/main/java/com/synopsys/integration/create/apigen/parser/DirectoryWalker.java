@@ -37,7 +37,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.gson.Gson;
+import com.synopsys.integration.create.apigen.definitions.MediaTypes;
+import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
@@ -46,15 +50,20 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 public class DirectoryWalker {
     private final File rootDirectory;
     private final Gson gson;
+    private final MediaTypes mediaTypes;
+    private final TypeTranslator typeTranslator;
 
-    public DirectoryWalker(final File rootDirectory, final Gson gson) {
+    @Autowired
+    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator) {
         this.rootDirectory = rootDirectory;
         this.gson = gson;
+        this.mediaTypes = mediaTypes;
+        this.typeTranslator = typeTranslator;
     }
 
     public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
-        final ResponseParser responseParser = new ResponseParser();
-        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor();
+        final ResponseParser responseParser = new ResponseParser(mediaTypes);
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator);
         boolean actuallyShowOutput = showOutput;
 
         // Get response-specification.json files from directory

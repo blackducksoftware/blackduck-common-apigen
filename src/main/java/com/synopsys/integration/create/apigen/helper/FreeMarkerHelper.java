@@ -31,6 +31,8 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.Generator;
 
@@ -39,6 +41,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
+@Component
 public class FreeMarkerHelper {
 
     // taken from SwaggerHub
@@ -69,8 +72,8 @@ public class FreeMarkerHelper {
         return cfg;
     }
 
-    public static void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
-        if (className.equals("null") || className.equals("")) {
+    public void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
+        if (className.equals("null") || className.equals("") || className.equals("String")) {
             return;
         }
         final File testFile = new File(destination);

@@ -24,6 +24,8 @@ package com.synopsys.integration.create.apigen.helper;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.util.Stringable;
@@ -34,16 +36,19 @@ public class LinkHelper extends Stringable {
     private boolean hasMultipleResults;
     public String resultClass;
     public String linkType;
-    private static final LinkResponseDefinitions LINK_RESPONSE_DEFINITIONS = new LinkResponseDefinitions();
-    private static final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> LINK_RESPONSE_DEFINITIONS_LIST = LINK_RESPONSE_DEFINITIONS.getDefinitions();
+    private final LinkResponseDefinitions linkResponseDefinitions;
+    private final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> linkResponseDefinitionsList;
 
-    public LinkHelper(final String label, final String responseName) {
+    @Autowired
+    public LinkHelper(final String label, final String responseName, final LinkResponseDefinitions linkResponseDefinitions) {
         this.label = label;
         this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
+        this.linkResponseDefinitions = linkResponseDefinitions;
+        this.linkResponseDefinitionsList = linkResponseDefinitions.getDefinitions();
 
         try {
             final String nonVersionedResponseName = NameParser.getNonVersionedName(responseName);
-            final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = LINK_RESPONSE_DEFINITIONS_LIST.get(nonVersionedResponseName);
+            final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = linkResponseDefinitionsList.get(nonVersionedResponseName);
             final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(label);
 
             this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();

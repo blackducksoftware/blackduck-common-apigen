@@ -26,8 +26,14 @@ import java.io.File;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @SpringBootApplication
+@Configuration
 public class Application {
     //public static final String RESPONSE_TOKEN = "Id" + File.separator + "GET" + File.separator; <-- old token requiring "Id" in path
     public static final String RESPONSE_TOKEN = "GET" + File.separator;
@@ -35,8 +41,13 @@ public class Application {
     public static final String PATH_TO_GENERATED_FILES_KEY = "BLACKDUCK_COMMON_API_BASE_DIRECTORY";
     public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
 
-    static void main(final String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
+    @Bean
+    public Gson gson() {
+        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson;
+    }
 }

@@ -25,6 +25,12 @@ package com.synopsys.integration.create.apigen.definitions;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.synopsys.integration.create.apigen.helper.UtilStrings;
+
+@Component
 public class ClassCategories {
 
     private final Set<String> VIEWS;
@@ -36,6 +42,7 @@ public class ClassCategories {
     private final Set<String> COMMON_TYPES;
     private final Set<String> NON_ENUM_CLASSES_ENDING_IN_TYPE;
 
+    @Autowired
     public ClassCategories() {
         this.VIEWS = populateViews();
         this.RESPONSES = populateResponses();
@@ -565,6 +572,14 @@ public class ClassCategories {
     }
 
     public boolean isComponent(final String className) { return this.COMPONENTS.contains(className); }
+
+    public boolean isEnum(final String type) {
+        return type.contains(UtilStrings.ENUM) && !isNonEnumClassEndingInType(type);
+    }
+
+    public boolean isNotCommonTypeOrEnum(final String fieldType) {
+        return (!isCommonType(fieldType) && !isEnum(fieldType));
+    }
 
     public boolean isGenerated(final String className) { return this.GENERATED.contains(className); }
 

@@ -16,14 +16,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.synopsys.integration.create.apigen.Application;
+import com.synopsys.integration.create.apigen.definitions.MediaTypes;
+import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
 
 public class DirectoryWalkerTest {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
-    private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson);
+    private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
 
-    public DirectoryWalkerTest() throws URISyntaxException { }
+    public DirectoryWalkerTest() throws URISyntaxException {
+        this.directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, new MediaTypes(), new TypeTranslator());
+    }
 
     @Test
     public void test() throws IOException, URISyntaxException {

@@ -28,13 +28,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class ResponseParser {
     public static final String RESPONSE_SPECIFICATION_JSON = "response-specification.json";
-    MediaTypes mediaTypes = new MediaTypes();
+    private final MediaTypes mediaTypes;
+
+    @Autowired
+    public ResponseParser(final MediaTypes mediaTypes) {
+        this.mediaTypes = mediaTypes;
+    }
 
     public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");

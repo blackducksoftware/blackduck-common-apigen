@@ -27,6 +27,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MediaTypes {
 
     private static final Map<String, String> LONG_TO_SHORT = new HashMap<>();

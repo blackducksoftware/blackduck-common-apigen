@@ -20,7 +20,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.model;
+package com.synopsys.integration.create.apigen.generators;
 
-public class ThirdPartyDefinition extends Definition {
+import com.synopsys.integration.create.apigen.model.FieldDefinition;
+
+import freemarker.template.Template;
+
+public abstract class ClassGenerator {
+
+    public abstract boolean isApplicable(FieldDefinition field);
+
+    public abstract void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception;
 }
