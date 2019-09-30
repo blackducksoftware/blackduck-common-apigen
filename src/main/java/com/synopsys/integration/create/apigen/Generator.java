@@ -143,8 +143,8 @@ public class Generator {
             final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
             input.put(UtilStrings.IMPORT_PATH, importPath);
             freeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
-            dataManager.getNonLinkClassNames().add(className);
-            dataManager.getNonLinkClassNames().add(NameParser.getNonVersionedName(className));
+            dataManager.addNonLinkClassName(className);
+            dataManager.addNonLinkClassName(NameParser.getNonVersionedName(className));
         }
     }
 
@@ -176,7 +176,7 @@ public class Generator {
 
                 if (!dataManager.getNonLinkClassNames().contains(linkClassName) && !dataManager.getRandomLinkClassNames().contains(linkClassName)) {
                     freeMarkerHelper.writeFile(linkClassName, randomTemplate, randomInput, UtilStrings.BLACKDUCK_COMMON_API_BASE_DIRECTORY + destinationSuffix);
-                    dataManager.getRandomLinkClassNames().add(linkClassName);
+                    dataManager.addRandomLinkClassName(linkClassName);
                 }
             }
         }

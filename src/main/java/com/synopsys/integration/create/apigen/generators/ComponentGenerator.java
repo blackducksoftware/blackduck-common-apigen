@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
 import com.synopsys.integration.create.apigen.helper.DataManager;
@@ -41,6 +42,7 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Template;
 
+@Component
 public class ComponentGenerator extends ClassGenerator {
 
     private final ClassCategories classCategories;

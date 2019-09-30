@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.generators;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
@@ -34,6 +35,7 @@ import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 import freemarker.template.Template;
 
+@Component
 public class EnumGenerator extends ClassGenerator {
 
     private final ClassCategories classCategories;

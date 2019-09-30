@@ -48,6 +48,8 @@ import freemarker.template.Template;
 @Component
 public class ViewGenerator {
 
+    private final ComponentGenerator componentGenerator;
+    private final EnumGenerator enumGenerator;
     private final ClassCategories classCategories;
     private final FreeMarkerHelper freeMarkerHelper;
     private final MediaTypes mediaTypes;
@@ -56,7 +58,10 @@ public class ViewGenerator {
     private final DataManager dataManager;
 
     @Autowired
-    public ViewGenerator(final ClassCategories classCategories, final FreeMarkerHelper freeMarkerHelper, final MediaTypes mediaTypes, final ImportHelper importHelper, final InputDataHelper inputDataHelper, final DataManager dataManager) {
+    public ViewGenerator(final ComponentGenerator componentGenerator, final EnumGenerator enumGenerator, final ClassCategories classCategories, final FreeMarkerHelper freeMarkerHelper, final MediaTypes mediaTypes, final ImportHelper importHelper,
+        final InputDataHelper inputDataHelper, final DataManager dataManager) {
+        this.componentGenerator = componentGenerator;
+        this.enumGenerator = enumGenerator;
         this.classCategories = classCategories;
         this.freeMarkerHelper = freeMarkerHelper;
         this.mediaTypes = mediaTypes;
@@ -84,8 +89,8 @@ public class ViewGenerator {
         MediaVersionHelper.updateLatestMediaVersions(viewName, input, dataManager.getLatestViewMediaVersions());
         freeMarkerHelper.writeFile(viewName, viewAndComponentTemplate, input, UtilStrings.PATH_TO_VIEW_FILES);
 
-        final ComponentGenerator componentGenerator = new ComponentGenerator(classCategories, importHelper, freeMarkerHelper, inputDataHelper, dataManager);
-        final EnumGenerator enumGenerator = new EnumGenerator(classCategories, freeMarkerHelper, inputDataHelper);
+        //final ComponentGenerator componentGenerator = new ComponentGenerator(classCategories, importHelper, freeMarkerHelper, inputDataHelper, dataManager);
+        //final EnumGenerator enumGenerator = new EnumGenerator(classCategories, freeMarkerHelper, inputDataHelper);
         for (final FieldDefinition field : response.getFields()) {
             generateClasses(field, componentGenerator, enumGenerator, responseMediaType, viewAndComponentTemplate, enumTemplate);
         }
