@@ -34,6 +34,9 @@ import static com.synopsys.integration.create.apigen.helper.UtilStrings.VIEW_BAS
 import static com.synopsys.integration.create.apigen.helper.UtilStrings.VIEW_DIRECTORY_SUFFIX;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 
 public class RandomClassData {
 
@@ -43,11 +46,14 @@ public class RandomClassData {
     final String parentClass;
 
     public RandomClassData(final String linkClassName, final ClassCategories classCategories) {
-        if (classCategories.isView(linkClassName)) {
+        final ClassCategoryData classCategoryData = new ClassCategoryData(linkClassName, classCategories);
+        final ClassSourceEnum classSource = classCategoryData.getSource();
+        final ClassTypeEnum classType = classCategoryData.getType();
+        if (classType.isView()) {
             packageName = GENERATED_VIEW_PACKAGE;
             destinationSuffix = VIEW_DIRECTORY_SUFFIX;
             parentClass = VIEW_BASE_CLASS;
-        } else if (classCategories.isResponse(linkClassName)) {
+        } else if (classType.isResponse()) {
             packageName = GENERATED_RESPONSE_PACKAGE;
             destinationSuffix = RESPONSE_DIRECTORY_SUFFIX;
             parentClass = RESPONSE_BASE_CLASS;

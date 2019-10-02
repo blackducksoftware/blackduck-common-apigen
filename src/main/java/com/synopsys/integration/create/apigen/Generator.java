@@ -36,9 +36,13 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
 import com.synopsys.integration.create.apigen.definitions.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
+import com.synopsys.integration.create.apigen.generators.ClassGenerator;
 import com.synopsys.integration.create.apigen.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
@@ -64,10 +68,12 @@ public class Generator {
     private final FreeMarkerHelper freeMarkerHelper;
     private final DataManager dataManager;
     private final ViewGenerator viewGenerator;
+    private final List<ClassGenerator> generators;
+    private Configuration config;
 
     @Autowired
     public Generator(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
-        final FreeMarkerHelper freeMarkerHelper, final DataManager dataManager, final ViewGenerator viewGenerator) {
+        final FreeMarkerHelper freeMarkerHelper, final DataManager dataManager, final ViewGenerator viewGenerator, final List<ClassGenerator> generators) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
@@ -76,6 +82,7 @@ public class Generator {
         this.freeMarkerHelper = freeMarkerHelper;
         this.dataManager = dataManager;
         this.viewGenerator = viewGenerator;
+        this.generators = generators;
     }
 
     @PostConstruct
@@ -95,13 +102,10 @@ public class Generator {
                 response.addLinks(missingLinks);
             }
         }
-
-        final Configuration config = freeMarkerHelper.configureFreeMarker();
-        final Template enumTemplate = config.getTemplate("enumTemplate.ftl");
-        final Template viewAndComponentTemplate = config.getTemplate("viewTemplate.ftl");
+        config = freeMarkerHelper.configureFreeMarker();
         final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
 
-        generateFiles(responses, viewAndComponentTemplate, enumTemplate, randomTemplate);
+        generateFiles(responses, randomTemplate);
 
         System.out.println("\n******************************\nThere are " + dataManager.getRandomLinkClassNames().size() + " classes that are referenced but have no definition in the API specs: \n");
         for (final String randomClassName : dataManager.getRandomLinkClassNames()) {
@@ -115,16 +119,35 @@ public class Generator {
         }
     }
 
-    private void generateFiles(final List<ResponseDefinition> responses, final Template viewAndComponentTemplate, final Template enumTemplate, final Template randomTemplate) throws Exception {
+    private void generateFiles(final List<ResponseDefinition> responses, final Template randomTemplate) throws Exception {
         for (final ResponseDefinition response : responses) {
             if (viewGenerator.isApplicable(response)) {
-                viewGenerator.generateClasses(response, viewAndComponentTemplate, enumTemplate);
+                final Template template = viewGenerator.getTemplate(config);
+                viewGenerator.generateClasses(response, template);
+            } else {
+                System.out.println("Non-applicable response!");
+            }
+            for (final FieldDefinition field : response.getFields()) {
+                generateClasses(field, generators, response.getMediaType());
             }
         }
 
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, UtilStrings.PATH_TO_VIEW_FILES, UtilStrings.PATH_TO_COMPONENT_FILES);
 
         generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
+    }
+
+    private void generateClasses(final FieldDefinition field, final List<ClassGenerator> generators, final String responseMediaType) throws Exception {
+        for (final ClassGenerator generator : generators) {
+            if (generator.isApplicable(field)) {
+                final Template template = generator.getTemplate(config);
+                generator.generateClass(field, responseMediaType, template);
+            }
+        }
+
+        for (final FieldDefinition subField : field.getSubFields()) {
+            generateClasses(subField, generators, responseMediaType);
+        }
     }
 
     private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles)
@@ -150,11 +173,13 @@ public class Generator {
 
     private String getImportClass(final String className) {
         String importClass = null;
-        if (classCategories.isView(className)) {
+        final ClassCategoryData classCategoryData = new ClassCategoryData(className, classCategories);
+        final ClassTypeEnum classType = classCategoryData.getType();
+        if (classType.isView()) {
             importClass = UtilStrings.VIEW_BASE_CLASS;
-        } else if (classCategories.isResponse(className)) {
+        } else if (classType.isResponse()) {
             importClass = UtilStrings.RESPONSE_BASE_CLASS;
-        } else if (classCategories.isComponent(className)) {
+        } else if (classType.isComponent()) {
             importClass = UtilStrings.COMPONENT_BASE_CLASS;
         }
         return importClass;
@@ -162,7 +187,10 @@ public class Generator {
 
     private void generateDummyClassesForReferencedButUndefinedObjects(final Template randomTemplate) throws Exception {
         for (final String linkClassName : dataManager.getLinkClassNames()) {
-            if (!classCategories.isManual(linkClassName) && !classCategories.isThrowaway(linkClassName) && !classCategories.isCommonType(linkClassName)) {
+            final ClassCategoryData classCategoryData = new ClassCategoryData(linkClassName, classCategories);
+            final ClassSourceEnum classSource = classCategoryData.getSource();
+            final ClassTypeEnum classType = classCategoryData.getType();
+            if (!classSource.equals(ClassSourceEnum.MANUAL) && !classSource.equals(ClassSourceEnum.THROWAWAY) && !classType.equals(ClassTypeEnum.COMMON)) {
                 final Map<String, Object> randomInput = new HashMap<>();
                 randomInput.put(UtilStrings.CLASS_NAME, linkClassName);
                 final RandomClassData randomClassData = new RandomClassData(linkClassName, classCategories);

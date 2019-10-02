@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.generators;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ImportHelper;
@@ -40,6 +43,7 @@ import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Component
@@ -62,7 +66,9 @@ public class ComponentGenerator extends ClassGenerator {
 
     @Override
     public boolean isApplicable(final FieldDefinition field) {
-        return (classCategories.isNotCommonTypeOrEnum(field.getType()));
+        final ClassCategoryData classCategoryData = new ClassCategoryData(field.getType(), classCategories);
+        final ClassTypeEnum classType = classCategoryData.getType();
+        return classType.isNotCommonTypeOrEnum();
     }
 
     @Override
@@ -85,5 +91,10 @@ public class ComponentGenerator extends ClassGenerator {
         }
         dataManager.addNonLinkClassName(fieldType);
         dataManager.addNonLinkClassName(NameParser.getNonVersionedName(fieldType));
+    }
+
+    @Override
+    public Template getTemplate(final Configuration config) throws IOException {
+        return config.getTemplate("viewTemplate.ftl");
     }
 }

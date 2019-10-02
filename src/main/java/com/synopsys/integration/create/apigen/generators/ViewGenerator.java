@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.generators;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +30,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.definitions.ClassCategories;
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
@@ -39,18 +39,14 @@ import com.synopsys.integration.create.apigen.helper.LinkHelper;
 import com.synopsys.integration.create.apigen.helper.LinksAndImportsHelper;
 import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Component
 public class ViewGenerator {
-
-    private final ComponentGenerator componentGenerator;
-    private final EnumGenerator enumGenerator;
-    private final ClassCategories classCategories;
     private final FreeMarkerHelper freeMarkerHelper;
     private final MediaTypes mediaTypes;
     private final ImportHelper importHelper;
@@ -58,11 +54,8 @@ public class ViewGenerator {
     private final DataManager dataManager;
 
     @Autowired
-    public ViewGenerator(final ComponentGenerator componentGenerator, final EnumGenerator enumGenerator, final ClassCategories classCategories, final FreeMarkerHelper freeMarkerHelper, final MediaTypes mediaTypes, final ImportHelper importHelper,
+    public ViewGenerator(final FreeMarkerHelper freeMarkerHelper, final MediaTypes mediaTypes, final ImportHelper importHelper,
         final InputDataHelper inputDataHelper, final DataManager dataManager) {
-        this.componentGenerator = componentGenerator;
-        this.enumGenerator = enumGenerator;
-        this.classCategories = classCategories;
         this.freeMarkerHelper = freeMarkerHelper;
         this.mediaTypes = mediaTypes;
         this.importHelper = importHelper;
@@ -75,7 +68,7 @@ public class ViewGenerator {
         return (longMediaTypes.contains(response.getMediaType()));
     }
 
-    public void generateClasses(final ResponseDefinition response, final Template viewAndComponentTemplate, final Template enumTemplate) throws Exception {
+    public void generateClasses(final ResponseDefinition response, final Template template) throws Exception {
         Set<String> imports = new HashSet<>();
         importHelper.addFieldImports(imports, response.getFields());
         final LinksAndImportsHelper helper = importHelper.getLinkImports(imports, response);
@@ -87,29 +80,13 @@ public class ViewGenerator {
         final String viewName = response.getName();
 
         MediaVersionHelper.updateLatestMediaVersions(viewName, input, dataManager.getLatestViewMediaVersions());
-        freeMarkerHelper.writeFile(viewName, viewAndComponentTemplate, input, UtilStrings.PATH_TO_VIEW_FILES);
-
-        //final ComponentGenerator componentGenerator = new ComponentGenerator(classCategories, importHelper, freeMarkerHelper, inputDataHelper, dataManager);
-        //final EnumGenerator enumGenerator = new EnumGenerator(classCategories, freeMarkerHelper, inputDataHelper);
-        for (final FieldDefinition field : response.getFields()) {
-            generateClasses(field, componentGenerator, enumGenerator, responseMediaType, viewAndComponentTemplate, enumTemplate);
-        }
+        freeMarkerHelper.writeFile(viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
 
         dataManager.addNonLinkClassName(viewName);
         dataManager.addNonLinkClassName(NameParser.getNonVersionedName(viewName));
     }
 
-    private void generateClasses(final FieldDefinition field, final ComponentGenerator componentGenerator, final EnumGenerator enumGenerator, final String responseMediaType, final Template viewAndComponentTemplate,
-        final Template enumTemplate) throws Exception {
-        if (componentGenerator.isApplicable(field)) {
-            componentGenerator.generateClass(field, responseMediaType, viewAndComponentTemplate);
-        }
-        if (enumGenerator.isApplicable(field)) {
-            enumGenerator.generateClass(field, responseMediaType, enumTemplate);
-        }
-
-        for (final FieldDefinition subField : field.getSubFields()) {
-            generateClasses(subField, componentGenerator, enumGenerator, responseMediaType, viewAndComponentTemplate, enumTemplate);
-        }
+    public Template getTemplate(final Configuration config) throws IOException {
+        return config.getTemplate("viewTemplate.ftl");
     }
 }

@@ -24,8 +24,6 @@ package com.synopsys.integration.create.apigen.helper;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.util.Stringable;
@@ -39,7 +37,6 @@ public class LinkHelper extends Stringable {
     private final LinkResponseDefinitions linkResponseDefinitions;
     private final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> linkResponseDefinitionsList;
 
-    @Autowired
     public LinkHelper(final String label, final String responseName, final LinkResponseDefinitions linkResponseDefinitions) {
         this.label = label;
         this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";

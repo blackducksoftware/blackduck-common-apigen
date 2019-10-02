@@ -20,20 +20,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generators;
+package com.synopsys.integration.create.apigen.definitions;
 
-import java.io.IOException;
+public class ClassCategoryData {
+    private final ClassTypeEnum type;
+    private final ClassSourceEnum source;
+    private final ClassCategories classCategories;
 
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
+    public ClassCategoryData(final String className, final ClassCategories classCategories) {
+        if (className.equals("AssignedUserGroupView")) {
+            System.out.println("nop");
+        }
+        this.classCategories = classCategories;
+        this.type = classCategories.computeType(className);
+        this.source = classCategories.computeSource(className);
+    }
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+    public ClassTypeEnum getType() {
+        return type;
+    }
 
-public abstract class ClassGenerator {
-
-    public abstract boolean isApplicable(FieldDefinition field);
-
-    public abstract void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception;
-
-    public abstract Template getTemplate(Configuration config) throws IOException;
+    public ClassSourceEnum getSource() {
+        return source;
+    }
 }

@@ -35,6 +35,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
@@ -77,15 +80,20 @@ public class ImportHelper {
         }
         fieldType = NameParser.stripListNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
-        final String importPathPrefix = classCategories.isThrowaway(fieldType) ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
+        final ClassCategoryData classCategoryData = new ClassCategoryData(fieldType, classCategories);
+        final ClassSourceEnum classSource = classCategoryData.getSource();
+        final ClassTypeEnum classType = classCategoryData.getType();
+        final String importPathPrefix = classSource.isThrowaway() ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {
             imports.add(UtilStrings.JAVA_BIG_DECIMAL);
         }
 
-        if (classCategories.isEnum(fieldType)) {
+        if (classType.isEnum()) {
             imports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
-        } else if (!classCategories.isCommonType(fieldType)) {
+        } else if (classType.isResponse()) {
+            imports.add(importPathPrefix + UtilStrings.RESPONSE + "." + fieldType);
+        } else if (!classType.isCommon()) {
             imports.add(importPathPrefix + UtilStrings.COMPONENT + "." + fieldType);
         }
     }

@@ -22,17 +22,22 @@
  */
 package com.synopsys.integration.create.apigen.generators;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.InputDataHelper;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Component
@@ -51,8 +56,10 @@ public class EnumGenerator extends ClassGenerator {
 
     @Override
     public boolean isApplicable(final FieldDefinition field) {
-        final String fieldType = field.getType();
-        return (classCategories.isEnum(fieldType) && !classCategories.isThrowaway(fieldType));
+        final ClassCategoryData classCategoryData = new ClassCategoryData(field.getType(), classCategories);
+        final ClassSourceEnum classSource = classCategoryData.getSource();
+        final ClassTypeEnum classType = classCategoryData.getType();
+        return (classType.isEnum() && !classSource.equals(ClassSourceEnum.THROWAWAY));
     }
 
     @Override
@@ -64,5 +71,10 @@ public class EnumGenerator extends ClassGenerator {
         for (final FieldDefinition subField : field.getSubFields()) {
             generateClass(subField, responseMediaType, template);
         }
+    }
+
+    @Override
+    public Template getTemplate(final Configuration config) throws IOException {
+        return config.getTemplate("enumTemplate.ftl");
     }
 }

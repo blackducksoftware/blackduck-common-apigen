@@ -20,20 +20,44 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generators;
+package com.synopsys.integration.create.apigen.definitions;
 
-import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
+public enum ClassTypeEnum {
+    VIEW,
+    RESPONSE,
+    COMPONENT,
+    ENUM,
+    COMMON,
+    NON_ENUM_ENDING_IN_TYPE,
+    NULL;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+    public String getFormattedValue() {
+        return StringUtils.capitalize(this.toString().toLowerCase());
+    }
 
-public abstract class ClassGenerator {
+    public boolean isView() {
+        return this.equals(VIEW);
+    }
 
-    public abstract boolean isApplicable(FieldDefinition field);
+    public boolean isResponse() {
+        return this.equals(RESPONSE);
+    }
 
-    public abstract void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception;
+    public boolean isComponent() {
+        return this.equals(COMPONENT);
+    }
 
-    public abstract Template getTemplate(Configuration config) throws IOException;
+    public boolean isEnum() {
+        return this.equals(ENUM);
+    }
+
+    public boolean isCommon() {
+        return this.equals(COMMON);
+    }
+
+    public boolean isNotCommonTypeOrEnum() {
+        return (!this.isCommon() && !this.isEnum());
+    }
 }

@@ -20,20 +20,29 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generators;
+package com.synopsys.integration.create.apigen.definitions;
 
-import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
 
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
+public enum ClassSourceEnum {
+    GENERATED,
+    MANUAL,
+    THROWAWAY,
+    NULL;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+    public String getFormattedValue() {
+        return StringUtils.capitalize(this.toString().toLowerCase());
+    }
 
-public abstract class ClassGenerator {
+    public boolean isGenerated() {
+        return this.equals(GENERATED);
+    }
 
-    public abstract boolean isApplicable(FieldDefinition field);
+    public boolean isManual() {
+        return this.equals(MANUAL);
+    }
 
-    public abstract void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception;
-
-    public abstract Template getTemplate(Configuration config) throws IOException;
+    public boolean isThrowaway() {
+        return this.equals(THROWAWAY);
+    }
 }

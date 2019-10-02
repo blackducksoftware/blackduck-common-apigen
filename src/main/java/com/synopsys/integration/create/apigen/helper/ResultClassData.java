@@ -25,19 +25,24 @@ package com.synopsys.integration.create.apigen.helper;
 import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.helper.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 
 public class ResultClassData {
 
     private final String resultClass;
     private final ClassCategories classCategories;
+    private final ClassTypeEnum classType;
+    private final ClassSourceEnum classSource;
 
-    @Autowired
     public ResultClassData(final String resultClass, final ClassCategories classCategories) {
         this.resultClass = resultClass;
         this.classCategories = classCategories;
+        final ClassCategoryData classCategoryData = new ClassCategoryData(resultClass, classCategories);
+        this.classSource = classCategoryData.getSource();
+        this.classType = classCategoryData.getType();
     }
 
     public String getResultClass() {
@@ -47,11 +52,11 @@ public class ResultClassData {
     public String getResultImportType() {
         String resultImportType = null;
         if (resultClass != null) {
-            if (classCategories.isView(resultClass)) {
+            if (classType.isView()) {
                 resultImportType = UtilStrings.VIEW;
-            } else if (classCategories.isResponse(resultClass)) {
+            } else if (classType.isResponse()) {
                 resultImportType = UtilStrings.RESPONSE;
-            } else if (classCategories.isComponent(resultClass)) {
+            } else if (classType.isComponent()) {
                 resultImportType = UtilStrings.COMPONENT;
             }
         }
@@ -61,11 +66,11 @@ public class ResultClassData {
     public String getResultImportPath() {
         String resultImportPath = null;
         if (resultClass != null) {
-            if (classCategories.isManual(resultClass)) {
+            if (classSource.isManual()) {
                 resultImportPath = MANUAL_CLASS_PATH_PREFIX;
-            } else if (classCategories.isThrowaway(resultClass)) {
+            } else if (classSource.isThrowaway()) {
                 resultImportPath = MANUAL_CLASS_PATH_PREFIX + "throwaway.generated.";
-            } else if (classCategories.isGenerated(resultClass)) {
+            } else if (classSource.isGenerated()) {
                 resultImportPath = GENERATED_CLASS_PATH_PREFIX;
             }
         }

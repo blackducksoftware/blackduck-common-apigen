@@ -175,7 +175,6 @@ public class ClassCategories {
 
         components.add("ActivityDataView");
         components.add("AssignedUserGroup");
-        components.add("AssignedUserGroupView");
         components.add("AuditEventCount");
         components.add("BomComponentReleaseUsageRiskProfile");
         components.add("ChannelRelease");
@@ -330,7 +329,6 @@ public class ClassCategories {
         generatedClasses.add("PolicyRuleView");
         generatedClasses.add("ProjectCustomFieldView");
         generatedClasses.add("ProjectJournalView");
-        generatedClasses.add("ProjectMappingView");
         generatedClasses.add("ProjectVersionComponentCustomFieldView");
         generatedClasses.add("ProjectVersionComponentVersionCustomFieldView");
         generatedClasses.add("ProjectView");
@@ -562,31 +560,59 @@ public class ClassCategories {
         return nonEnumClassesEndingInType;
     }
 
-    public boolean isView(final String className) {
+    private boolean isView(final String className) {
         return this.VIEWS.contains(className);
     }
 
-    public boolean isResponse(final String className) {
+    private boolean isResponse(final String className) {
         return this.RESPONSES.contains(className);
     }
 
-    public boolean isComponent(final String className) { return this.COMPONENTS.contains(className); }
+    private boolean isComponent(final String className) { return this.COMPONENTS.contains(className); }
 
-    public boolean isEnum(final String type) {
-        return type.contains(UtilStrings.ENUM) && !isNonEnumClassEndingInType(type);
+    private boolean isGenerated(final String className) { return this.GENERATED.contains(className); }
+
+    private boolean isManual(final String className) { return this.MANUAL.contains(className); }
+
+    private boolean isThrowaway(final String className) { return this.THROWAWAY.contains(className); }
+
+    private boolean isCommonType(final String className) { return this.COMMON_TYPES.contains(className); }
+
+    private boolean isNonEnumClassEndingInType(final String className) { return this.NON_ENUM_CLASSES_ENDING_IN_TYPE.contains(className); }
+
+    public ClassTypeEnum computeType(final String className) {
+        if (isView(className)) {
+            return ClassTypeEnum.VIEW;
+        }
+        if (isComponent(className)) {
+            return ClassTypeEnum.COMPONENT;
+        }
+        if (className.contains(UtilStrings.ENUM) && !isNonEnumClassEndingInType(className)) {
+            return ClassTypeEnum.ENUM;
+        }
+        if (isResponse(className)) {
+            return ClassTypeEnum.RESPONSE;
+        }
+        if (isCommonType(className)) {
+            return ClassTypeEnum.COMMON;
+        }
+        if (isNonEnumClassEndingInType(className)) {
+            return ClassTypeEnum.NON_ENUM_ENDING_IN_TYPE;
+        }
+        return ClassTypeEnum.NULL;
     }
 
-    public boolean isNotCommonTypeOrEnum(final String fieldType) {
-        return (!isCommonType(fieldType) && !isEnum(fieldType));
+    public ClassSourceEnum computeSource(final String className) {
+        if (isGenerated(className)) {
+            return ClassSourceEnum.GENERATED;
+        }
+        if (isManual(className)) {
+            return ClassSourceEnum.MANUAL;
+        }
+        if (isThrowaway(className)) {
+            return ClassSourceEnum.THROWAWAY;
+        }
+        return ClassSourceEnum.NULL;
     }
 
-    public boolean isGenerated(final String className) { return this.GENERATED.contains(className); }
-
-    public boolean isManual(final String className) { return this.MANUAL.contains(className); }
-
-    public boolean isThrowaway(final String className) { return this.THROWAWAY.contains(className); }
-
-    public boolean isCommonType(final String className) { return this.COMMON_TYPES.contains(className); }
-
-    public boolean isNonEnumClassEndingInType(final String className) { return this.NON_ENUM_CLASSES_ENDING_IN_TYPE.contains(className); }
 }

@@ -36,18 +36,21 @@ import java.util.List;
 import java.util.Set;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
+import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
 
 public class MissingDependencyIdentifier {
 
     static Set<String> missingClasses = new HashSet<>();
     static Set<String> bdCommonDependencies = new HashSet<>();
-    static TypeTranslator TYPE_TRANSLATOR;
-    static ClassCategories CLASS_CATEGORIES;
+    static TypeTranslator typeTranslator;
+    static ClassCategories classCategories;
 
     public MissingDependencyIdentifier(final TypeTranslator typeTranslator, final ClassCategories classCategories) {
-        this.TYPE_TRANSLATOR = typeTranslator;
-        this.CLASS_CATEGORIES = classCategories;
+        this.typeTranslator = typeTranslator;
+        this.classCategories = classCategories;
     }
 
     public static void main(final String[] args) throws IOException {
@@ -59,12 +62,15 @@ public class MissingDependencyIdentifier {
         //getDependencies(pathToBlackDuckCommon, true);
         for (final String bdCommonDependency : bdCommonDependencies) {
             final String pathToFile;
-            if (!CLASS_CATEGORIES.isGenerated(bdCommonDependency) && !missingClasses.contains(bdCommonDependency) && TYPE_TRANSLATOR.getApiGenClassName(bdCommonDependency) == null && !CLASS_CATEGORIES.isManual(bdCommonDependency)) {
-                if (CLASS_CATEGORIES.isView(bdCommonDependency)) {
+            final ClassCategoryData classCategoryData = new ClassCategoryData(bdCommonDependency, classCategories);
+            final ClassSourceEnum classSource = classCategoryData.getSource();
+            final ClassTypeEnum classType = classCategoryData.getType();
+            if (!classSource.isGenerated() && !missingClasses.contains(bdCommonDependency) && typeTranslator.getApiGenClassName(bdCommonDependency) == null && !classSource.isManual()) {
+                if (classType.isView()) {
                     pathToFile = pathToThrowaway + "view/";
-                } else if (CLASS_CATEGORIES.isResponse(bdCommonDependency)) {
+                } else if (classType.isResponse()) {
                     pathToFile = pathToThrowaway + "response/";
-                } else if (CLASS_CATEGORIES.isComponent(bdCommonDependency)) {
+                } else if (classType.isComponent()) {
                     pathToFile = pathToThrowaway + "component/";
                 } else {
                     pathToFile = pathToThrowaway + "enumeration/";
@@ -134,7 +140,10 @@ public class MissingDependencyIdentifier {
                 if (importedFilePath.contains("api")) {
                     final String[] pathPieces = importedFilePath.split("\\.");
                     final String importedFile = pathPieces[pathPieces.length - 1].replace(";", "");
-                    if (!CLASS_CATEGORIES.isGenerated(importedFile) && !missingClasses.contains(importedFile) && TYPE_TRANSLATOR.getApiGenClassName(importedFile) == null && !CLASS_CATEGORIES.isManual(importedFile)) {
+                    final ClassCategoryData classCategoryData = new ClassCategoryData(importedFile, classCategories);
+                    final ClassSourceEnum classSource = classCategoryData.getSource();
+                    final ClassTypeEnum classType = classCategoryData.getType();
+                    if (!classSource.isGenerated() && !missingClasses.contains(importedFile) && typeTranslator.getApiGenClassName(importedFile) == null && !classSource.isManual()) {
                         missingClasses.add(importedFile);
                         if (forBDCommon) {
                             bdCommonDependencies.add(importedFile);
