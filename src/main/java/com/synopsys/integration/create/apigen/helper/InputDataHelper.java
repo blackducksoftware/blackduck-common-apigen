@@ -65,7 +65,7 @@ public class InputDataHelper {
         return inputData;
     }
 
-    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final Set<LinkHelper> links,
+    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final Set<LinkData> links,
         final String mediaType) {
         final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields, mediaType);
 

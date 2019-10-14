@@ -46,7 +46,7 @@ public class RandomClassData {
     final String parentClass;
 
     public RandomClassData(final String linkClassName, final ClassCategories classCategories) {
-        final ClassCategoryData classCategoryData = new ClassCategoryData(linkClassName, classCategories);
+        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(linkClassName, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
         if (classType.isView()) {

@@ -324,8 +324,15 @@ public class ClassCategories {
 
         // views
         generatedClasses.add("CodeLocationView");
+        generatedClasses.add("ComponentView");
         generatedClasses.add("CustomFieldView");
-        generatedClasses.add("CustomFieldView");
+        generatedClasses.add("CustomFieldObjectView");
+        generatedClasses.add("CurrentUserView");
+        generatedClasses.add("JobView");
+        generatedClasses.add("LicenseReportsReportView");
+        generatedClasses.add("LicenseTermView");
+        generatedClasses.add("LicenseTextView");
+        generatedClasses.add("LicenseView");
         generatedClasses.add("PolicyRuleView");
         generatedClasses.add("ProjectCustomFieldView");
         generatedClasses.add("ProjectJournalView");
@@ -334,11 +341,16 @@ public class ClassCategories {
         generatedClasses.add("ProjectView");
         generatedClasses.add("ProjectVersionView");
         generatedClasses.add("ProjectVersionComponentView");
+        generatedClasses.add("ProjectVersionCustomFieldView");
+        generatedClasses.add("ReportContentsView");
+        generatedClasses.add("RegistrationView");
         generatedClasses.add("RoleView");
+        generatedClasses.add("ScanView");
         generatedClasses.add("UserView");
         generatedClasses.add("UserGroupView");
         generatedClasses.add("UserRoleAssignmentView");
         generatedClasses.add("VersionBomAttachmentView");
+        generatedClasses.add("VulnerabilityReportsReportView");
 
         return generatedClasses;
     }

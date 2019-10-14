@@ -37,11 +37,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
+import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
@@ -52,13 +51,14 @@ public class DirectoryWalker {
     private final Gson gson;
     private final MediaTypes mediaTypes;
     private final TypeTranslator typeTranslator;
+    private final DataManager dataManager;
 
-    @Autowired
-    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator) {
+    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final DataManager dataManager) {
         this.rootDirectory = rootDirectory;
         this.gson = gson;
         this.mediaTypes = mediaTypes;
         this.typeTranslator = typeTranslator;
+        this.dataManager = dataManager;
     }
 
     public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
@@ -82,7 +82,7 @@ public class DirectoryWalker {
             response.addLinks(links);
 
             // Filter out 'Dud' responses
-            if (DudResponseIdentifier.isDudResponse2(response)) {
+            if (DudResponseIdentifier.isDudResponse(response)) {
                 actuallyShowOutput = false;
             } else {
                 finalResponseDefinitions.add(response);

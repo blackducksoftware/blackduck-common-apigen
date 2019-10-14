@@ -25,32 +25,31 @@ package com.synopsys.integration.create.apigen.helper;
 import java.util.Map;
 
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.util.Stringable;
 
-public class LinkHelper extends Stringable {
+public class LinkData extends Stringable {
     public final String javaConstant;
     public final String label;
     private boolean hasMultipleResults;
     public String resultClass;
     public String linkType;
-    private final LinkResponseDefinitions linkResponseDefinitions;
     private final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> linkResponseDefinitionsList;
 
-    public LinkHelper(final String label, final String responseName, final LinkResponseDefinitions linkResponseDefinitions) {
+    public LinkData(final String label, final ResponseDefinition response, final LinkResponseDefinitions linkResponseDefinitions) {
+        this.linkResponseDefinitionsList = linkResponseDefinitions.getDefinitions();
         this.label = label;
         this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
-        this.linkResponseDefinitions = linkResponseDefinitions;
-        this.linkResponseDefinitionsList = linkResponseDefinitions.getDefinitions();
 
         try {
-            final String nonVersionedResponseName = NameParser.getNonVersionedName(responseName);
+            final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());
             final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = linkResponseDefinitionsList.get(nonVersionedResponseName);
-            final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(label);
+            final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(this.label);
 
             this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();
-            final String result_class = linkResponseDefinitionItem.getResultClass();
 
+            final String result_class = linkResponseDefinitionItem.getResultClass();
             this.resultClass = result_class;
 
             if (result_class.equals(UtilStrings.STRING)) {
@@ -64,6 +63,15 @@ public class LinkHelper extends Stringable {
             this.resultClass = null;
             this.linkType = null;
         }
+    }
+
+    private String computeLabel(final LinkResponseDefinitions linkResponseDefinitions, final String relativePath, String label) {
+        if (linkResponseDefinitions.getLinkLabels().contains(label)) {
+            String labelDifferentiator = relativePath.split("/")[1];
+            labelDifferentiator = NameParser.stripS(labelDifferentiator);
+            label = labelDifferentiator + "_" + label;
+        }
+        return label;
     }
 
     public String javaConstant() { return this.javaConstant; }

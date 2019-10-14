@@ -25,15 +25,15 @@ package com.synopsys.integration.create.apigen.helper;
 import java.util.Set;
 
 public class LinksAndImportsHelper {
-    private final Set<LinkHelper> links;
+    private final Set<LinkData> links;
     private final Set<String> imports;
 
-    public LinksAndImportsHelper(final Set<LinkHelper> links, final Set<String> imports) {
+    public LinksAndImportsHelper(final Set<LinkData> links, final Set<String> imports) {
         this.links = links;
         this.imports = imports;
     }
 
-    public Set<LinkHelper> getLinks() { return this.links; }
+    public Set<LinkData> getLinks() { return this.links; }
 
     public Set<String> getImports() { return this.imports; }
 

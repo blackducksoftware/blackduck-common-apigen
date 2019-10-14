@@ -22,16 +22,30 @@
  */
 package com.synopsys.integration.create.apigen.definitions;
 
+import java.util.Optional;
+
 import org.apache.commons.lang3.StringUtils;
 
+import com.synopsys.integration.create.apigen.helper.UtilStrings;
+
 public enum ClassTypeEnum {
-    VIEW,
-    RESPONSE,
-    COMPONENT,
-    ENUM,
-    COMMON,
-    NON_ENUM_ENDING_IN_TYPE,
-    NULL;
+    VIEW(UtilStrings.VIEW_BASE_CLASS),
+    RESPONSE(UtilStrings.RESPONSE_BASE_CLASS),
+    COMPONENT(UtilStrings.COMPONENT_BASE_CLASS),
+    ENUM(null),
+    COMMON(null),
+    NON_ENUM_ENDING_IN_TYPE(null),
+    NULL(null);
+
+    private final String importClass;
+
+    private ClassTypeEnum(final String importClass) {
+        this.importClass = importClass;
+    }
+
+    public Optional<String> getImportClass() {
+        return Optional.ofNullable(importClass);
+    }
 
     public String getFormattedValue() {
         return StringUtils.capitalize(this.toString().toLowerCase());

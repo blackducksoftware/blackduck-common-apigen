@@ -31,9 +31,13 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.parser.ApiPathData;
+
 @Component
 public class DataManager {
 
+    public final Set<ApiPathData> apiDiscoveryData;
+    private final Set<String> apiDiscoveryDataPaths;
     public final Set<String> nonLinkClassNames;
     public final Set<String> linkClassNames;
     public final List<String> randomLinkClassNames;
@@ -43,12 +47,28 @@ public class DataManager {
     private final Map<String, MediaVersionHelper> latestComponentMediaVersions;
 
     public DataManager() {
+        apiDiscoveryData = new HashSet<>();
+        apiDiscoveryDataPaths = new HashSet<>();
         nonLinkClassNames = new HashSet<>();
         linkClassNames = new HashSet<>();
         randomLinkClassNames = new ArrayList<>();
         nullLinkResultClasses = new HashMap<>();
         latestViewMediaVersions = new HashMap<>();
         latestComponentMediaVersions = new HashMap<>();
+    }
+
+    public Set<ApiPathData> getApiDiscoveryData() {
+        return apiDiscoveryData;
+    }
+
+    public void addApiDiscoveryData(final ApiPathData data) { apiDiscoveryData.add(data); }
+
+    public boolean isRepeatApiDiscoveryPath(final String path) {
+        return apiDiscoveryDataPaths.contains(path);
+    }
+
+    public void addApiDiscoveryPath(final String path) {
+        apiDiscoveryDataPaths.add(path);
     }
 
     public Set<String> getNonLinkClassNames() {

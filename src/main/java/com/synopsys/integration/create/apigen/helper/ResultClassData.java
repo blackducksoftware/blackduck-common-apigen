@@ -40,7 +40,7 @@ public class ResultClassData {
     public ResultClassData(final String resultClass, final ClassCategories classCategories) {
         this.resultClass = resultClass;
         this.classCategories = classCategories;
-        final ClassCategoryData classCategoryData = new ClassCategoryData(resultClass, classCategories);
+        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(resultClass, classCategories);
         this.classSource = classCategoryData.getSource();
         this.classType = classCategoryData.getType();
     }

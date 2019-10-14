@@ -25,15 +25,17 @@ package com.synopsys.integration.create.apigen.definitions;
 public class ClassCategoryData {
     private final ClassTypeEnum type;
     private final ClassSourceEnum source;
-    private final ClassCategories classCategories;
 
-    public ClassCategoryData(final String className, final ClassCategories classCategories) {
-        if (className.equals("AssignedUserGroupView")) {
-            System.out.println("nop");
-        }
-        this.classCategories = classCategories;
-        this.type = classCategories.computeType(className);
-        this.source = classCategories.computeSource(className);
+    public ClassCategoryData(final ClassTypeEnum type, final ClassSourceEnum source) {
+        this.type = type;
+        this.source = source;
+    }
+
+    public static ClassCategoryData computeData(final String className, final ClassCategories classCategories) {
+        final ClassTypeEnum type = classCategories.computeType(className);
+        final ClassSourceEnum source = classCategories.computeSource(className);
+
+        return new ClassCategoryData(type, source);
     }
 
     public ClassTypeEnum getType() {

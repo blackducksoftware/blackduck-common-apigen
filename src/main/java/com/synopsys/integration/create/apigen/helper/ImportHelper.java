@@ -67,20 +67,19 @@ public class ImportHelper {
         imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
 
         for (final FieldDefinition field : fields) {
-            addFieldImports(imports, field);
+            addFieldImports(imports, field.getType());
         }
     }
 
-    public void addFieldImports(final Set<String> imports, final FieldDefinition field) {
+    public void addFieldImports(final Set<String> imports, String fieldType) {
         imports.add(CORE_CLASS_PATH_PREFIX + COMPONENT_BASE_CLASS);
 
-        String fieldType = field.getType();
         if (fieldType.contains(UtilStrings.LIST)) {
             imports.add(UtilStrings.JAVA_LIST.replace("<", ""));
         }
         fieldType = NameParser.stripListNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
-        final ClassCategoryData classCategoryData = new ClassCategoryData(fieldType, classCategories);
+        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
         final String importPathPrefix = classSource.isThrowaway() ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
@@ -93,6 +92,8 @@ public class ImportHelper {
             imports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
         } else if (classType.isResponse()) {
             imports.add(importPathPrefix + UtilStrings.RESPONSE + "." + fieldType);
+        } else if (classType.isView()) {
+            imports.add(importPathPrefix + UtilStrings.VIEW + "." + fieldType);
         } else if (!classType.isCommon()) {
             imports.add(importPathPrefix + UtilStrings.COMPONENT + "." + fieldType);
         }
@@ -100,7 +101,7 @@ public class ImportHelper {
 
     public LinksAndImportsHelper getLinkImports(final Set<String> imports, final ResponseDefinition response) {
         final List<LinkDefinition> rawLinks = response.getLinks();
-        final Set<LinkHelper> links = new HashSet<>();
+        final Set<LinkData> links = new HashSet<>();
         final String responseName = response.getName();
 
         if (!rawLinks.isEmpty()) {
@@ -108,7 +109,7 @@ public class ImportHelper {
         }
 
         for (final LinkDefinition rawLink : rawLinks) {
-            final LinkHelper link = new LinkHelper(rawLink.getRel(), responseName, linkResponseDefinitions);
+            final LinkData link = new LinkData(rawLink.getRel(), response, linkResponseDefinitions);
             try {
                 final String resultClass = link.resultClass();
                 final String linkType = link.linkType();
@@ -129,6 +130,7 @@ public class ImportHelper {
                         imports.add(resultImportPath + resultImportType + "." + resultClass);
                     }
                     links.add(link);
+                    //dataManager.addApiDiscovery(link);
                 } else {
                     dataManager.addNullLinkResultClass(responseName, linkType);
                 }

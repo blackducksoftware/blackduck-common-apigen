@@ -24,25 +24,26 @@ package com.synopsys.integration.create.apigen.helper;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Writer;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Locale;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.Generator;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateExceptionHandler;
-import freemarker.template.Version;
 
 @Component
 public class FreeMarkerHelper {
+
+    private final Configuration cfg;
+
+    @Autowired
+    public FreeMarkerHelper(final Configuration configuration) {
+        this.cfg = configuration;
+    }
 
     // taken from SwaggerHub
     public static File getBaseDirectory() {
@@ -55,21 +56,6 @@ public class FreeMarkerHelper {
             System.exit(0);
         }
         return new File(baseDirectory);
-    }
-
-    public Configuration configureFreeMarker() throws URISyntaxException, IOException {
-        final Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-
-        // Where do we load the templates from:
-        final URL templateDirectory = Generator.class.getClassLoader().getResource("templates");
-        cfg.setDirectoryForTemplateLoading(new File(templateDirectory.toURI()));
-        // Other Settings
-        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
-        cfg.setDefaultEncoding("UTF-8");
-        cfg.setLocale(Locale.US);
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
-        return cfg;
     }
 
     public void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {

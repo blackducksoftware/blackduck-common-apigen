@@ -56,7 +56,7 @@ public class NameParser {
             final String mediaType = pathPieces.next();
             mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
             final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
-            return stripRedundantNamePrefix(responseName);
+            return stripRedundantNamePrefix(responseName, mediaType);
         } else {
             return "";
         }
@@ -123,10 +123,11 @@ public class NameParser {
         return redundantNamePrefixes;
     }
 
-    private String stripRedundantNamePrefix(final String responseName) {
+    private String stripRedundantNamePrefix(final String responseName, final String mediaType) {
         for (final String prefix : REDUNDANT_NAME_PREFIXES) {
-            if (responseName.startsWith(prefix)) {
-                return responseName.replaceFirst(prefix, "");
+            final String responseNameStrippedOfRedundantPrefix = responseName.replaceFirst(prefix, "");
+            if (responseName.startsWith(prefix) && !responseNameStrippedOfRedundantPrefix.equals(VIEWV + mediaType)) {
+                return responseNameStrippedOfRedundantPrefix;
             }
         }
         return responseName;
@@ -150,6 +151,13 @@ public class NameParser {
                                                  .map(StringUtils::capitalize)
                                                  .collect(Collectors.toList());
         return join("", formattedPieces);
+    }
+
+    public static String stripS(final String string) {
+        if (string.endsWith("s")) {
+            return string.substring(0, string.length() - 1);
+        }
+        return string;
     }
 
 }

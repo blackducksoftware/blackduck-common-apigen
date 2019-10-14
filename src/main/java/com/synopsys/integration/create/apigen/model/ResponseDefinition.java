@@ -31,13 +31,15 @@ public class ResponseDefinition extends Definition {
     private final String mediaType;
     private final List<FieldDefinition> fields;
     private final List<LinkDefinition> links;
+    private final boolean hasMultipleResults;
 
-    public ResponseDefinition(final String responseSpecificationPath, final String name, final String mediaType) {
+    public ResponseDefinition(final String responseSpecificationPath, final String name, final String mediaType, final boolean hasMultipleResults) {
         this.responseSpecificationPath = responseSpecificationPath;
         this.name = name;
         this.mediaType = mediaType;
         this.fields = new ArrayList<>();
         this.links = new ArrayList<>();
+        this.hasMultipleResults = hasMultipleResults;
     }
 
     public String getResponseSpecificationPath() {
@@ -63,5 +65,9 @@ public class ResponseDefinition extends Definition {
     public void addLink(final LinkDefinition linkDefinition) { links.add(linkDefinition); }
 
     public void addLinks(final List<LinkDefinition> linkDefinitions) { links.addAll(linkDefinitions); }
+
+    public boolean hasMultipleResults() {
+        return hasMultipleResults;
+    }
 
 }

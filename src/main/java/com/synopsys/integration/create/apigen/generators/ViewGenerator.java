@@ -35,7 +35,7 @@ import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ImportHelper;
 import com.synopsys.integration.create.apigen.helper.InputDataHelper;
-import com.synopsys.integration.create.apigen.helper.LinkHelper;
+import com.synopsys.integration.create.apigen.helper.LinkData;
 import com.synopsys.integration.create.apigen.helper.LinksAndImportsHelper;
 import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
@@ -73,13 +73,13 @@ public class ViewGenerator {
         importHelper.addFieldImports(imports, response.getFields());
         final LinksAndImportsHelper helper = importHelper.getLinkImports(imports, response);
         imports = helper.getImports();
-        final Set<LinkHelper> links = helper.getLinks();
+        final Set<LinkData> links = helper.getLinks();
 
         final String responseMediaType = response.getMediaType();
         final Map<String, Object> input = inputDataHelper.getViewInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, response.getName(), UtilStrings.VIEW_BASE_CLASS, response.getFields(), links, responseMediaType);
         final String viewName = response.getName();
 
-        MediaVersionHelper.updateLatestMediaVersions(viewName, input, dataManager.getLatestViewMediaVersions());
+        MediaVersionHelper.updateLatestMediaVersions(viewName, input, dataManager.getLatestViewMediaVersions(), responseMediaType);
         freeMarkerHelper.writeFile(viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
 
         dataManager.addNonLinkClassName(viewName);

@@ -32,6 +32,7 @@ public class UtilStrings {
     public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
     public static final String GENERATED_COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.COMPONENT;
     public static final String GENERATED_RESPONSE_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.RESPONSE;
+    public static final String GENERATED_DISCOVERY_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "discovery";
     public static final String VIEW_BASE_CLASS = "BlackDuckView";
     public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
     public static final String RESPONSE_BASE_CLASS = "BlackDuckResponse";
@@ -45,6 +46,7 @@ public class UtilStrings {
     public static final String VIEW_DIRECTORY_SUFFIX = "/view";
     public static final String RESPONSE_DIRECTORY_SUFFIX = "/response";
     public static final String COMPONENT_DIRECTORY_SUFFIX = "/component";
+    public static final String DISCOVERY_DIRECTORY_SUFFIX = "/discovery";
     public static final String PATH_TO_VIEW_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
     public static final String PATH_TO_COMPONENT_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
     public static final String PATH_TO_ENUM_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;

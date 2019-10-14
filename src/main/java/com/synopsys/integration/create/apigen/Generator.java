@@ -26,8 +26,10 @@ import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -36,22 +38,24 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
-import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
 import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
 import com.synopsys.integration.create.apigen.definitions.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
 import com.synopsys.integration.create.apigen.generators.ClassGenerator;
+import com.synopsys.integration.create.apigen.generators.DiscoveryGenerator;
 import com.synopsys.integration.create.apigen.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
+import com.synopsys.integration.create.apigen.helper.ImportHelper;
 import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
 import com.synopsys.integration.create.apigen.helper.RandomClassData;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
@@ -66,30 +70,38 @@ public class Generator {
     private final MediaTypes mediaTypes;
     private final TypeTranslator typeTranslator;
     private final FreeMarkerHelper freeMarkerHelper;
+    private final ImportHelper importHelper;
     private final DataManager dataManager;
     private final ViewGenerator viewGenerator;
+    private final DiscoveryGenerator discoveryGenerator;
     private final List<ClassGenerator> generators;
-    private Configuration config;
+    private final Configuration config;
 
     @Autowired
     public Generator(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
-        final FreeMarkerHelper freeMarkerHelper, final DataManager dataManager, final ViewGenerator viewGenerator, final List<ClassGenerator> generators) {
+        final FreeMarkerHelper freeMarkerHelper, final ImportHelper importHelper, final DataManager dataManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator, final List<ClassGenerator> generators,
+        final Configuration config) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
         this.mediaTypes = mediaTypes;
         this.typeTranslator = typeTranslator;
         this.freeMarkerHelper = freeMarkerHelper;
+        this.importHelper = importHelper;
         this.dataManager = dataManager;
         this.viewGenerator = viewGenerator;
+        this.discoveryGenerator = discoveryGenerator;
         this.generators = generators;
+        this.config = config;
     }
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
         final URL rootDirectory = Generator.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
-        final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator);
+        final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, dataManager);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
+
+        //exit(0);
 
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());
@@ -102,7 +114,7 @@ public class Generator {
                 response.addLinks(missingLinks);
             }
         }
-        config = freeMarkerHelper.configureFreeMarker();
+
         final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
 
         generateFiles(responses, randomTemplate);
@@ -131,6 +143,12 @@ public class Generator {
                 generateClasses(field, generators, response.getMediaType());
             }
         }
+        final ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(dataManager);
+        apiPathDataPopulator.populateApiPathData(responses);
+
+        final File discoveryBaseDirectory = new File(FreeMarkerHelper.getBaseDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+        final Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
+        discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
 
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, UtilStrings.PATH_TO_VIEW_FILES, UtilStrings.PATH_TO_COMPONENT_FILES);
 
@@ -154,15 +172,21 @@ public class Generator {
         throws Exception {
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, dataManager.getLatestViewMediaVersions().values());
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, dataManager.getLatestComponentMediaVersions().values());
+
+        final Set<MediaVersionHelper> latestMediaVersions = new HashSet<>();
+        latestMediaVersions.addAll(dataManager.getLatestComponentMediaVersions().values());
+        latestMediaVersions.addAll(dataManager.getLatestViewMediaVersions().values());
+        generateMediaTypeMap(latestMediaVersions);
     }
 
     private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
         for (final MediaVersionHelper latestMediaVersion : latestMediaVersions) {
             final Map<String, Object> input = latestMediaVersion.getInput();
-            final String className = latestMediaVersion.getNonVersionedClass();
+            final String className = latestMediaVersion.getNonVersionedClassName();
             input.put(UtilStrings.CLASS_NAME, className);
             input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
-            final String importClass = getImportClass(className);
+            final ClassTypeEnum classType = classCategories.computeType(className);
+            final String importClass = classType.getImportClass().get();
             final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
             input.put(UtilStrings.IMPORT_PATH, importPath);
             freeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
@@ -171,25 +195,30 @@ public class Generator {
         }
     }
 
-    private String getImportClass(final String className) {
-        String importClass = null;
-        final ClassCategoryData classCategoryData = new ClassCategoryData(className, classCategories);
-        final ClassTypeEnum classType = classCategoryData.getType();
-        if (classType.isView()) {
-            importClass = UtilStrings.VIEW_BASE_CLASS;
-        } else if (classType.isResponse()) {
-            importClass = UtilStrings.RESPONSE_BASE_CLASS;
-        } else if (classType.isComponent()) {
-            importClass = UtilStrings.COMPONENT_BASE_CLASS;
+    private void generateMediaTypeMap(final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
+        final Map<String, Object> input = new HashMap<>();
+
+        input.put("package", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
+        input.put("mostRecentClassVersions", latestMediaVersions);
+
+        final Set<String> imports = new HashSet<>();
+        final Set<String> classNames = new HashSet<>();
+        for (final MediaVersionHelper helper : latestMediaVersions) {
+            classNames.add(helper.getNonVersionedClassName());
         }
-        return importClass;
+        for (final String className : classNames) {
+            importHelper.addFieldImports(imports, className);
+        }
+        input.put("imports", imports);
+
+        final File mediaTypeMapBaseDirectory = new File(FreeMarkerHelper.getBaseDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+        freeMarkerHelper.writeFile("MediaTypeDiscovery", config.getTemplate("mediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath());
     }
 
     private void generateDummyClassesForReferencedButUndefinedObjects(final Template randomTemplate) throws Exception {
         for (final String linkClassName : dataManager.getLinkClassNames()) {
-            final ClassCategoryData classCategoryData = new ClassCategoryData(linkClassName, classCategories);
-            final ClassSourceEnum classSource = classCategoryData.getSource();
-            final ClassTypeEnum classType = classCategoryData.getType();
+            final ClassSourceEnum classSource = classCategories.computeSource(linkClassName);
+            final ClassTypeEnum classType = classCategories.computeType(linkClassName);
             if (!classSource.equals(ClassSourceEnum.MANUAL) && !classSource.equals(ClassSourceEnum.THROWAWAY) && !classType.equals(ClassTypeEnum.COMMON)) {
                 final Map<String, Object> randomInput = new HashMap<>();
                 randomInput.put(UtilStrings.CLASS_NAME, linkClassName);

@@ -23,6 +23,10 @@
 package com.synopsys.integration.create.apigen;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Locale;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,6 +35,9 @@ import org.springframework.context.annotation.Configuration;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import freemarker.template.TemplateExceptionHandler;
+import freemarker.template.Version;
 
 @SpringBootApplication
 @Configuration
@@ -49,5 +56,19 @@ public class Application {
     public Gson gson() {
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson;
+    }
+
+    @Bean
+    public freemarker.template.Configuration configuration() throws URISyntaxException, IOException {
+        final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        // Where do we load the templates from:
+        final URL templateDirectory = Generator.class.getClassLoader().getResource("templates");
+        cfg.setDirectoryForTemplateLoading(new File(templateDirectory.toURI()));
+        // Other Settings
+        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
+        cfg.setDefaultEncoding("UTF-8");
+        cfg.setLocale(Locale.US);
+        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        return cfg;
     }
 }

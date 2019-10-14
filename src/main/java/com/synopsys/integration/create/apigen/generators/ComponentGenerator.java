@@ -66,7 +66,7 @@ public class ComponentGenerator extends ClassGenerator {
 
     @Override
     public boolean isApplicable(final FieldDefinition field) {
-        final ClassCategoryData classCategoryData = new ClassCategoryData(field.getType(), classCategories);
+        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(field.getType(), classCategories);
         final ClassTypeEnum classType = classCategoryData.getType();
         return classType.isNotCommonTypeOrEnum();
     }
@@ -76,7 +76,7 @@ public class ComponentGenerator extends ClassGenerator {
         final Set<String> imports = new HashSet<>();
         final List<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
-            importHelper.addFieldImports(imports, subField);
+            importHelper.addFieldImports(imports, subField.getType());
             if (isApplicable(subField)) {
                 generateClass(subField, responseMediaType, template);
             }
@@ -84,7 +84,7 @@ public class ComponentGenerator extends ClassGenerator {
         final String fieldType = NameParser.stripListNotation(field.getType());
         final Map<String, Object> input = inputDataHelper.getViewInputData(UtilStrings.GENERATED_COMPONENT_PACKAGE, imports, fieldType, UtilStrings.COMPONENT_BASE_CLASS, subFields, responseMediaType);
 
-        MediaVersionHelper.updateLatestMediaVersions(fieldType, input, dataManager.getLatestComponentMediaVersions());
+        MediaVersionHelper.updateLatestMediaVersions(fieldType, input, dataManager.getLatestComponentMediaVersions(), responseMediaType);
 
         if (isApplicable(field)) {
             freeMarkerHelper.writeFile(fieldType, template, input, UtilStrings.PATH_TO_COMPONENT_FILES);

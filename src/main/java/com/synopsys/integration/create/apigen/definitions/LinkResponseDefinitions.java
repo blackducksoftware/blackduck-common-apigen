@@ -34,11 +34,11 @@ import org.springframework.stereotype.Component;
 public class LinkResponseDefinitions {
 
     private final Map<String, Map<String, LinkResponseDefinitionItem>> definitions;
-    private final Set<String> resultClasses;
+    private final Set<String> linkLabels;
 
     @Autowired
     public LinkResponseDefinitions() {
-        this.resultClasses = new HashSet<>();
+        this.linkLabels = new HashSet<>();
         this.definitions = populateDefinitions();
     }
 
@@ -218,7 +218,9 @@ public class LinkResponseDefinitions {
         return definitions;
     }
 
-    public Set<String> getResultClasses() { return this.resultClasses; }
+    public Set<String> getLinkLabels() { return linkLabels; }
+
+    public void addLinkLabel(final String label) { linkLabels.add(label); }
 
     public class LinkResponseDefinitionItem {
         private final boolean hasMultipleResults;
@@ -227,7 +229,6 @@ public class LinkResponseDefinitions {
         public LinkResponseDefinitionItem(final boolean hasMultipleResults, final String resultClass) {
             this.hasMultipleResults = hasMultipleResults;
             this.resultClass = resultClass;
-            resultClasses.add(resultClass);
         }
 
         public boolean hasMultipleResults() {

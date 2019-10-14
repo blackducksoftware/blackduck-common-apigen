@@ -85,7 +85,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "registration/GET/bds_status_4_json/response-specification.json",
@@ -251,7 +252,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "licenses/licenseId/GET/bds_component_detail_5_json/response-specification.json",
@@ -472,7 +474,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "licenses/licenseId/GET/bds_component_detail_4_json/response-specification.json",
@@ -618,7 +621,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "licenses/licenseId/license-terms/licenseTermId/GET/bds_component_detail_5_json/response-specification.json",
@@ -675,7 +679,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "licenses/licenseId/license-terms/licenseTermId/GET/bds_component_detail_4_json/response-specification.json",
@@ -732,7 +737,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "licenses/licenseId/text/GET/bds_component_detail_5_json/response-specification.json",
@@ -747,7 +753,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "licenses/licenseId/text/GET/bds_component_detail_4_json/response-specification.json",
@@ -762,7 +769,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/GET/bds_project_detail_5_json/response-specification.json",
@@ -991,7 +999,8 @@
       "rel": "issues",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/GET/bds_project_detail_4_json/response-specification.json",
@@ -1219,7 +1228,8 @@
       "rel": "issues",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/custom-fields/customFieldId/GET/bds_bill_of_materials_6_json/response-specification.json",
@@ -1282,7 +1292,8 @@
       "rel": "custom-field-option-list",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/GET/bds_bill_of_materials_5_json/response-specification.json",
@@ -1677,7 +1688,8 @@
       "rel": "custom-fields",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/GET/bds_bill_of_materials_4_json/response-specification.json",
@@ -1983,7 +1995,8 @@
       "rel": "crypto-algorithms",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/GET/bds_bill_of_materials_6_json/response-specification.json",
@@ -2374,7 +2387,8 @@
       "rel": "origins",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/custom-fields/customFieldId/GET/bds_bill_of_materials_6_json/response-specification.json",
@@ -2437,7 +2451,8 @@
       "rel": "custom-field-option-list",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/custom-fields/customFieldId/GET/bds_project_detail_5_json/response-specification.json",
@@ -2500,7 +2515,8 @@
       "rel": "custom-field-option-list",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "projects/projectId/GET/bds_project_detail_4_json/response-specification.json",
@@ -2644,7 +2660,8 @@
       "rel": "custom-fields",
       "optional": false
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "projects/projectId/custom-fields/customFieldId/GET/bds_project_detail_5_json/response-specification.json",
@@ -2707,7 +2724,8 @@
       "rel": "custom-field-option-list",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "current-user/GET/bds_user_4_json/response-specification.json",
@@ -2771,7 +2789,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "versions/projectVersionId/license-reports/reportId/GET/bds_report_4_json/response-specification.json",
@@ -2860,7 +2879,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "versions/projectVersionId/reports/reportId/GET/bds_report_4_json/response-specification.json",
@@ -2949,7 +2969,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "GET/bds_status_4_json/response-specification.json",
@@ -3090,7 +3111,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "roles/roleId/GET/bds_user_4_json/response-specification.json",
@@ -3112,7 +3134,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "usergroups/userGroupId/GET/bds_user_4_json/response-specification.json",
@@ -3155,7 +3178,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "scan-summaries/scanId/GET/bds_scan_4_json/response-specification.json",
@@ -3228,7 +3252,8 @@
       "rel": "codelocation",
       "optional": false
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "components/componentId/GET/bds_component_detail_4_json/response-specification.json",
@@ -3335,7 +3360,8 @@
       "rel": "custom-fields",
       "optional": false
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "components/componentId/custom-fields/customFieldId/GET/bds_component_detail_5_json/response-specification.json",
@@ -3398,7 +3424,8 @@
       "rel": "custom-field-option-list",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "policy-rules/policyRuleId/GET/bds_policy_4_json/response-specification.json",
@@ -3500,7 +3527,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "policy-rules/policyRuleId/GET/bds_policy_5_json/response-specification.json",
@@ -3602,7 +3630,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "users/userId/GET/bds_user_4_json/response-specification.json",
@@ -3666,7 +3695,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "users/userId/roles/roleAssignmentId/GET/bds_user_4_json/response-specification.json",
@@ -3702,7 +3732,8 @@
       "fields": []
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "custom-fields/objects/customFieldObject/GET/bds_admin_4_json/response-specification.json",
@@ -3722,7 +3753,8 @@
       "rel": "custom-field-list",
       "optional": false
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "custom-fields/objects/customFieldObject/fields/customFieldId/GET/bds_admin_4_json/response-specification.json",
@@ -3806,7 +3838,8 @@
       "rel": "custom-field-option-list",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "jobs/jobId/GET/bds_status_4_json/response-specification.json",
@@ -3884,7 +3917,8 @@
       "rel": "related-to",
       "optional": true
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "codelocations/codeLocationId/GET/bds_scan_4_json/response-specification.json",
@@ -3939,7 +3973,8 @@
       "rel": "scans",
       "optional": false
     }
-  ]
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "reports/reportId/contents/GET/bds_report_4_json/response-specification.json",
@@ -3976,5 +4011,6 @@
       ]
     }
   ],
-  "links": []
+  "links": [],
+  "hasMultipleResults": false
 }]

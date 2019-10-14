@@ -62,7 +62,7 @@ public class MissingDependencyIdentifier {
         //getDependencies(pathToBlackDuckCommon, true);
         for (final String bdCommonDependency : bdCommonDependencies) {
             final String pathToFile;
-            final ClassCategoryData classCategoryData = new ClassCategoryData(bdCommonDependency, classCategories);
+            final ClassCategoryData classCategoryData = ClassCategoryData.computeData(bdCommonDependency, classCategories);
             final ClassSourceEnum classSource = classCategoryData.getSource();
             final ClassTypeEnum classType = classCategoryData.getType();
             if (!classSource.isGenerated() && !missingClasses.contains(bdCommonDependency) && typeTranslator.getApiGenClassName(bdCommonDependency) == null && !classSource.isManual()) {
@@ -140,7 +140,7 @@ public class MissingDependencyIdentifier {
                 if (importedFilePath.contains("api")) {
                     final String[] pathPieces = importedFilePath.split("\\.");
                     final String importedFile = pathPieces[pathPieces.length - 1].replace(";", "");
-                    final ClassCategoryData classCategoryData = new ClassCategoryData(importedFile, classCategories);
+                    final ClassCategoryData classCategoryData = ClassCategoryData.computeData(importedFile, classCategories);
                     final ClassSourceEnum classSource = classCategoryData.getSource();
                     final ClassTypeEnum classType = classCategoryData.getType();
                     if (!classSource.isGenerated() && !missingClasses.contains(importedFile) && typeTranslator.getApiGenClassName(importedFile) == null && !classSource.isManual()) {

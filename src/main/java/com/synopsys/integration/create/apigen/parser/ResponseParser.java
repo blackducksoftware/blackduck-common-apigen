@@ -63,13 +63,19 @@ public class ResponseParser {
                 final NameParser nameParser = new NameParser();
                 final String responseName = nameParser.getResponseName(responseRelativePath);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
-                final ResponseDefinition response = new ResponseDefinition(responseRelativePath, responseName, responseMediaType);
+                final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
+                final ResponseDefinition response = new ResponseDefinition(responseRelativePath, responseName, responseMediaType, doesHaveMultipleResults);
                 responseDefinitions.add(response);
             } else if (child.isDirectory()) {
                 responseDefinitions.addAll(parseResponses(child, prefixLength));
             }
         }
         return responseDefinitions;
+    }
+
+    private boolean computeIfHasMultipleResults(final File file) {
+        final File grandParentFile = file.getParentFile().getParentFile();
+        return (grandParentFile.getName().equals("GET") && grandParentFile.listFiles().length > 1);
     }
 }
 

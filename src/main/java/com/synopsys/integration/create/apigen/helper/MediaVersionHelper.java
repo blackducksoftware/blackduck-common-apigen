@@ -25,34 +25,41 @@ package com.synopsys.integration.create.apigen.helper;
 import java.util.Map;
 
 public class MediaVersionHelper {
-    private final String nonVersionedClass;
+    // TODO - Make this a MediaVersions class, that contains the map passed into updateLatestMediaVersions
+    private final String nonVersionedClassName;
     private final Integer mediaVersion;
+    private final String mediaType;
     private final Map<String, Object> input;
 
-    public MediaVersionHelper(final String className, final Integer mediaVersion, final Map<String, Object> input) {
-        this.nonVersionedClass = className.endsWith("V") ? className.substring(0, className.length() - 1) : className.replace("ViewV", "View");
+    public MediaVersionHelper(final String className, final Integer mediaVersion, final Map<String, Object> input, final String mediaType) {
+        this.nonVersionedClassName = className.endsWith("V") ? className.substring(0, className.length() - 1) : className.replace("ViewV", "View");
         this.mediaVersion = mediaVersion;
+        this.mediaType = mediaType;
         this.input = input;
     }
 
-    public String getNonVersionedClass() { return this.nonVersionedClass; }
+    public String getNonVersionedClassName() { return this.nonVersionedClassName; }
 
     public Integer getMediaVersion() { return this.mediaVersion; }
 
     public Map<String, Object> getInput() { return this.input; }
 
-    public String getVersionedClassName() { return this.nonVersionedClass + "V" + this.mediaVersion.toString(); }
+    public String getVersionedClassName() { return this.nonVersionedClassName + "V" + this.mediaVersion.toString(); }
 
-    public String toString() {
-        return this.nonVersionedClass + "\n" + this.mediaVersion + "\n\t" + this.input.get("className");
+    public String getMediaType() {
+        return mediaType;
     }
 
-    public static void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionHelper> latestMediaVersions) {
-        final MediaVersionHelper newHelper = getMediaVersionHelper(className, input);
+    public String toString() {
+        return this.nonVersionedClassName + "\n" + this.mediaVersion + "\n\t" + this.input.get("className");
+    }
+
+    public static void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionHelper> latestMediaVersions, final String mediaType) {
+        final MediaVersionHelper newHelper = getMediaVersionHelper(className, input, mediaType);
         if (newHelper == null) {
             return;
         }
-        final String nonVersionedClass = newHelper.getNonVersionedClass();
+        final String nonVersionedClass = newHelper.getNonVersionedClassName();
         final Integer mediaVersion = newHelper.getMediaVersion();
         final MediaVersionHelper oldHelper = latestMediaVersions.get(nonVersionedClass);
 
@@ -63,7 +70,7 @@ public class MediaVersionHelper {
         }
     }
 
-    private static MediaVersionHelper getMediaVersionHelper(final String className, final Map<String, Object> input) {
+    private static MediaVersionHelper getMediaVersionHelper(final String className, final Map<String, Object> input, final String mediaType) {
         Integer mediaVersion = null;
         String nonVersionedClassName = null;
         // Assuming no more than 9 mediaVersions per View class
@@ -76,7 +83,7 @@ public class MediaVersionHelper {
                     input.put("className", className);
                 }
             }
-            return new MediaVersionHelper(nonVersionedClassName, mediaVersion, input);
+            return new MediaVersionHelper(nonVersionedClassName, mediaVersion, input, mediaType);
         } catch (final NullPointerException e) {
             return null;
         }

@@ -51,16 +51,6 @@ public class DudResponseIdentifier {
     }
 
     public static boolean isDudResponse(final ResponseDefinition response) {
-        final List<FieldDefinition> dudFields = getDudFields();
-        for (final FieldDefinition field : response.getFields()) {
-            if (!dudFields.contains(field)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static boolean isDudResponse2(final ResponseDefinition response) {
         final List<String> dudFieldNames = getDudFieldNames();
         for (final FieldDefinition field : response.getFields()) {
             final String fieldName = field.getPath();
