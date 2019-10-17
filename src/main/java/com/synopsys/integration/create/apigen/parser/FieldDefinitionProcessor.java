@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 

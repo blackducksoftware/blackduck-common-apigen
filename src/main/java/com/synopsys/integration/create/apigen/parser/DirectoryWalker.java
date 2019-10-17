@@ -23,12 +23,12 @@
 package com.synopsys.integration.create.apigen.parser;
 
 /*
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.ARRAY;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.BIG_DECIMAL;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.DATA;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.NUMBER;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.OBJECT;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.STRING;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.ARRAY;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.BIG_DECIMAL;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.DATA;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.NUMBER;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.OBJECT;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.STRING;
 
  */
 

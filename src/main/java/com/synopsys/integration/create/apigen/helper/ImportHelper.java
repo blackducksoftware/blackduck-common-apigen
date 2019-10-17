@@ -22,10 +22,10 @@
  */
 package com.synopsys.integration.create.apigen.helper;
 
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.COMPONENT_BASE_CLASS;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.CORE_CLASS_PATH_PREFIX;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.VIEW_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.COMPONENT_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.CORE_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.VIEW_BASE_CLASS;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +39,7 @@ import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
 import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;

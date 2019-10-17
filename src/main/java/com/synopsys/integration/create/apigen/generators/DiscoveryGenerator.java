@@ -35,10 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ResultClassData;
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.parser.ApiPathData;
 
 import freemarker.template.Template;

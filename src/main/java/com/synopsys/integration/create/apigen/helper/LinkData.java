@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.helper;
 import java.util.Map;
 
 import com.synopsys.integration.create.apigen.definitions.LinkResponseDefinitions;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.util.Stringable;

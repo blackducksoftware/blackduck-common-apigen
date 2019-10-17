@@ -22,13 +22,14 @@
  */
 package com.synopsys.integration.create.apigen.helper;
 
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
 import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
 import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 
 public class ResultClassData {
 

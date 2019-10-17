@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ImportHelper;
@@ -38,7 +39,6 @@ import com.synopsys.integration.create.apigen.helper.InputDataHelper;
 import com.synopsys.integration.create.apigen.helper.LinkData;
 import com.synopsys.integration.create.apigen.helper.LinksAndImportsHelper;
 import com.synopsys.integration.create.apigen.helper.MediaVersions;
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 

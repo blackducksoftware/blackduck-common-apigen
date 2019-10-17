@@ -22,16 +22,16 @@
  */
 package com.synopsys.integration.create.apigen.helper;
 
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.COMPONENT_BASE_CLASS;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.COMPONENT_DIRECTORY_SUFFIX;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.CORE_CLASS_PATH_PREFIX;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_COMPONENT_PACKAGE;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_RESPONSE_PACKAGE;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.GENERATED_VIEW_PACKAGE;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.RESPONSE_BASE_CLASS;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.RESPONSE_DIRECTORY_SUFFIX;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.VIEW_BASE_CLASS;
-import static com.synopsys.integration.create.apigen.helper.UtilStrings.VIEW_DIRECTORY_SUFFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.COMPONENT_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.COMPONENT_DIRECTORY_SUFFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.CORE_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.GENERATED_COMPONENT_PACKAGE;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.GENERATED_RESPONSE_PACKAGE;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.GENERATED_VIEW_PACKAGE;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.RESPONSE_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.RESPONSE_DIRECTORY_SUFFIX;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.VIEW_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.definitions.UtilStrings.VIEW_DIRECTORY_SUFFIX;
 
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
 import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;

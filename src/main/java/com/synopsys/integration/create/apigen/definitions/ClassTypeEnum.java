@@ -26,8 +26,6 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
-
 public enum ClassTypeEnum {
     VIEW(UtilStrings.VIEW_BASE_CLASS),
     RESPONSE(UtilStrings.RESPONSE_BASE_CLASS),

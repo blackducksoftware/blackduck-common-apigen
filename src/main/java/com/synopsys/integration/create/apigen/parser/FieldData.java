@@ -28,7 +28,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 
 public class FieldData {
     private final TypeTranslator typeTranslator;

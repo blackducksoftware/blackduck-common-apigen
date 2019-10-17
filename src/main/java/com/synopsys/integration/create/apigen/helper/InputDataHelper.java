@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 

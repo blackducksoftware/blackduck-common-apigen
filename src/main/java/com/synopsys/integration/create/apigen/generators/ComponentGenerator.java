@@ -34,12 +34,12 @@ import org.springframework.stereotype.Component;
 import com.synopsys.integration.create.apigen.definitions.ClassCategories;
 import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
 import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ImportHelper;
 import com.synopsys.integration.create.apigen.helper.InputDataHelper;
 import com.synopsys.integration.create.apigen.helper.MediaVersions;
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 

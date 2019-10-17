@@ -20,10 +20,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.helper;
+package com.synopsys.integration.create.apigen.definitions;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 
 public class UtilStrings {
 

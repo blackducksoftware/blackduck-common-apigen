@@ -29,7 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import com.synopsys.integration.create.apigen.definitions.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 public class FieldDefinitionBuilder {

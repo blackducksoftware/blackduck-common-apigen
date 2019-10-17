@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.synopsys.integration.create.apigen.helper.UtilStrings;
+import com.synopsys.integration.create.apigen.definitions.UtilStrings;
 
 public class NameParser {
     private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
