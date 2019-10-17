@@ -36,8 +36,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 
 public class NameParser {
-
-    public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
     private static final String VIEWV = "ViewV";
     private static final String VIEW = "View";
@@ -77,11 +75,6 @@ public class NameParser {
             responseName = firstPiece + lastPiece + VIEWV + mediaVersion;
         }
 
-        // debug
-        if (responseName.contains("CweCommonConsequences")) {
-            System.out.println("nop");
-        }
-
         if (responseName.endsWith(VIEWV)) {
             System.out.println("***** " + responseName);
             responseName = responseName.replace(VIEWV, VIEW);
@@ -90,11 +83,6 @@ public class NameParser {
     }
 
     public static String getNonVersionedName(final String responseName) {
-        // debug
-        if (responseName.contains("CweCommonConsequences")) {
-            System.out.println("nop");
-        }
-
         // relies on assumption that there will be < 10 numbered responses
         final String mediaVersion = getMediaVersion(responseName);
         if (mediaVersion != null) {
@@ -105,7 +93,7 @@ public class NameParser {
     }
 
     public static String getMediaVersion(final String responseName) {
-        for (final String digit : DIGIT_STRINGS) {
+        for (final String digit : UtilStrings.DIGIT_STRINGS) {
             if (stripListNotation(responseName).endsWith(digit)) {
                 return digit;
             }
@@ -168,13 +156,6 @@ public class NameParser {
                                                  .map(StringUtils::capitalize)
                                                  .collect(Collectors.toList());
         return join("", formattedPieces);
-    }
-
-    public static String stripS(final String string) {
-        if (string.endsWith("s")) {
-            return string.substring(0, string.length() - 1);
-        }
-        return string;
     }
 
 }

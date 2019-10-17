@@ -80,8 +80,10 @@ public class UtilStrings {
     public static final String ENUMERATION = "enumeration";
     public static final String ENUM = "Type";
 
+    public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
     public static Set<String> getJavaKeyWords() {
-        Set<String> javaKeyWords = new HashSet<>();
+        final Set<String> javaKeyWords = new HashSet<>();
 
         javaKeyWords.add("default");
 
