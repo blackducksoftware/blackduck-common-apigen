@@ -62,7 +62,7 @@ public class DirectoryWalker {
     }
 
     public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
-        final ResponseParser responseParser = new ResponseParser(mediaTypes);
+        final ResponseParser responseParser = new ResponseParser(mediaTypes, gson, typeTranslator);
         final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator);
         boolean actuallyShowOutput = showOutput;
 
@@ -81,8 +81,8 @@ public class DirectoryWalker {
             response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
 
-            // Filter out 'Dud' responses
-            if (DudResponseIdentifier.isDudResponse(response)) {
+            // Filter out 'Array' responses
+            if (ArrayResponseIdentifier.isArrayResponse(response)) {
                 actuallyShowOutput = false;
             } else {
                 finalResponseDefinitions.add(response);

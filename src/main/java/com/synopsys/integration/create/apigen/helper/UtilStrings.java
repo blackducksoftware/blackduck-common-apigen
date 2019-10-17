@@ -22,6 +22,9 @@
  */
 package com.synopsys.integration.create.apigen.helper;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class UtilStrings {
 
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
@@ -66,10 +69,23 @@ public class UtilStrings {
     public static final String LINKS = "links";
     public static final String FIELDS = "fields";
 
+    public static final String RESPONSE_SPECIFICATION_JSON = "response-specification.json";
+    public static final String REQUEST_SPECIFICATION_JSON = "request-specification.json";
+    public static final String API = "api";
+    public static final String GET = "GET";
+
     public static final String VIEW = "view";
     public static final String COMPONENT = "component";
     public static final String RESPONSE = "response";
     public static final String ENUMERATION = "enumeration";
     public static final String ENUM = "Type";
+
+    public static Set<String> getJavaKeyWords() {
+        Set<String> javaKeyWords = new HashSet<>();
+
+        javaKeyWords.add("default");
+
+        return javaKeyWords;
+    }
 
 }

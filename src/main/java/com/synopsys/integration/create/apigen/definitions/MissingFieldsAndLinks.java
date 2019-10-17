@@ -61,6 +61,16 @@ public class MissingFieldsAndLinks {
         ugvFieldsAndLinks.addLink(new LinkDefinition("users", false));
         missingFieldAndLinkMap.put("UserGroupView", ugvFieldsAndLinks);
 
+        // RoleAssignmentView
+        final MissingFieldAndLinkHelper ravFieldsAndLinks = new MissingFieldAndLinkHelper();
+        ravFieldsAndLinks.addLink(new LinkDefinition("user", false));
+        missingFieldAndLinkMap.put("RoleAssignmentView", ravFieldsAndLinks);
+
+        // ComponentPolicyStatusView
+        final MissingFieldAndLinkHelper cpsvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        cpsvFieldsAndLinks.addLink(new LinkDefinition("comment", false));
+        missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
+
         return missingFieldAndLinkMap;
     }
 

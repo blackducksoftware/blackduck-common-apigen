@@ -64,6 +64,9 @@ public class TypeTranslator {
         // swaggerName, api_genName
         classTranslations.put("ActivityDataView", "ProjectVersionComponentViewActivityData");
         classTranslations.put("ComplexLicenseView", "ProjectVersionViewLicenseLicense");
+        classTranslations.put("ComplexLicenseType", "ComponentVersionLicenseTypeType");
+        classTranslations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
+        classTranslations.put("PolicyStatusView", "ComponentPolicyStatusView");
         classTranslations.put("CustomFieldType", "CustomFieldTypeType");
         classTranslations.put("CustomFieldType", "ComponentCustomFieldTypeType");
         classTranslations.put("CustomFieldType", "ProjectCustomFieldTypeType");
@@ -72,19 +75,25 @@ public class TypeTranslator {
         classTranslations.put("CustomFieldView", "ProjectVersionCustomFieldView");
         classTranslations.put("CustomFieldView", "ProjectVersionComponentVersionCustomFieldView");
         classTranslations.put("LicenseFamilySummaryView", "ProjectVersionViewLicenseLicenseLicenseFamilySummary");
+        classTranslations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
         classTranslations.put("OriginSourceType", "ComponentSourceType");
         classTranslations.put("PolicyRuleExpressionSetView", "PolicyRuleViewExpression");
         classTranslations.put("PolicyRuleExpressionParameter", "PolicyRuleViewExpressionExpressionParameters");
         classTranslations.put("PolicyRuleExpressionView", "PolicyRuleViewExpressionExpression");
+        classTranslations.put("PolicySummaryStatusType", "ComponentPolicyStatusApprovalStatusType");
+        classTranslations.put("ProjectVersionDistributionType", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType");
         classTranslations.put("ReportFormatType", "ProjectVersionReportReportFormatType");
         classTranslations.put("ReportFormatType", "ReportReportFormatType");
+        classTranslations.put("RiskCountView", "ComponentVersionRiskProfileRiskDataCountsView");
         classTranslations.put("RiskProfileView", "ProjectVersionComponentViewActivityRiskProfile");
         classTranslations.put("RiskProfileView", "ProjectVersionComponentViewLicenseRiskProfile");
         classTranslations.put("RiskProfileView", "ProjectVersionComponentViewOperationalRiskProfile");
+        classTranslations.put("RemediationOptionsView", "ComponentVersionRemediatingView");
         classTranslations.put("ReviewedDetails", "ProjectVersionComponentViewReviewedDetails");
         classTranslations.put("RoleAssignmentView", "UserRoleAssignmentView");
         classTranslations.put("VersionBomLicenseView", "ProjectVersionComponentViewLicenses");
         classTranslations.put("VersionBomComponentView", "ProjectVersionComponentView");
+        classTranslations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
 
         return classTranslations;
     }

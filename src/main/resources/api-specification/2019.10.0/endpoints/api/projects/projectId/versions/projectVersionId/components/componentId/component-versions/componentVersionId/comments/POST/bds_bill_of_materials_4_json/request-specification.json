@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "comment",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The content of the comment"
+  } ]
+}

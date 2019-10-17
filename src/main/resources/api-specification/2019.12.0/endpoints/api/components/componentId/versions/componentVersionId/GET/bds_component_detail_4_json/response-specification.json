@@ -1,0 +1,93 @@
+{
+  "fields" : [ {
+    "path" : "approvalStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The level of approval that has been given to use the component version.",
+    "allowedValues" : [ "UNREVIEWED", "IN_REVIEW", "REVIEWED", "APPROVED", "CONDITIONALLY_APPROVED", "REJECTED", "DEPRECATED" ]
+  }, {
+    "path" : "license",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The combination of licenses to assign to the component version",
+    "fields" : [ {
+      "path" : "type",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The relation of contained licenses.",
+      "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+    }, {
+      "path" : "license",
+      "type" : "String",
+      "optional" : false,
+      "description" : "URL to the representation of the license for the component version"
+    }, {
+      "path" : "licenses[]",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "Related licenses which follow the same structure as the license field"
+    } ]
+  }, {
+    "path" : "notes",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Notes regarding the usage of this component version"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "source",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The source of data for the component version.",
+    "allowedValues" : [ "CUSTOM", "KB", "KB_MODIFIED" ]
+  }, {
+    "path" : "versionName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the component version"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The type of the component.",
+    "allowedValues" : [ "PROJECT", "COMPONENT" ]
+  }, {
+    "path" : "releasedOn",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date the version became available for use"
+  }, {
+    "path" : "additionalHomepages",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Any addition web addresses containing information on various distributions of the component version"
+  } ],
+  "links" : [ {
+    "rel" : "component",
+    "optional" : true,
+    "description" : "Resource listing versions associated with the component"
+  }, {
+    "rel" : "references",
+    "optional" : true,
+    "description" : "Resource where more information on the component may be found"
+  }, {
+    "rel" : "origins",
+    "optional" : true,
+    "description" : "Resource representing the distribution origin(s) identified"
+  }, {
+    "rel" : "vulnerabilities",
+    "optional" : true,
+    "description" : "Resource representing vulnerabilities associated with the component"
+  }, {
+    "rel" : "risk-profile",
+    "optional" : true,
+    "description" : "Resource representing a medium version of the component's logo"
+  }, {
+    "rel" : "custom-fields",
+    "optional" : true,
+    "description" : "Resource representing the component's custom fields"
+  } ]
+}

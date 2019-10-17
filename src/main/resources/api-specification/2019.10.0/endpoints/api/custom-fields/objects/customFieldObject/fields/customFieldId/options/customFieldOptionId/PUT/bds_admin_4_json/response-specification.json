@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "position",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The position the custom field option will appear in a list of other options"
+  }, {
+    "path" : "label",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the option"
+  } ],
+  "links" : [ ]
+}

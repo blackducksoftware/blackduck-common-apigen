@@ -25,11 +25,14 @@ package com.synopsys.integration.create.apigen;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -49,7 +52,8 @@ import com.synopsys.integration.create.apigen.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ImportHelper;
-import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
+import com.synopsys.integration.create.apigen.helper.MediaVersionData;
+import com.synopsys.integration.create.apigen.helper.MediaVersions;
 import com.synopsys.integration.create.apigen.helper.RandomClassData;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -76,11 +80,12 @@ public class Generator {
     private final DiscoveryGenerator discoveryGenerator;
     private final List<ClassGenerator> generators;
     private final Configuration config;
+    private final MediaVersions mediaVersions;
 
     @Autowired
     public Generator(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final FreeMarkerHelper freeMarkerHelper, final ImportHelper importHelper, final DataManager dataManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator, final List<ClassGenerator> generators,
-        final Configuration config) {
+        final Configuration config, final MediaVersions mediaVersions) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
@@ -93,6 +98,7 @@ public class Generator {
         this.discoveryGenerator = discoveryGenerator;
         this.generators = generators;
         this.config = config;
+        this.mediaVersions = mediaVersions;
     }
 
     @PostConstruct
@@ -162,7 +168,6 @@ public class Generator {
                 generator.generateClass(field, responseMediaType, template);
             }
         }
-
         for (final FieldDefinition subField : field.getSubFields()) {
             generateClasses(subField, generators, responseMediaType);
         }
@@ -170,40 +175,47 @@ public class Generator {
 
     private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles)
         throws Exception {
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, dataManager.getLatestViewMediaVersions().values());
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, dataManager.getLatestComponentMediaVersions().values());
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, mediaVersions.getLatestViewMediaVersions().values());
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, mediaVersions.getLatestComponentMediaVersions().values());
 
-        final Set<MediaVersionHelper> latestMediaVersions = new HashSet<>();
-        latestMediaVersions.addAll(dataManager.getLatestComponentMediaVersions().values());
-        latestMediaVersions.addAll(dataManager.getLatestViewMediaVersions().values());
+        final Set<MediaVersionData> latestMediaVersions = new HashSet<>();
+        latestMediaVersions.addAll(mediaVersions.getLatestComponentMediaVersions().values());
+        latestMediaVersions.addAll(mediaVersions.getLatestViewMediaVersions().values());
         generateMediaTypeMap(latestMediaVersions);
     }
 
-    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
-        for (final MediaVersionHelper latestMediaVersion : latestMediaVersions) {
+    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionData> latestMediaVersions) throws Exception {
+        for (final MediaVersionData latestMediaVersion : latestMediaVersions) {
             final Map<String, Object> input = latestMediaVersion.getInput();
             final String className = latestMediaVersion.getNonVersionedClassName();
             input.put(UtilStrings.CLASS_NAME, className);
             input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
-            final ClassTypeEnum classType = classCategories.computeType(className);
-            final String importClass = classType.getImportClass().get();
-            final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
-            input.put(UtilStrings.IMPORT_PATH, importPath);
-            freeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
+            try {
+                final ClassTypeEnum classType = classCategories.computeType(className);
+                final String importClass = classType.getImportClass().get();
+
+                final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
+                input.put(UtilStrings.IMPORT_PATH, importPath);
+                freeMarkerHelper.writeFile(className, randomTemplate, input, pathToFiles);
+            } catch (final NoSuchElementException e) {
+                System.out.println("Class not categorized");
+            }
             dataManager.addNonLinkClassName(className);
             dataManager.addNonLinkClassName(NameParser.getNonVersionedName(className));
         }
     }
 
-    private void generateMediaTypeMap(final Collection<MediaVersionHelper> latestMediaVersions) throws Exception {
+    private void generateMediaTypeMap(final Set<MediaVersionData> latestMediaVersions) throws Exception {
         final Map<String, Object> input = new HashMap<>();
 
         input.put("package", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
-        input.put("mostRecentClassVersions", latestMediaVersions);
+        final List<MediaVersionData> sortedLatestMediaVersions = latestMediaVersions.stream().collect(Collectors.toList());
+        Collections.sort(sortedLatestMediaVersions);
+        input.put("mostRecentClassVersions", sortedLatestMediaVersions);
 
         final Set<String> imports = new HashSet<>();
         final Set<String> classNames = new HashSet<>();
-        for (final MediaVersionHelper helper : latestMediaVersions) {
+        for (final MediaVersionData helper : sortedLatestMediaVersions) {
             classNames.add(helper.getNonVersionedClassName());
         }
         for (final String className : classNames) {

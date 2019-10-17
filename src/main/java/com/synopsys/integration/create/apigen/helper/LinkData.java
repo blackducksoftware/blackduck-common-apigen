@@ -41,7 +41,6 @@ public class LinkData extends Stringable {
         this.linkResponseDefinitionsList = linkResponseDefinitions.getDefinitions();
         this.label = label;
         this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
-
         try {
             final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());
             final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = linkResponseDefinitionsList.get(nonVersionedResponseName);
@@ -57,21 +56,11 @@ public class LinkData extends Stringable {
             } else {
                 this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";
             }
-
         } catch (final NullPointerException e) {
             this.hasMultipleResults = false;
             this.resultClass = null;
             this.linkType = null;
         }
-    }
-
-    private String computeLabel(final LinkResponseDefinitions linkResponseDefinitions, final String relativePath, String label) {
-        if (linkResponseDefinitions.getLinkLabels().contains(label)) {
-            String labelDifferentiator = relativePath.split("/")[1];
-            labelDifferentiator = NameParser.stripS(labelDifferentiator);
-            label = labelDifferentiator + "_" + label;
-        }
-        return label;
     }
 
     public String javaConstant() { return this.javaConstant; }

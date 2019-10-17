@@ -1,0 +1,236 @@
+{
+  "fields" : [ {
+    "path" : "matchTypes",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The types of matches made to the component within the project "
+  }, {
+    "path" : "approvalStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The approval status of the component"
+  }, {
+    "path" : "securityRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the security risks associated with the component",
+    "fields" : [ {
+      "path" : "counts",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The collection of security risk countTypes and the amount of each type"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "versionRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the version risks associated with the component",
+    "fields" : [ {
+      "path" : "counts",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The collection of version risk countTypes and the amount of each type"
+    } ]
+  }, {
+    "path" : "licenseRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the license risks associated with the component",
+    "fields" : [ {
+      "path" : "counts",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The collection of license risk countTypes and the amount of each type"
+    } ]
+  }, {
+    "path" : "componentVersion",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL to the representation of the component's version"
+  }, {
+    "path" : "policyStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The policy status of the component"
+  }, {
+    "path" : "releasedOn",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date the component was released"
+  }, {
+    "path" : "totalFileMatchCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total file match count for each component version "
+  }, {
+    "path" : "origins[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The origins of the component"
+  }, {
+    "path" : "activityRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the activity risks associated with the component",
+    "fields" : [ {
+      "path" : "counts",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The collection of activity risk countTypes and the amount of each type"
+    } ]
+  }, {
+    "path" : "component",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to the representation of the component"
+  }, {
+    "path" : "licenses",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The combination of licenses assigned to the component",
+    "fields" : [ {
+      "path" : "licenseDisplay",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The display status of the license"
+    }, {
+      "path" : "license",
+      "type" : "String",
+      "optional" : false,
+      "description" : "URL to the representation of the license"
+    }, {
+      "path" : "licenseType",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The relation of contained licenses.",
+      "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+    }, {
+      "path" : "spdxId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The ID of the license in the SPDX project's database, if available"
+    }, {
+      "path" : "licenses",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "Related licenses which follow the same structure as the license field"
+    } ]
+  }, {
+    "path" : "operationalRiskProfile",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the operational risks associated with the component",
+    "fields" : [ {
+      "path" : "counts",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The collection of operational risk countTypes and the amount of each type"
+    } ]
+  }, {
+    "path" : "componentVersionName",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Label distinguishing the version from other versions of the component "
+  }, {
+    "path" : "activityData",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "A summary of the components activity",
+    "fields" : [ {
+      "path" : "contributorCount12Month",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of contributors in the last 12 months"
+    }, {
+      "path" : "commitCount12Month",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of commits in the last 12 months"
+    }, {
+      "path" : "lastCommitDate",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The last date/time a commit was made to the project"
+    }, {
+      "path" : "trending",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The trend in the amount of work being put into the project.",
+      "allowedValues" : [ "DECREASING", "STABLE", "INCREASING", "UNKNOWN" ]
+    }, {
+      "path" : "newerReleases",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The estimated number of releases newer than the represented release"
+    } ]
+  }, {
+    "path" : "reviewedDetails",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "A summary of the component review",
+    "fields" : [ {
+      "path" : "reviewedAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The date/time a review was done"
+    }, {
+      "path" : "reviewedBy",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL where the user who performed the review may be read"
+    } ]
+  }, {
+    "path" : "reviewStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The review status of the component"
+  }, {
+    "path" : "componentName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Description of development activity on the component "
+  }, {
+    "path" : "usages",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The usages of the component within the project "
+  } ],
+  "links" : [ {
+    "rel" : "comments",
+    "optional" : false,
+    "description" : "Resource representing the comments of the component"
+  }, {
+    "rel" : "component-issues",
+    "optional" : false,
+    "description" : "Resource representing the component's issues"
+  }, {
+    "rel" : "policy-rules",
+    "optional" : false,
+    "description" : "Resource representing the policys rules associated with the component"
+  }, {
+    "rel" : "vulnerabilities",
+    "optional" : false,
+    "description" : "Resource representing the vulnerabilities of the component"
+  }, {
+    "rel" : "matched-files",
+    "optional" : false,
+    "description" : "Resource representing the files matched to the component"
+  }, {
+    "rel" : "policy-status",
+    "optional" : false,
+    "description" : "Resource representing the passing, violation, or override state of policies for the component"
+  }, {
+    "rel" : "origins",
+    "optional" : true,
+    "description" : "Resource representing the origins available. Only present for entries with an associated component version"
+  }, {
+    "rel" : "crypto-algorithms",
+    "optional" : true,
+    "description" : "Resource representing cyrptography data. Only present for entries with associated cryptography data"
+  } ]
+}

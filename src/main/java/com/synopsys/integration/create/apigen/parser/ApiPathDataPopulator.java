@@ -36,21 +36,23 @@ public class ApiPathDataPopulator {
     final DataManager dataManager;
     private final Set<String> apiPathsToIgnore;
     private final Map<String, String> apiPathResultClassOverrides;
+    private final Set<ApiPathData> addOnApiPaths;
 
     public ApiPathDataPopulator(final DataManager dataManager) {
         this.dataManager = dataManager;
         this.apiPathsToIgnore = populateApiPathsToIgnore();
         this.apiPathResultClassOverrides = populateApiPathResultClassOverrides();
+        this.addOnApiPaths = populateAddOnApiPaths();
     }
 
     public void populateApiPathData(final List<ResponseDefinition> responses) {
         for (final ResponseDefinition response : responses) {
-            if (!DudResponseIdentifier.isDudResponse(response)) {
+            if (!ArrayResponseIdentifier.isArrayResponse(response)) {
                 final String apiPath = getApiDiscoveryPath(response.getResponseSpecificationPath());
                 if (!dataManager.isRepeatApiDiscoveryPath(apiPath) && !apiPathsToIgnore.contains(apiPath)) {
                     final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());
-                    final String resultClassOverride = apiPathResultClassOverrides.get(apiPath);
                     final ApiPathData apiDiscoveryData;
+                    final String resultClassOverride = apiPathResultClassOverrides.get(apiPath);
                     if (resultClassOverride != null) {
                         apiDiscoveryData = new ApiPathData(apiPath, resultClassOverride, response.hasMultipleResults());
                     } else {
@@ -60,6 +62,10 @@ public class ApiPathDataPopulator {
                     dataManager.addApiDiscoveryPath(apiPath);
                 }
             }
+        }
+        for (final ApiPathData addOn : addOnApiPaths) {
+            dataManager.addApiDiscoveryData(addOn);
+            dataManager.addApiDiscoveryPath(addOn.path);
         }
     }
 
@@ -80,7 +86,18 @@ public class ApiPathDataPopulator {
         final Map<String, String> apiPathResultClassOverrides = new HashMap<>();
 
         apiPathResultClassOverrides.put("projects", "ProjectView");
+        apiPathResultClassOverrides.put("current-user", "UserView");
+        apiPathResultClassOverrides.put("components", "ComponentSearchResultView");
 
         return apiPathResultClassOverrides;
+    }
+
+    private Set<ApiPathData> populateAddOnApiPaths() {
+        final Set<ApiPathData> addOns = new HashSet<>();
+
+        addOns.add(new ApiPathData("notifications", "NotificationView", true));
+        addOns.add(new ApiPathData("current-version", "CurrentVersionView", false));
+
+        return addOns;
     }
 }

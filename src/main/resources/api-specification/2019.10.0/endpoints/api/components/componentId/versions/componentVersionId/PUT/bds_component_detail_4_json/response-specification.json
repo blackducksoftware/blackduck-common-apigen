@@ -1,0 +1,131 @@
+{
+  "fields" : [ {
+    "path" : "approvalStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The level of approval given for use of the component version.",
+    "allowedValues" : [ "UNREVIEWED", "IN_REVIEW", "REVIEWED", "APPROVED", "LIMITED_APPROVAL", "REJECTED", "DEPRECATED" ]
+  }, {
+    "path" : "license",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The combination of licenses to assign to the component version",
+    "fields" : [ {
+      "path" : "type",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relation of contained licenses.",
+      "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+    }, {
+      "path" : "licenses",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "Representation of the license to assign",
+      "fields" : [ {
+        "path" : "license",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the license for the component version"
+      }, {
+        "path" : "licenses",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "Related licenses which follow the same structure as the license field"
+      }, {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Label distinguishing the license from other licenses"
+      }, {
+        "path" : "ownership",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The ownership status of the license.",
+        "allowedValues" : [ "OPEN_SOURCE", "PROPRIETARY", "UNKNOWN" ]
+      }, {
+        "path" : "licenseDisplay",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The display status of the collection of licenses"
+      }, {
+        "path" : "codeSharing",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The shareability allowed by the license.",
+        "allowedValues" : [ "PERMISSIVE", "RECIPROCAL", "WEAK_RECIPROCAL", "RECIPROCAL_AGPL", "UNKNOWN" ]
+      } ]
+    }, {
+      "path" : "licenseDisplay",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The display status of the collection of licenses"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "source",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The source of data for the component.",
+    "allowedValues" : [ "CUSTOM", "KB", "KB_MODIFIED" ]
+  }, {
+    "path" : "versionName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the component version"
+  }, {
+    "path" : "releasedOn",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date the version became available for use"
+  }, {
+    "path" : "additionalHomepages",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Any addition web addresses containing information on various distributions of the component"
+  } ],
+  "links" : [ {
+    "rel" : "component",
+    "optional" : false,
+    "description" : "Resource listing the component version associated with the version"
+  }, {
+    "rel" : "homepage",
+    "optional" : true,
+    "description" : "Resource where more information on the component version may be found"
+  }, {
+    "rel" : "openhub",
+    "optional" : true,
+    "description" : "Resource on OpenHub representing the component version"
+  }, {
+    "rel" : "vulnerabilities",
+    "optional" : true,
+    "description" : "Resource representing vulnerabilities associated with the component version"
+  }, {
+    "rel" : "smallLogo",
+    "optional" : true,
+    "description" : "Resource representing a small version of the component version's logo"
+  }, {
+    "rel" : "mediumLogo",
+    "optional" : true,
+    "description" : "Resource representing a medium version of the component version's logo"
+  }, {
+    "rel" : "references",
+    "optional" : false,
+    "description" : "Resource representing the component version's references"
+  }, {
+    "rel" : "origins",
+    "optional" : false,
+    "description" : "Resource representing the distribution origin(s) identified"
+  }, {
+    "rel" : "risk-profile",
+    "optional" : false,
+    "description" : "Resource representing the component version's risk profile"
+  }, {
+    "rel" : "custom-fields",
+    "optional" : false,
+    "description" : "Resource representing the component version's custom fields"
+  } ]
+}

@@ -45,13 +45,8 @@ public class MissingDependencyIdentifier {
 
     static Set<String> missingClasses = new HashSet<>();
     static Set<String> bdCommonDependencies = new HashSet<>();
-    static TypeTranslator typeTranslator;
-    static ClassCategories classCategories;
-
-    public MissingDependencyIdentifier(final TypeTranslator typeTranslator, final ClassCategories classCategories) {
-        this.typeTranslator = typeTranslator;
-        this.classCategories = classCategories;
-    }
+    static TypeTranslator typeTranslator = new TypeTranslator();
+    static ClassCategories classCategories = new ClassCategories();
 
     public static void main(final String[] args) throws IOException {
         // Go over bd-common import statements, parse for Class dependencies
@@ -59,7 +54,8 @@ public class MissingDependencyIdentifier {
         final String pathToBlackDuckCommon = "/Users/crowley/Documents/source/blackduck-common/src/main/java/com/synopsys/integration/blackduck/";
         final String pathToAPI = "/Users/crowley/Documents/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/";
         final String pathToThrowaway = pathToAPI + "manual/throwaway/generated/";
-        //getDependencies(pathToBlackDuckCommon, true);
+
+        getDependencies(pathToBlackDuckCommon, true);
         for (final String bdCommonDependency : bdCommonDependencies) {
             final String pathToFile;
             final ClassCategoryData classCategoryData = ClassCategoryData.computeData(bdCommonDependency, classCategories);
@@ -77,7 +73,7 @@ public class MissingDependencyIdentifier {
                 }
 
                 final File dependencyFile = new File(pathToFile);
-                //parseImports(dependencyFile, false);
+                parseImports(dependencyFile, false);
             }
         }
 

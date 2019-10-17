@@ -40,6 +40,7 @@ public class NameParser {
     public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
     private static final String VIEWV = "ViewV";
+    private static final String VIEW = "View";
 
     public String getResponseName(final String responsePath) {
         String firstPiece = null;
@@ -76,26 +77,36 @@ public class NameParser {
             responseName = firstPiece + lastPiece + VIEWV + mediaVersion;
         }
 
+        // debug
+        if (responseName.contains("CweCommonConsequences")) {
+            System.out.println("nop");
+        }
+
         if (responseName.endsWith(VIEWV)) {
             System.out.println("***** " + responseName);
-            responseName = responseName.replace(VIEWV, UtilStrings.VIEW);
+            responseName = responseName.replace(VIEWV, VIEW);
         }
         return responseName;
     }
 
     public static String getNonVersionedName(final String responseName) {
+        // debug
+        if (responseName.contains("CweCommonConsequences")) {
+            System.out.println("nop");
+        }
+
         // relies on assumption that there will be < 10 numbered responses
         final String mediaVersion = getMediaVersion(responseName);
         if (mediaVersion != null) {
             return responseName.replace("V" + mediaVersion, "");
         } else {
-            return responseName.replace(VIEWV, UtilStrings.VIEW);
+            return responseName.replace(VIEWV, VIEW);
         }
     }
 
     public static String getMediaVersion(final String responseName) {
         for (final String digit : DIGIT_STRINGS) {
-            if (responseName.contains(digit)) {
+            if (stripListNotation(responseName).endsWith(digit)) {
                 return digit;
             }
         }
@@ -105,20 +116,26 @@ public class NameParser {
     private Set<String> getRedundantNamePrefixes() {
         final Set<String> redundantNamePrefixes = new HashSet<>();
 
+        redundantNamePrefixes.add("Codelocations");
         redundantNamePrefixes.add("Components");
-        redundantNamePrefixes.add("PolicyRules");
-        redundantNamePrefixes.add("Versions");
-        redundantNamePrefixes.add("Licenses");
+        redundantNamePrefixes.add("Comments");
         redundantNamePrefixes.add("CustomFields");
+        redundantNamePrefixes.add("Cwes");
+        redundantNamePrefixes.add("Jobs");
+        redundantNamePrefixes.add("Licenses");
+        redundantNamePrefixes.add("LicenseFamilies");
+        redundantNamePrefixes.add("LicenseTerms");
+        redundantNamePrefixes.add("Objects");
+        redundantNamePrefixes.add("PolicyRules");
         redundantNamePrefixes.add("Projects");
-        redundantNamePrefixes.add("ScanSummaries");
+        redundantNamePrefixes.add("Reports");
         redundantNamePrefixes.add("Roles");
+        redundantNamePrefixes.add("ScanSummaries");
         redundantNamePrefixes.add("Usergroups");
         redundantNamePrefixes.add("Users");
-        redundantNamePrefixes.add("Jobs");
-        redundantNamePrefixes.add("Codelocations");
+        redundantNamePrefixes.add("Versions");
         redundantNamePrefixes.add("Objects");
-        redundantNamePrefixes.add("LicenseTerms");
+        redundantNamePrefixes.add("Vulnerabilities");
 
         return redundantNamePrefixes;
     }

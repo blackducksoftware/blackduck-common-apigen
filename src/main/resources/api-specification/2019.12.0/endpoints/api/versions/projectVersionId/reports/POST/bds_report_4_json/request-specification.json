@@ -1,0 +1,31 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "reportType",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The file type for the given report"
+  }, {
+    "path" : "versionId",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Unique identifier of the version"
+  }, {
+    "path" : "reportFormat",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The file format for the given report.",
+    "allowedValues" : [ "CSV", "JSON" ]
+  }, {
+    "path" : "categories",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "The version report categories for the given report.",
+    "allowedValues" : [ "VERSION", "CODE_LOCATIONS", "COMPONENTS", "SECURITY", "FILES", "ATTACHMENTS", "CRYPTO_ALGORITHMS", "PROJECT_VERSION_CUSTOM_FIELDS", "BOM_COMPONENT_CUSTOM_FIELDS", "LICENSE_TERM_FULFILLMENT" ]
+  }, {
+    "path" : "locale",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The locale used in generating the report's contents"
+  } ]
+}

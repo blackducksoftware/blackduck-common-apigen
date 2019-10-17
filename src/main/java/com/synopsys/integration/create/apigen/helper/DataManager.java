@@ -43,9 +43,6 @@ public class DataManager {
     public final List<String> randomLinkClassNames;
     public final Map<String, String> nullLinkResultClasses;
 
-    private final Map<String, MediaVersionHelper> latestViewMediaVersions;
-    private final Map<String, MediaVersionHelper> latestComponentMediaVersions;
-
     public DataManager() {
         apiDiscoveryData = new HashSet<>();
         apiDiscoveryDataPaths = new HashSet<>();
@@ -53,8 +50,6 @@ public class DataManager {
         linkClassNames = new HashSet<>();
         randomLinkClassNames = new ArrayList<>();
         nullLinkResultClasses = new HashMap<>();
-        latestViewMediaVersions = new HashMap<>();
-        latestComponentMediaVersions = new HashMap<>();
     }
 
     public Set<ApiPathData> getApiDiscoveryData() {
@@ -101,13 +96,5 @@ public class DataManager {
 
     public void addNullLinkResultClass(final String key, final String value) {
         nullLinkResultClasses.put(key, value);
-    }
-
-    public Map<String, MediaVersionHelper> getLatestViewMediaVersions() {
-        return latestViewMediaVersions;
-    }
-
-    public Map<String, MediaVersionHelper> getLatestComponentMediaVersions() {
-        return latestComponentMediaVersions;
     }
 }

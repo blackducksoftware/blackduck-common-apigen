@@ -58,22 +58,22 @@ public class LinkResponseDefinitions {
         codeLocationViewDefinitions.put("scans", clvScanDefinition);
         definitions.put("CodeLocationView", codeLocationViewDefinitions);
 
-        // ComponentVersionView ***
+        // ComponentVersionView
 
         final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
-        componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
+        //final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
+        //componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
         final LinkResponseDefinitionItem cvvComponentDefinition = new LinkResponseDefinitionItem(false, "ComponentView");
         componentVersionViewDefinitions.put("component", cvvComponentDefinition);
         final LinkResponseDefinitionItem cvvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         componentVersionViewDefinitions.put("origins", cvvOriginsDefinition);
         final LinkResponseDefinitionItem cvvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
         componentVersionViewDefinitions.put("vulnerabilities", cvvVulnerabilitiesDefinition);
-        final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
-        componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
+        //final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
+        //componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
 
-        // ComponentView ***
+        // ComponentView
 
         final Map<String, LinkResponseDefinitionItem> componentViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem cvVersionsDefinition = new LinkResponseDefinitionItem(true, "ComponentVersionView");
@@ -193,6 +193,12 @@ public class LinkResponseDefinitions {
         projectVersionCustomFieldViewDefinitions.put("custom-field-option-list", pvcfvCustomFieldOptionListDefinition);
         definitions.put("ProjectVersionCustomFieldView", projectVersionCustomFieldViewDefinitions);
         */
+
+        // RoleAssignmentView
+        final Map<String, LinkResponseDefinitionItem> roleAssignmentViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem ravUserDefinition = new LinkResponseDefinitionItem(false, "UserView");
+        roleAssignmentViewDefinitions.put("user", ravUserDefinition);
+        definitions.put("RoleAssignmentView", roleAssignmentViewDefinitions);
 
         // UserView
         final Map<String, LinkResponseDefinitionItem> userViewDefinitions = new HashMap<>();

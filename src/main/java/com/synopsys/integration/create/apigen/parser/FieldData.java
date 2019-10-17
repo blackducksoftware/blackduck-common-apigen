@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,10 +31,11 @@ import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 
 public class FieldData {
-    private final TypeTranslator TYPE_TRANSLATOR;
+    private final TypeTranslator typeTranslator;
+    private static final Set<String> javaKeyWords = UtilStrings.getJavaKeyWords();
 
     private final String fieldDefinitionName;
-    private final String path;
+    private String path;
     private final String type;
     private final boolean hasSubFields;
     private final boolean isArray;
@@ -44,7 +47,7 @@ public class FieldData {
         this.type = type;
         this.hasSubFields = hasSubFields;
         this.isArray = type.equals(UtilStrings.ARRAY);
-        this.TYPE_TRANSLATOR = typeTranslator;
+        this.typeTranslator = typeTranslator;
     }
 
     public String getPath() {
@@ -56,7 +59,9 @@ public class FieldData {
     }
 
     public String getProcessedPath() {
-
+        if (javaKeyWords.contains(path)) {
+            path = path + "_";
+        }
         return path.replace("[]", "");
     }
 
@@ -70,7 +75,7 @@ public class FieldData {
         }
 
         // Deal with special Swaggerhub - Apigen naming convention conflicts
-        final String swaggerName = TYPE_TRANSLATOR.getFieldSwaggerName(nonVersionedFieldDefinitionName, path, type);
+        final String swaggerName = typeTranslator.getFieldSwaggerName(nonVersionedFieldDefinitionName, path, type);
         if (swaggerName != null) {
             return swaggerName;
         }

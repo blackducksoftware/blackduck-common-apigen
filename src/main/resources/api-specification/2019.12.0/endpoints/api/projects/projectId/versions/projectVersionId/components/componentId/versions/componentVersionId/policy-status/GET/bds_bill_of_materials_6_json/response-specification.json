@@ -1,0 +1,15 @@
+{
+  "fields" : [ {
+    "path" : "approvalStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The approval status of the component.",
+    "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ ]
+}

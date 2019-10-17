@@ -130,7 +130,6 @@ public class ImportHelper {
                         imports.add(resultImportPath + resultImportType + "." + resultClass);
                     }
                     links.add(link);
-                    //dataManager.addApiDiscovery(link);
                 } else {
                     dataManager.addNullLinkResultClass(responseName, linkType);
                 }

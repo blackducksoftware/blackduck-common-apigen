@@ -37,7 +37,7 @@ import com.synopsys.integration.create.apigen.helper.ImportHelper;
 import com.synopsys.integration.create.apigen.helper.InputDataHelper;
 import com.synopsys.integration.create.apigen.helper.LinkData;
 import com.synopsys.integration.create.apigen.helper.LinksAndImportsHelper;
-import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
+import com.synopsys.integration.create.apigen.helper.MediaVersions;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
@@ -52,15 +52,17 @@ public class ViewGenerator {
     private final ImportHelper importHelper;
     private final InputDataHelper inputDataHelper;
     private final DataManager dataManager;
+    private final MediaVersions mediaVersions;
 
     @Autowired
     public ViewGenerator(final FreeMarkerHelper freeMarkerHelper, final MediaTypes mediaTypes, final ImportHelper importHelper,
-        final InputDataHelper inputDataHelper, final DataManager dataManager) {
+        final InputDataHelper inputDataHelper, final DataManager dataManager, final MediaVersions mediaVersions) {
         this.freeMarkerHelper = freeMarkerHelper;
         this.mediaTypes = mediaTypes;
         this.importHelper = importHelper;
         this.inputDataHelper = inputDataHelper;
         this.dataManager = dataManager;
+        this.mediaVersions = mediaVersions;
     }
 
     public boolean isApplicable(final ResponseDefinition response) {
@@ -79,7 +81,7 @@ public class ViewGenerator {
         final Map<String, Object> input = inputDataHelper.getViewInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, response.getName(), UtilStrings.VIEW_BASE_CLASS, response.getFields(), links, responseMediaType);
         final String viewName = response.getName();
 
-        MediaVersionHelper.updateLatestMediaVersions(viewName, input, dataManager.getLatestViewMediaVersions(), responseMediaType);
+        MediaVersions.updateLatestViewMediaVersions(viewName, input, responseMediaType);
         freeMarkerHelper.writeFile(viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
 
         dataManager.addNonLinkClassName(viewName);

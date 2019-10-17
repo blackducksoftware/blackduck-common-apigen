@@ -45,7 +45,6 @@ import freemarker.template.Template;
 
 @Component
 public class DiscoveryGenerator {
-
     private final ClassCategories classCategories;
     private final DataManager dataManager;
     private final FreeMarkerHelper freeMarkerHelper;
@@ -76,14 +75,12 @@ public class DiscoveryGenerator {
                 System.out.println("couldn't find package for: " + resultClass);
             } else {
                 imports.add(importPackage);
-
                 imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "LinkResponse");
                 imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPath");
                 imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPathSingleResponse");
                 imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPathMultipleResponses");
             }
         }
-
         final List sortedImports = new ArrayList<>(imports);
         Collections.sort(sortedImports);
         model.put("imports", sortedImports);

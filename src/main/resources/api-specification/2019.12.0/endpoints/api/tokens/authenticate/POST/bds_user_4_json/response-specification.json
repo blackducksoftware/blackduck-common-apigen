@@ -1,0 +1,14 @@
+{
+  "fields" : [ {
+    "path" : "bearerToken",
+    "type" : "String",
+    "optional" : false,
+    "description" : "OAuth bearer token which may be used to access the application within an Authorization header"
+  }, {
+    "path" : "expiresInMilliseconds",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The time in milliseconds before the token will expire and a new one will be required"
+  } ],
+  "links" : [ ]
+}

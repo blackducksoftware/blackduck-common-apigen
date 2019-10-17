@@ -38,7 +38,7 @@ import com.synopsys.integration.create.apigen.helper.DataManager;
 import com.synopsys.integration.create.apigen.helper.FreeMarkerHelper;
 import com.synopsys.integration.create.apigen.helper.ImportHelper;
 import com.synopsys.integration.create.apigen.helper.InputDataHelper;
-import com.synopsys.integration.create.apigen.helper.MediaVersionHelper;
+import com.synopsys.integration.create.apigen.helper.MediaVersions;
 import com.synopsys.integration.create.apigen.helper.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
@@ -54,14 +54,17 @@ public class ComponentGenerator extends ClassGenerator {
     private final FreeMarkerHelper freeMarkerHelper;
     private final InputDataHelper inputDataHelper;
     private final DataManager dataManager;
+    private final MediaVersions mediaVersions;
 
     @Autowired
-    public ComponentGenerator(final ClassCategories classCategories, final ImportHelper importHelper, final FreeMarkerHelper freeMarkerHelper, final InputDataHelper inputDataHelper, final DataManager dataManager) {
+    public ComponentGenerator(final ClassCategories classCategories, final ImportHelper importHelper, final FreeMarkerHelper freeMarkerHelper, final InputDataHelper inputDataHelper, final DataManager dataManager,
+        final MediaVersions mediaVersions) {
         this.classCategories = classCategories;
         this.importHelper = importHelper;
         this.freeMarkerHelper = freeMarkerHelper;
         this.inputDataHelper = inputDataHelper;
         this.dataManager = dataManager;
+        this.mediaVersions = mediaVersions;
     }
 
     @Override
@@ -84,7 +87,7 @@ public class ComponentGenerator extends ClassGenerator {
         final String fieldType = NameParser.stripListNotation(field.getType());
         final Map<String, Object> input = inputDataHelper.getViewInputData(UtilStrings.GENERATED_COMPONENT_PACKAGE, imports, fieldType, UtilStrings.COMPONENT_BASE_CLASS, subFields, responseMediaType);
 
-        MediaVersionHelper.updateLatestMediaVersions(fieldType, input, dataManager.getLatestComponentMediaVersions(), responseMediaType);
+        MediaVersions.updateLatestComponentMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
             freeMarkerHelper.writeFile(fieldType, template, input, UtilStrings.PATH_TO_COMPONENT_FILES);

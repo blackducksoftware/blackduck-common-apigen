@@ -30,22 +30,31 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.definitions.MediaTypes;
+import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
+import com.synopsys.integration.create.apigen.helper.UtilStrings;
+import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
+import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class ResponseParser {
-    public static final String RESPONSE_SPECIFICATION_JSON = "response-specification.json";
     private final MediaTypes mediaTypes;
+    private final Gson gson;
+    private final TypeTranslator typeTranslator;
 
     @Autowired
-    public ResponseParser(final MediaTypes mediaTypes) {
+    public ResponseParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator) {
         this.mediaTypes = mediaTypes;
+        this.gson = gson;
+        this.typeTranslator = typeTranslator;
     }
 
     public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
-        final File apiPath = new File(endpointsPath, "api");
+        final File apiPath = new File(endpointsPath, UtilStrings.API);
 
         return parseResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
     }
@@ -58,7 +67,7 @@ public class ResponseParser {
 
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
-            if (child.getName().equals(RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
+            if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
                 final NameParser nameParser = new NameParser();
                 final String responseName = nameParser.getResponseName(responseRelativePath);
@@ -74,8 +83,54 @@ public class ResponseParser {
     }
 
     private boolean computeIfHasMultipleResults(final File file) {
-        final File grandParentFile = file.getParentFile().getParentFile();
-        return (grandParentFile.getName().equals("GET") && grandParentFile.listFiles().length > 1);
+        final File parentOfArrayResponse = getParentOfArrayResponse(file);
+        if (parentOfArrayResponse == null) {
+            return false;
+        }
+        return containsArrayResponse(parentOfArrayResponse, false);
+    }
+
+    private File getParentOfArrayResponse(final File file) {
+        File current = file;
+        while (!current.getName().equals(UtilStrings.GET)) {
+            current = current.getParentFile();
+        }
+        final File getFile = current;
+        current = getFile.getParentFile();
+        if (current.getParentFile() != null && !current.getParentFile().getName().equals(UtilStrings.API)) {
+            return current.getParentFile();
+        } else {
+            return null;
+        }
+    }
+
+    private boolean containsArrayResponse(final File file, final boolean isGetFileSubDirectory) {
+        final File[] children = file.listFiles();
+        if (children == null) {
+            return false;
+        }
+        for (final File child : children) {
+            if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
+                final ResponseDefinition potentialArrayResponse = buildDummyResponseDefinitionFromFile(child);
+                if (ArrayResponseIdentifier.isArrayResponse(potentialArrayResponse)) {
+                    return true;
+                }
+            }
+            if (child.getName().equals(UtilStrings.GET) || (isGetFileSubDirectory && !child.getName().equals(UtilStrings.REQUEST_SPECIFICATION_JSON))) {
+                return containsArrayResponse(child, true);
+            }
+        }
+        return false;
+    }
+
+    private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
+        final DefinitionParser definitionParser = new DefinitionParser(gson, file);
+        final List<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+        final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator);
+        final List<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
+        final ResponseDefinition response = new ResponseDefinition("", "", "", false);
+        response.addFields(fieldDefinitions);
+        return response;
     }
 }
 
