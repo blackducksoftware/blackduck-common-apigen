@@ -22,16 +22,6 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
-/*
-import static com.synopsys.integration.create.apigen.definitions.UtilStrings.ARRAY;
-import static com.synopsys.integration.create.apigen.definitions.UtilStrings.BIG_DECIMAL;
-import static com.synopsys.integration.create.apigen.definitions.UtilStrings.DATA;
-import static com.synopsys.integration.create.apigen.definitions.UtilStrings.NUMBER;
-import static com.synopsys.integration.create.apigen.definitions.UtilStrings.OBJECT;
-import static com.synopsys.integration.create.apigen.definitions.UtilStrings.STRING;
-
- */
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,14 +37,14 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class DirectoryWalker {
-    private final File rootDirectory;
+    private final File rootDirectoryFile;
     private final Gson gson;
     private final MediaTypes mediaTypes;
     private final TypeTranslator typeTranslator;
     private final DataManager dataManager;
 
     public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final DataManager dataManager) {
-        this.rootDirectory = rootDirectory;
+        this.rootDirectoryFile = rootDirectory;
         this.gson = gson;
         this.mediaTypes = mediaTypes;
         this.typeTranslator = typeTranslator;
@@ -67,12 +57,12 @@ public class DirectoryWalker {
         boolean actuallyShowOutput = showOutput;
 
         // Get response-specification.json files from directory
-        final List<ResponseDefinition> responseDefinitions = responseParser.parseResponses(rootDirectory);
+        final List<ResponseDefinition> responseDefinitions = responseParser.parseResponses(rootDirectoryFile);
         final List<ResponseDefinition> finalResponseDefinitions = new ArrayList<>();
 
         // For each response file, parse the JSON for FieldDefinition objects
         for (final ResponseDefinition response : responseDefinitions) {
-            final String absolutePath = rootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
+            final String absolutePath = rootDirectoryFile.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             final File responseSpecificationFile = new File(absolutePath);
             final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
 

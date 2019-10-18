@@ -1,9 +1,0 @@
-{
-  "fields" : [ {
-    "path" : "bomComponent",
-    "type" : "String",
-    "optional" : true,
-    "description" : "URL for the resource representing the bill of materials entry which was edited"
-  } ],
-  "links" : [ ]
-}

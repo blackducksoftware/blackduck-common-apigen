@@ -1,9 +1,0 @@
-{
-  "parameters" : [ ],
-  "fields" : [ {
-    "path" : "text",
-    "type" : "String",
-    "optional" : false,
-    "description" : "The text of the license"
-  } ]
-}

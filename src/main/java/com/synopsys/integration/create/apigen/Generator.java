@@ -26,6 +26,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipFile;
 
 import javax.annotation.PostConstruct;
 
@@ -103,6 +104,8 @@ public class Generator {
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
         final URL rootDirectory = Generator.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
+        // Handle Zip
+        final ZipFile rootDirectoryZip = new ZipFile(rootDirectory.getFile());
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, dataManager);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
 

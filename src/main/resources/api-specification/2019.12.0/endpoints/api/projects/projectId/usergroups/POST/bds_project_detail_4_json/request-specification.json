@@ -1,9 +1,0 @@
-{
-  "parameters" : [ ],
-  "fields" : [ {
-    "path" : "group",
-    "type" : "String",
-    "optional" : false,
-    "description" : "URL to the User Group representation"
-  } ]
-}

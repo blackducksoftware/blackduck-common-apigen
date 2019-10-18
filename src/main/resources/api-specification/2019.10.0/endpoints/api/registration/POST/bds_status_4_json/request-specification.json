@@ -1,9 +1,0 @@
-{
-  "parameters" : [ ],
-  "fields" : [ {
-    "path" : "registrationId",
-    "type" : "String",
-    "optional" : false,
-    "description" : "The registration ID/key to associate with the application instance"
-  } ]
-}
