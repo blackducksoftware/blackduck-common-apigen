@@ -29,17 +29,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.synopsys.integration.create.apigen.definitions.ClassCategories;
-import com.synopsys.integration.create.apigen.definitions.ClassCategoryData;
-import com.synopsys.integration.create.apigen.definitions.ClassSourceEnum;
-import com.synopsys.integration.create.apigen.definitions.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
+import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.ClassCategoryData;
+import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
+import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 
 public class MissingDependencyIdentifier {
 
@@ -48,7 +49,7 @@ public class MissingDependencyIdentifier {
     static TypeTranslator typeTranslator = new TypeTranslator();
     static ClassCategories classCategories = new ClassCategories();
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException, URISyntaxException {
         // Go over bd-common import statements, parse for Class dependencies
         //      if not in classTranslations, add to HashSet (bdCommonDependency)
         final String pathToBlackDuckCommon = "/Users/crowley/Documents/source/blackduck-common/src/main/java/com/synopsys/integration/blackduck/";
@@ -77,7 +78,8 @@ public class MissingDependencyIdentifier {
             }
         }
 
-        final File missingStuff = new File("/Users/crowley/Documents/source/blackduck-common-apigen/src/main/java/com/synopsys/integration/create/apigen/missing_stuff1.txt");
+        //final File missingStuff = new File("/Users/crowley/Documents/source/blackduck-common-apigen/src/main/java/com/synopsys/integration/create/apigen/missing_stuff1.txt");
+        final File missingStuff = new File(MissingDependencyIdentifier.class.getClassLoader().getResource("missing_stuff1.txt").toURI());
         final BufferedWriter writer = new BufferedWriter(new FileWriter(missingStuff));
 
         missingClasses.remove("*");

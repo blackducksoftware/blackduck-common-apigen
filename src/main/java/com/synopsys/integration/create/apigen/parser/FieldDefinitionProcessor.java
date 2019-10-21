@@ -25,8 +25,9 @@ package com.synopsys.integration.create.apigen.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
-import com.synopsys.integration.create.apigen.definitions.UtilStrings;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
+import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
@@ -62,7 +63,7 @@ public class FieldDefinitionProcessor {
             // If field has subfields, recursively parse and link its subfields
             if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && field.getSubFields() != null) {
 
-                // append subclass to create new field definition type
+                // append subclass to create new field data type
                 final List<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), field.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }

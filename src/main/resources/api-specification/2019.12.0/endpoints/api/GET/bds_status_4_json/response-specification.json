@@ -1,0 +1,104 @@
+{
+  "fields" : [ {
+    "path" : "components",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for representations of components"
+  }, {
+    "path" : "customFieldTypes",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of assignable <<custom-field-type-list,custom field types>>"
+  }, {
+    "path" : "projects",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for representations of <<project-list,projects>>"
+  }, {
+    "path" : "userStatusFilters",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for representations of user status filters. Deprecated - use links from associated resources instead"
+  }, {
+    "path" : "customFieldObjects",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of assignable <<custom-field-object-representation,custom field objects>>"
+  }, {
+    "path" : "bomImport",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for uploading BOM import files"
+  }, {
+    "path" : "roles",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of roles"
+  }, {
+    "path" : "codeLocations",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of <<codelocation-list,code locations>>"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "users",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of users"
+  }, {
+    "path" : "vulnerabilityUpdateReports",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of vulnerability update reports"
+  }, {
+    "path" : "notificationStateFilters",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of notification state filters. Deprecated - use links from associated resources instead"
+  }, {
+    "path" : "userGroups",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of user groups"
+  }, {
+    "path" : "notificationTypeFilters",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of notification type filters. Deprecated - use links from associated resources instead"
+  }, {
+    "path" : "vulnerabilityRemidiationReports",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of vulnerability remidiation reports"
+  }, {
+    "path" : "vulnerabilityStatusReports",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of vulnerability status reports"
+  }, {
+    "path" : "apiDocumentation",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for the API documentation"
+  }, {
+    "path" : "registration",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for <<registration,registration>> information"
+  }, {
+    "path" : "policyRules",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of policy rules"
+  }, {
+    "path" : "notifications",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of <<notification-list,notifications>>"
+  } ],
+  "links" : [ ]
+}

@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the role"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The description of the role"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ ]
+}

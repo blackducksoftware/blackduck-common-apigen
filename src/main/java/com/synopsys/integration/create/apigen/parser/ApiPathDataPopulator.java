@@ -28,20 +28,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.synopsys.integration.create.apigen.helper.DataManager;
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.model.ApiPathData;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class ApiPathDataPopulator {
 
-    final DataManager dataManager;
+    final NameAndPathManager nameAndPathManager;
     private final Set<String> apiPathsToIgnore;
     private final Map<String, String> apiPathResultClassOverrides;
+    private final Map<String, Boolean> apiPathHasMultipleResultsOverrides;
     private final Set<ApiPathData> addOnApiPaths;
 
-    public ApiPathDataPopulator(final DataManager dataManager) {
-        this.dataManager = dataManager;
+    public ApiPathDataPopulator(final NameAndPathManager nameAndPathManager) {
+        this.nameAndPathManager = nameAndPathManager;
         this.apiPathsToIgnore = populateApiPathsToIgnore();
         this.apiPathResultClassOverrides = populateApiPathResultClassOverrides();
+        this.apiPathHasMultipleResultsOverrides = populateApiPathHasMultipleResultsOverrides();
         this.addOnApiPaths = populateAddOnApiPaths();
     }
 
@@ -49,23 +52,30 @@ public class ApiPathDataPopulator {
         for (final ResponseDefinition response : responses) {
             if (!ArrayResponseIdentifier.isArrayResponse(response)) {
                 final String apiPath = getApiDiscoveryPath(response.getResponseSpecificationPath());
-                if (!dataManager.isRepeatApiDiscoveryPath(apiPath) && !apiPathsToIgnore.contains(apiPath)) {
+                if (!nameAndPathManager.isRepeatApiDiscoveryPath(apiPath) && !apiPathsToIgnore.contains(apiPath)) {
                     final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());
                     final ApiPathData apiDiscoveryData;
-                    final String resultClassOverride = apiPathResultClassOverrides.get(apiPath);
-                    if (resultClassOverride != null) {
-                        apiDiscoveryData = new ApiPathData(apiPath, resultClassOverride, response.hasMultipleResults());
-                    } else {
-                        apiDiscoveryData = new ApiPathData(apiPath, nonVersionedResponseName, response.hasMultipleResults());
+                    final String resultClass;
+                    final boolean hasMultipleResults;
+
+                    if (nonVersionedResponseName.contains("Component")) {
+                        System.out.println("nop");
                     }
-                    dataManager.addApiDiscoveryData(apiDiscoveryData);
-                    dataManager.addApiDiscoveryPath(apiPath);
+
+                    final String resultClassOverride = apiPathResultClassOverrides.get(apiPath);
+                    resultClass = resultClassOverride == null ? nonVersionedResponseName : resultClassOverride;
+                    final Boolean hasMultipleResultsOverride = apiPathHasMultipleResultsOverrides.get(nonVersionedResponseName);
+                    hasMultipleResults = hasMultipleResultsOverride == null ? response.hasMultipleResults() : hasMultipleResultsOverride;
+
+                    apiDiscoveryData = new ApiPathData(apiPath, resultClass, hasMultipleResults);
+                    nameAndPathManager.addApiDiscoveryData(apiDiscoveryData);
+                    nameAndPathManager.addApiDiscoveryPath(apiPath);
                 }
             }
         }
         for (final ApiPathData addOn : addOnApiPaths) {
-            dataManager.addApiDiscoveryData(addOn);
-            dataManager.addApiDiscoveryPath(addOn.path);
+            nameAndPathManager.addApiDiscoveryData(addOn);
+            nameAndPathManager.addApiDiscoveryPath(addOn.path);
         }
     }
 
@@ -90,6 +100,15 @@ public class ApiPathDataPopulator {
         apiPathResultClassOverrides.put("components", "ComponentSearchResultView");
 
         return apiPathResultClassOverrides;
+    }
+
+    private Map<String, Boolean> populateApiPathHasMultipleResultsOverrides() {
+        final Map<String, Boolean> apiPathHasMultipleResultOverrides = new HashMap<>();
+
+        apiPathHasMultipleResultOverrides.put("ComponentVersionRiskProfileView", true);
+        apiPathHasMultipleResultOverrides.put("ComponentView", true);
+
+        return apiPathHasMultipleResultOverrides;
     }
 
     private Set<ApiPathData> populateAddOnApiPaths() {

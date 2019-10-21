@@ -1760,9 +1760,13 @@
     },
     {
       "path": "policyStatus",
-      "type": "String",
+      "type": "ComponentPolicyStatusType",
       "optional": true,
-      "allowedValues": [],
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
       "fields": []
     },
     {
@@ -2195,9 +2199,13 @@
     },
     {
       "path": "policyStatus",
-      "type": "String",
+      "type": "ComponentPolicyStatusType",
       "optional": true,
-      "allowedValues": [],
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
       "fields": []
     },
     {
@@ -2483,9 +2491,13 @@
     },
     {
       "path": "policyStatus",
-      "type": "String",
+      "type": "ComponentPolicyStatusType",
       "optional": true,
-      "allowedValues": [],
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
       "fields": []
     },
     {
@@ -3257,9 +3269,13 @@
       "fields": [
         {
           "path": "name",
-          "type": "String",
+          "type": "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsNameType",
           "optional": true,
-          "allowedValues": [],
+          "allowedValues": [
+            "NOT_IN_VIOLATION",
+            "IN_VIOLATION_OVERRIDDEN",
+            "IN_VIOLATION"
+          ],
           "fields": []
         },
         {
@@ -3295,9 +3311,13 @@
     },
     {
       "path": "overallStatus",
-      "type": "String",
+      "type": "ProjectVersionPolicyStatusOverallStatusType",
       "optional": false,
-      "allowedValues": [],
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
       "fields": []
     },
     {
@@ -3350,9 +3370,13 @@
       "fields": [
         {
           "path": "name",
-          "type": "String",
+          "type": "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsNameType",
           "optional": true,
-          "allowedValues": [],
+          "allowedValues": [
+            "NOT_IN_VIOLATION",
+            "IN_VIOLATION_OVERRIDDEN",
+            "IN_VIOLATION"
+          ],
           "fields": []
         },
         {
@@ -3388,9 +3412,13 @@
     },
     {
       "path": "overallStatus",
-      "type": "String",
+      "type": "ProjectVersionPolicyStatusOverallStatusType",
       "optional": false,
-      "allowedValues": [],
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
       "fields": []
     },
     {
@@ -3443,9 +3471,13 @@
       "fields": [
         {
           "path": "name",
-          "type": "String",
+          "type": "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsNameType",
           "optional": true,
-          "allowedValues": [],
+          "allowedValues": [
+            "NOT_IN_VIOLATION",
+            "IN_VIOLATION_OVERRIDDEN",
+            "IN_VIOLATION"
+          ],
           "fields": []
         },
         {
@@ -3481,9 +3513,13 @@
     },
     {
       "path": "overallStatus",
-      "type": "String",
+      "type": "ProjectVersionPolicyStatusOverallStatusType",
       "optional": false,
-      "allowedValues": [],
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
       "fields": []
     },
     {

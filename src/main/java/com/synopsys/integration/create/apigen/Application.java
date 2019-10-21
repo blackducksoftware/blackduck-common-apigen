@@ -44,7 +44,7 @@ import freemarker.template.Version;
 public class Application {
     //public static final String RESPONSE_TOKEN = "Id" + File.separator + "GET" + File.separator; <-- old token requiring "Id" in path
     public static final String RESPONSE_TOKEN = "GET" + File.separator;
-    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.10.0";
+    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.12.0";
     public static final String PATH_TO_GENERATED_FILES_KEY = "BLACKDUCK_COMMON_API_BASE_DIRECTORY";
     public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
 
@@ -62,7 +62,7 @@ public class Application {
     public freemarker.template.Configuration configuration() throws URISyntaxException, IOException {
         final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         // Where do we load the templates from:
-        final URL templateDirectory = Generator.class.getClassLoader().getResource("templates");
+        final URL templateDirectory = GeneratorRunner.class.getClassLoader().getResource("templates");
         cfg.setDirectoryForTemplateLoading(new File(templateDirectory.toURI()));
         // Other Settings
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));

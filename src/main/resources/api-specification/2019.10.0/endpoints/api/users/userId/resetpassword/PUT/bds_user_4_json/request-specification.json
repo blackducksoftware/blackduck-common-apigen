@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "password",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The new password to be set for the user"
+  } ]
+}

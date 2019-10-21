@@ -32,9 +32,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.definitions.MediaTypes;
-import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
-import com.synopsys.integration.create.apigen.definitions.UtilStrings;
+import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
+import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;

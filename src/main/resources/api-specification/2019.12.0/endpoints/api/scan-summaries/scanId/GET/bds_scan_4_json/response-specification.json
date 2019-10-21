@@ -1,0 +1,44 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date/time when the scan was created"
+  }, {
+    "path" : "serverVersion",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The version of the application the scan was performed on"
+  }, {
+    "path" : "scanSize",
+    "type" : "Number",
+    "optional" : true,
+    "description" : "The size of the scan within the application"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "statusMessage",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Human-readable message describing the analysis state"
+  }, {
+    "path" : "status",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Represents the stage in the analysis lifecycle the scanis in.",
+    "allowedValues" : [ "UNSTARTED", "SCANNING", "SAVING_SCAN_DATA", "SCAN_DATA_SAVE_COMPLETE", "REQUESTED_MATCH_JOB", "MATCHING", "BOM_VERSION_CHECK", "BUILDING_BOM", "COMPLETE", "CANCELLED", "CLONED", "SKIPPED", "ERROR_SCANNING", "ERROR_SAVING_SCAN_DATA", "ERROR_MATCHING", "ERROR_BUILDING_BOM", "ERROR" ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time when the scan was updated"
+  } ],
+  "links" : [ {
+    "rel" : "codelocation",
+    "optional" : false,
+    "description" : "Resource representing the code location the scan is associated with"
+  } ]
+}

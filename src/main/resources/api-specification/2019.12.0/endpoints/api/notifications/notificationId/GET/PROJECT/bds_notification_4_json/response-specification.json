@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "project",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL for the resource representing the project which was deleted"
+  }, {
+    "path" : "operationType",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The type of operation executed on the project or project version"
+  }, {
+    "path" : "projectName",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Name of the project which was deleted"
+  } ],
+  "links" : [ ]
+}

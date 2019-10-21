@@ -1,0 +1,98 @@
+{
+  "fields" : [ {
+    "path" : "updatedByUser",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL to the representation of the user who last updated the license"
+  }, {
+    "path" : "notes",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The license's notes"
+  }, {
+    "path" : "updatedBy",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The name of the user who last updated the license"
+  }, {
+    "path" : "createdByUser",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL to the representation of the user who created the license"
+  }, {
+    "path" : "statusUpdatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license status was last updated"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "codeSharing",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The shareability allowed by the license.",
+    "allowedValues" : [ "PERMISSIVE", "RECIPROCAL", "WEAK_RECIPROCAL", "RECIPROCAL_AGPL", "UNKNOWN" ]
+  }, {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license was created"
+  }, {
+    "path" : "ownership",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The ownership status of the license.",
+    "allowedValues" : [ "OPEN_SOURCE", "PROPRIETARY", "UNKNOWN" ]
+  }, {
+    "path" : "statusUpdatedByUser",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL to the representation of the user who last updated the license status"
+  }, {
+    "path" : "createdBy",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The name of the user who created the license"
+  }, {
+    "path" : "licenseStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The approval status of the license.",
+    "allowedValues" : [ "UNREVIEWED", "IN_REVIEW", "REVIEWED", "APPROVED", "CONDITIONALLY_APPROVED", "REJECTED", "DEPRECATED" ]
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Label distinguishing the license from other licenses"
+  }, {
+    "path" : "spdxId",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The SPDX ID of the license"
+  }, {
+    "path" : "licenseSource",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The source of the license.",
+    "allowedValues" : [ "CUSTOM", "KB", "MODIFIED_KB" ]
+  }, {
+    "path" : "statusUpdatedBy",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The name of the user who last updated the license status"
+  }, {
+    "path" : "expirationDate",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license will expire"
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license was last updated"
+  } ],
+  "links" : [ ]
+}

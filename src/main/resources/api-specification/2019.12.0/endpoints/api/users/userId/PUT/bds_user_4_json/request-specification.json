@@ -1,0 +1,39 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "firstName",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The user's first name"
+  }, {
+    "path" : "lastName",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The user's last name"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Whether or not the user is active"
+  }, {
+    "path" : "userName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the user"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The type (internal, external) of the user"
+  }, {
+    "path" : "externalUserName",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The external name of the user"
+  }, {
+    "path" : "email",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The user's email address"
+  } ]
+}

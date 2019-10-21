@@ -1,0 +1,24 @@
+{
+  "fields" : [ {
+    "path" : "snippetScanSummary",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL of the resource representing the scan the computation was associated with"
+  }, {
+    "path" : "codeLocation",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL of the resource representing the code location the computation was associated with"
+  }, {
+    "path" : "scanSummary",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL of the resource representing the scan the computation was associated with"
+  }, {
+    "path" : "projectVersion",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL for the resource representing the project version the computation completed for"
+  } ],
+  "links" : [ ]
+}

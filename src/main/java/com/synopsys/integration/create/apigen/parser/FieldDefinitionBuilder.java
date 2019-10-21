@@ -28,8 +28,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import com.synopsys.integration.create.apigen.definitions.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.definitions.UtilStrings;
+import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 public class FieldDefinitionBuilder {

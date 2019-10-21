@@ -1,0 +1,66 @@
+{
+  "fields" : [ {
+    "path" : "componentVersionPolicyViolationDetails",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "The number of components violating a policy at each level of severity.",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The policy status.",
+      "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+    }, {
+      "path" : "severityLevels",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The collection of severity level names and the number of components violating each level.",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The severity level.",
+        "allowedValues" : [ "UNSPECIFIED", "TRIVIAL", "MINOR", "MAJOR", "CRITICAL", "BLOCKER" ]
+      }, {
+        "path" : "value",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The number of components violating that severity level."
+      } ]
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "overallStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The overall policy violation status of every component within the project version.",
+    "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time the policy status was last updated."
+  }, {
+    "path" : "componentVersionStatusCounts",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "The number of components holding each status.",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The violation status.",
+      "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+    }, {
+      "path" : "value",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The number of components holding that status."
+    } ]
+  } ],
+  "links" : [ ]
+}

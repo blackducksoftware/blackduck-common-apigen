@@ -22,7 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.model;
 
-import com.synopsys.integration.create.apigen.definitions.UtilStrings;
+import com.synopsys.integration.create.apigen.data.UtilStrings;
 
 public abstract class DefinitionParseParameters<T extends ThirdPartyDefinition> {
 

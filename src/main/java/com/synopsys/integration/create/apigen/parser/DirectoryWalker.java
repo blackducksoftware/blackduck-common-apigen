@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.create.apigen.definitions.MediaTypes;
-import com.synopsys.integration.create.apigen.definitions.TypeTranslator;
-import com.synopsys.integration.create.apigen.helper.DataManager;
+import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
@@ -41,14 +41,14 @@ public class DirectoryWalker {
     private final Gson gson;
     private final MediaTypes mediaTypes;
     private final TypeTranslator typeTranslator;
-    private final DataManager dataManager;
+    private final NameAndPathManager nameAndPathManager;
 
-    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final DataManager dataManager) {
+    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager) {
         this.rootDirectoryFile = rootDirectory;
         this.gson = gson;
         this.mediaTypes = mediaTypes;
         this.typeTranslator = typeTranslator;
-        this.dataManager = dataManager;
+        this.nameAndPathManager = nameAndPathManager;
     }
 
     public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
