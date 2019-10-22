@@ -36,6 +36,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassCategoryData;
 import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
@@ -48,6 +51,7 @@ public class MissingDependencyIdentifier {
     static Set<String> bdCommonDependencies = new HashSet<>();
     static TypeTranslator typeTranslator = new TypeTranslator();
     static ClassCategories classCategories = new ClassCategories();
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     public static void main(final String[] args) throws IOException, URISyntaxException {
         // Go over bd-common import statements, parse for Class dependencies
@@ -90,7 +94,7 @@ public class MissingDependencyIdentifier {
         for (final String missingClass : missingClassesSorted) {
             if (!missingClass.contains("Request")) {
                 writer.write((missingClass + "\n"));
-                System.out.println(missingClass);
+                logger.info(missingClass);
             } else {
                 requests.add(missingClass);
             }

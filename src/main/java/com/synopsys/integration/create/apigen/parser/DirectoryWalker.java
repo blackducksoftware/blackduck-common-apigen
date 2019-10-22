@@ -27,7 +27,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
+import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
@@ -42,6 +46,7 @@ public class DirectoryWalker {
     private final MediaTypes mediaTypes;
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
+    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager) {
         this.rootDirectoryFile = rootDirectory;
@@ -79,7 +84,7 @@ public class DirectoryWalker {
             }
 
             if (actuallyShowOutput) {
-                System.out.println("***********************\n" + gson.toJson(response));
+                logger.info("***********************\n" + gson.toJson(response));
             }
             actuallyShowOutput = showOutput;
 

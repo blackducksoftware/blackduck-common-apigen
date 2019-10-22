@@ -29,6 +29,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -76,6 +78,7 @@ public class GeneratorRunner {
     private final List<ClassGenerator> generators;
     private final Configuration config;
     private final MediaVersionDataManager mediaVersionDataManager;
+    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
@@ -121,16 +124,16 @@ public class GeneratorRunner {
 
         generateFiles(responses, randomTemplate);
 
-        System.out.println("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
+        logger.info("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
         for (final String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
-            System.out.println(randomClassName);
+            logger.info(randomClassName);
         }
 
-        System.out.println(
+        logger.info(
             "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
                 + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
         for (final Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
-            System.out.println(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
+            logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
         }
     }
 
@@ -140,7 +143,7 @@ public class GeneratorRunner {
                 final Template template = viewGenerator.getTemplate(config);
                 viewGenerator.generateClasses(response, template);
             } else {
-                System.out.println("Non-applicable response!");
+                logger.info("Non-applicable response!");
             }
             for (final FieldDefinition field : response.getFields()) {
                 generateClasses(field, generators, response.getMediaType());

@@ -28,8 +28,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
@@ -48,6 +51,7 @@ public class MediaVersionGenerator {
     private final ClassCategories classCategories;
     private final GeneratedClassWriter generatedClassWriter;
     private final NameAndPathManager nameAndPathManager;
+    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     public MediaVersionGenerator(final MediaVersionDataManager mediaVersionDataManager, final MediaTypeMapGenerator mediaTypeMapGenerator, final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter,
         final NameAndPathManager nameAndPathManager) {
@@ -68,7 +72,7 @@ public class MediaVersionGenerator {
 
         final Set<MediaVersionData> latestMediaVersions = new HashSet<>();
         latestMediaVersions.addAll(latestComponentMediaVersions);
-        latestMediaVersions.addAll(latestMediaVersions);
+        latestMediaVersions.addAll(latestViewMediaVersions);
         mediaTypeMapGenerator.generateMediaTypeMap(latestMediaVersions);
     }
 
@@ -77,16 +81,22 @@ public class MediaVersionGenerator {
             final Map<String, Object> input = latestMediaVersion.getInput();
             final String className = latestMediaVersion.getNonVersionedClassName();
             input.put(UtilStrings.CLASS_NAME, className);
-            input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
             try {
                 final ClassTypeEnum classType = classCategories.computeType(className);
                 final String importClass = classType.getImportClass().get();
 
                 final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
                 input.put(UtilStrings.IMPORT_PATH, importPath);
+
+                //debug
+                if (latestMediaVersion.getVersionedClassName().endsWith("0")) {
+                    continue;
+                }
+
+                input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
                 generatedClassWriter.writeFile(className, randomTemplate, input, pathToFiles);
             } catch (final NoSuchElementException e) {
-                System.out.println("Class not categorized");
+                logger.info("Class not categorized");
             }
             nameAndPathManager.addNonLinkClassName(className);
             nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(className));

@@ -76,7 +76,6 @@ public class NameParser {
         }
 
         if (responseName.endsWith(VIEWV)) {
-            System.out.println("***** " + responseName);
             responseName = responseName.replace(VIEWV, VIEW);
         }
         return responseName;
@@ -156,6 +155,18 @@ public class NameParser {
                                                  .map(StringUtils::capitalize)
                                                  .collect(Collectors.toList());
         return join("", formattedPieces);
+    }
+
+    public static String wrapInOptionalNotation(final String string) {
+        return UtilStrings.OPTIONAL_WRAPPER + string + ">";
+    }
+
+    public static String unwrapOptionalNotation(final String string) {
+        return string.replace(UtilStrings.OPTIONAL_WRAPPER, "").replace(">", "");
+    }
+
+    public static String stripListAndOptionalNotation(String string) {
+        return stripListNotation(unwrapOptionalNotation(string));
     }
 
 }

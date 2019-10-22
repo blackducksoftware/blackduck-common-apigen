@@ -23,7 +23,9 @@
 package com.synopsys.integration.create.apigen.data;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -33,8 +35,14 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 @Component
 public class MediaVersionDataManager {
 
-    private static final Map<String, MediaVersionData> latestViewMediaVersions = new HashMap<>();
-    private static final Map<String, MediaVersionData> latestComponentMediaVersions = new HashMap<>();
+    private final Map<String, MediaVersionData> latestViewMediaVersions = new HashMap<>();
+    private final Map<String, MediaVersionData> latestComponentMediaVersions = new HashMap<>();
+    private final ClassCategories classCategories;
+    private final Set<String> namesToIgnore = populateNamesToIgnore();
+
+    public MediaVersionDataManager(final ClassCategories classCategories) {
+        this.classCategories = classCategories;
+    }
 
     public Map<String, MediaVersionData> getLatestViewMediaVersions() {
         return latestViewMediaVersions;
@@ -44,41 +52,61 @@ public class MediaVersionDataManager {
         return latestComponentMediaVersions;
     }
 
-    public static void updateLatestViewMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
+    public void updateLatestViewMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
         updateLatestMediaVersions(className, input, latestViewMediaVersions, mediaType);
     }
 
-    public static void updateLatestComponentMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
+    public void updateLatestComponentMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
         updateLatestMediaVersions(className, input, latestComponentMediaVersions, mediaType);
     }
 
-    public static void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionData> latestMediaVersions, final String mediaType) {
-        final MediaVersionData newHelper = getMediaVersionHelper(className, input, mediaType);
-        if (newHelper == null) {
+    public void updateLatestMediaVersions(final String className, final Map<String, Object> input, final Map<String, MediaVersionData> latestMediaVersions, final String mediaType) {
+        final MediaVersionData newData = getMediaVersionData(className, input, mediaType);
+        final ClassTypeEnum classType = classCategories.computeType(className);
+        if (newData == null || classType.isCommon()) {
             return;
         }
-        final String nonVersionedClass = newHelper.getNonVersionedClassName();
-        final Integer mediaVersion = newHelper.getMediaVersion();
-        final MediaVersionData oldHelper = latestMediaVersions.get(nonVersionedClass);
+        try {
+            final String nonVersionedClass = newData.getNonVersionedClassName();
+            final Integer mediaVersion = newData.getMediaVersion();
+            final MediaVersionData oldData = latestMediaVersions.get(nonVersionedClass);
 
-        if (mediaVersion != null) {
-            if (oldHelper == null || mediaVersion > oldHelper.getMediaVersion()) {
-                latestMediaVersions.put(nonVersionedClass, newHelper);
+            if (mediaVersion != null) {
+                if ((oldData == null || mediaVersion > oldData.getMediaVersion()) && !namesToIgnore.contains(nonVersionedClass)) {
+                    latestMediaVersions.put(nonVersionedClass, newData);
+                }
+            } else {
+                latestMediaVersions.put(nonVersionedClass, newData);
             }
+        } catch (final NullPointerException e) {
+            return;
         }
     }
 
-    private static MediaVersionData getMediaVersionHelper(final String className, final Map<String, Object> input, final String mediaType) {
+    private MediaVersionData getMediaVersionData(final String className, final Map<String, Object> input, final String mediaType) {
         final Integer mediaVersion;
         final String nonVersionedClassName;
         try {
             nonVersionedClassName = NameParser.getNonVersionedName(className);
-            mediaVersion = Integer.decode(NameParser.getMediaVersion(className));
-            input.put("className", className);
+            final String mediaVersionStr = NameParser.getMediaVersion(className);
+            if (mediaVersionStr == null) {
+                return new MediaVersionData(nonVersionedClassName, new Integer(0), input, mediaType);
+            }
+            mediaVersion = Integer.decode(mediaVersionStr);
+            input.put(UtilStrings.CLASS_NAME, className);
 
             return new MediaVersionData(nonVersionedClassName, mediaVersion, input, mediaType);
         } catch (final NullPointerException e) {
             return null;
         }
+    }
+
+    private static Set<String> populateNamesToIgnore() {
+        final Set<String> namesToIgnore = new HashSet<>();
+
+        namesToIgnore.add("");
+        namesToIgnore.add(UtilStrings.STRING);
+
+        return namesToIgnore;
     }
 }

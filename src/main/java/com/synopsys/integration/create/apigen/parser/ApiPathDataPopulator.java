@@ -58,10 +58,6 @@ public class ApiPathDataPopulator {
                     final String resultClass;
                     final boolean hasMultipleResults;
 
-                    if (nonVersionedResponseName.contains("Component")) {
-                        System.out.println("nop");
-                    }
-
                     final String resultClassOverride = apiPathResultClassOverrides.get(apiPath);
                     resultClass = resultClassOverride == null ? nonVersionedResponseName : resultClassOverride;
                     final Boolean hasMultipleResultsOverride = apiPathHasMultipleResultsOverrides.get(nonVersionedResponseName);

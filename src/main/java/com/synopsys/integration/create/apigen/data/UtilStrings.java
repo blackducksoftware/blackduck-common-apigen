@@ -60,6 +60,7 @@ public class UtilStrings {
     public static final String JAVA_BIG_DECIMAL = "java.math." + BIG_DECIMAL;
     public static final String JAVA_LIST = "java.util.List<";
     public static final String LIST = "List<";
+    public static final String OPTIONAL_WRAPPER = "Optional<";
     public static final String ARRAY = "Array";
     public static final String STRING = "String";
     public static final String NUMBER = "Number";
@@ -70,6 +71,7 @@ public class UtilStrings {
 
     public static final String LINKS = "links";
     public static final String FIELDS = "fields";
+    public static final String CLASS_FIELDS = "classFields";
 
     public static final String RESPONSE_SPECIFICATION_JSON = "response-specification.json";
     public static final String REQUEST_SPECIFICATION_JSON = "request-specification.json";

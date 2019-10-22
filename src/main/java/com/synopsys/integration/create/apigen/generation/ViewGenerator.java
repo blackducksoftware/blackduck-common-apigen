@@ -80,7 +80,7 @@ public class ViewGenerator {
         final Map<String, Object> input = inputDataFinder.getViewInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, response.getName(), UtilStrings.VIEW_BASE_CLASS, response.getFields(), links, responseMediaType);
         final String viewName = response.getName();
 
-        MediaVersionDataManager.updateLatestViewMediaVersions(viewName, input, responseMediaType);
+        mediaVersionDataManager.updateLatestViewMediaVersions(viewName, input, responseMediaType);
         generatedClassWriter.writeFile(viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
 
         nameAndPathManager.addNonLinkClassName(viewName);

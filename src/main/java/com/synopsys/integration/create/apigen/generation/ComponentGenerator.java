@@ -78,15 +78,14 @@ public class ComponentGenerator extends ClassGenerator {
         final Set<String> imports = new HashSet<>();
         final List<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
-            importFinder.addFieldImports(imports, subField.getType());
+            importFinder.addFieldImports(imports, subField.getType(), subField.isOptional());
             if (isApplicable(subField)) {
                 generateClass(subField, responseMediaType, template);
             }
         }
-        final String fieldType = NameParser.stripListNotation(field.getType());
+        final String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
         final Map<String, Object> input = inputDataFinder.getViewInputData(UtilStrings.GENERATED_COMPONENT_PACKAGE, imports, fieldType, UtilStrings.COMPONENT_BASE_CLASS, subFields, responseMediaType);
-
-        MediaVersionDataManager.updateLatestComponentMediaVersions(fieldType, input, responseMediaType);
+        mediaVersionDataManager.updateLatestComponentMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
             generatedClassWriter.writeFile(fieldType, template, input, UtilStrings.PATH_TO_COMPONENT_FILES);

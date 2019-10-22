@@ -35,6 +35,7 @@ import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -55,7 +56,8 @@ public class EnumGenerator extends ClassGenerator {
 
     @Override
     public boolean isApplicable(final FieldDefinition field) {
-        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(field.getType(), classCategories);
+        String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
+        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
         return (classType.isEnum() && !classSource.equals(ClassSourceEnum.THROWAWAY));
@@ -63,7 +65,7 @@ public class EnumGenerator extends ClassGenerator {
 
     @Override
     public void generateClass(final FieldDefinition field, final String responseMediaType, final Template template) throws Exception {
-        final String classType = field.getType().replace(UtilStrings.JAVA_LIST, "").replace(">", "");
+        final String classType = NameParser.stripListAndOptionalNotation(field.getType());
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         generatedClassWriter.writeFile(classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
 

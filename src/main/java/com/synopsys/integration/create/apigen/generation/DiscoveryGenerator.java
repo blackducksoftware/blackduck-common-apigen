@@ -31,9 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
@@ -47,6 +50,7 @@ public class DiscoveryGenerator {
     private final ClassCategories classCategories;
     private final NameAndPathManager nameAndPathManager;
     private final GeneratedClassWriter generatedClassWriter;
+    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     @Autowired
     public DiscoveryGenerator(final ClassCategories classCategories, final NameAndPathManager nameAndPathManager, final GeneratedClassWriter generatedClassWriter) {
@@ -71,7 +75,7 @@ public class DiscoveryGenerator {
             final String resultImportType = resultClassData.getResultImportType();
             final String importPackage = resultImportPath + resultImportType + "." + resultClass;
             if (null == importPackage || null == resultImportType) {
-                System.out.println("couldn't find package for: " + resultClass);
+                logger.info("couldn't find package for: " + resultClass);
             } else {
                 imports.add(importPackage);
                 imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "LinkResponse");

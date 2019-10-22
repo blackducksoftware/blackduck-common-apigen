@@ -46,7 +46,6 @@ public class FieldsParserTestDataCollector {
         final File dataFile = new File(Application.PATH_TO_TEST_RESOURCES + fileName);
         final FileWriter writer = new FileWriter(dataFile);
         dataFile.mkdirs();
-        System.out.println();
         writer.write("[");
         final Iterator<ResponseDefinition> responseIterator = responses.iterator();
         while (responseIterator.hasNext()) {

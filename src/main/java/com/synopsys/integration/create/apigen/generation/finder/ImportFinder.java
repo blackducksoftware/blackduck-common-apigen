@@ -72,17 +72,20 @@ public class ImportFinder {
         imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
 
         for (final FieldDefinition field : fields) {
-            addFieldImports(imports, field.getType());
+            addFieldImports(imports, field.getType(), field.isOptional());
         }
     }
 
-    public void addFieldImports(final Set<String> imports, String fieldType) {
+    public void addFieldImports(final Set<String> imports, String fieldType, final boolean isOptional) {
         imports.add(CORE_CLASS_PATH_PREFIX + COMPONENT_BASE_CLASS);
+        if (isOptional) {
+            imports.add("java.util.Optional");
+        }
 
         if (fieldType.contains(UtilStrings.LIST)) {
             imports.add(UtilStrings.JAVA_LIST.replace("<", ""));
         }
-        fieldType = NameParser.stripListNotation(fieldType);
+        fieldType = NameParser.stripListAndOptionalNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
         final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();

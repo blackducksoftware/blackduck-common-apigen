@@ -42,7 +42,7 @@ public class InputDataFinder {
 
         inputData.put(UtilStrings.PACKAGE_NAME, enumPackage);
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
-        inputData.put("enumClassName", enumClassName);
+        inputData.put("enumClassName", NameParser.stripListAndOptionalNotation(enumClassName));
         inputData.put("enumValues", enumValues);
 
         return inputData;
@@ -52,7 +52,7 @@ public class InputDataFinder {
         final HashMap<String, Object> inputData = new HashMap<>();
 
         inputData.put(UtilStrings.PACKAGE_NAME, viewPackage);
-        inputData.put(UtilStrings.CLASS_NAME, className);
+        inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
         inputData.put("imports", imports);
         inputData.put("baseClass", baseClass);
@@ -62,7 +62,8 @@ public class InputDataFinder {
             final String newType = NameParser.getNonVersionedName(oldType);
             classField.setType(newType);
         }
-        inputData.put("classFields", classFields);
+        identifyOptionalFields(classFields);
+        inputData.put(UtilStrings.CLASS_FIELDS, classFields);
 
         return inputData;
     }
@@ -78,5 +79,14 @@ public class InputDataFinder {
         }
 
         return inputData;
+    }
+
+    private void identifyOptionalFields(final List<FieldDefinition> classFields) {
+        for (final FieldDefinition field : classFields) {
+            if (field.isOptional()) {
+                final String typeWrappedInOptional = NameParser.wrapInOptionalNotation(field.getType());
+                field.setType(typeWrappedInOptional);
+            }
+        }
     }
 }

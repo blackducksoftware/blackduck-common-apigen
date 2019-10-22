@@ -66,7 +66,7 @@ public class MediaTypeMapGenerator {
             classNames.add(helper.getNonVersionedClassName());
         }
         for (final String className : classNames) {
-            importFinder.addFieldImports(imports, className);
+            importFinder.addFieldImports(imports, className, false);
         }
         input.put("imports", imports);
 

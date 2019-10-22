@@ -567,6 +567,8 @@ public class ClassCategories {
         commonTypes.add("Boolean");
         commonTypes.add("java.util.Date");
         commonTypes.add("Number");
+        commonTypes.add("null");
+        commonTypes.add("");
 
         return commonTypes;
     }

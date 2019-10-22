@@ -27,10 +27,18 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.Application;
+import com.synopsys.integration.create.apigen.GeneratorRunner;
+import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.ClassCategoryData;
+import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -39,29 +47,35 @@ import freemarker.template.Template;
 public class GeneratedClassWriter {
 
     private final Configuration cfg;
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+    private final ClassCategories classCategories;
 
     @Autowired
-    public GeneratedClassWriter(final Configuration configuration) {
+    public GeneratedClassWriter(final Configuration configuration, final ClassCategories classCategories) {
         this.cfg = configuration;
+        this.classCategories = classCategories;
     }
 
     // taken from SwaggerHub
     public static File getBaseDirectory() {
         final String baseDirectory = System.getenv(Application.PATH_TO_GENERATED_FILES_KEY);
         if (baseDirectory == null) {
-            System.out.println("Please set Environment variable 'BLACKDUCK_COMMON_API_BASE_DIRECTORY' to directory in which generated files will live");
+            logger.info("Please set Environment variable 'BLACKDUCK_COMMON_API_BASE_DIRECTORY' to directory in which generated files will live");
             for (final Map.Entry<String, String> var : System.getenv().entrySet()) {
-                System.out.println(var.getKey() + " : " + var.getValue());
+                logger.info(var.getKey() + " : " + var.getValue());
             }
             System.exit(0);
         }
         return new File(baseDirectory);
     }
 
-    public void writeFile(final String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
-        if (className.equals("null") || className.equals("") || className.equals("String")) {
+    public void writeFile(String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
+        className = NameParser.stripListAndOptionalNotation(className);
+        ClassTypeEnum classType = classCategories.computeType(className);
+        if (classType.isCommon()) {
             return;
         }
+
         final File testFile = new File(destination);
         testFile.mkdirs();
         final Writer fileWriter = new FileWriter(new File(testFile, className + ".java"));
