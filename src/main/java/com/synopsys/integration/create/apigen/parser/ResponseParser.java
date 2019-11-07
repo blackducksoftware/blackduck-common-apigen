@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
@@ -44,12 +46,16 @@ public class ResponseParser {
     private final MediaTypes mediaTypes;
     private final Gson gson;
     private final TypeTranslator typeTranslator;
+    private final NameAndPathManager nameAndPathManager;
+    private final MissingFieldsAndLinks missingFieldsAndLinks;
 
     @Autowired
-    public ResponseParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator) {
+    public ResponseParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.mediaTypes = mediaTypes;
         this.gson = gson;
         this.typeTranslator = typeTranslator;
+        this.nameAndPathManager = nameAndPathManager;
+        this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
     public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) {
@@ -63,13 +69,14 @@ public class ResponseParser {
         final ArrayList<ResponseDefinition> responseDefinitions = new ArrayList<>();
         final List<File> children = Arrays.stream(parent.listFiles())
                                         .filter(file -> !file.getName().equals("notifications"))
+                                        .sorted()
                                         .collect(Collectors.toList());
 
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
             if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
-                final NameParser nameParser = new NameParser();
+                final NameParser nameParser = new NameParser(nameAndPathManager);
                 final String responseName = nameParser.getResponseName(responseRelativePath);
                 final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
                 final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
@@ -126,7 +133,7 @@ public class ResponseParser {
     private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
         final DefinitionParser definitionParser = new DefinitionParser(gson, file);
         final List<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-        final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator);
+        final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         final List<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
         final ResponseDefinition response = new ResponseDefinition("", "", "", false);
         response.addFields(fieldDefinitions);

@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.create.apigen;
 
+import static java.lang.System.exit;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -80,6 +82,10 @@ public class GeneratorRunner {
     private final MediaVersionDataManager mediaVersionDataManager;
     private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
+    public static int classesGenerated = 0;
+
+    public static void incrementClassesGenerated() { classesGenerated++; }
+
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
@@ -106,8 +112,10 @@ public class GeneratorRunner {
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
         final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
-        final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
+        final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, true);
+
+        exit(0);
 
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());
@@ -135,6 +143,8 @@ public class GeneratorRunner {
         for (final Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
             logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
         }
+
+        logger.info("Classes Generated: " + classesGenerated);
     }
 
     private void generateFiles(final List<ResponseDefinition> responses, final Template randomTemplate) throws Exception {
@@ -169,7 +179,9 @@ public class GeneratorRunner {
             }
         }
         for (final FieldDefinition subField : field.getSubFields()) {
-            generateClasses(subField, generators, responseMediaType);
+            if (!field.getType().equals(subField.getType())) {
+                generateClasses(subField, generators, responseMediaType);
+            }
         }
     }
 

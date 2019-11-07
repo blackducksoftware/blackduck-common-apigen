@@ -35,9 +35,7 @@ import org.springframework.stereotype.Component;
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
-import com.synopsys.integration.create.apigen.data.ClassCategoryData;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;
@@ -71,7 +69,7 @@ public class GeneratedClassWriter {
 
     public void writeFile(String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
         className = NameParser.stripListAndOptionalNotation(className);
-        ClassTypeEnum classType = classCategories.computeType(className);
+        final ClassTypeEnum classType = classCategories.computeType(className);
         if (classType.isCommon()) {
             return;
         }
@@ -81,6 +79,7 @@ public class GeneratedClassWriter {
         final Writer fileWriter = new FileWriter(new File(testFile, className + ".java"));
         try {
             template.process(input, fileWriter);
+            GeneratorRunner.incrementClassesGenerated();
         } finally {
             fileWriter.close();
         }

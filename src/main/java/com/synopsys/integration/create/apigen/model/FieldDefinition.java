@@ -22,23 +22,24 @@
  */
 package com.synopsys.integration.create.apigen.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FieldDefinition extends Definition {
     private final String path;
     private String type;
     private final boolean optional;
     private final List<String> allowedValues;
-    private final List<FieldDefinition> fields;
+    private final Set<FieldDefinition> fields;
 
     public FieldDefinition(final String path, final String type, final boolean optional, final List<String> allowedValues) {
         this.path = path;
         this.type = type;
         this.optional = optional;
         this.allowedValues = allowedValues;
-        this.fields = new ArrayList<>();
+        this.fields = new HashSet<>();
     }
 
     public FieldDefinition(final String path, final String type, final boolean optional) {
@@ -63,7 +64,7 @@ public class FieldDefinition extends Definition {
         return allowedValues;
     }
 
-    public List<FieldDefinition> getSubFields() { return fields; }
+    public Set<FieldDefinition> getSubFields() { return fields; }
 
     public void addSubFields(final List<FieldDefinition> subFields) { fields.addAll(subFields); }
 

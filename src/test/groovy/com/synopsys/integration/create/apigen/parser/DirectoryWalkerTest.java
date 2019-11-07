@@ -17,6 +17,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 
@@ -27,7 +28,7 @@ public class DirectoryWalkerTest {
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
 
     public DirectoryWalkerTest() throws URISyntaxException {
-        this.directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, new MediaTypes(), new TypeTranslator(), new NameAndPathManager());
+        this.directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, new MediaTypes(), new TypeTranslator(), new NameAndPathManager(), new MissingFieldsAndLinks());
     }
 
     @Test

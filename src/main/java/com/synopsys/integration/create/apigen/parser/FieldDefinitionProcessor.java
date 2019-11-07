@@ -25,6 +25,8 @@ package com.synopsys.integration.create.apigen.parser;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
@@ -34,9 +36,13 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 public class FieldDefinitionProcessor {
 
     private final TypeTranslator typeTranslator;
+    private final NameAndPathManager nameAndPathManager;
+    private final MissingFieldsAndLinks missingFieldsAndLinks;
 
-    public FieldDefinitionProcessor(final TypeTranslator typeTranslator) {
+    public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.typeTranslator = typeTranslator;
+        this.nameAndPathManager = nameAndPathManager;
+        this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
     public List<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final List<RawFieldDefinition> rawFieldDefinitions) {
@@ -47,7 +53,7 @@ public class FieldDefinitionProcessor {
             final String type = field.getType();
             final boolean optional = field.isOptional();
 
-            final FieldData fieldData = new FieldData(path, type, fieldDefinitionName, field.getSubFields() != null, typeTranslator);
+            final FieldData fieldData = new FieldData(path, type, fieldDefinitionName, field.getSubFields() != null, typeTranslator, nameAndPathManager);
 
             final FieldDefinition fieldDefinition;
 
@@ -56,7 +62,7 @@ public class FieldDefinitionProcessor {
                 continue;
             }
 
-            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues());
+            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues(), missingFieldsAndLinks, nameAndPathManager);
             builder.setOptional(optional);
             fieldDefinition = builder.build();
 

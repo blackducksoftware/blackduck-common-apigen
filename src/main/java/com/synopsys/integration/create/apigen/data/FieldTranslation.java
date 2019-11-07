@@ -25,12 +25,12 @@ package com.synopsys.integration.create.apigen.data;
 public class FieldTranslation {
     private String path;
     private String swaggerType;
-    private String api_genType;
+    private String apiSpecsType;
 
-    public FieldTranslation(final String path, final String swaggerType, final String api_genType) {
+    public FieldTranslation(final String path, final String swaggerType, final String apiSpecsType) {
         this.path = path;
         this.swaggerType = swaggerType;
-        this.api_genType = api_genType;
+        this.apiSpecsType = apiSpecsType;
     }
 
     public String getPath() {
@@ -49,12 +49,12 @@ public class FieldTranslation {
         this.swaggerType = swaggerType;
     }
 
-    public String getApiGenName() {
-        return api_genType;
+    public String getApiSpecsName() {
+        return apiSpecsType;
     }
 
-    public void setApiGenName(final String api_genType) {
-        this.api_genType = api_genType;
+    public void setApiSpecsName(final String api_genType) {
+        this.apiSpecsType = api_genType;
     }
 
 }

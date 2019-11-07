@@ -43,10 +43,22 @@ public class MissingFieldsAndLinks {
     private Map<String, MissingFieldAndLinkHelper> populateMissingFieldsAndLinks() {
         final Map<String, MissingFieldAndLinkHelper> missingFieldAndLinkMap = new HashMap<>();
 
-        // PolicyRuleViewExpression
-        //final MissingFieldAndLinkHelper prveFieldsAndLinks = new MissingFieldAndLinkHelper();
-        //prveFieldsAndLinks.addField(new FieldDefinition("expression", "PolicyRuleViewExpressionExpression", false));
-        //missingFieldAndLinkMap.put("PolicyRuleViewExpression", prveFieldsAndLinks);
+        // ComponentPolicyStatusView
+        final MissingFieldAndLinkHelper cpsvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        cpsvFieldsAndLinks.addLink(new LinkDefinition("comment", false));
+        missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
+
+        // LicenseView
+        final MissingFieldAndLinkHelper lvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        lvFieldsAndLinks.addLink(new LinkDefinition("text", false));
+        missingFieldAndLinkMap.put("LicenseView", lvFieldsAndLinks);
+
+        // ProjectVersionLicenseLicensesView
+        final MissingFieldAndLinkHelper pvllvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionComponentLicensesLicenseTypeType", false));
+        pvllvFieldsAndLinks.addField(new FieldDefinition("licenseDisplay", "String", true));
+        pvllvFieldsAndLinks.addField(new FieldDefinition("ownership", "String", true));
+        missingFieldAndLinkMap.put("ProjectVersionLicenseLicensesView", pvllvFieldsAndLinks);
 
         // UserView
         final MissingFieldAndLinkHelper uvFieldsAndLinks = new MissingFieldAndLinkHelper();
@@ -61,15 +73,15 @@ public class MissingFieldsAndLinks {
         ugvFieldsAndLinks.addLink(new LinkDefinition("users", false));
         missingFieldAndLinkMap.put("UserGroupView", ugvFieldsAndLinks);
 
+        // ReportView
+        final MissingFieldAndLinkHelper rvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        rvFieldsAndLinks.addLink(new LinkDefinition("content", false));
+        missingFieldAndLinkMap.put("ReportView", rvFieldsAndLinks);
+
         // RoleAssignmentView
         final MissingFieldAndLinkHelper ravFieldsAndLinks = new MissingFieldAndLinkHelper();
         ravFieldsAndLinks.addLink(new LinkDefinition("user", false));
         missingFieldAndLinkMap.put("RoleAssignmentView", ravFieldsAndLinks);
-
-        // ComponentPolicyStatusView
-        final MissingFieldAndLinkHelper cpsvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        cpsvFieldsAndLinks.addLink(new LinkDefinition("comment", false));
-        missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
 
         return missingFieldAndLinkMap;
     }

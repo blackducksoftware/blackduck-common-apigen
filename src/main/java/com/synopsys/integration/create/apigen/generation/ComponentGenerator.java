@@ -24,7 +24,6 @@ package com.synopsys.integration.create.apigen.generation;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,6 +32,7 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassCategoryData;
+import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -68,27 +68,43 @@ public class ComponentGenerator extends ClassGenerator {
 
     @Override
     public boolean isApplicable(final FieldDefinition field) {
-        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(field.getType(), classCategories);
+        final String fieldType = NameParser.stripListNotation(field.getType());
+        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassTypeEnum classType = classCategoryData.getType();
-        return classType.isNotCommonTypeOrEnum();
+        final ClassSourceEnum classSource = classCategoryData.getSource();
+        return classType.isNotCommonTypeOrEnum() && !classSource.isThrowaway() && !classSource.isManual();
     }
 
     @Override
     public void generateClass(final FieldDefinition field, final String responseMediaType, final Template template) throws Exception {
         final Set<String> imports = new HashSet<>();
-        final List<FieldDefinition> subFields = field.getSubFields();
+        final Set<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
             importFinder.addFieldImports(imports, subField.getType(), subField.isOptional());
             if (isApplicable(subField)) {
                 generateClass(subField, responseMediaType, template);
             }
         }
-        final String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
-        final Map<String, Object> input = inputDataFinder.getViewInputData(UtilStrings.GENERATED_COMPONENT_PACKAGE, imports, fieldType, UtilStrings.COMPONENT_BASE_CLASS, subFields, responseMediaType);
+        String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
+        fieldType = nameAndPathManager.getSimplifiedClassName(fieldType);
+        final String fieldPackage;
+        final String fieldBaseClass;
+        final String pathToFiles;
+        if (nameAndPathManager.isSubFieldThatIsAView(fieldType)) {
+            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
+            fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
+            pathToFiles = UtilStrings.PATH_TO_VIEW_FILES;
+            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
+        } else {
+            fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
+            fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
+            pathToFiles = UtilStrings.PATH_TO_COMPONENT_FILES;
+        }
+        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, fieldType, fieldBaseClass, subFields, responseMediaType);
         mediaVersionDataManager.updateLatestComponentMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
-            generatedClassWriter.writeFile(fieldType, template, input, UtilStrings.PATH_TO_COMPONENT_FILES);
+            generatedClassWriter.writeFile(fieldType, template, input, pathToFiles);
         }
         nameAndPathManager.addNonLinkClassName(fieldType);
         nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(fieldType));

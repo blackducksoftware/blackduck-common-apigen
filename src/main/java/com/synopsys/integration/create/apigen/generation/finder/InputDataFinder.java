@@ -23,12 +23,15 @@
 package com.synopsys.integration.create.apigen.generation.finder;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkData;
@@ -36,6 +39,12 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 @Component
 public class InputDataFinder {
+    private final NameAndPathManager nameAndPathManager;
+
+    @Autowired
+    public InputDataFinder(final NameAndPathManager nameAndPathManager) {
+        this.nameAndPathManager = nameAndPathManager;
+    }
 
     public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
@@ -48,7 +57,7 @@ public class InputDataFinder {
         return inputData;
     }
 
-    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final String mediaType) {
+    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> classFields, final String mediaType) {
         final HashMap<String, Object> inputData = new HashMap<>();
 
         inputData.put(UtilStrings.PACKAGE_NAME, viewPackage);
@@ -57,27 +66,34 @@ public class InputDataFinder {
         inputData.put("imports", imports);
         inputData.put("baseClass", baseClass);
 
+        final Set<FieldDefinition> nonOptionalClassFields = new HashSet<>();
+        final Set<FieldDefinition> optionalClassFields = new HashSet<>();
         for (final FieldDefinition classField : classFields) {
             final String oldType = classField.getType();
             final String newType = NameParser.getNonVersionedName(oldType);
             classField.setType(newType);
+            // For optional fields
+            if (classField.isOptional()) {
+                optionalClassFields.add(classField);
+            } else {
+                nonOptionalClassFields.add(classField);
+            }
         }
-        identifyOptionalFields(classFields);
         inputData.put(UtilStrings.CLASS_FIELDS, classFields);
+        inputData.put("optionalClassFields", optionalClassFields);
+        inputData.put("nonOptionalClassFields", nonOptionalClassFields);
 
         return inputData;
     }
 
-    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final List<FieldDefinition> classFields, final Set<LinkData> links,
+    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> classFields, final Set<LinkData> links,
         final String mediaType) {
         final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields, mediaType);
-
         if (links != null && links.size() > 0) {
             inputData.put("hasLinksWithResults", true);
             inputData.put("hasLinks", true);
             inputData.put(UtilStrings.LINKS, links);
         }
-
         return inputData;
     }
 

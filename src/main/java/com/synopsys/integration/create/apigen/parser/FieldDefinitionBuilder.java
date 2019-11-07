@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -42,21 +43,25 @@ public class FieldDefinitionBuilder {
     private final boolean isArray;
     private List<FieldDefinition> subFields = Collections.EMPTY_LIST;
 
-    private final MissingFieldsAndLinks MISSING_FIELDS_AND_LINKS = new MissingFieldsAndLinks();
+    private final MissingFieldsAndLinks missingFieldsAndLinks;
+    private final NameAndPathManager nameAndPathManager;
 
-    public FieldDefinitionBuilder(final FieldData fieldData, final List<String> allowedValues) {
+    public FieldDefinitionBuilder(final FieldData fieldData, final List<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks, final NameAndPathManager nameAndPathManager) {
         this.path = fieldData.getProcessedPath();
         this.type = fieldData.getProcessedType();
         this.nonVersionedFieldDefinitionName = fieldData.getNonVersionedFieldDefinitionName();
         this.allowedValues = allowedValues;
         this.isArray = fieldData.isArray();
+        this.missingFieldsAndLinks = missingFieldsAndLinks;
+        this.nameAndPathManager = nameAndPathManager;
     }
 
     public FieldDefinition build() {
 
-        FieldDefinition fieldDefinition = null;
+        final FieldDefinition fieldDefinition;
 
-        final String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + UtilStrings.ENUM;
+        String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + UtilStrings.ENUM;
+        nameOfEnum = nameAndPathManager.getSimplifiedClassName(nameOfEnum);
 
         // For fields with type 'Array', change type to a Java List<E>
         if (isArray) {
@@ -72,7 +77,7 @@ public class FieldDefinitionBuilder {
             }
         }
         fieldDefinition.addSubFields(subFields);
-        final List<FieldDefinition> missingFields = MISSING_FIELDS_AND_LINKS.getMissingFields(NameParser.getNonVersionedName(type));
+        final List<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(type));
         if (missingFields.size() > 0) {
             fieldDefinition.addSubFields(missingFields);
         }

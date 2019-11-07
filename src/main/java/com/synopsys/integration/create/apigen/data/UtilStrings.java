@@ -68,6 +68,7 @@ public class UtilStrings {
     public static final String META = "_meta";
     public static final String OBJECT = "Object";
     public static final String INTEGER = "Integer";
+    public static final String JAVA_DATE = "java.util.Date";
 
     public static final String LINKS = "links";
     public static final String FIELDS = "fields";

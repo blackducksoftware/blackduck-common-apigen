@@ -110,6 +110,12 @@ public class LinkResponseDefinitions {
         data.put("CustomFieldView", customFieldViewDefinitions);
         */
 
+        // LicenseView
+        final Map<String, LinkResponseDefinitionItem> licenseViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem lvTextDefinition = new LinkResponseDefinitionItem(false, "String");
+        licenseViewDefinitions.put("text", lvTextDefinition);
+        definitions.put("LicenseView", licenseViewDefinitions);
+
         // ProjectView
         final Map<String, LinkResponseDefinitionItem> projectViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem pvVersionsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionView");
@@ -141,13 +147,13 @@ public class LinkResponseDefinitions {
         final Map<String, LinkResponseDefinitionItem> projectVersionViewDefinitions = new HashMap<>();
         //final LinkResponseDefinitionItem pvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskProfileView"); *
         //projectVersionViewDefinitions.put("riskProfile", pvvRiskProfileDefinition);
-        final LinkResponseDefinitionItem pvvComponentsDefinition = new LinkResponseDefinitionItem(true, "VersionBomComponentView");
+        final LinkResponseDefinitionItem pvvComponentsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionComponentView");
         projectVersionViewDefinitions.put("components", pvvComponentsDefinition);
         final LinkResponseDefinitionItem pvvVulnerableComponentsDefinition = new LinkResponseDefinitionItem(true, "VulnerableComponentView"); // *
         projectVersionViewDefinitions.put("vulnerable-components", pvvVulnerableComponentsDefinition);
         final LinkResponseDefinitionItem pvvProjectDefinition = new LinkResponseDefinitionItem(false, "ProjectView");
         projectVersionViewDefinitions.put("project", pvvProjectDefinition);
-        final LinkResponseDefinitionItem pvvPolicyStatusDefinition = new LinkResponseDefinitionItem(false, "VersionBomPolicyStatusView"); // *
+        final LinkResponseDefinitionItem pvvPolicyStatusDefinition = new LinkResponseDefinitionItem(false, "ProjectVersionPolicyStatusView"); // *
         projectVersionViewDefinitions.put("policy-status", pvvPolicyStatusDefinition);
         final LinkResponseDefinitionItem pvvCodeLocationsDefinition = new LinkResponseDefinitionItem(true, "CodeLocationView");
         projectVersionViewDefinitions.put("codelocations", pvvCodeLocationsDefinition);
@@ -176,6 +182,10 @@ public class LinkResponseDefinitions {
         final Map<String, LinkResponseDefinitionItem> projectVersionComponentViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem pvcvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
+        final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "MatchedFileView");
+        projectVersionComponentViewDefinitions.put("matched-files", pvcvMatchedFilesDefinition);
+        final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "VersionBomPolicyRuleView");
+        projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
         //final LinkResponseDefinitionItem pvcvPolicyStatusDefinition = new LinkResponseDefinitionItem(true, "VersionBomPolicyStatusView");
         //projectVersionComponentViewDefinitions.put("policy-status", pvcvPolicyStatusDefinition);
         definitions.put("ProjectVersionComponentView", projectVersionComponentViewDefinitions);
@@ -193,6 +203,12 @@ public class LinkResponseDefinitions {
         projectVersionCustomFieldViewDefinitions.put("custom-field-option-list", pvcfvCustomFieldOptionListDefinition);
         data.put("ProjectVersionCustomFieldView", projectVersionCustomFieldViewDefinitions);
         */
+
+        // ReportView
+        final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem rvContentDefinition = new LinkResponseDefinitionItem(false, "String");
+        reportViewDefinitions.put("content", rvContentDefinition);
+        definitions.put("ReportView", reportViewDefinitions);
 
         // RoleAssignmentView
         final Map<String, LinkResponseDefinitionItem> roleAssignmentViewDefinitions = new HashMap<>();

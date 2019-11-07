@@ -28,7 +28,6 @@ import static com.synopsys.integration.create.apigen.data.UtilStrings.GENERATED_
 import static com.synopsys.integration.create.apigen.data.UtilStrings.VIEW_BASE_CLASS;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,16 +67,18 @@ public class ImportFinder {
         this.nameAndPathManager = nameAndPathManager;
     }
 
-    public void addFieldImports(final Set<String> imports, final List<FieldDefinition> fields) {
+    public void addFieldImports(final Set<String> imports, final Set<FieldDefinition> fields) {
         imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
 
         for (final FieldDefinition field : fields) {
-            addFieldImports(imports, field.getType(), field.isOptional());
+            final String fieldType = nameAndPathManager.getSimplifiedClassName(field.getType());
+            addFieldImports(imports, fieldType, field.isOptional());
         }
     }
 
     public void addFieldImports(final Set<String> imports, String fieldType, final boolean isOptional) {
-        imports.add(CORE_CLASS_PATH_PREFIX + COMPONENT_BASE_CLASS);
+        final String baseClass = nameAndPathManager.isSubFieldThatIsAView(fieldType) ? VIEW_BASE_CLASS : COMPONENT_BASE_CLASS;
+        imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
         if (isOptional) {
             imports.add("java.util.Optional");
         }
@@ -108,7 +109,7 @@ public class ImportFinder {
     }
 
     public LinksAndImportsData getLinkImports(final Set<String> imports, final ResponseDefinition response) {
-        final List<LinkDefinition> rawLinks = response.getLinks();
+        final Set<LinkDefinition> rawLinks = response.getLinks();
         final Set<LinkData> links = new HashSet<>();
         final String responseName = response.getName();
 

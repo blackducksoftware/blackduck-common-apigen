@@ -33,32 +33,57 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 
 public class NameParser {
+    private final NameAndPathManager nameAndPathManager;
+
     private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
     private static final String VIEWV = "ViewV";
     private static final String VIEW = "View";
 
+    public NameParser(final NameAndPathManager nameAndPathManager) {
+        this.nameAndPathManager = nameAndPathManager;
+    }
+
     public String getResponseName(final String responsePath) {
         String firstPiece = null;
         String lastPiece = null;
-        final String mediaVersion;
+        String differentiatingPrefix = null;
         final ListIterator<String> pathPieces = Arrays.asList(responsePath.split("/")).listIterator();
         String nextPiece = getGroomedPiece(pathPieces.next());
         while (!nextPiece.equals("GET") && pathPieces.hasNext()) {
+            differentiatingPrefix = firstPiece;
             firstPiece = lastPiece;
             lastPiece = nextPiece;
             nextPiece = getGroomedPiece(pathPieces.next());
         }
         if (pathPieces.hasNext()) {
+            firstPiece = !nameAndPathManager.getNonLinkClassNames().contains(firstPiece) ? firstPiece : differentiatingPrefix;
             final String mediaType = pathPieces.next();
-            mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
-            final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
-            return stripRedundantNamePrefix(responseName, mediaType);
+            final String responseName = computeResponseNameFromPieces(firstPiece, lastPiece, mediaType);
+            if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefix)) {
+                return differentiatingPrefix + responseName;
+            } else {
+                return responseName;
+            }
         } else {
             return "";
         }
+    }
+
+    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType) {
+        final String mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
+        final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
+        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(stripRedundantNamePrefix(responseName, mediaType)));
+        return stripRedundantNamePrefix(responseName, mediaType);
+    }
+
+    // FIXME - this is an in-ideal hack at the moment
+    private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix) {
+        //return nameAndPathManager.getNonLinkClassNames().contains(NameParser.getNonVersionedName(responseName)) && differentiatingPrefix != null && !REDUNDANT_NAME_PREFIXES.contains(differentiatingPrefix) && !responseName.startsWith(differentiatingPrefix);
+        return responseName.contains("ComponentView") && differentiatingPrefix != null && differentiatingPrefix.equals("ProjectVersion");
     }
 
     private String getGroomedPiece(final String piece) {
@@ -165,7 +190,7 @@ public class NameParser {
         return string.replace(UtilStrings.OPTIONAL_WRAPPER, "").replace(">", "");
     }
 
-    public static String stripListAndOptionalNotation(String string) {
+    public static String stripListAndOptionalNotation(final String string) {
         return stripListNotation(unwrapOptionalNotation(string));
     }
 

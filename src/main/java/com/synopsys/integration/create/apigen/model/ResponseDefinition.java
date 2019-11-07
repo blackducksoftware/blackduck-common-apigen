@@ -22,23 +22,24 @@
  */
 package com.synopsys.integration.create.apigen.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ResponseDefinition extends Definition {
     private final String responseSpecificationPath;
     private final String name;
     private final String mediaType;
-    private final List<FieldDefinition> fields;
-    private final List<LinkDefinition> links;
+    private final Set<FieldDefinition> fields;
+    private final Set<LinkDefinition> links;
     private final boolean hasMultipleResults;
 
     public ResponseDefinition(final String responseSpecificationPath, final String name, final String mediaType, final boolean hasMultipleResults) {
         this.responseSpecificationPath = responseSpecificationPath;
         this.name = name;
         this.mediaType = mediaType;
-        this.fields = new ArrayList<>();
-        this.links = new ArrayList<>();
+        this.fields = new HashSet<>();
+        this.links = new HashSet<>();
         this.hasMultipleResults = hasMultipleResults;
     }
 
@@ -54,13 +55,13 @@ public class ResponseDefinition extends Definition {
         return mediaType;
     }
 
-    public List<FieldDefinition> getFields() { return fields; }
+    public Set<FieldDefinition> getFields() { return fields; }
 
     public void addField(final FieldDefinition fieldDefinition) { fields.add(fieldDefinition); }
 
     public void addFields(final List<FieldDefinition> fieldDefinitions) { fields.addAll(fieldDefinitions); }
 
-    public List<LinkDefinition> getLinks() { return links; }
+    public Set<LinkDefinition> getLinks() { return links; }
 
     public void addLink(final LinkDefinition linkDefinition) { links.add(linkDefinition); }
 

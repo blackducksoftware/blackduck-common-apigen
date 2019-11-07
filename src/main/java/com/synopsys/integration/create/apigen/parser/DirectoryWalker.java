@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
@@ -46,19 +47,21 @@ public class DirectoryWalker {
     private final MediaTypes mediaTypes;
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
+    private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
-    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager) {
+    public DirectoryWalker(final File rootDirectory, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.rootDirectoryFile = rootDirectory;
         this.gson = gson;
         this.mediaTypes = mediaTypes;
         this.typeTranslator = typeTranslator;
+        this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.nameAndPathManager = nameAndPathManager;
     }
 
     public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
-        final ResponseParser responseParser = new ResponseParser(mediaTypes, gson, typeTranslator);
-        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator);
+        final ResponseParser responseParser = new ResponseParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         boolean actuallyShowOutput = showOutput;
 
         // Get response-specification.json files from directory

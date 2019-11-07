@@ -36,12 +36,14 @@ import com.synopsys.integration.create.apigen.model.ApiPathData;
 @Component
 public class NameAndPathManager {
 
-    public final Set<ApiPathData> apiDiscoveryData;
+    private final Set<ApiPathData> apiDiscoveryData;
     private final Set<String> apiDiscoveryDataPaths;
-    public final Set<String> nonLinkClassNames;
-    public final Set<String> linkClassNames;
-    public final List<String> randomLinkClassNames;
-    public final Map<String, String> nullLinkResultClasses;
+    private final Set<String> nonLinkClassNames;
+    private final Set<String> linkClassNames;
+    private final List<String> randomLinkClassNames;
+    private final Map<String, String> nullLinkResultClasses;
+    private final Map<String, Set<String>> simplifiedClassTypes;
+    private final Set<String> subFieldsThatAreViews;
 
     public NameAndPathManager() {
         apiDiscoveryData = new HashSet<>();
@@ -50,6 +52,8 @@ public class NameAndPathManager {
         linkClassNames = new HashSet<>();
         randomLinkClassNames = new ArrayList<>();
         nullLinkResultClasses = new HashMap<>();
+        simplifiedClassTypes = populateSimplifiedClassTypes();
+        subFieldsThatAreViews = populateSubFieldsThatAreViews();
     }
 
     public Set<ApiPathData> getApiDiscoveryData() {
@@ -96,5 +100,47 @@ public class NameAndPathManager {
 
     public void addNullLinkResultClass(final String key, final String value) {
         nullLinkResultClasses.put(key, value);
+    }
+
+    private Map<String, Set<String>> populateSimplifiedClassTypes() {
+        final Map<String, Set<String>> simplifiedClassNames = new HashMap<>();
+
+        // RiskProfileView
+        final Set<String> riskProfileViewIdentifiers = new HashSet<>();
+        riskProfileViewIdentifiers.add("RiskProfileView");
+        simplifiedClassNames.put("RiskProfileView", riskProfileViewIdentifiers);
+
+        // PolicyStatusType
+        final Set<String> policyStatusTypeIdentifiers = new HashSet<>();
+        policyStatusTypeIdentifiers.add("PolicyStatus");
+        policyStatusTypeIdentifiers.add("StatusType");
+        simplifiedClassNames.put("PolicyStatusType", policyStatusTypeIdentifiers);
+
+        return simplifiedClassNames;
+    }
+
+    public String getSimplifiedClassName(final String classType) {
+        for (final Map.Entry<String, Set<String>> simplifiedClassTypeIdentifiers : simplifiedClassTypes.entrySet()) {
+            boolean hasAllIdentifiers = true;
+            for (final String simplifiedClassTypeIdentifier : simplifiedClassTypeIdentifiers.getValue()) {
+                if (!classType.contains(simplifiedClassTypeIdentifier)) {
+                    hasAllIdentifiers = false;
+                }
+            }
+            if (hasAllIdentifiers) {
+                return simplifiedClassTypeIdentifiers.getKey();
+            }
+        }
+        return classType;
+    }
+
+    private Set<String> populateSubFieldsThatAreViews() {
+        final Set<String> subFieldsThatAreViews = new HashSet<>();
+        subFieldsThatAreViews.add("RiskProfileView");
+        return subFieldsThatAreViews;
+    }
+
+    public boolean isSubFieldThatIsAView(final String classType) {
+        return subFieldsThatAreViews.contains(classType);
     }
 }

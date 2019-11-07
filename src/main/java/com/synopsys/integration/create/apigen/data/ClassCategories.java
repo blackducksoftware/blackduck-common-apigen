@@ -115,13 +115,11 @@ public class ClassCategories {
         views.add("RoleView");
         views.add("RoleAssignmentView");
         views.add("ScanView");
-        views.add("ScanSummariesScanView"); //
         views.add("TagView");
         views.add("UserGroupView");
         views.add("UserView");
-        views.add("UsersUserView"); //
         views.add("VersionBomComponentView");
-        views.add("VersionBomPolicyRoleView");
+        views.add("VersionBomPolicyRuleView");
         views.add("VersionBomPolicyStatusView");
         views.add("VulnerabilityView");
         views.add("VulnerabilityWithRemediationView");
@@ -242,9 +240,10 @@ public class ClassCategories {
         components.add("PolicyStatusSummary");
         components.add("ProjectData");
         components.add("ProjectRiskProfile");
+        components.add("ProjectVersionComponentReviewedDetailsReviewingUserView");
         components.add("ProjectVersionLicenseLicenseLicenseFamilySummaryView"); //
         components.add("ProjectVersionLicenseLicensesLicenseFamilySummaryView"); //
-        components.add("ProjectVersionComponentViewLicenses"); //
+        components.add("ProjectVersionComponentLicensesView"); //
         components.add("ProjectVersionComponentViewActivityData");
         components.add("ProjectVersionComponentViewActivityRiskProfile");
         components.add("ProjectVersionComponentViewLicenseRiskProfile");
@@ -296,8 +295,8 @@ public class ClassCategories {
         components.add("VulnerabilityClassificationView");
         components.add("VulnerabilityCvss2View");
         components.add("VulnerabilityCvss3View");
-        components.add("VulnerabilityCvss2ViewTemporalMetricsView");
-        components.add("VulnerabilityCvss3ViewTemporalMetricsView");
+        components.add("VulnerabilityCvss2TemporalMetricsView");
+        components.add("VulnerabilityCvss3TemporalMetricsView");
 
         return components;
     }
@@ -309,10 +308,13 @@ public class ClassCategories {
         generatedClasses.add("PolicyRuleExpressionView");
         generatedClasses.add("PolicyRuleExpressionExpressionsView");
         generatedClasses.add("PolicyRuleExpressionExpressionsParametersView");
+        generatedClasses.add("ProjectVersionComponentReviewedDetailsReviewingUserView");
         generatedClasses.add("ProjectVersionComponentViewLicenses");
         generatedClasses.add("ProjectVersionLicenseView");
         generatedClasses.add("ProjectVersionLicenseLicensesView");
         generatedClasses.add("ProjectVersionLicenseLicensesLicenseFamilySummaryView");
+        generatedClasses.add("VulnerabilityCvss2TemporalMetricsView");
+        generatedClasses.add("VulnerabilityCvss3TemporalMetricsView");
 
         // enumeration
         generatedClasses.add("ComponentApprovalStatusType");
@@ -320,6 +322,7 @@ public class ClassCategories {
         generatedClasses.add("ComponentSourceType");
         generatedClasses.add("CustomFieldTypeType");
         generatedClasses.add("PolicyRuleSeverityType");
+        generatedClasses.add("PolicyStatusType");
         generatedClasses.add("ProjectCloneCategoriesType");
         generatedClasses.add("ProjectCustomFieldTypeType");
         generatedClasses.add("ProjectVersionComponentCustomFieldTypeType");
@@ -353,6 +356,7 @@ public class ClassCategories {
         generatedClasses.add("ProjectVersionComponentView");
         generatedClasses.add("ProjectVersionCustomFieldView");
         generatedClasses.add("ProjectVersionPolicyStatusView");
+        generatedClasses.add("RiskProfileView");
         generatedClasses.add("ReportContentsView");
         generatedClasses.add("RegistrationView");
         generatedClasses.add("RoleView");
@@ -360,8 +364,8 @@ public class ClassCategories {
         generatedClasses.add("UserView");
         generatedClasses.add("UserGroupView");
         generatedClasses.add("RoleAssignmentView");
-        generatedClasses.add("VersionBomAttachmentView");
         generatedClasses.add("VulnerabilityReportsReportView");
+        generatedClasses.add("VulnerabilityView");
 
         return generatedClasses;
     }
@@ -400,9 +404,6 @@ public class ClassCategories {
         // Contract
         manualClasses.add("NotificationContentData");
         manualClasses.add("NotificationViewData");
-
-        // discovery
-        manualClasses.add("ApiDiscovery");
 
         // Enumeration
         manualClasses.add("LicenseLimitType");
@@ -456,6 +457,7 @@ public class ClassCategories {
         throwawayClasses.add("ProjectMappingView");
         throwawayClasses.add("RiskProfileView");
         throwawayClasses.add("VersionBomComponentView");
+        throwawayClasses.add("VersionBomOriginView");
         throwawayClasses.add("VersionBomPolicyRuleView");
         throwawayClasses.add("VersionBomPolicyStatusView");
         throwawayClasses.add("VulnerabilityView");
@@ -514,8 +516,6 @@ public class ClassCategories {
         throwawayClasses.add("LicenseFamilySummaryView");
         throwawayClasses.add("LicenseTermCategorySummaryView");
         throwawayClasses.add("NameValuePairView");
-        throwawayClasses.add("PolicyRuleExpressionParameter");
-        throwawayClasses.add("PolicyRuleExpressionSetView");
         throwawayClasses.add("PolicyStatusSummary");
         throwawayClasses.add("ProjectData");
         throwawayClasses.add("ProjectRiskProfile");
@@ -552,6 +552,8 @@ public class ClassCategories {
         // Enums
         throwawayClasses.add("ProjectVersionDistributionType");
         throwawayClasses.add("ProjectVersionPhaseType");
+        throwawayClasses.add("VersionBomComponentMatchType");
+        throwawayClasses.add("VersionBomComponentReviewStatusType");
 
         return throwawayClasses;
     }

@@ -27,12 +27,14 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
 public class FieldData {
     private final TypeTranslator typeTranslator;
+    private final NameAndPathManager nameAndPathManager;
     private static final Set<String> javaKeyWords = UtilStrings.getJavaKeyWords();
 
     private final String fieldDefinitionName;
@@ -42,13 +44,14 @@ public class FieldData {
     private final boolean isArray;
 
     @Autowired
-    public FieldData(final String path, final String type, final String fieldDefinitionName, final boolean hasSubFields, final TypeTranslator typeTranslator) {
+    public FieldData(final String path, final String type, final String fieldDefinitionName, final boolean hasSubFields, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager) {
         this.fieldDefinitionName = fieldDefinitionName;
         this.path = path;
         this.type = type;
         this.hasSubFields = hasSubFields;
         this.isArray = type.equals(UtilStrings.ARRAY);
         this.typeTranslator = typeTranslator;
+        this.nameAndPathManager = nameAndPathManager;
     }
 
     public String getPath() {
@@ -63,6 +66,7 @@ public class FieldData {
         if (javaKeyWords.contains(path)) {
             path = path + "_";
         }
+        path = nameAndPathManager.getSimplifiedClassName(path);
         return path.replace("[]", "");
     }
 
@@ -83,13 +87,15 @@ public class FieldData {
 
         if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && hasSubFields) {
             // append subclass to create new field data type
-            final String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
+            String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
+            processedType = nameAndPathManager.getSimplifiedClassName(processedType);
+
             if (mediaVersion != null) {
                 return processedType + "V" + mediaVersion;
             }
             return processedType;
         }
-        return type;
+        return nameAndPathManager.getSimplifiedClassName(type);
     }
 
     public String getNonVersionedFieldDefinitionName() {
