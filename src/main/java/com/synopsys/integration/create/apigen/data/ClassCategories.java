@@ -31,25 +31,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClassCategories {
 
-    private final Set<String> VIEWS;
-    private final Set<String> RESPONSES;
-    private final Set<String> COMPONENTS;
-    private final Set<String> GENERATED;
-    private final Set<String> MANUAL;
-    private final Set<String> THROWAWAY;
-    private final Set<String> COMMON_TYPES;
-    private final Set<String> NON_ENUM_CLASSES_ENDING_IN_TYPE;
+    private final Set<String> views;
+    private final Set<String> responses;
+    private final Set<String> components;
+    private final Set<String> generated;
+    private final Set<String> manual;
+    private final Set<String> throwaway;
+    private final Set<String> commonTypes;
+    private final Set<String> nonEnumClassesEndingInType;
 
     @Autowired
     public ClassCategories() {
-        this.VIEWS = populateViews();
-        this.RESPONSES = populateResponses();
-        this.COMPONENTS = populateComponents();
-        this.GENERATED = populateGenerated();
-        this.MANUAL = populateManual();
-        this.THROWAWAY = populateThrowaway();
-        this.COMMON_TYPES = populateCommonTypes();
-        this.NON_ENUM_CLASSES_ENDING_IN_TYPE = populateNonEnumClassesEndingInType();
+        this.views = populateViews();
+        this.responses = populateResponses();
+        this.components = populateComponents();
+        this.generated = populateGenerated();
+        this.manual = populateManual();
+        this.throwaway = populateThrowaway();
+        this.commonTypes = populateCommonTypes();
+        this.nonEnumClassesEndingInType = populateNonEnumClassesEndingInType();
     }
 
     private Set<String> populateViews() {
@@ -584,24 +584,24 @@ public class ClassCategories {
     }
 
     private boolean isView(final String className) {
-        return this.VIEWS.contains(className);
+        return this.views.contains(className);
     }
 
     private boolean isResponse(final String className) {
-        return this.RESPONSES.contains(className);
+        return this.responses.contains(className);
     }
 
-    private boolean isComponent(final String className) { return this.COMPONENTS.contains(className); }
+    private boolean isComponent(final String className) { return this.components.contains(className); }
 
-    private boolean isGenerated(final String className) { return this.GENERATED.contains(className); }
+    private boolean isGenerated(final String className) { return this.generated.contains(className); }
 
-    private boolean isManual(final String className) { return this.MANUAL.contains(className); }
+    private boolean isManual(final String className) { return this.manual.contains(className); }
 
-    private boolean isThrowaway(final String className) { return this.THROWAWAY.contains(className); }
+    private boolean isThrowaway(final String className) { return this.throwaway.contains(className); }
 
-    private boolean isCommonType(final String className) { return this.COMMON_TYPES.contains(className); }
+    private boolean isCommonType(final String className) { return this.commonTypes.contains(className); }
 
-    private boolean isNonEnumClassEndingInType(final String className) { return this.NON_ENUM_CLASSES_ENDING_IN_TYPE.contains(className); }
+    private boolean isNonEnumClassEndingInType(final String className) { return this.nonEnumClassesEndingInType.contains(className); }
 
     public ClassTypeEnum computeType(final String className) {
         if (isView(className)) {
