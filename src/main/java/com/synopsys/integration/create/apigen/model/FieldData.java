@@ -66,7 +66,7 @@ public class FieldData {
         if (javaKeyWords.contains(path)) {
             path = path + "_";
         }
-        path = nameAndPathManager.getSimplifiedClassName(path);
+        path = typeTranslator.getSimplifiedClassName(path);
         return path.replace("[]", "");
     }
 
@@ -88,14 +88,14 @@ public class FieldData {
         if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && hasSubFields) {
             // append subclass to create new field data type
             String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
-            processedType = nameAndPathManager.getSimplifiedClassName(processedType);
+            processedType = typeTranslator.getSimplifiedClassName(processedType);
 
             if (mediaVersion != null) {
                 return processedType + "V" + mediaVersion;
             }
             return processedType;
         }
-        return nameAndPathManager.getSimplifiedClassName(type);
+        return typeTranslator.getSimplifiedClassName(type);
     }
 
     public String getNonVersionedFieldDefinitionName() {

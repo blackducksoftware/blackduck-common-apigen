@@ -33,6 +33,7 @@ import com.synopsys.integration.create.apigen.data.ClassCategoryData;
 import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -47,14 +48,14 @@ public class EnumGenerator extends ClassGenerator {
     private final ClassCategories classCategories;
     private final GeneratedClassWriter generatedClassWriter;
     private final InputDataFinder inputDataFinder;
-    private final NameAndPathManager nameAndPathManager;
+    private final TypeTranslator typeTranslator;
 
     @Autowired
-    public EnumGenerator(final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager) {
+    public EnumGenerator(final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final TypeTranslator typeTranslator) {
         this.classCategories = classCategories;
         this.generatedClassWriter = generatedClassWriter;
         this.inputDataFinder = inputDataFinder;
-        this.nameAndPathManager = nameAndPathManager;
+        this.typeTranslator = typeTranslator;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class EnumGenerator extends ClassGenerator {
     @Override
     public void generateClass(final FieldDefinition field, final String responseMediaType, final Template template) throws Exception {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
-        classType = nameAndPathManager.getSimplifiedClassName(classType);
+        classType = typeTranslator.getSimplifiedClassName(classType);
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         generatedClassWriter.writeFile(classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
 

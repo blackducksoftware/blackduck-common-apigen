@@ -113,9 +113,9 @@ public class GeneratorRunner {
     public void createGeneratedClasses() throws Exception {
         final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, true);
+        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
 
-        exit(0);
+        //exit(0);
 
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());

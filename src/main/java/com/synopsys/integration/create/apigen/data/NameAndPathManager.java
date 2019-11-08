@@ -42,7 +42,6 @@ public class NameAndPathManager {
     private final Set<String> linkClassNames;
     private final List<String> randomLinkClassNames;
     private final Map<String, String> nullLinkResultClasses;
-    private final Map<String, Set<String>> simplifiedClassTypes;
     private final Set<String> subFieldsThatAreViews;
 
     public NameAndPathManager() {
@@ -52,7 +51,6 @@ public class NameAndPathManager {
         linkClassNames = new HashSet<>();
         randomLinkClassNames = new ArrayList<>();
         nullLinkResultClasses = new HashMap<>();
-        simplifiedClassTypes = populateSimplifiedClassTypes();
         subFieldsThatAreViews = populateSubFieldsThatAreViews();
     }
 
@@ -100,38 +98,6 @@ public class NameAndPathManager {
 
     public void addNullLinkResultClass(final String key, final String value) {
         nullLinkResultClasses.put(key, value);
-    }
-
-    private Map<String, Set<String>> populateSimplifiedClassTypes() {
-        final Map<String, Set<String>> simplifiedClassNames = new HashMap<>();
-
-        // RiskProfileView
-        final Set<String> riskProfileViewIdentifiers = new HashSet<>();
-        riskProfileViewIdentifiers.add("RiskProfileView");
-        simplifiedClassNames.put("RiskProfileView", riskProfileViewIdentifiers);
-
-        // PolicyStatusType
-        final Set<String> policyStatusTypeIdentifiers = new HashSet<>();
-        policyStatusTypeIdentifiers.add("PolicyStatus");
-        policyStatusTypeIdentifiers.add("StatusType");
-        simplifiedClassNames.put("PolicyStatusType", policyStatusTypeIdentifiers);
-
-        return simplifiedClassNames;
-    }
-
-    public String getSimplifiedClassName(final String classType) {
-        for (final Map.Entry<String, Set<String>> simplifiedClassTypeIdentifiers : simplifiedClassTypes.entrySet()) {
-            boolean hasAllIdentifiers = true;
-            for (final String simplifiedClassTypeIdentifier : simplifiedClassTypeIdentifiers.getValue()) {
-                if (!classType.contains(simplifiedClassTypeIdentifier)) {
-                    hasAllIdentifiers = false;
-                }
-            }
-            if (hasAllIdentifiers) {
-                return simplifiedClassTypeIdentifiers.getKey();
-            }
-        }
-        return classType;
     }
 
     private Set<String> populateSubFieldsThatAreViews() {

@@ -36,6 +36,7 @@ import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
@@ -54,16 +55,18 @@ public class ComponentGenerator extends ClassGenerator {
     private final InputDataFinder inputDataFinder;
     private final NameAndPathManager nameAndPathManager;
     private final MediaVersionDataManager mediaVersionDataManager;
+    private final TypeTranslator typeTranslator;
 
     @Autowired
     public ComponentGenerator(final ClassCategories classCategories, final ImportFinder importFinder, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager,
-        final MediaVersionDataManager mediaVersionDataManager) {
+        final MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator) {
         this.classCategories = classCategories;
         this.importFinder = importFinder;
         this.generatedClassWriter = generatedClassWriter;
         this.inputDataFinder = inputDataFinder;
         this.nameAndPathManager = nameAndPathManager;
         this.mediaVersionDataManager = mediaVersionDataManager;
+        this.typeTranslator = typeTranslator;
     }
 
     @Override
@@ -86,7 +89,7 @@ public class ComponentGenerator extends ClassGenerator {
             }
         }
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
-        fieldType = nameAndPathManager.getSimplifiedClassName(fieldType);
+        fieldType = typeTranslator.getSimplifiedClassName(fieldType);
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;

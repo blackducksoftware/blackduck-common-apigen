@@ -62,7 +62,7 @@ public class FieldDefinitionProcessor {
                 continue;
             }
 
-            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues(), missingFieldsAndLinks, nameAndPathManager);
+            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
             builder.setOptional(optional);
             fieldDefinition = builder.build();
 

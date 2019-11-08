@@ -30,6 +30,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -44,16 +45,16 @@ public class FieldDefinitionBuilder {
     private List<FieldDefinition> subFields = Collections.EMPTY_LIST;
 
     private final MissingFieldsAndLinks missingFieldsAndLinks;
-    private final NameAndPathManager nameAndPathManager;
+    private final TypeTranslator typeTranslator;
 
-    public FieldDefinitionBuilder(final FieldData fieldData, final List<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks, final NameAndPathManager nameAndPathManager) {
+    public FieldDefinitionBuilder(final FieldData fieldData, final List<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks, final TypeTranslator typeTranslator) {
         this.path = fieldData.getProcessedPath();
         this.type = fieldData.getProcessedType();
         this.nonVersionedFieldDefinitionName = fieldData.getNonVersionedFieldDefinitionName();
         this.allowedValues = allowedValues;
         this.isArray = fieldData.isArray();
         this.missingFieldsAndLinks = missingFieldsAndLinks;
-        this.nameAndPathManager = nameAndPathManager;
+        this.typeTranslator = typeTranslator;
     }
 
     public FieldDefinition build() {
@@ -61,7 +62,7 @@ public class FieldDefinitionBuilder {
         final FieldDefinition fieldDefinition;
 
         String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + UtilStrings.ENUM;
-        nameOfEnum = nameAndPathManager.getSimplifiedClassName(nameOfEnum);
+        nameOfEnum = typeTranslator.getSimplifiedClassName(nameOfEnum);
 
         // For fields with type 'Array', change type to a Java List<E>
         if (isArray) {

@@ -24,8 +24,10 @@ package com.synopsys.integration.create.apigen.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -34,10 +36,12 @@ public class TypeTranslator {
 
     private final Map<String, List<FieldTranslation>> fieldTranslations;
     private final Map<String, String> classTranslations;
+    private final Map<String, Set<String>> simplifiedClassTypes;
 
     public TypeTranslator() {
         this.fieldTranslations = populateFieldTranslations();
         this.classTranslations = populateClassTranslations();
+        this.simplifiedClassTypes = populateSimplifiedClassTypes();
     }
 
     private Map<String, List<FieldTranslation>> populateFieldTranslations() {
@@ -180,6 +184,38 @@ public class TypeTranslator {
 
     public String getApiGenClassName(final String swaggerName) {
         return classTranslations.get(swaggerName);
+    }
+
+    private Map<String, Set<String>> populateSimplifiedClassTypes() {
+        final Map<String, Set<String>> simplifiedClassNames = new HashMap<>();
+
+        // RiskProfileView
+        final Set<String> riskProfileViewIdentifiers = new HashSet<>();
+        riskProfileViewIdentifiers.add("RiskProfileView");
+        simplifiedClassNames.put("RiskProfileView", riskProfileViewIdentifiers);
+
+        // PolicyStatusType
+        final Set<String> policyStatusTypeIdentifiers = new HashSet<>();
+        policyStatusTypeIdentifiers.add("PolicyStatus");
+        policyStatusTypeIdentifiers.add("StatusType");
+        simplifiedClassNames.put("PolicyStatusType", policyStatusTypeIdentifiers);
+
+        return simplifiedClassNames;
+    }
+
+    public String getSimplifiedClassName(final String classType) {
+        for (final Map.Entry<String, Set<String>> simplifiedClassTypeIdentifiers : simplifiedClassTypes.entrySet()) {
+            boolean hasAllIdentifiers = true;
+            for (final String simplifiedClassTypeIdentifier : simplifiedClassTypeIdentifiers.getValue()) {
+                if (!classType.contains(simplifiedClassTypeIdentifier)) {
+                    hasAllIdentifiers = false;
+                }
+            }
+            if (hasAllIdentifiers) {
+                return simplifiedClassTypeIdentifiers.getKey();
+            }
+        }
+        return classType;
     }
 
 }

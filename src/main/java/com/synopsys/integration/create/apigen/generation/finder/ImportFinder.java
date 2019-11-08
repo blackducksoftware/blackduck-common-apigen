@@ -39,6 +39,7 @@ import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkData;
@@ -59,19 +60,21 @@ public class ImportFinder {
     private final ClassCategories classCategories;
     private final LinkResponseDefinitions linkResponseDefinitions;
     private final NameAndPathManager nameAndPathManager;
+    private final TypeTranslator typeTranslator;
 
     @Autowired
-    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager) {
+    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator) {
         this.classCategories = classCategories;
         this.linkResponseDefinitions = linkResponseDefinitions;
         this.nameAndPathManager = nameAndPathManager;
+        this.typeTranslator = typeTranslator;
     }
 
     public void addFieldImports(final Set<String> imports, final Set<FieldDefinition> fields) {
         imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
 
         for (final FieldDefinition field : fields) {
-            final String fieldType = nameAndPathManager.getSimplifiedClassName(field.getType());
+            final String fieldType = typeTranslator.getSimplifiedClassName(field.getType());
             addFieldImports(imports, fieldType, field.isOptional());
         }
     }
