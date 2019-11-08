@@ -35,12 +35,14 @@ import org.springframework.stereotype.Component;
 public class TypeTranslator {
 
     private final Map<String, List<FieldTranslation>> fieldTranslations;
-    private final Map<String, String> classTranslations;
+    private final Map<String, String> swaggerToApigenTranslations;
+    private final Map<String, String> apigenToSwaggerTranslations;
     private final Map<String, Set<String>> simplifiedClassTypes;
 
     public TypeTranslator() {
         this.fieldTranslations = populateFieldTranslations();
-        this.classTranslations = populateClassTranslations();
+        this.swaggerToApigenTranslations = populateSwaggerToApigenTranslations();
+        this.apigenToSwaggerTranslations = populateApigenToSwaggerTranslations();
         this.simplifiedClassTypes = populateSimplifiedClassTypes();
     }
 
@@ -130,42 +132,50 @@ public class TypeTranslator {
         return fieldTranslations;
     }
 
-    private Map<String, String> populateClassTranslations() {
-        final Map<String, String> classTranslations = new HashMap<>();
+    private Map<String, String> populateSwaggerToApigenTranslations() {
+        final Map<String, String> translations = new HashMap<>();
 
         // swaggerName, api_SpecsName
-        classTranslations.put("ActivityDataView", "ComponentActivityDataView");
-        classTranslations.put("ComplexLicenseView", "ProjectVersionLicenseLicensesView");
-        classTranslations.put("ComplexLicenseType", "ProjectVersionComponentLicensesLicenseTypeType");
-        classTranslations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
-        classTranslations.put("CustomFieldType", "CustomFieldTypeType");
-        classTranslations.put("CustomFieldType", "ComponentCustomFieldTypeType");
-        classTranslations.put("CustomFieldType", "ProjectCustomFieldTypeType");
-        classTranslations.put("CustomFieldType", "ProjectVersionCustomFieldTypeType");
-        classTranslations.put("CustomFieldType", "ProjectVersionComponentCustomFieldTypeType");
-        classTranslations.put("CustomFieldView", "ProjectVersionCustomFieldView");
-        classTranslations.put("CustomFieldView", "ProjectVersionComponentVersionCustomFieldView");
-        classTranslations.put("LicenseFamilySummaryView", "ProjectVersionLicenseLicenseLicenseFamilySummaryView");
-        classTranslations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
-        classTranslations.put("OriginSourceType", "ComponentSourceType");
-        classTranslations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
-        classTranslations.put("PolicyRuleExpressionParameter", "PolicyRuleExpressionExpressionsParametersView");
-        classTranslations.put("PolicyRuleExpressionView", "PolicyRuleExpressionExpressionsView");
-        classTranslations.put("PolicySummaryStatusType", "PolicyStatusType");
-        classTranslations.put("PolicyStatusView", "ComponentPolicyStatusView");
-        classTranslations.put("ProjectVersionDistributionType", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType");
-        classTranslations.put("ReportFormatType", "ProjectVersionReportReportFormatType");
-        classTranslations.put("ReportFormatType", "ReportReportFormatType");
-        classTranslations.put("RemediationOptionsView", "ComponentVersionRemediatingView");
-        classTranslations.put("ReviewedDetails", "ComponentReviewedDetailsView");
-        classTranslations.put("RiskCountView", "ComponentVersionRiskProfileRiskDataCountsView");
-        classTranslations.put("RiskCountType", "ComponentVersionRiskProfileRiskDataCountsCountTypeType");
-        classTranslations.put("RoleAssignmentView", "UserRoleAssignmentView");
-        classTranslations.put("VersionBomLicenseView", "ComponentLicensesView");
-        classTranslations.put("VersionBomComponentView", "ProjectVersionComponentView");
-        classTranslations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
+        translations.put("ActivityDataView", "ComponentActivityDataView");
+        translations.put("ComplexLicenseView", "ProjectVersionLicenseLicensesView");
+        translations.put("ComplexLicenseType", "ProjectVersionComponentLicensesLicenseTypeType");
+        translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
+        translations.put("CustomFieldType", "CustomFieldTypeType");
+        translations.put("CustomFieldType", "ComponentCustomFieldTypeType");
+        translations.put("CustomFieldType", "ProjectCustomFieldTypeType");
+        translations.put("CustomFieldType", "ProjectVersionCustomFieldTypeType");
+        translations.put("CustomFieldType", "ProjectVersionComponentCustomFieldTypeType");
+        translations.put("CustomFieldView", "ProjectVersionCustomFieldView");
+        translations.put("CustomFieldView", "ProjectVersionComponentVersionCustomFieldView");
+        translations.put("LicenseFamilySummaryView", "ProjectVersionLicenseLicenseLicenseFamilySummaryView");
+        translations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
+        translations.put("OriginSourceType", "ComponentSourceType");
+        translations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
+        translations.put("PolicyRuleExpressionParameter", "PolicyRuleExpressionExpressionsParametersView");
+        translations.put("PolicyRuleExpressionView", "PolicyRuleExpressionExpressionsView");
+        translations.put("PolicySummaryStatusType", "PolicyStatusType");
+        translations.put("PolicyStatusView", "ComponentPolicyStatusView");
+        translations.put("ProjectVersionDistributionType", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType");
+        translations.put("ReportFormatType", "ProjectVersionReportReportFormatType");
+        translations.put("ReportFormatType", "ReportReportFormatType");
+        translations.put("RemediationOptionsView", "ComponentVersionRemediatingView");
+        translations.put("ReviewedDetails", "ComponentReviewedDetailsView");
+        translations.put("RiskCountView", "ComponentVersionRiskProfileRiskDataCountsView");
+        translations.put("RiskCountType", "ComponentVersionRiskProfileRiskDataCountsCountTypeType");
+        translations.put("RoleAssignmentView", "UserRoleAssignmentView");
+        translations.put("VersionBomLicenseView", "ComponentLicensesView");
+        translations.put("VersionBomComponentView", "ProjectVersionComponentView");
+        translations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
 
-        return classTranslations;
+        return translations;
+    }
+
+    private Map<String, String> populateApigenToSwaggerTranslations() {
+        Map<String, String> translations = new HashMap<>();
+        for (Map.Entry<String, String> entry : populateSwaggerToApigenTranslations().entrySet()) {
+            translations.put(entry.getValue(), entry.getKey());
+        }
+        return translations;
     }
 
     public String getFieldSwaggerName(final String className, final String api_SpecsPath, final String api_SpecsName) {
@@ -183,8 +193,10 @@ public class TypeTranslator {
     }
 
     public String getApiGenClassName(final String swaggerName) {
-        return classTranslations.get(swaggerName);
+        return swaggerToApigenTranslations.get(swaggerName);
     }
+
+    public String getClassSwaggerName(final String apigenName) { return apigenToSwaggerTranslations.get(apigenName); }
 
     private Map<String, Set<String>> populateSimplifiedClassTypes() {
         final Map<String, Set<String>> simplifiedClassNames = new HashMap<>();
