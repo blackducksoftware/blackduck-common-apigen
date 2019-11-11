@@ -22,11 +22,17 @@
  */
 package com.synopsys.integration.create.apigen.data;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.synopsys.integration.create.apigen.parser.NameParser;
+
+import freemarker.template.Template;
 
 @Component
 public class ClassCategories {
@@ -39,6 +45,7 @@ public class ClassCategories {
     private final Set<String> throwaway;
     private final Set<String> commonTypes;
     private final Set<String> nonEnumClassesEndingInType;
+    private final Set<DeprecatedClassData> deprecatedClasses;
 
     @Autowired
     public ClassCategories() {
@@ -50,6 +57,7 @@ public class ClassCategories {
         this.throwaway = populateThrowaway();
         this.commonTypes = populateCommonTypes();
         this.nonEnumClassesEndingInType = populateNonEnumClassesEndingInType();
+        this.deprecatedClasses = new HashSet<>();
     }
 
     private Set<String> populateViews() {
@@ -66,6 +74,7 @@ public class ClassCategories {
         views.add("ComponentVersionPolicyStatusView");
         views.add("ComponentVersionRemediatingView");
         views.add("ComponentVersionRiskProfileView");
+        //views.add("ComponentVersionRiskProfileRiskDataCountsView");
         views.add("ComponentVersionView");
         views.add("ComponentView");
         views.add("CweView");
@@ -258,11 +267,9 @@ public class ClassCategories {
         components.add("ProjectVersionPolicyStatusComponentVersionStatusCountsView");
         components.add("ProjectVersionRequest");
         components.add("RegistrationAttributesView");
-        components.add("RegistrationViewAttributes"); //
         components.add("RegistrationFeaturesView");
         components.add("RegistrationMessagesView");
         components.add("RegistrationViewFeatures");
-        components.add("RegistrationViewMessages"); //
         components.add("ReleaseData");
         components.add("RemediatingVersionView");
         components.add("ReportFileContent");
@@ -581,6 +588,27 @@ public class ClassCategories {
         nonEnumClassesEndingInType.add("FacetType");
 
         return nonEnumClassesEndingInType;
+    }
+
+    public Set<DeprecatedClassData> getDeprecatedClasses() {
+        return deprecatedClasses;
+    }
+
+    public void addDeprecatedClass(final String swaggerName, final String apigenName, final Template template, final Map<String, Object> input, final String destination) {
+        Map<String, Object> newInput = new HashMap<>();
+        for (Map.Entry<String, Object> entry : input.entrySet()) {
+            newInput.put(entry.getKey(), entry.getValue());
+        }
+        newInput.put(UtilStrings.CLASS_NAME, swaggerName);
+        newInput.put("hasNewName", true);
+        newInput.put("newName", NameParser.getNonVersionedName(apigenName));
+        newInput.put("isDeprecated", true);
+        for (DeprecatedClassData deprecatedClass : deprecatedClasses) {
+            if (deprecatedClass.getSwaggerName().equals(swaggerName)) {
+                return;
+            }
+        }
+        deprecatedClasses.add(new DeprecatedClassData(swaggerName, apigenName, template, newInput, destination));
     }
 
     private boolean isView(final String className) {

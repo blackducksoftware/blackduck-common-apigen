@@ -9,6 +9,12 @@ import java.util.Optional;
 import ${import};
 </#list>
 
+<#if isDeprecated??>
+@Deprecated
+</#if>
+<#if hasNewName??>
+// ${className} is now called ${newName}
+</#if>
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ${className} extends ${baseClass} <#if buildable??>implements Buildable </#if>{
 	public static final String mediaType = "${mediaType}";

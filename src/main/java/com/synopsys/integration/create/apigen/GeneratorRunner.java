@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.DeprecatedClassGenerator;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
@@ -77,6 +78,7 @@ public class GeneratorRunner {
     private final MediaTypeMapGenerator mediaTypeMapGenerator;
     private final DummyClassGenerator dummyClassGenerator;
     private final MediaVersionGenerator mediaVersionGenerator;
+    private final DeprecatedClassGenerator deprecatedClassGenerator;
     private final List<ClassGenerator> generators;
     private final Configuration config;
     private final MediaVersionDataManager mediaVersionDataManager;
@@ -89,7 +91,7 @@ public class GeneratorRunner {
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
-        final MediaTypeMapGenerator mediaTypeMapGenerator, final DummyClassGenerator dummyClassGenerator, final MediaVersionGenerator mediaVersionGenerator, final List<ClassGenerator> generators,
+        final MediaTypeMapGenerator mediaTypeMapGenerator, final DummyClassGenerator dummyClassGenerator, final MediaVersionGenerator mediaVersionGenerator, final DeprecatedClassGenerator deprecatedClassGenerator, final List<ClassGenerator> generators,
         final Configuration config, final MediaVersionDataManager mediaVersionDataManager) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
@@ -102,6 +104,7 @@ public class GeneratorRunner {
         this.viewGenerator = viewGenerator;
         this.discoveryGenerator = discoveryGenerator;
         this.mediaTypeMapGenerator = mediaTypeMapGenerator;
+        this.deprecatedClassGenerator = deprecatedClassGenerator;
         this.dummyClassGenerator = dummyClassGenerator;
         this.mediaVersionGenerator = mediaVersionGenerator;
         this.generators = generators;
@@ -167,6 +170,8 @@ public class GeneratorRunner {
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
 
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, UtilStrings.PATH_TO_VIEW_FILES, UtilStrings.PATH_TO_COMPONENT_FILES);
+
+        deprecatedClassGenerator.generateDeprecatedClasses();
 
         dummyClassGenerator.generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
     }

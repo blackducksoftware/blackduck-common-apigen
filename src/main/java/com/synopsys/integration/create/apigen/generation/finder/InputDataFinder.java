@@ -51,7 +51,7 @@ public class InputDataFinder {
 
         inputData.put(UtilStrings.PACKAGE_NAME, enumPackage);
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
-        inputData.put("enumClassName", NameParser.stripListAndOptionalNotation(enumClassName));
+        inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(enumClassName));
         inputData.put("enumValues", enumValues);
 
         return inputData;

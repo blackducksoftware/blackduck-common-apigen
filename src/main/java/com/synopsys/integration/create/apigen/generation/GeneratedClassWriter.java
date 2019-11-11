@@ -36,6 +36,8 @@ import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.data.DeprecatedClassGenerator;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;

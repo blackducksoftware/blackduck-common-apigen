@@ -72,6 +72,16 @@ public class EnumGenerator extends ClassGenerator {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
         classType = typeTranslator.getSimplifiedClassName(classType);
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
+        String swaggerName = typeTranslator.getClassSwaggerName(classType);
+        if (swaggerName != null) {
+            if (typeTranslator.getApiGenClassName(swaggerName) == null) {
+                classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
+            }
+        }
+        if (typeTranslator.getApiGenClassName(classType) != null) {
+            input.put(UtilStrings.HAS_NEW_NAME, true);
+            input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(classType));
+        }
         generatedClassWriter.writeFile(classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
 
         for (final FieldDefinition subField : field.getSubFields()) {

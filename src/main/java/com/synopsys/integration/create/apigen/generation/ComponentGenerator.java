@@ -90,10 +90,14 @@ public class ComponentGenerator extends ClassGenerator {
         }
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
         fieldType = typeTranslator.getSimplifiedClassName(fieldType);
+        //debug
+        if (fieldType.contains("ComponentVersionRiskProfileRiskDataCountsView")) {
+            System.out.println("nop");
+        }
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
-        if (nameAndPathManager.isSubFieldThatIsAView(fieldType)) {
+        if (classCategories.computeType(NameParser.getNonVersionedName(fieldType)).isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
             pathToFiles = UtilStrings.PATH_TO_VIEW_FILES;
@@ -107,6 +111,16 @@ public class ComponentGenerator extends ClassGenerator {
         mediaVersionDataManager.updateLatestComponentMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
+            String swaggerName = typeTranslator.getClassSwaggerName(fieldType);
+            if (swaggerName != null) {
+                if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
+                    classCategories.addDeprecatedClass(swaggerName, fieldType, template, input, pathToFiles);
+                }
+            }
+            if (typeTranslator.getApiGenClassName(fieldType) != null) {
+                input.put(UtilStrings.HAS_NEW_NAME, true);
+                input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(fieldType));
+            }
             generatedClassWriter.writeFile(fieldType, template, input, pathToFiles);
         }
         nameAndPathManager.addNonLinkClassName(fieldType);

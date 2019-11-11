@@ -31,6 +31,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.parser.NameParser;
+
 @Component
 public class TypeTranslator {
 
@@ -193,10 +195,10 @@ public class TypeTranslator {
     }
 
     public String getApiGenClassName(final String swaggerName) {
-        return swaggerToApigenTranslations.get(swaggerName);
+        return swaggerToApigenTranslations.get(NameParser.getNonVersionedName(swaggerName));
     }
 
-    public String getClassSwaggerName(final String apigenName) { return apigenToSwaggerTranslations.get(apigenName); }
+    public String getClassSwaggerName(final String apigenName) { return apigenToSwaggerTranslations.get(NameParser.getNonVersionedName(apigenName)); }
 
     private Map<String, Set<String>> populateSimplifiedClassTypes() {
         final Map<String, Set<String>> simplifiedClassNames = new HashMap<>();

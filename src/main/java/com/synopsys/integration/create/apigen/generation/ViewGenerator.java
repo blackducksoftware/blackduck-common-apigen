@@ -30,9 +30,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
@@ -52,16 +54,20 @@ public class ViewGenerator {
     private final InputDataFinder inputDataFinder;
     private final NameAndPathManager nameAndPathManager;
     private final MediaVersionDataManager mediaVersionDataManager;
+    private final TypeTranslator typeTranslator;
+    private final ClassCategories classCategories;
 
     @Autowired
     public ViewGenerator(final GeneratedClassWriter generatedClassWriter, final MediaTypes mediaTypes, final ImportFinder importFinder,
-        final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager, final MediaVersionDataManager mediaVersionDataManager) {
+        final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager, final MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator, ClassCategories classCategories) {
         this.generatedClassWriter = generatedClassWriter;
         this.mediaTypes = mediaTypes;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
         this.nameAndPathManager = nameAndPathManager;
         this.mediaVersionDataManager = mediaVersionDataManager;
+        this.typeTranslator = typeTranslator;
+        this.classCategories = classCategories;
     }
 
     public boolean isApplicable(final ResponseDefinition response) {
@@ -81,6 +87,16 @@ public class ViewGenerator {
         final String viewName = response.getName();
 
         mediaVersionDataManager.updateLatestViewMediaVersions(viewName, input, responseMediaType);
+        String swaggerName = typeTranslator.getClassSwaggerName(viewName);
+        if (swaggerName != null) {
+            if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
+                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
+            }
+        }
+        if (typeTranslator.getApiGenClassName(viewName) != null) {
+            input.put(UtilStrings.HAS_NEW_NAME, true);
+            input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(viewName));
+        }
         generatedClassWriter.writeFile(viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
 
         nameAndPathManager.addNonLinkClassName(viewName);
