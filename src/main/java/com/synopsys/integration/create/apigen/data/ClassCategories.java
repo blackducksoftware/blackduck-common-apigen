@@ -74,7 +74,6 @@ public class ClassCategories {
         views.add("ComponentVersionPolicyStatusView");
         views.add("ComponentVersionRemediatingView");
         views.add("ComponentVersionRiskProfileView");
-        //views.add("ComponentVersionRiskProfileRiskDataCountsView");
         views.add("ComponentVersionView");
         views.add("ComponentView");
         views.add("CweView");
@@ -111,6 +110,7 @@ public class ClassCategories {
         views.add("ProjectVersionComponentVersionCustomFieldView");
         views.add("ProjectVersionComponentView");
         views.add("ProjectVersionCustomFieldView");
+        views.add("ProjectVersionLicenseLicensesView");
         views.add("ProjectVersionPolicyStatusView");
         views.add("ProjectVersionReportView");
         views.add("ProjectVersionView");
@@ -262,7 +262,6 @@ public class ClassCategories {
         components.add("ProjectVersionComponentViewSecurityRiskProfile");
         components.add("ProjectVersionComponentViewVersionRiskProfile");
         components.add("ProjectVersionLicenseView"); //
-        components.add("ProjectVersionLicenseLicensesView"); //
         components.add("ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsSeverityLevelsView");
         components.add("ProjectVersionPolicyStatusComponentVersionStatusCountsView");
         components.add("ProjectVersionRequest");
@@ -631,7 +630,8 @@ public class ClassCategories {
 
     private boolean isNonEnumClassEndingInType(final String className) { return this.nonEnumClassesEndingInType.contains(className); }
 
-    public ClassTypeEnum computeType(final String className) {
+    public ClassTypeEnum computeType(String className) {
+        className = NameParser.getNonVersionedName(className);
         if (isView(className)) {
             return ClassTypeEnum.VIEW;
         }
@@ -653,7 +653,8 @@ public class ClassCategories {
         return ClassTypeEnum.NULL;
     }
 
-    public ClassSourceEnum computeSource(final String className) {
+    public ClassSourceEnum computeSource(String className) {
+        className = NameParser.getNonVersionedName(className);
         if (isGenerated(className)) {
             return ClassSourceEnum.GENERATED;
         }

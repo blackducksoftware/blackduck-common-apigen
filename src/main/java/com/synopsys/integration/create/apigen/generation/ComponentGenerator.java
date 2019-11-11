@@ -90,10 +90,6 @@ public class ComponentGenerator extends ClassGenerator {
         }
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
         fieldType = typeTranslator.getSimplifiedClassName(fieldType);
-        //debug
-        if (fieldType.contains("ComponentVersionRiskProfileRiskDataCountsView")) {
-            System.out.println("nop");
-        }
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
@@ -108,7 +104,7 @@ public class ComponentGenerator extends ClassGenerator {
             pathToFiles = UtilStrings.PATH_TO_COMPONENT_FILES;
         }
         final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, fieldType, fieldBaseClass, subFields, responseMediaType);
-        mediaVersionDataManager.updateLatestComponentMediaVersions(fieldType, input, responseMediaType);
+        mediaVersionDataManager.updateLatestMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
             String swaggerName = typeTranslator.getClassSwaggerName(fieldType);

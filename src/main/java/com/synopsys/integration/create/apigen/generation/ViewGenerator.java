@@ -86,7 +86,7 @@ public class ViewGenerator {
         final Map<String, Object> input = inputDataFinder.getViewInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, response.getName(), UtilStrings.VIEW_BASE_CLASS, response.getFields(), links, responseMediaType);
         final String viewName = response.getName();
 
-        mediaVersionDataManager.updateLatestViewMediaVersions(viewName, input, responseMediaType);
+        mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
         if (swaggerName != null) {
             if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
