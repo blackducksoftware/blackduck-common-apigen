@@ -46,7 +46,7 @@ public class InputDataFinder {
         this.nameAndPathManager = nameAndPathManager;
     }
 
-    public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final List<String> enumValues, final String mediaType) {
+    public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
 
         inputData.put(UtilStrings.PACKAGE_NAME, enumPackage);

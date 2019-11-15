@@ -1,0 +1,60 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time when the license comment was created"
+  }, {
+    "path" : "commentType",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The type of comment"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "comment",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The content of the comment"
+  }, {
+    "path" : "user",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "The representation of the user who created the license comment",
+    "fields" : [ {
+      "path" : "userName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The username associated with the user account"
+    }, {
+      "path" : "firstName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The user’s first name"
+    }, {
+      "path" : "lastName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The user’s last name"
+    }, {
+      "path" : "email",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The user’s email"
+    }, {
+      "path" : "active",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "Whether or not the user is active"
+    } ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time when the license comment was updated"
+  } ]
+}

@@ -1,0 +1,16 @@
+{
+  "fields" : [ ],
+  "links" : [ {
+    "rel" : "project",
+    "optional" : false,
+    "description" : "Resource representing the project containing the comment."
+  }, {
+    "rel" : "version",
+    "optional" : false,
+    "description" : "Resource representing the project version containing the comment."
+  }, {
+    "rel" : "users",
+    "optional" : false,
+    "description" : "Resource representing the user who authored the comment."
+  } ]
+}

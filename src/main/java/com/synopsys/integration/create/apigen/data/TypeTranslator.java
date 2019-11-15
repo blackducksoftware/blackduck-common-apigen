@@ -141,12 +141,14 @@ public class TypeTranslator {
         translations.put("ActivityDataView", "ComponentActivityDataView");
         translations.put("ComplexLicenseView", "ProjectVersionLicenseLicensesView");
         translations.put("ComplexLicenseType", "ProjectVersionComponentLicensesLicenseTypeType");
+        translations.put("ComponentSearchResultView", "ComponentsView");
         translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
         translations.put("CustomFieldType", "CustomFieldTypeType");
         translations.put("CustomFieldType", "ComponentCustomFieldTypeType");
         translations.put("CustomFieldType", "ProjectCustomFieldTypeType");
         translations.put("CustomFieldType", "ProjectVersionCustomFieldTypeType");
         translations.put("CustomFieldType", "ProjectVersionComponentCustomFieldTypeType");
+        translations.put("CustomFieldTypeView", "TypesView");
         translations.put("CustomFieldView", "ProjectVersionCustomFieldView");
         translations.put("CustomFieldView", "ProjectVersionComponentVersionCustomFieldView");
         translations.put("LicenseFamilySummaryView", "ProjectVersionLicenseLicenseLicenseFamilySummaryView");

@@ -1,0 +1,35 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of assigned inherited projects requested",
+    "fields" : [ {
+      "path" : "project",
+      "type" : "String",
+      "optional" : false,
+      "description" : "URL to the representation of the project."
+    }, {
+      "path" : "name",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The name of the project."
+    }, {
+      "path" : "assignment",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the representation of the user within the project."
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

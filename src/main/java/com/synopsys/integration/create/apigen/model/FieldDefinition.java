@@ -31,10 +31,10 @@ public class FieldDefinition extends Definition {
     private final String path;
     private String type;
     private final boolean optional;
-    private final List<String> allowedValues;
+    private final Set<String> allowedValues;
     private final Set<FieldDefinition> fields;
 
-    public FieldDefinition(final String path, final String type, final boolean optional, final List<String> allowedValues) {
+    public FieldDefinition(final String path, final String type, final boolean optional, final Set<String> allowedValues) {
         this.path = path;
         this.type = type;
         this.optional = optional;
@@ -43,7 +43,7 @@ public class FieldDefinition extends Definition {
     }
 
     public FieldDefinition(final String path, final String type, final boolean optional) {
-        this(path, type, optional, Collections.emptyList());
+        this(path, type, optional, Collections.emptySet());
     }
 
     public String getPath() {
@@ -60,12 +60,12 @@ public class FieldDefinition extends Definition {
         return optional;
     }
 
-    public List<String> getAllowedValues() {
+    public Set<String> getAllowedValues() {
         return allowedValues;
     }
 
     public Set<FieldDefinition> getSubFields() { return fields; }
 
-    public void addSubFields(final List<FieldDefinition> subFields) { fields.addAll(subFields); }
+    public void addSubFields(final Set<FieldDefinition> subFields) { fields.addAll(subFields); }
 
 }

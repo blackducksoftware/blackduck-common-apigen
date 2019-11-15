@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date/time when the notification subscription was created"
+  }, {
+    "path" : "subscriptionTarget",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The URL to the target subsribed to"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ ]
+}

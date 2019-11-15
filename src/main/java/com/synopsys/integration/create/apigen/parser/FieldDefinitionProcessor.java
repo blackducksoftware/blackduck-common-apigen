@@ -23,7 +23,9 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -45,8 +47,8 @@ public class FieldDefinitionProcessor {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
-    public List<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final List<RawFieldDefinition> rawFieldDefinitions) {
-        final List<FieldDefinition> fieldDefinitions = new ArrayList<>();
+    public Set<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final Set<RawFieldDefinition> rawFieldDefinitions) {
+        final Set<FieldDefinition> fieldDefinitions = new HashSet<>();
 
         for (final RawFieldDefinition field : rawFieldDefinitions) {
             final String path = field.getPath();
@@ -65,12 +67,13 @@ public class FieldDefinitionProcessor {
             final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
             builder.setOptional(optional);
             fieldDefinition = builder.build();
+            // PUT HASH-OF-RAWFIELDDEFINITION, FINAL-TYPE-OF-FIELDDEFINITION TO OBJECT-RECOGNITION-MAP
 
             // If field has subfields, recursively parse and link its subfields
             if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && field.getSubFields() != null) {
 
                 // append subclass to create new field data type
-                final List<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), field.getSubFields());
+                final Set<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), field.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }
             fieldDefinitions.add(fieldDefinition);

@@ -26,7 +26,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 
@@ -45,7 +47,7 @@ public class DefinitionParser {
         this.definitionFile = definitionFile;
     }
 
-    public <T extends ThirdPartyDefinition> List<T> getDefinitions(final DefinitionParseParameters<T> parameters) {
+    public <T extends ThirdPartyDefinition> Set<T> getDefinitions(final DefinitionParseParameters<T> parameters) {
         String jsonText = null;
         try {
             jsonText = FileUtils.readFileToString(definitionFile, StandardCharsets.UTF_8);
@@ -54,7 +56,7 @@ public class DefinitionParser {
         }
 
         final JsonObject json = gson.fromJson(jsonText, JsonObject.class);
-        final List<T> definitions = new ArrayList<>();
+        final Set<T> definitions = new HashSet<>();
         if (json != null && json.has(parameters.getJsonField())) {
             for (final JsonElement jsonElement : json.getAsJsonArray(parameters.getJsonField())) {
                 final T definition = gson.fromJson(jsonElement, parameters.getResultClass());

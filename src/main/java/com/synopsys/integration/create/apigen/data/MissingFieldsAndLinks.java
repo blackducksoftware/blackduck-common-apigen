@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -86,11 +87,11 @@ public class MissingFieldsAndLinks {
         return missingFieldAndLinkMap;
     }
 
-    public List<FieldDefinition> getMissingFields(final String className) {
+    public Set<FieldDefinition> getMissingFields(final String className) {
         return missingFieldAndLinkMap.getOrDefault(className, new MissingFieldAndLinkHelper()).getMissingFields();
     }
 
-    public List<LinkDefinition> getMissingLinks(final String className) {
+    public Set<LinkDefinition> getMissingLinks(final String className) {
         return missingFieldAndLinkMap.getOrDefault(className, new MissingFieldAndLinkHelper()).getMissingLinks();
     }
 

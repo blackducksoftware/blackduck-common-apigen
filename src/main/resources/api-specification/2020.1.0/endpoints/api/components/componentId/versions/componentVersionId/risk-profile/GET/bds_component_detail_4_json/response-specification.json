@@ -1,0 +1,80 @@
+{
+  "fields" : [ {
+    "path" : "activityData",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Information about the activity level of the open source project this component version belongs to",
+    "fields" : [ {
+      "path" : "contributorCount12Month",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of people who have contributed to this project in the previous 12 month period"
+    }, {
+      "path" : "commitCount12Month",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of commits made to this open source project in the previous 12 month period"
+    }, {
+      "path" : "lastCommitDate",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The date of the last commit made to this open source project"
+    }, {
+      "path" : "trending",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The overall trend of activity on this open source project.",
+      "allowedValues" : [ "DECREASING", "STABLE", "INCREASING", "UNKNOWN" ]
+    }, {
+      "path" : "newerReleases",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of releases of this open source project that are newer than the given component version"
+    } ]
+  }, {
+    "path" : "versionData",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Information about the specific version of this open source project",
+    "fields" : [ {
+      "path" : "releasedOn",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The date that this component version became available"
+    }, {
+      "path" : "newerReleasesCount",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of releases of this open source project that are newer than the given component version"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "riskData",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Data about the number of vulnerabilities present on this component version",
+    "fields" : [ {
+      "path" : "counts[]",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The counts of vulnerabilities on this component version grouped by a severity level",
+      "fields" : [ {
+        "path" : "countType",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The severity level of this count of vulnerabilities.",
+        "allowedValues" : [ "UNKNOWN", "OK", "LOW", "MEDIUM", "HIGH", "CRITICAL" ]
+      }, {
+        "path" : "count",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of vulnerabilities on this component version of this severity level"
+      } ]
+    } ]
+  } ],
+  "links" : [ ]
+}

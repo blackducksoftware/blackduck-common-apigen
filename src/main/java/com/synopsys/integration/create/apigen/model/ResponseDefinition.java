@@ -59,13 +59,13 @@ public class ResponseDefinition extends Definition {
 
     public void addField(final FieldDefinition fieldDefinition) { fields.add(fieldDefinition); }
 
-    public void addFields(final List<FieldDefinition> fieldDefinitions) { fields.addAll(fieldDefinitions); }
+    public void addFields(final Set<FieldDefinition> fieldDefinitions) { fields.addAll(fieldDefinitions); }
 
     public Set<LinkDefinition> getLinks() { return links; }
 
     public void addLink(final LinkDefinition linkDefinition) { links.add(linkDefinition); }
 
-    public void addLinks(final List<LinkDefinition> linkDefinitions) { links.addAll(linkDefinitions); }
+    public void addLinks(final Set<LinkDefinition> linkDefinitions) { links.addAll(linkDefinitions); }
 
     public boolean hasMultipleResults() {
         return hasMultipleResults;

@@ -42,7 +42,6 @@ public class NameAndPathManager {
     private final Set<String> linkClassNames;
     private final List<String> randomLinkClassNames;
     private final Map<String, String> nullLinkResultClasses;
-    private final Set<String> subFieldsThatAreViews;
 
     public NameAndPathManager() {
         apiDiscoveryData = new HashSet<>();
@@ -51,7 +50,6 @@ public class NameAndPathManager {
         linkClassNames = new HashSet<>();
         randomLinkClassNames = new ArrayList<>();
         nullLinkResultClasses = new HashMap<>();
-        subFieldsThatAreViews = populateSubFieldsThatAreViews();
     }
 
     public Set<ApiPathData> getApiDiscoveryData() {
@@ -100,13 +98,4 @@ public class NameAndPathManager {
         nullLinkResultClasses.put(key, value);
     }
 
-    private Set<String> populateSubFieldsThatAreViews() {
-        final Set<String> subFieldsThatAreViews = new HashSet<>();
-        subFieldsThatAreViews.add("RiskProfileView");
-        return subFieldsThatAreViews;
-    }
-
-    public boolean isSubFieldThatIsAView(final String classType) {
-        return subFieldsThatAreViews.contains(classType);
-    }
 }

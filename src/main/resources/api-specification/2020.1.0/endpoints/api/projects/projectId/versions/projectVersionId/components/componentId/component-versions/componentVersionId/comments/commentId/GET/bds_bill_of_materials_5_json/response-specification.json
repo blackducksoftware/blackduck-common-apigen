@@ -1,0 +1,72 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time the comment was created at."
+  }, {
+    "path" : "commentType",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The type of comment."
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "comment",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The content of the comment"
+  }, {
+    "path" : "user",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The user who created the comment",
+    "fields" : [ {
+      "path" : "userName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The username of the user"
+    }, {
+      "path" : "firstName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The first name of the user"
+    }, {
+      "path" : "lastName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The last name of the user."
+    }, {
+      "path" : "email",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The email address of the user"
+    }, {
+      "path" : "active",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "The active status of the user"
+    } ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time the comment was last edited."
+  } ],
+  "links" : [ {
+    "rel" : "project",
+    "optional" : false,
+    "description" : "Resource representing the project containing the comment."
+  }, {
+    "rel" : "version",
+    "optional" : false,
+    "description" : "Resource representing the project version containing the comment."
+  }, {
+    "rel" : "users",
+    "optional" : false,
+    "description" : "Resource representing the user who authored the comment."
+  } ]
+}

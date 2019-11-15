@@ -25,12 +25,17 @@ package com.synopsys.integration.create.apigen;
 import static java.lang.System.exit;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.zip.ZipFile;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.compress.archivers.ArchiveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +64,10 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
 import com.synopsys.integration.create.apigen.parser.NameParser;
+import com.synopsys.integration.create.apigen.parser.ZipParser;
+import com.synopsys.integration.exception.IntegrationException;
+import com.synopsys.integration.log.Slf4jIntLogger;
+import com.synopsys.integration.util.CommonZipExpander;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -114,6 +123,14 @@ public class GeneratorRunner {
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
+        /*
+        // Edit ZipFile
+        ZipParser zipParser = new ZipParser(logger);
+        File zippedRootDirectory = zipParser.getEditedZipRootDirectory(GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION_ZIP));
+        //Get unzipped directory
+        File rootDirectory = zipParser.getDirectoryFromZip(zippedRootDirectory);
+        final DirectoryWalker directoryWalker = new DirectoryWalker(rootDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+         */
         final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
@@ -122,11 +139,11 @@ public class GeneratorRunner {
 
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());
-            final List<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
+            final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
             if (missingFields.size() > 0) {
                 response.addFields(missingFields);
             }
-            final List<LinkDefinition> missingLinks = missingFieldsAndLinks.getMissingLinks(responseName);
+            final Set<LinkDefinition> missingLinks = missingFieldsAndLinks.getMissingLinks(responseName);
             if (missingLinks.size() > 0) {
                 response.addLinks(missingLinks);
             }

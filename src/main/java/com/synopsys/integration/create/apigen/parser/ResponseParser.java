@@ -23,9 +23,11 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,11 +60,29 @@ public class ResponseParser {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
-    public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) {
+    public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) throws FileNotFoundException {
+        //FIXME - this is super hacky
+        //final File endpointsPath = getEndpointsPath(specificationRootDirectory);
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
         return parseResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
+    }
+
+    private File getEndpointsPath(File specificationRootDirectory) throws FileNotFoundException {
+        File file = specificationRootDirectory;
+        List<File> files = new ArrayList<>();
+        files.add(specificationRootDirectory);
+        while(!files.isEmpty()) {
+            for (File child : file.listFiles()) {
+                if (child.getName().equals("endpoints")) {
+                    return child;
+                }
+                files.add(child);
+            }
+            file = files.get(0);
+        }
+        throw new FileNotFoundException("Could not find endpoints path");
     }
 
     private ArrayList<ResponseDefinition> parseResponses(final File parent, final int prefixLength) {
@@ -119,7 +139,7 @@ public class ResponseParser {
         for (final File child : children) {
             if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
                 final ResponseDefinition potentialArrayResponse = buildDummyResponseDefinitionFromFile(child);
-                if (ArrayResponseIdentifier.isArrayResponse(potentialArrayResponse)) {
+                if (ResponseTypeIdentifier.getResponseType(potentialArrayResponse).equals(ResponseType.ARRAY)) {
                     return true;
                 }
             }
@@ -130,11 +150,24 @@ public class ResponseParser {
         return false;
     }
 
+    public ResponseDefinition extractResponseFromSubfieldsOfItems(ResponseDefinition response) {
+        FieldDefinition items = null;
+        for (FieldDefinition field : response.getFields()) {
+            if (field.getPath().equals(UtilStrings.ITEMS)) {
+                items = field;
+            }
+        }
+        ResponseDefinition newResponse = new ResponseDefinition(response.getResponseSpecificationPath(), response.getName(), response.getMediaType(), response.hasMultipleResults());
+        newResponse.addFields(items.getSubFields());
+
+        return newResponse;
+    }
+
     private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
         final DefinitionParser definitionParser = new DefinitionParser(gson, file);
-        final List<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+        final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
         final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final List<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
+        final Set<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
         final ResponseDefinition response = new ResponseDefinition("", "", "", false);
         response.addFields(fieldDefinitions);
         return response;

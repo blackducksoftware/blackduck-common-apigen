@@ -24,6 +24,7 @@ package com.synopsys.integration.create.apigen.parser;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -38,16 +39,16 @@ import com.synopsys.integration.create.apigen.model.FieldDefinition;
 public class FieldDefinitionBuilder {
     private final String path;
     private final String type;
-    private final List<String> allowedValues;
+    private final Set<String> allowedValues;
     private final String nonVersionedFieldDefinitionName;
     private boolean optional;
     private final boolean isArray;
-    private List<FieldDefinition> subFields = Collections.EMPTY_LIST;
+    private Set<FieldDefinition> subFields = Collections.emptySet();
 
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final TypeTranslator typeTranslator;
 
-    public FieldDefinitionBuilder(final FieldData fieldData, final List<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks, final TypeTranslator typeTranslator) {
+    public FieldDefinitionBuilder(final FieldData fieldData, final Set<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks, final TypeTranslator typeTranslator) {
         this.path = fieldData.getProcessedPath();
         this.type = fieldData.getProcessedType();
         this.nonVersionedFieldDefinitionName = fieldData.getNonVersionedFieldDefinitionName();
@@ -71,14 +72,14 @@ public class FieldDefinitionBuilder {
         } else {
             if (allowedValues == null) {
                 fieldDefinition = new FieldDefinition(path, type, optional);
-            } else if (NumberUtils.isCreatable(allowedValues.get(0))) {
+            } else if (NumberUtils.isCreatable(allowedValues.iterator().next())) {
                 fieldDefinition = new FieldDefinition(path, UtilStrings.INTEGER, optional);
             } else {
                 fieldDefinition = new FieldDefinition(path, nameOfEnum, optional, allowedValues);
             }
         }
         fieldDefinition.addSubFields(subFields);
-        final List<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(type));
+        final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(type));
         if (missingFields.size() > 0) {
             fieldDefinition.addSubFields(missingFields);
         }
@@ -101,15 +102,15 @@ public class FieldDefinitionBuilder {
         this.optional = optional;
     }
 
-    public List<FieldDefinition> getSubFields() {
+    public Set<FieldDefinition> getSubFields() {
         return subFields;
     }
 
-    public void setSubFields(final List<FieldDefinition> subFields) {
+    public void setSubFields(final Set<FieldDefinition> subFields) {
         this.subFields = subFields;
     }
 
-    public List<String> getAllowedValues() {
+    public Set<String> getAllowedValues() {
         return allowedValues;
     }
 

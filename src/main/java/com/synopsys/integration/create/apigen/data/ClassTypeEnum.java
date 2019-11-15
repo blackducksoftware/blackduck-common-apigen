@@ -32,7 +32,7 @@ public enum ClassTypeEnum {
     COMPONENT(UtilStrings.COMPONENT_BASE_CLASS),
     ENUM(null),
     COMMON(null),
-    NON_ENUM_ENDING_IN_TYPE(null),
+    NON_ENUM_CONTAINING_TYPE(null),
     NULL(null);
 
     private final String importClass;

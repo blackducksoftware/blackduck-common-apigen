@@ -44,7 +44,7 @@ public class ClassCategories {
     private final Set<String> manual;
     private final Set<String> throwaway;
     private final Set<String> commonTypes;
-    private final Set<String> nonEnumClassesEndingInType;
+    private final Set<String> nonEnumClassesContainingType;
     private final Set<DeprecatedClassData> deprecatedClasses;
 
     @Autowired
@@ -56,7 +56,7 @@ public class ClassCategories {
         this.manual = populateManual();
         this.throwaway = populateThrowaway();
         this.commonTypes = populateCommonTypes();
-        this.nonEnumClassesEndingInType = populateNonEnumClassesEndingInType();
+        this.nonEnumClassesContainingType = populateNonEnumClassesEndingInType();
         this.deprecatedClasses = new HashSet<>();
     }
 
@@ -70,12 +70,14 @@ public class ClassCategories {
         views.add("ComponentCustomFieldView");
         views.add("ComponentDetailsView");
         views.add("ComponentPolicyStatusView");
+        views.add("ComponentPolicyRulesView");
         views.add("ComponentSearchResultView");
         views.add("ComponentVersionPolicyStatusView");
         views.add("ComponentVersionRemediatingView");
         views.add("ComponentVersionRiskProfileView");
         views.add("ComponentVersionView");
         views.add("ComponentView");
+        views.add("ComponentsView");
         views.add("CweView");
         views.add("CurrentUserView");
         views.add("CustomFieldObjectView");
@@ -125,11 +127,13 @@ public class ClassCategories {
         views.add("RoleAssignmentView");
         views.add("ScanView");
         views.add("TagView");
+        views.add("TypesView");
         views.add("UserGroupView");
         views.add("UserView");
         views.add("VersionBomComponentView");
         views.add("VersionBomPolicyRuleView");
         views.add("VersionBomPolicyStatusView");
+        views.add("VulnerabilityAffectedProjectsView");
         views.add("VulnerabilityView");
         views.add("VulnerabilityWithRemediationView");
         views.add("VulnerableComponentView");
@@ -148,6 +152,7 @@ public class ClassCategories {
         responses.add("AssignedUserGroupView");
         responses.add("AssignedUserRequest");
         responses.add("ComponentSearchResult");
+        responses.add("ComponentsView");
         responses.add("ComponentVersionReferenceView");
         responses.add("ComponentVersionRiskView");
         responses.add("CurrentVersionView");
@@ -165,6 +170,7 @@ public class ClassCategories {
         responses.add("ProjectMappingView");
         responses.add("LegacyFilterView");
         responses.add("RemediationOptionsView");
+        responses.add("TypesView");
         responses.add("UserCommentView");
         responses.add("VersionBomAttachmentView");
         responses.add("VersionRiskProfileView");
@@ -203,6 +209,7 @@ public class ClassCategories {
         components.add("CompositePathWithArchiveContext");
         components.add("ConfigOptionView");
         components.add("CustomFieldOptionRequest");
+        components.add("CustomFieldOptionsView");
         components.add("CustomComponentVersionRequest");
         components.add("CustomFieldValueBulkRequestEntry");
         components.add("CustomFieldOptionUpdateRequest");
@@ -338,6 +345,7 @@ public class ClassCategories {
         // views
         generatedClasses.add("CodeLocationView");
         generatedClasses.add("CommentView");
+        generatedClasses.add("CommentsView");
         generatedClasses.add("ComponentVersionPolicyStatusView");
         generatedClasses.add("ComponentVersionRiskProfileView");
         generatedClasses.add("ComponentView");
@@ -594,6 +602,10 @@ public class ClassCategories {
     }
 
     public void addDeprecatedClass(final String swaggerName, final String apigenName, final Template template, final Map<String, Object> input, final String destination) {
+        //debug
+        if (swaggerName.contains("ComplexLicenseView") || swaggerName.contains("ComponentVersionPolicyViolationDetails")) {
+            System.out.println("nop");
+        }
         Map<String, Object> newInput = new HashMap<>();
         for (Map.Entry<String, Object> entry : input.entrySet()) {
             newInput.put(entry.getKey(), entry.getValue());
@@ -628,7 +640,7 @@ public class ClassCategories {
 
     private boolean isCommonType(final String className) { return this.commonTypes.contains(className); }
 
-    private boolean isNonEnumClassEndingInType(final String className) { return this.nonEnumClassesEndingInType.contains(className); }
+    private boolean isNonEnumClassContainingType(final String className) { return this.nonEnumClassesContainingType.contains(className); }
 
     public ClassTypeEnum computeType(String className) {
         className = NameParser.getNonVersionedName(className);
@@ -638,7 +650,7 @@ public class ClassCategories {
         if (isComponent(className)) {
             return ClassTypeEnum.COMPONENT;
         }
-        if (className.contains(UtilStrings.ENUM) && !isNonEnumClassEndingInType(className)) {
+        if (className.contains(UtilStrings.ENUM) && !isNonEnumClassContainingType(className)) {
             return ClassTypeEnum.ENUM;
         }
         if (isResponse(className)) {
@@ -647,8 +659,8 @@ public class ClassCategories {
         if (isCommonType(className)) {
             return ClassTypeEnum.COMMON;
         }
-        if (isNonEnumClassEndingInType(className)) {
-            return ClassTypeEnum.NON_ENUM_ENDING_IN_TYPE;
+        if (isNonEnumClassContainingType(className)) {
+            return ClassTypeEnum.NON_ENUM_CONTAINING_TYPE;
         }
         return ClassTypeEnum.NULL;
     }

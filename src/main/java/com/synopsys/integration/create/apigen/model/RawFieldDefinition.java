@@ -24,28 +24,30 @@ package com.synopsys.integration.create.apigen.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RawFieldDefinition extends ThirdPartyDefinition {
 
     private final String path;
     private final String type;
     private final boolean optional;
-    private final List<String> allowedValues;
-    private final List<RawFieldDefinition> fields;
-    private final List<LinkDefinition> links;
+    private final Set<String> allowedValues;
+    private final Set<RawFieldDefinition> fields;
+    private final Set<LinkDefinition> links;
 
-    public RawFieldDefinition(final String path, final String type, final boolean optional, final List<String> allowedValues) {
+    public RawFieldDefinition(final String path, final String type, final boolean optional, final Set<String> allowedValues) {
         this.path = path;
         this.type = type;
         this.optional = optional;
         this.allowedValues = allowedValues;
-        this.fields = new ArrayList<>();
-        this.links = new ArrayList<>();
+        this.fields = new HashSet<>();
+        this.links = new HashSet<>();
     }
 
     public RawFieldDefinition(final String path, final String type, final boolean optional) {
-        this(path, type, optional, Collections.emptyList());
+        this(path, type, optional, Collections.emptySet());
     }
 
     public String getPath() {
@@ -60,13 +62,13 @@ public class RawFieldDefinition extends ThirdPartyDefinition {
         return optional;
     }
 
-    public List<String> getAllowedValues() {
+    public Set<String> getAllowedValues() {
         return allowedValues;
     }
 
-    public List<RawFieldDefinition> getSubFields() { return fields; }
+    public Set<RawFieldDefinition> getSubFields() { return fields; }
 
-    public List<LinkDefinition> getLinks() { return links; }
+    public Set<LinkDefinition> getLinks() { return links; }
 
     @Override
     public String toString() {

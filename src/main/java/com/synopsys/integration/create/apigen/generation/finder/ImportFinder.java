@@ -80,7 +80,7 @@ public class ImportFinder {
     }
 
     public void addFieldImports(final Set<String> imports, String fieldType, final boolean isOptional) {
-        final String baseClass = nameAndPathManager.isSubFieldThatIsAView(fieldType) ? VIEW_BASE_CLASS : COMPONENT_BASE_CLASS;
+        final String baseClass = classCategories.computeType(fieldType).isView() ? VIEW_BASE_CLASS : COMPONENT_BASE_CLASS;
         imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
         if (isOptional) {
             imports.add("java.util.Optional");

@@ -50,7 +50,7 @@ public class ApiPathDataPopulator {
 
     public void populateApiPathData(final List<ResponseDefinition> responses) {
         for (final ResponseDefinition response : responses) {
-            if (!ArrayResponseIdentifier.isArrayResponse(response)) {
+            if (!ResponseTypeIdentifier.getResponseType(response).equals(ResponseType.ARRAY)) {
                 final String apiPath = getApiDiscoveryPath(response.getResponseSpecificationPath());
                 if (!nameAndPathManager.isRepeatApiDiscoveryPath(apiPath) && !apiPathsToIgnore.contains(apiPath)) {
                     final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());

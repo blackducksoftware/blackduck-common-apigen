@@ -83,21 +83,34 @@ public class ViewGenerator {
         final Set<LinkData> links = helper.getLinks();
 
         final String responseMediaType = response.getMediaType();
-        final Map<String, Object> input = inputDataFinder.getViewInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, response.getName(), UtilStrings.VIEW_BASE_CLASS, response.getFields(), links, responseMediaType);
         final String viewName = response.getName();
+        final String fieldPackage;
+        final String fieldBaseClass;
+        final String pathToFiles;
+        if (classCategories.computeType(NameParser.getNonVersionedName(viewName)).isView()) {
+            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
+            fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
+            pathToFiles = UtilStrings.PATH_TO_VIEW_FILES;
+            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
+        } else {
+            fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
+            fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
+            pathToFiles = UtilStrings.PATH_TO_COMPONENT_FILES;
+        }
+        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, response.getName(), fieldBaseClass, response.getFields(), links, responseMediaType);
 
         mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
         if (swaggerName != null) {
             if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
-                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
+                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToFiles);
             }
         }
         if (typeTranslator.getApiGenClassName(viewName) != null) {
             input.put(UtilStrings.HAS_NEW_NAME, true);
             input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(viewName));
         }
-        generatedClassWriter.writeFile(viewName, template, input, UtilStrings.PATH_TO_VIEW_FILES);
+        generatedClassWriter.writeFile(viewName, template, input, pathToFiles);
 
         nameAndPathManager.addNonLinkClassName(viewName);
         nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(viewName));

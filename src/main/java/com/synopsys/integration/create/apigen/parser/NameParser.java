@@ -76,8 +76,8 @@ public class NameParser {
     private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType) {
         final String mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
         final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
-        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(stripRedundantNamePrefix(responseName, mediaType)));
-        return stripRedundantNamePrefix(responseName, mediaType);
+        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(stripRedundantNamePrefix(responseName, mediaVersion)));
+        return stripRedundantNamePrefix(responseName, mediaVersion);
     }
 
     // FIXME - this is an in-ideal hack at the moment

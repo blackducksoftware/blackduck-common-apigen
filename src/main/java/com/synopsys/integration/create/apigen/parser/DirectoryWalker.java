@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,14 +75,17 @@ public class DirectoryWalker {
             final File responseSpecificationFile = new File(absolutePath);
             final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
 
-            final List<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-            final List<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
+            final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+            final Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
             response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
 
-            // Filter out 'Array' responses
-            if (ArrayResponseIdentifier.isArrayResponse(response)) {
+            // Filter out 'Array' responses and extract data from responses where data is subfield of "items" field
+            ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
+            if (responseType.equals(ResponseType.ARRAY)) {
                 actuallyShowOutput = false;
+            } else if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
+                finalResponseDefinitions.add(responseParser.extractResponseFromSubfieldsOfItems(response));
             } else {
                 finalResponseDefinitions.add(response);
             }

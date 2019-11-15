@@ -23,18 +23,20 @@
 package com.synopsys.integration.create.apigen.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 
 public class MissingFieldAndLinkHelper {
-    private final List<FieldDefinition> missingFields;
-    private final List<LinkDefinition> missingLinks;
+    private final Set<FieldDefinition> missingFields;
+    private final Set<LinkDefinition> missingLinks;
 
     public MissingFieldAndLinkHelper() {
-        this.missingFields = new ArrayList<>();
-        this.missingLinks = new ArrayList<>();
+        this.missingFields = new HashSet<>();
+        this.missingLinks = new HashSet<>();
     }
 
     public void addField(final FieldDefinition field) {
@@ -45,11 +47,11 @@ public class MissingFieldAndLinkHelper {
         missingLinks.add(link);
     }
 
-    public List<FieldDefinition> getMissingFields() {
+    public Set<FieldDefinition> getMissingFields() {
         return this.missingFields;
     }
 
-    public List<LinkDefinition> getMissingLinks() {
+    public Set<LinkDefinition> getMissingLinks() {
         return this.missingLinks;
     }
 }
