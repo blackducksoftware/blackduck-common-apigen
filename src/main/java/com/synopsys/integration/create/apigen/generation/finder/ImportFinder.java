@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.generation.finder;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.COMPONENT_BASE_CLASS;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.CORE_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.data.UtilStrings.RESPONSE_BASE_CLASS;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.VIEW_BASE_CLASS;
 
 import java.util.HashSet;
@@ -80,12 +81,6 @@ public class ImportFinder {
     }
 
     public void addFieldImports(final Set<String> imports, String fieldType, final boolean isOptional) {
-        final String baseClass = classCategories.computeType(fieldType).isView() ? VIEW_BASE_CLASS : COMPONENT_BASE_CLASS;
-        imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
-        if (isOptional) {
-            imports.add("java.util.Optional");
-        }
-
         if (fieldType.contains(UtilStrings.LIST)) {
             imports.add(UtilStrings.JAVA_LIST.replace("<", ""));
         }
@@ -93,7 +88,19 @@ public class ImportFinder {
         fieldType = NameParser.getNonVersionedName(fieldType);
         final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();
-        final ClassTypeEnum classType = classCategoryData.getType();
+        ClassTypeEnum classType = classCategoryData.getType();
+        final String baseClass;
+        if ((classType).isView()) {
+            baseClass = VIEW_BASE_CLASS;
+        } else if (classType.isResponse()) {
+            baseClass = RESPONSE_BASE_CLASS;
+        } else {
+            baseClass = COMPONENT_BASE_CLASS;
+        }
+        imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
+        if (isOptional) {
+            imports.add("java.util.Optional");
+        }
         final String importPathPrefix = classSource.isThrowaway() ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {

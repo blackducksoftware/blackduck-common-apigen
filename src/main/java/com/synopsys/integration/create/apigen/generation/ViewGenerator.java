@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -87,11 +88,17 @@ public class ViewGenerator {
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
-        if (classCategories.computeType(NameParser.getNonVersionedName(viewName)).isView()) {
+        final ClassTypeEnum classType = classCategories.computeType(NameParser.getNonVersionedName(viewName));
+        if (classType.isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
             pathToFiles = UtilStrings.PATH_TO_VIEW_FILES;
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
+        } else if (classType.isResponse()) {
+            fieldPackage = UtilStrings.GENERATED_RESPONSE_PACKAGE;
+            fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
+            pathToFiles = UtilStrings.PATH_TO_RESPONSE_FILES;
+            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
         } else {
             fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
             fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
@@ -100,6 +107,10 @@ public class ViewGenerator {
         final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, response.getName(), fieldBaseClass, response.getFields(), links, responseMediaType);
 
         mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
+        //debug
+        if (viewName.contains("ComponentPolicyRulesView")) {
+            System.out.println("nop");
+        }
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
         if (swaggerName != null) {
             if (typeTranslator.getClassSwaggerName(swaggerName) == null) {

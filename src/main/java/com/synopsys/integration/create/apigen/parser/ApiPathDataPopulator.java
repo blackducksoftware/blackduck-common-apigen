@@ -102,7 +102,7 @@ public class ApiPathDataPopulator {
         final Map<String, Boolean> apiPathHasMultipleResultOverrides = new HashMap<>();
 
         apiPathHasMultipleResultOverrides.put("ComponentVersionRiskProfileView", true);
-        apiPathHasMultipleResultOverrides.put("ComponentView", true);
+        apiPathHasMultipleResultOverrides.put("ComponentsView", true);
 
         return apiPathHasMultipleResultOverrides;
     }

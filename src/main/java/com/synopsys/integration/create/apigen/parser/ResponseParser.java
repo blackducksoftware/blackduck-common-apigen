@@ -139,7 +139,7 @@ public class ResponseParser {
         for (final File child : children) {
             if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
                 final ResponseDefinition potentialArrayResponse = buildDummyResponseDefinitionFromFile(child);
-                if (ResponseTypeIdentifier.getResponseType(potentialArrayResponse).equals(ResponseType.ARRAY)) {
+                if (!ResponseTypeIdentifier.getResponseType(potentialArrayResponse).equals(ResponseType.STANDARD)) {
                     return true;
                 }
             }

@@ -37,6 +37,7 @@ public class MediaVersionDataManager {
 
     private final Map<String, MediaVersionData> latestViewMediaVersions = new HashMap<>();
     private final Map<String, MediaVersionData> latestComponentMediaVersions = new HashMap<>();
+    private final Map<String, MediaVersionData> latestResponseMediaVersions = new HashMap<>();
     private final ClassCategories classCategories;
     private final Set<String> namesToIgnore = populateNamesToIgnore();
 
@@ -52,13 +53,9 @@ public class MediaVersionDataManager {
         return latestComponentMediaVersions;
     }
 
-    /*public void updateLatestViewMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
-        updateLatestMediaVersions(className, input, latestViewMediaVersions, mediaType);
+    public Map<String, MediaVersionData> getLatestResponseMediaVersions() {
+        return latestResponseMediaVersions;
     }
-
-    public void updateLatestComponentMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
-        updateLatestMediaVersions(className, input, latestComponentMediaVersions, mediaType);
-    }*/
 
     public void updateLatestMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
         final MediaVersionData newData = getMediaVersionData(className, input, mediaType);
@@ -66,7 +63,14 @@ public class MediaVersionDataManager {
         if (newData == null || classType.isCommon()) {
             return;
         }
-        Map<String, MediaVersionData> latestMediaVersions = classType.isView() ? latestViewMediaVersions : latestComponentMediaVersions;
+        Map<String, MediaVersionData> latestMediaVersions;
+        if (classType.isView()) {
+            latestMediaVersions = latestViewMediaVersions;
+        } else if (classType.isResponse()) {
+            latestMediaVersions = latestResponseMediaVersions;
+        } else {
+            latestMediaVersions = latestComponentMediaVersions;
+        }
         try {
             final String nonVersionedClass = newData.getNonVersionedClassName();
             final Integer mediaVersion = newData.getMediaVersion();

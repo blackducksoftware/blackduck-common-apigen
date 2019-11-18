@@ -56,7 +56,7 @@ public class ClassCategories {
         this.manual = populateManual();
         this.throwaway = populateThrowaway();
         this.commonTypes = populateCommonTypes();
-        this.nonEnumClassesContainingType = populateNonEnumClassesEndingInType();
+        this.nonEnumClassesContainingType = populateNonEnumClassesContainingType();
         this.deprecatedClasses = new HashSet<>();
     }
 
@@ -71,14 +71,11 @@ public class ClassCategories {
         views.add("ComponentDetailsView");
         views.add("ComponentPolicyStatusView");
         views.add("ComponentPolicyRulesView");
-        views.add("ComponentSearchResultView");
         views.add("ComponentVersionPolicyStatusView");
         views.add("ComponentVersionRemediatingView");
         views.add("ComponentVersionRiskProfileView");
         views.add("ComponentVersionView");
         views.add("ComponentView");
-        views.add("ComponentsView");
-        views.add("CweView");
         views.add("CurrentUserView");
         views.add("CustomFieldObjectView");
         views.add("CustomFieldView");
@@ -127,7 +124,7 @@ public class ClassCategories {
         views.add("RoleAssignmentView");
         views.add("ScanView");
         views.add("TagView");
-        views.add("TypesView");
+        //views.add("TypesView");
         views.add("UserGroupView");
         views.add("UserView");
         views.add("VersionBomComponentView");
@@ -151,7 +148,7 @@ public class ClassCategories {
         responses.add("AssignedProjectView");
         responses.add("AssignedUserGroupView");
         responses.add("AssignedUserRequest");
-        responses.add("ComponentSearchResult");
+        responses.add("ComponentSearchResultView");
         responses.add("ComponentsView");
         responses.add("ComponentVersionReferenceView");
         responses.add("ComponentVersionRiskView");
@@ -342,6 +339,11 @@ public class ClassCategories {
         generatedClasses.add("ProjectVersionComponentVersionCustomFieldTypeType");
         generatedClasses.add("ProjectVersionCustomFieldTypeType");
 
+        // responses
+        generatedClasses.add("ComponentsView");
+        generatedClasses.add("ComponentSearchResultView");
+        generatedClasses.add("CweView");
+
         // views
         generatedClasses.add("CodeLocationView");
         generatedClasses.add("CommentView");
@@ -353,7 +355,6 @@ public class ClassCategories {
         generatedClasses.add("CustomFieldView");
         generatedClasses.add("CustomFieldObjectView");
         generatedClasses.add("CurrentUserView");
-        generatedClasses.add("CweView");
         generatedClasses.add("JobView");
         generatedClasses.add("LicenseFamiliesLicenseFamilyView");
         generatedClasses.add("LicenseReportsReportView");
@@ -454,11 +455,8 @@ public class ClassCategories {
 
         // Views
         throwawayClasses.add("AssignedUserView");
-        throwawayClasses.add("ComplexLicenseView");
         throwawayClasses.add("ComponentDetailsView");
-        throwawayClasses.add("ComponentSearchResultView");
         throwawayClasses.add("ComponentVersionView");
-        throwawayClasses.add("CustomFieldObjectView");
         throwawayClasses.add("ExternalExtensionConfigValueView");
         throwawayClasses.add("ExternalExtensionUserView");
         throwawayClasses.add("IssueView");
@@ -469,21 +467,14 @@ public class ClassCategories {
         throwawayClasses.add("NotificationUserView");
         throwawayClasses.add("MatchedFileView");
         throwawayClasses.add("ProjectMappingView");
-        throwawayClasses.add("RiskProfileView");
-        throwawayClasses.add("VersionBomComponentView");
         throwawayClasses.add("VersionBomOriginView");
-        throwawayClasses.add("VersionBomPolicyRuleView");
-        throwawayClasses.add("VersionBomPolicyStatusView");
-        throwawayClasses.add("VulnerabilityView");
         throwawayClasses.add("VulnerabilityWithRemediationView");
         throwawayClasses.add("VulnerableComponentView");
 
         // Responses
         throwawayClasses.add("AssignedProjectView");
-        throwawayClasses.add("ComponentSearchResult");
         throwawayClasses.add("ComponentVersionReferenceView");
         throwawayClasses.add("ComponentVersionRiskView");
-        throwawayClasses.add("CustomFieldTypeView");
         throwawayClasses.add("CurrentVersionView");
         throwawayClasses.add("DashboardSummaryView");
         throwawayClasses.add("EndUserLicenseAgreementView");
@@ -493,7 +484,6 @@ public class ClassCategories {
         throwawayClasses.add("VersionRiskProfileView");
 
         // Components
-        throwawayClasses.add("ActivityDataView");
         throwawayClasses.add("AssignedUserGroup");
         throwawayClasses.add("AssignedUserGroupView");
         throwawayClasses.add("AuditEventCount");
@@ -509,9 +499,6 @@ public class ClassCategories {
         throwawayClasses.add("ConfigOptionView");
         throwawayClasses.add("CustomComponentVersionRequest");
         throwawayClasses.add("CustomFieldOptionRequest");
-        throwawayClasses.add("CustomFieldOptionUpdateRequest");
-        throwawayClasses.add("Cvss2TemporalMetricsView");
-        throwawayClasses.add("Cvss3TemporalMetricsView");
         throwawayClasses.add("CweCommonConsequenceView");
         throwawayClasses.add("DeclaredComponentPath");
         throwawayClasses.add("Duration");
@@ -589,12 +576,14 @@ public class ClassCategories {
         return commonTypes;
     }
 
-    private Set<String> populateNonEnumClassesEndingInType() {
-        final Set<String> nonEnumClassesEndingInType = new HashSet<>();
+    private Set<String> populateNonEnumClassesContainingType() {
+        final Set<String> nonEnumClassesContainingType = new HashSet<>();
 
-        nonEnumClassesEndingInType.add("FacetType");
+        nonEnumClassesContainingType.add("FacetType");
+        nonEnumClassesContainingType.add("TypesView");
+        nonEnumClassesContainingType.add("CustomFieldTypeView");
 
-        return nonEnumClassesEndingInType;
+        return nonEnumClassesContainingType;
     }
 
     public Set<DeprecatedClassData> getDeprecatedClasses() {
@@ -602,10 +591,6 @@ public class ClassCategories {
     }
 
     public void addDeprecatedClass(final String swaggerName, final String apigenName, final Template template, final Map<String, Object> input, final String destination) {
-        //debug
-        if (swaggerName.contains("ComplexLicenseView") || swaggerName.contains("ComponentVersionPolicyViolationDetails")) {
-            System.out.println("nop");
-        }
         Map<String, Object> newInput = new HashMap<>();
         for (Map.Entry<String, Object> entry : input.entrySet()) {
             newInput.put(entry.getKey(), entry.getValue());

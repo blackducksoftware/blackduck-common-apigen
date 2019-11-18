@@ -138,7 +138,7 @@ public class TypeTranslator {
         final Map<String, String> translations = new HashMap<>();
 
         // swaggerName, api_SpecsName
-        translations.put("ActivityDataView", "ComponentActivityDataView");
+        translations.put("ActivityDataView", "ProjectVersionComponentActivityDataView");
         translations.put("ComplexLicenseView", "ProjectVersionLicenseLicensesView");
         translations.put("ComplexLicenseType", "ProjectVersionComponentLicensesLicenseTypeType");
         translations.put("ComponentSearchResultView", "ComponentsView");
@@ -169,6 +169,7 @@ public class TypeTranslator {
         translations.put("RoleAssignmentView", "UserRoleAssignmentView");
         translations.put("VersionBomLicenseView", "ComponentLicensesView");
         translations.put("VersionBomComponentView", "ProjectVersionComponentView");
+        translations.put("VersionBomPolicyRuleView", "ComponentPolicyRulesView");
         translations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
 
         return translations;

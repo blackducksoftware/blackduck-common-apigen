@@ -93,11 +93,17 @@ public class ComponentGenerator extends ClassGenerator {
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
-        if (classCategories.computeType(NameParser.getNonVersionedName(fieldType)).isView()) {
+        final ClassTypeEnum classType = classCategories.computeType(NameParser.getNonVersionedName(fieldType));
+        if (classType.isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
             pathToFiles = UtilStrings.PATH_TO_VIEW_FILES;
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
+        } else if (classType.isResponse()) {
+            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
+            fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
+            pathToFiles = UtilStrings.PATH_TO_RESPONSE_FILES;
+            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
         } else {
             fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
             fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;

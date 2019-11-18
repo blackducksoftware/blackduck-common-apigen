@@ -355,7 +355,7 @@
       "optional": false
     }
   ],
-  "hasMultipleResults": false
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "components/componentId/custom-fields/customFieldId/GET/bds_component_detail_5_json/response-specification.json",

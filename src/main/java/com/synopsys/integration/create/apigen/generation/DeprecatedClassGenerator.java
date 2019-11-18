@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.data;
+package com.synopsys.integration.create.apigen.generation;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -29,6 +29,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.DeprecatedClassData;
 import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
 
 import freemarker.template.Template;
@@ -46,6 +48,10 @@ public class DeprecatedClassGenerator {
 
     public void generateDeprecatedClasses() throws Exception {
         for (DeprecatedClassData deprecatedClassData : classCategories.getDeprecatedClasses()) {
+            //debug
+            if (deprecatedClassData.getSwaggerName().equals("VersionBomPolicyRuleView")) {
+                System.out.println("nop");
+            }
             generatedClassWriter.writeFile(deprecatedClassData.getSwaggerName(), deprecatedClassData.getTemplate(), deprecatedClassData.getInput(), deprecatedClassData.getDestination());
         }
     }

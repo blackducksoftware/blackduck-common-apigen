@@ -62,12 +62,14 @@ public class MediaVersionGenerator {
         this.nameAndPathManager = nameAndPathManager;
     }
 
-    public void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToComponentFiles)
+    public void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles)
         throws Exception {
         final Collection<MediaVersionData> latestViewMediaVersions = mediaVersionDataManager.getLatestViewMediaVersions().values();
+        final Collection<MediaVersionData> latestResponseMediaVersions = mediaVersionDataManager.getLatestResponseMediaVersions().values();
         final Collection<MediaVersionData> latestComponentMediaVersions = mediaVersionDataManager.getLatestComponentMediaVersions().values();
 
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, latestViewMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToResponseFiles, latestResponseMediaVersions);
         generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, latestComponentMediaVersions);
 
         final Set<MediaVersionData> latestMediaVersions = new HashSet<>();
