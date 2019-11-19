@@ -36,6 +36,7 @@ public class FieldData {
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
     private static final Set<String> javaKeyWords = UtilStrings.getJavaKeyWords();
+    private static final Set<String> dateSuffixes = UtilStrings.getDateSuffixes();
 
     private final String fieldDefinitionName;
     private String path;
@@ -77,6 +78,13 @@ public class FieldData {
         // Deal with fields of type 'Number'
         if (type.equals(UtilStrings.NUMBER)) {
             return UtilStrings.BIG_DECIMAL;
+        }
+
+        // Deal with Date fields
+        for (String dateSuffix : dateSuffixes) {
+            if (path.endsWith(dateSuffix)) {
+                return UtilStrings.JAVA_DATE;
+            }
         }
 
         // Deal with special Swaggerhub - Apigen naming convention conflicts

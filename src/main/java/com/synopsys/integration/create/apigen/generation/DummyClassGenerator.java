@@ -38,6 +38,7 @@ import freemarker.template.Template;
 
 @Component
 public class DummyClassGenerator {
+    // TODO - this class is probably unnecessary
 
     private final NameAndPathManager nameAndPathManager;
     private final ClassCategories classCategories;

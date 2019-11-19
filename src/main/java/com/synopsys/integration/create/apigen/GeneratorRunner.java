@@ -115,7 +115,14 @@ public class GeneratorRunner {
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
-
+        /*
+        // Edit ZipFile
+        ZipParser zipParser = new ZipParser(logger);
+        File zippedRootDirectory = zipParser.getEditedZipRootDirectory(GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION_ZIP));
+        //Get unzipped directory
+        File rootDirectory = zipParser.getDirectoryFromZip(zippedRootDirectory);
+        final DirectoryWalker directoryWalker = new DirectoryWalker(rootDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+         */
         final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);

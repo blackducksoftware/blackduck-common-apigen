@@ -108,6 +108,7 @@ public class ComponentGenerator extends ClassGenerator {
             fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
             fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
             pathToFiles = UtilStrings.PATH_TO_COMPONENT_FILES;
+            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
         }
         final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, fieldType, fieldBaseClass, subFields, responseMediaType);
         mediaVersionDataManager.updateLatestMediaVersions(fieldType, input, responseMediaType);

@@ -23,8 +23,10 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
@@ -40,16 +42,19 @@ public class FieldDefinitionProcessor {
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
+    private final Map<Set<RawFieldDefinition>, String> uniqueFieldsToNames;
+    private final Map<Set<String>, String> uniqueEnumsToNames;
 
     public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.typeTranslator = typeTranslator;
         this.nameAndPathManager = nameAndPathManager;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
+        this.uniqueFieldsToNames = new HashMap<>();
+        this.uniqueEnumsToNames = new HashMap<>();
     }
 
     public Set<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final Set<RawFieldDefinition> rawFieldDefinitions) {
         final Set<FieldDefinition> fieldDefinitions = new HashSet<>();
-
         for (final RawFieldDefinition field : rawFieldDefinitions) {
             final String path = field.getPath();
             final String type = field.getType();
@@ -67,7 +72,7 @@ public class FieldDefinitionProcessor {
             final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
             builder.setOptional(optional);
             fieldDefinition = builder.build();
-            // PUT HASH-OF-RAWFIELDDEFINITION, FINAL-TYPE-OF-FIELDDEFINITION TO OBJECT-RECOGNITION-MAP
+            screenForDuplicateField(field, fieldDefinition);
 
             // If field has subfields, recursively parse and link its subfields
             if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && field.getSubFields() != null) {
@@ -79,5 +84,28 @@ public class FieldDefinitionProcessor {
             fieldDefinitions.add(fieldDefinition);
         }
         return fieldDefinitions;
+    }
+
+    private void screenForDuplicateField(RawFieldDefinition rawField, FieldDefinition fieldDefinition) {
+        Set<String> enumValues = rawField.getAllowedValues();
+        if (enumValues == null) {
+            String trueType = uniqueFieldsToNames.get(rawField.getSubFields());
+            if (trueType != null) {
+                fieldDefinition.setType(trueType);
+            } else if (rawField.getSubFields() != null) {
+                uniqueFieldsToNames.put(rawField.getSubFields(), fieldDefinition.getType());
+            }
+        } else {
+            screenForDuplicateEnum(fieldDefinition, enumValues);
+        }
+    }
+
+    private void screenForDuplicateEnum(FieldDefinition fieldDefinition, Set<String> enumValues) {
+        String trueEnumType = uniqueEnumsToNames.get(enumValues);
+        if (trueEnumType != null) {
+            fieldDefinition.setType(trueEnumType);
+        } else {
+            uniqueEnumsToNames.put(enumValues, fieldDefinition.getType());
+        }
     }
 }

@@ -137,8 +137,8 @@ public class LinkResponseDefinitions {
         //projectViewDefinitions.put("assignable-users", pvAssignableUsersDefinition);
         //final LinkResponseDefinitionItem pvAssignableUserGroupsDefinition = new LinkResponseDefinitionItem(true, "AssignableUserGroupView");
         //projectViewDefinitions.put("assignable-usergroups", pvAssignableUserGroupsDefinition);
-        final LinkResponseDefinitionItem pvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectCustomFieldView");
-        projectViewDefinitions.put("custom-fields", pvCustomFieldsDefinition);
+        //final LinkResponseDefinitionItem pvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectCustomFieldView");
+        //projectViewDefinitions.put("custom-fields", pvCustomFieldsDefinition);
         //final LinkResponseDefinitionItem pvProjectJournalDefinition = new LinkResponseDefinitionItem(true, "ProjectJournalView");
         //projectViewDefinitions.put("project-journal", pvProjectJournalDefinition);
         definitions.put("ProjectView", projectViewDefinitions);
@@ -170,8 +170,8 @@ public class LinkResponseDefinitions {
         //projectVersionViewDefinitions.put("comparison", pvvComparisonDefinition);
         final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
         projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
-        final LinkResponseDefinitionItem pvvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionCustomFieldView");
-        projectVersionViewDefinitions.put("custom-fields", pvvCustomFieldsDefinition);
+        //final LinkResponseDefinitionItem pvvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionCustomFieldView");
+        //projectVersionViewDefinitions.put("custom-fields", pvvCustomFieldsDefinition);
         //final LinkResponseDefinitionItem pvvAttachmentsDefinition = new LinkResponseDefinitionItem(true, "VersionBomAttachmentView");
         //projectVersionViewDefinitions.put("attachments", pvvAttachmentsDefinition);
         //final LinkResponseDefinitionItem pvvProjectVersionJournalDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionJournalView");

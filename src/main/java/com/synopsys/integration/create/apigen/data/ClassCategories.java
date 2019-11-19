@@ -72,7 +72,6 @@ public class ClassCategories {
         views.add("ComponentPolicyStatusView");
         views.add("ComponentPolicyRulesView");
         views.add("ComponentVersionPolicyStatusView");
-        views.add("ComponentVersionRemediatingView");
         views.add("ComponentVersionRiskProfileView");
         views.add("ComponentVersionView");
         views.add("ComponentView");
@@ -151,6 +150,7 @@ public class ClassCategories {
         responses.add("ComponentSearchResultView");
         responses.add("ComponentsView");
         responses.add("ComponentVersionReferenceView");
+        responses.add("ComponentVersionRemediatingView");
         responses.add("ComponentVersionRiskView");
         responses.add("CurrentVersionView");
         responses.add("CustomFieldTypeView");
@@ -343,6 +343,8 @@ public class ClassCategories {
         generatedClasses.add("ComponentsView");
         generatedClasses.add("ComponentSearchResultView");
         generatedClasses.add("CweView");
+        generatedClasses.add("CustomFieldTypeView");
+        generatedClasses.add("RemediationOptionsView");
 
         // views
         generatedClasses.add("CodeLocationView");

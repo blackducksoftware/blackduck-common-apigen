@@ -48,10 +48,6 @@ public class DeprecatedClassGenerator {
 
     public void generateDeprecatedClasses() throws Exception {
         for (DeprecatedClassData deprecatedClassData : classCategories.getDeprecatedClasses()) {
-            //debug
-            if (deprecatedClassData.getSwaggerName().equals("VersionBomPolicyRuleView")) {
-                System.out.println("nop");
-            }
             generatedClassWriter.writeFile(deprecatedClassData.getSwaggerName(), deprecatedClassData.getTemplate(), deprecatedClassData.getInput(), deprecatedClassData.getDestination());
         }
     }

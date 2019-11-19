@@ -56,7 +56,7 @@ public class MissingFieldsAndLinks {
 
         // ProjectVersionLicenseLicensesView
         final MissingFieldAndLinkHelper pvllvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionComponentLicensesLicenseTypeType", false));
+        pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionLicenseLicensesTypeType", false));
         pvllvFieldsAndLinks.addField(new FieldDefinition("licenseDisplay", "String", true));
         pvllvFieldsAndLinks.addField(new FieldDefinition("ownership", "String", true));
         missingFieldAndLinkMap.put("ProjectVersionLicenseLicensesView", pvllvFieldsAndLinks);

@@ -103,14 +103,11 @@ public class ViewGenerator {
             fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
             fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
             pathToFiles = UtilStrings.PATH_TO_COMPONENT_FILES;
+            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
         }
         final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, response.getName(), fieldBaseClass, response.getFields(), links, responseMediaType);
 
         mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
-        //debug
-        if (viewName.contains("ComponentPolicyRulesView")) {
-            System.out.println("nop");
-        }
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
         if (swaggerName != null) {
             if (typeTranslator.getClassSwaggerName(swaggerName) == null) {

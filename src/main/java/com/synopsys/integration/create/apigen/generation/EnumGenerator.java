@@ -74,7 +74,7 @@ public class EnumGenerator extends ClassGenerator {
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(classType);
         if (swaggerName != null) {
-            if (typeTranslator.getApiGenClassName(swaggerName) == null) {
+            if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
                 classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
             }
         }

@@ -101,4 +101,14 @@ public class UtilStrings {
         return javaKeyWords;
     }
 
+    public static Set<String> getDateSuffixes() {
+        final Set<String> dateSuffixes = new HashSet<>();
+
+        dateSuffixes.add("edOn");
+        dateSuffixes.add("edAt");
+        dateSuffixes.add("Date");
+
+        return dateSuffixes;
+    }
+
 }
