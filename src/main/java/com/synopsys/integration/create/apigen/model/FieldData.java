@@ -97,7 +97,6 @@ public class FieldData {
             // append subclass to create new field data type
             String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
             processedType = typeTranslator.getSimplifiedClassName(processedType);
-
             if (mediaVersion != null) {
                 return processedType + "V" + mediaVersion;
             }

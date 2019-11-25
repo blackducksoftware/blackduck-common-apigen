@@ -40,12 +40,6 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 @Component
 public class InputDataFinder {
-    private final NameAndPathManager nameAndPathManager;
-
-    @Autowired
-    public InputDataFinder(final NameAndPathManager nameAndPathManager) {
-        this.nameAndPathManager = nameAndPathManager;
-    }
 
     public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();

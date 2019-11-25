@@ -75,7 +75,7 @@ public class NameParser {
 
     private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType) {
         final String mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
-        final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
+        final String responseName = getJoinedResponseNamePieces(firstPiece, lastPiece, mediaVersion);
         nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(stripRedundantNamePrefix(responseName, mediaVersion)));
         return stripRedundantNamePrefix(responseName, mediaVersion);
     }
@@ -90,7 +90,7 @@ public class NameParser {
         return StringUtils.capitalize(concatHyphenatedString(piece.replace("Id", "")));
     }
 
-    private String getResponseNameJoinHelper(final String firstPiece, final String lastPiece, final String mediaVersion) {
+    private String getJoinedResponseNamePieces(final String firstPiece, final String lastPiece, final String mediaVersion) {
         String responseName;
         if (lastPiece == null) {
             return "";

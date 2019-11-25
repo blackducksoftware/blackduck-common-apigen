@@ -32,6 +32,7 @@ public class UtilStrings {
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
     public static final String CORE_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.core.";
     public static final String MANUAL_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.manual.";
+    public static final String THROWAWAY_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated");
 
     public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION;
     public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
@@ -90,6 +91,7 @@ public class UtilStrings {
     public static final String HAS_NEW_NAME = "hasNewName";
 
     public static final String ITEMS = "items";
+    public static final String TOTAL_COUNT = "totalCount";
 
     public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 

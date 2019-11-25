@@ -53,8 +53,8 @@ public class TypeTranslator {
 
         // swaggerName, api_SpecsName
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
-        translations.put("ComplexLicenseView", "ProjectVersionLicenseLicensesView");
-        translations.put("ComplexLicenseType", "ProjectVersionComponentLicensesLicenseTypeType");
+        translations.put("ComplexLicenseView", "ProjectVersionLicenseView");
+        translations.put("ComplexLicenseType", "ProjectVersionLicenseLicensesTypeType");
         translations.put("ComponentSearchResultView", "ComponentsView");
         translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
         translations.put("CustomFieldType", "CustomFieldTypeType");
@@ -86,6 +86,7 @@ public class TypeTranslator {
     }
 
     private Map<String, List<FieldTranslation>> populateFieldTranslations() {
+        // FIXME - this Map is a patch-job– although only way, given format of specs data (as of 11/19/19)
         final Map<String, List<FieldTranslation>> fieldTranslations = new HashMap<>();
 
         // ComponentActivityRiskProfileView
@@ -100,7 +101,8 @@ public class TypeTranslator {
 
         // ComponentVersionView
         final List<FieldTranslation> cvvTranslations = new ArrayList<>();
-        final FieldTranslation cvvLicenseTranslation = new FieldTranslation("license", "ProjectVersionLicenseLicensesView", UtilStrings.OBJECT);
+        // Experiment
+        final FieldTranslation cvvLicenseTranslation = new FieldTranslation("license", "ProjectVersionLicenseView", UtilStrings.OBJECT);
         cvvTranslations.add(cvvLicenseTranslation);
         fieldTranslations.put("ComponentVersionView", cvvTranslations);
 
@@ -137,6 +139,12 @@ public class TypeTranslator {
         final FieldTranslation pvpsvOverallStatusTranslation = new FieldTranslation("overallStatus", "PolicyStatusType", UtilStrings.STRING);
         pvpsvTranslations.add(pvpsvOverallStatusTranslation);
         fieldTranslations.put("ProjectVersionPolicyStatusView", pvpsvTranslations);
+
+        // ProjectVersionLicenseView
+        List<FieldTranslation> pvlvTranslations = new ArrayList<>();
+        final FieldTranslation pvlvTypeTranslation = new FieldTranslation("type", "ProjectVersionLicenseTypeType", UtilStrings.STRING);
+        pvlvTranslations.add(pvlvTypeTranslation);
+        fieldTranslations.put("ProjectVersionLicenseView", pvlvTranslations);
 
         // ProjectVersionLicenseLicensesView
         final List<FieldTranslation> pvllvTranslations = new ArrayList<>();

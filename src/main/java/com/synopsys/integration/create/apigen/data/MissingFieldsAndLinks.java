@@ -34,6 +34,7 @@ import com.synopsys.integration.create.apigen.model.LinkDefinition;
 
 @Component
 public class MissingFieldsAndLinks {
+    // FIXME - this whole file is a patch-job
 
     private final Map<String, MissingFieldAndLinkHelper> missingFieldAndLinkMap;
 
@@ -54,9 +55,10 @@ public class MissingFieldsAndLinks {
         lvFieldsAndLinks.addLink(new LinkDefinition("text", false));
         missingFieldAndLinkMap.put("LicenseView", lvFieldsAndLinks);
 
+        // TODO - we shouldn't need to insert these fields
         // ProjectVersionLicenseLicensesView
         final MissingFieldAndLinkHelper pvllvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionLicenseLicensesTypeType", false));
+        pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionLicenseTypeType", false));
         pvllvFieldsAndLinks.addField(new FieldDefinition("licenseDisplay", "String", true));
         pvllvFieldsAndLinks.addField(new FieldDefinition("ownership", "String", true));
         missingFieldAndLinkMap.put("ProjectVersionLicenseLicensesView", pvllvFieldsAndLinks);

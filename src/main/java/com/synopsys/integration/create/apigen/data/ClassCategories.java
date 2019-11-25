@@ -108,6 +108,7 @@ public class ClassCategories {
         views.add("ProjectVersionComponentVersionCustomFieldView");
         views.add("ProjectVersionComponentView");
         views.add("ProjectVersionCustomFieldView");
+        views.add("ProjectVersionLicenseView");
         views.add("ProjectVersionLicenseLicensesView");
         views.add("ProjectVersionPolicyStatusView");
         views.add("ProjectVersionReportView");
@@ -123,7 +124,6 @@ public class ClassCategories {
         views.add("RoleAssignmentView");
         views.add("ScanView");
         views.add("TagView");
-        //views.add("TypesView");
         views.add("UserGroupView");
         views.add("UserView");
         views.add("VersionBomComponentView");
@@ -265,7 +265,6 @@ public class ClassCategories {
         components.add("ProjectVersionComponentViewOperationalRiskProfile");
         components.add("ProjectVersionComponentViewSecurityRiskProfile");
         components.add("ProjectVersionComponentViewVersionRiskProfile");
-        components.add("ProjectVersionLicenseView"); //
         components.add("ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsSeverityLevelsView");
         components.add("ProjectVersionPolicyStatusComponentVersionStatusCountsView");
         components.add("ProjectVersionRequest");

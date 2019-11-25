@@ -427,18 +427,18 @@
   "mediaType": "application/vnd.blackducksoftware.component-detail-4+json",
   "fields": [
     {
+      "path": "additionalHomepages",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "license",
-      "type": "ProjectVersionLicenseLicensesView",
+      "type": "ProjectVersionLicenseView",
       "optional": false,
       "allowedValues": [],
       "fields": [
-        {
-          "path": "licenseDisplay",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
         {
           "path": "license",
           "type": "String",
@@ -447,66 +447,23 @@
           "fields": []
         },
         {
-          "path": "type",
-          "type": "ProjectVersionLicenseLicensesTypeType",
+          "path": "licenses",
+          "type": "java.util.List\u003cString\u003e",
           "optional": false,
           "allowedValues": [],
           "fields": []
         },
         {
-          "path": "ownership",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
           "path": "type",
-          "type": "ProjectVersionLicenseLicensesTypeType",
+          "type": "ProjectVersionLicenseTypeType",
           "optional": false,
           "allowedValues": [
             "CONJUNCTIVE",
             "DISJUNCTIVE"
           ],
           "fields": []
-        },
-        {
-          "path": "licenses",
-          "type": "java.util.List\u003cProjectVersionLicenseLicensesView\u003e",
-          "optional": false,
-          "allowedValues": [],
-          "fields": [
-            {
-              "path": "licenseDisplay",
-              "type": "String",
-              "optional": true,
-              "allowedValues": [],
-              "fields": []
-            },
-            {
-              "path": "type",
-              "type": "ProjectVersionLicenseLicensesTypeType",
-              "optional": false,
-              "allowedValues": [],
-              "fields": []
-            },
-            {
-              "path": "ownership",
-              "type": "String",
-              "optional": true,
-              "allowedValues": [],
-              "fields": []
-            }
-          ]
         }
       ]
-    },
-    {
-      "path": "additionalHomepages",
-      "type": "java.util.List\u003cString\u003e",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
     },
     {
       "path": "approvalStatus",
@@ -600,18 +557,18 @@
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
+      "path": "additionalHomepages",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "license",
-      "type": "ProjectVersionLicenseLicensesView",
+      "type": "ProjectVersionLicenseView",
       "optional": false,
       "allowedValues": [],
       "fields": [
-        {
-          "path": "licenseDisplay",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
         {
           "path": "license",
           "type": "String",
@@ -620,66 +577,23 @@
           "fields": []
         },
         {
-          "path": "type",
-          "type": "ProjectVersionLicenseLicensesTypeType",
+          "path": "licenses",
+          "type": "java.util.List\u003cString\u003e",
           "optional": false,
           "allowedValues": [],
           "fields": []
         },
         {
-          "path": "ownership",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
           "path": "type",
-          "type": "ProjectVersionLicenseLicensesTypeType",
+          "type": "ProjectVersionLicenseTypeType",
           "optional": false,
           "allowedValues": [
             "CONJUNCTIVE",
             "DISJUNCTIVE"
           ],
           "fields": []
-        },
-        {
-          "path": "licenses",
-          "type": "java.util.List\u003cProjectVersionLicenseLicensesView\u003e",
-          "optional": false,
-          "allowedValues": [],
-          "fields": [
-            {
-              "path": "licenseDisplay",
-              "type": "String",
-              "optional": true,
-              "allowedValues": [],
-              "fields": []
-            },
-            {
-              "path": "type",
-              "type": "ProjectVersionLicenseLicensesTypeType",
-              "optional": false,
-              "allowedValues": [],
-              "fields": []
-            },
-            {
-              "path": "ownership",
-              "type": "String",
-              "optional": true,
-              "allowedValues": [],
-              "fields": []
-            }
-          ]
         }
       ]
-    },
-    {
-      "path": "additionalHomepages",
-      "type": "java.util.List\u003cString\u003e",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
     },
     {
       "path": "approvalStatus",
@@ -3008,18 +2922,18 @@
       "fields": []
     },
     {
-      "path": "distribution",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "license",
       "type": "ProjectVersionLicenseViewV4",
       "optional": true,
       "allowedValues": [],
       "fields": [
+        {
+          "path": "licenseDisplay",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
         {
           "path": "licenses",
           "type": "java.util.List\u003cProjectVersionLicenseLicensesViewV4\u003e",
@@ -3035,39 +2949,10 @@
             },
             {
               "path": "type",
-              "type": "ProjectVersionLicenseLicensesTypeType",
+              "type": "ProjectVersionLicenseTypeType",
               "optional": false,
               "allowedValues": [],
               "fields": []
-            },
-            {
-              "path": "licenses",
-              "type": "java.util.List\u003cProjectVersionLicenseLicensesView\u003e",
-              "optional": true,
-              "allowedValues": [],
-              "fields": [
-                {
-                  "path": "licenseDisplay",
-                  "type": "String",
-                  "optional": true,
-                  "allowedValues": [],
-                  "fields": []
-                },
-                {
-                  "path": "type",
-                  "type": "ProjectVersionLicenseLicensesTypeType",
-                  "optional": false,
-                  "allowedValues": [],
-                  "fields": []
-                },
-                {
-                  "path": "ownership",
-                  "type": "String",
-                  "optional": true,
-                  "allowedValues": [],
-                  "fields": []
-                }
-              ]
             },
             {
               "path": "license",
@@ -3096,24 +2981,53 @@
               "optional": true,
               "allowedValues": [],
               "fields": []
+            },
+            {
+              "path": "licenses",
+              "type": "java.util.List\u003cProjectVersionLicenseLicensesView\u003e",
+              "optional": true,
+              "allowedValues": [],
+              "fields": [
+                {
+                  "path": "licenseDisplay",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                },
+                {
+                  "path": "type",
+                  "type": "ProjectVersionLicenseTypeType",
+                  "optional": false,
+                  "allowedValues": [],
+                  "fields": []
+                },
+                {
+                  "path": "ownership",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                }
+              ]
             }
           ]
         },
         {
-          "path": "licenseDisplay",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
           "path": "type",
-          "type": "String",
+          "type": "ProjectVersionLicenseTypeType",
           "optional": true,
           "allowedValues": [],
           "fields": []
         }
       ]
+    },
+    {
+      "path": "distribution",
+      "type": "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
     },
     {
       "path": "createdAt",
@@ -3315,20 +3229,6 @@
       "fields": []
     },
     {
-      "path": "releasedOn",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "versionName",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "license",
       "type": "ProjectVersionLicenseViewV5",
       "optional": true,
@@ -3343,7 +3243,7 @@
         },
         {
           "path": "type",
-          "type": "String",
+          "type": "ProjectVersionLicenseTypeType",
           "optional": true,
           "allowedValues": [],
           "fields": []
@@ -3363,39 +3263,10 @@
             },
             {
               "path": "type",
-              "type": "ProjectVersionLicenseLicensesTypeType",
+              "type": "ProjectVersionLicenseTypeType",
               "optional": false,
               "allowedValues": [],
               "fields": []
-            },
-            {
-              "path": "licenses",
-              "type": "java.util.List\u003cProjectVersionLicenseLicensesView\u003e",
-              "optional": true,
-              "allowedValues": [],
-              "fields": [
-                {
-                  "path": "licenseDisplay",
-                  "type": "String",
-                  "optional": true,
-                  "allowedValues": [],
-                  "fields": []
-                },
-                {
-                  "path": "type",
-                  "type": "ProjectVersionLicenseLicensesTypeType",
-                  "optional": false,
-                  "allowedValues": [],
-                  "fields": []
-                },
-                {
-                  "path": "ownership",
-                  "type": "String",
-                  "optional": true,
-                  "allowedValues": [],
-                  "fields": []
-                }
-              ]
             },
             {
               "path": "license",
@@ -3439,10 +3310,53 @@
                   "fields": []
                 }
               ]
+            },
+            {
+              "path": "licenses",
+              "type": "java.util.List\u003cProjectVersionLicenseLicensesView\u003e",
+              "optional": true,
+              "allowedValues": [],
+              "fields": [
+                {
+                  "path": "licenseDisplay",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                },
+                {
+                  "path": "type",
+                  "type": "ProjectVersionLicenseTypeType",
+                  "optional": false,
+                  "allowedValues": [],
+                  "fields": []
+                },
+                {
+                  "path": "ownership",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                }
+              ]
             }
           ]
         }
       ]
+    },
+    {
+      "path": "releasedOn",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "versionName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
     }
   ],
   "links": [
@@ -3624,28 +3538,6 @@
       "fields": []
     },
     {
-      "path": "licenseRiskProfile",
-      "type": "RiskProfileViewV4",
-      "optional": false,
-      "allowedValues": [],
-      "fields": [
-        {
-          "path": "counts",
-          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        }
-      ]
-    },
-    {
-      "path": "matchTypes",
-      "type": "java.util.List\u003cVersionBomComponentMatchType\u003e",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "licenses",
       "type": "java.util.List\u003cProjectVersionComponentLicensesViewV4\u003e",
       "optional": false,
@@ -3666,16 +3558,6 @@
           "fields": []
         },
         {
-          "path": "licenseType",
-          "type": "ProjectVersionLicenseLicensesTypeType",
-          "optional": false,
-          "allowedValues": [
-            "CONJUNCTIVE",
-            "DISJUNCTIVE"
-          ],
-          "fields": []
-        },
-        {
           "path": "licenseDisplay",
           "type": "String",
           "optional": false,
@@ -3688,8 +3570,40 @@
           "optional": true,
           "allowedValues": [],
           "fields": []
+        },
+        {
+          "path": "licenseType",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": false,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
+          "fields": []
         }
       ]
+    },
+    {
+      "path": "licenseRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cVersionBomComponentMatchType\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
     },
     {
       "path": "releasedOn",
@@ -4141,16 +4055,6 @@
           "fields": []
         },
         {
-          "path": "licenseType",
-          "type": "ProjectVersionLicenseLicensesTypeType",
-          "optional": false,
-          "allowedValues": [
-            "CONJUNCTIVE",
-            "DISJUNCTIVE"
-          ],
-          "fields": []
-        },
-        {
           "path": "licenseDisplay",
           "type": "String",
           "optional": false,
@@ -4162,6 +4066,16 @@
           "type": "String",
           "optional": true,
           "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseType",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": false,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
           "fields": []
         }
       ]
@@ -4547,16 +4461,6 @@
           "fields": []
         },
         {
-          "path": "licenseType",
-          "type": "ProjectVersionLicenseLicensesTypeType",
-          "optional": false,
-          "allowedValues": [
-            "CONJUNCTIVE",
-            "DISJUNCTIVE"
-          ],
-          "fields": []
-        },
-        {
           "path": "licenseDisplay",
           "type": "String",
           "optional": false,
@@ -4568,6 +4472,16 @@
           "type": "String",
           "optional": true,
           "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseType",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": false,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
           "fields": []
         }
       ]

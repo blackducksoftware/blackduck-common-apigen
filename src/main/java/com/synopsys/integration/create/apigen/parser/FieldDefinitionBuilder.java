@@ -65,6 +65,11 @@ public class FieldDefinitionBuilder {
         String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + UtilStrings.ENUM;
         nameOfEnum = typeTranslator.getSimplifiedClassName(nameOfEnum);
 
+        //debug
+        if (nameOfEnum.contains("ProjectVersionLicenseLicensesType")) {
+            System.out.println("");
+        }
+
         // For fields with type 'Array', change type to a Java List<E>
         if (isArray) {
             final String coreType = type.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : type;

@@ -184,7 +184,7 @@ public class LinkResponseDefinitions {
         projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
         final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "MatchedFileView");
         projectVersionComponentViewDefinitions.put("matched-files", pvcvMatchedFilesDefinition);
-        final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "VersionBomPolicyRuleView");
+        final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "ComponentPolicyRulesView");
         projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
         //final LinkResponseDefinitionItem pvcvPolicyStatusDefinition = new LinkResponseDefinitionItem(true, "VersionBomPolicyStatusView");
         //projectVersionComponentViewDefinitions.put("policy-status", pvcvPolicyStatusDefinition);
