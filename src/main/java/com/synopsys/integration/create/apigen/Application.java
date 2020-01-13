@@ -38,6 +38,7 @@ import com.google.gson.GsonBuilder;
 
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @SpringBootApplication
 @Configuration
@@ -46,6 +47,9 @@ public class Application {
     public static final String API_SPECIFICATION_VERSION = "api-specification/2019.12.0";
     public static final String PATH_TO_GENERATED_FILES_KEY = "BLACKDUCK_COMMON_API_BASE_DIRECTORY";
     public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
+
+    private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
+//    private static final File FREEMARKER_TEMPLATE_DIRECTORY = new File(Application.class.getClassLoader().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getPath());
 
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
@@ -60,14 +64,18 @@ public class Application {
     @Bean
     public freemarker.template.Configuration configuration() throws URISyntaxException, IOException {
         final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        // Where do we load the templates from:
-        final URL templateDirectory = GeneratorRunner.class.getClassLoader().getResource("templates");
-        cfg.setDirectoryForTemplateLoading(new File(templateDirectory.toURI()));
-        // Other Settings
+        File templateDirectory = pathMatchingResourcePatternResolver().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getFile();
+        cfg.setDirectoryForTemplateLoading(templateDirectory);
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
         cfg.setDefaultEncoding("UTF-8");
         cfg.setLocale(Locale.US);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         return cfg;
     }
+
+    @Bean
+    public PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver() {
+        return new PathMatchingResourcePatternResolver(Application.class.getClassLoader());
+    }
+
 }

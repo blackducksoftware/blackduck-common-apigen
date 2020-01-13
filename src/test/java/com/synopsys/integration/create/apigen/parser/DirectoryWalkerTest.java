@@ -1,16 +1,5 @@
 package com.synopsys.integration.create.apigen.parser;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -20,9 +9,18 @@ import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DirectoryWalkerTest {
-
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
@@ -50,11 +48,11 @@ public class DirectoryWalkerTest {
         final JsonArray test = gson.fromJson(testData, JsonElement.class).getAsJsonArray();
 
         for (final JsonElement element : test) {
-            assertTrue(element.toString(), control.contains(element));
+            assertTrue(control.contains(element), element.toString());
         }
 
         for (final JsonElement element : control) {
-            assertTrue(element.toString(), test.contains(element));
+            assertTrue(test.contains(element), element.toString());
         }
     }
 }
