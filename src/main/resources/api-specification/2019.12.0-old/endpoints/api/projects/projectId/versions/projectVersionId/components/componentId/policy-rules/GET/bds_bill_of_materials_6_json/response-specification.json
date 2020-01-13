@@ -1,0 +1,130 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of policy rules requested",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The general identifier of the policy."
+    }, {
+      "path" : "description",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Summary of what the policy represents."
+    }, {
+      "path" : "enabled",
+      "type" : "Boolean",
+      "optional" : false,
+      "description" : "Whether or not the policy is active."
+    }, {
+      "path" : "overridable",
+      "type" : "Boolean",
+      "optional" : false,
+      "description" : "Whether or not the policy can be overridden."
+    }, {
+      "path" : "severity",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The level of impact the policy has.",
+      "allowedValues" : [ "UNSPECIFIED", "TRIVIAL", "MINOR", "MAJOR", "CRITICAL", "BLOCKER" ]
+    }, {
+      "path" : "expression",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "The condition required to violate the policy.",
+      "fields" : [ {
+        "path" : "operator",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The logical operator of the expression."
+      }, {
+        "path" : "expressions[]",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The conditions required to violate the policy.",
+        "fields" : [ {
+          "path" : "name",
+          "type" : "String",
+          "optional" : false,
+          "description" : "What the expression is evaluating against."
+        }, {
+          "path" : "operation",
+          "type" : "String",
+          "optional" : false,
+          "description" : "The boolean condition for the expression."
+        }, {
+          "path" : "parameters",
+          "type" : "Object",
+          "optional" : false,
+          "description" : "The parameters for the expression.",
+          "fields" : [ {
+            "path" : "values[]",
+            "type" : "Array",
+            "optional" : false,
+            "description" : "The parameter values for the expression."
+          } ]
+        } ]
+      } ]
+    }, {
+      "path" : "createdAt",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The date/time the policy was created."
+    }, {
+      "path" : "createdBy",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The username who created the policy."
+    }, {
+      "path" : "createdByUser",
+      "type" : "String",
+      "optional" : false,
+      "description" : "URL for the resource representing the policy creator."
+    }, {
+      "path" : "updatedAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The date/time the policy was last updated."
+    }, {
+      "path" : "updatedBy",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The username who last updated the policy."
+    }, {
+      "path" : "updatedByUser",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL for the resource representing user who last updated the policy."
+    }, {
+      "path" : "policyApprovalStatus",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The approval status of the policy in relation to the component.",
+      "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+    }, {
+      "path" : "comment",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The comment created by the last user to update the component's policy status."
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

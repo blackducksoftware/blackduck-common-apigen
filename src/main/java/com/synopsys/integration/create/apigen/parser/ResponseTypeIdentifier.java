@@ -31,16 +31,16 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class ResponseTypeIdentifier {
 
-    private static List<String> getFieldNames() {
+    private static List<String> getArrayResponseFieldNames() {
         final List<String> dudFieldNames = new ArrayList<>();
         dudFieldNames.add(UtilStrings.ITEMS);
-        dudFieldNames.add("_meta");
+        dudFieldNames.add(UtilStrings.META);
         dudFieldNames.add("totalCount");
         return dudFieldNames;
     }
 
     public static ResponseType getResponseType(final ResponseDefinition response) {
-        final List<String> arrayFieldNames = getFieldNames();
+        final List<String> arrayFieldNames = getArrayResponseFieldNames();
         boolean isArrayResponse = true;
         for (final FieldDefinition field : response.getFields()) {
             final String fieldName = field.getPath();

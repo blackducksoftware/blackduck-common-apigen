@@ -3,7 +3,8 @@
     "path" : "phase",
     "type" : "String",
     "optional" : false,
-    "description" : "Current phase of development of the version"
+    "description" : "Current phase of development of the version.",
+    "allowedValues" : [ "PLANNING", "DEVELOPMENT", "RELEASED", "DEPRECATED", "ARCHIVED", "PRERELEASE" ]
   }, {
     "path" : "createdByUser",
     "type" : "String",
@@ -33,7 +34,8 @@
     "path" : "distribution",
     "type" : "String",
     "optional" : false,
-    "description" : "The distribution of the version"
+    "description" : "The distribution of the version.",
+    "allowedValues" : [ "EXTERNAL", "SAAS", "INTERNAL", "OPENSOURCE" ]
   }, {
     "path" : "releasedOn",
     "type" : "String",
@@ -53,7 +55,8 @@
       "path" : "type",
       "type" : "String",
       "optional" : true,
-      "description" : "The relation of contained licenses. Possible Values: [CONJUNCTIVE, DISJUNCTIVE]"
+      "description" : "The relation of contained licenses.",
+      "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
     }, {
       "path" : "licenses[]",
       "type" : "Array",
@@ -147,6 +150,10 @@
     "optional" : true,
     "description" : "Resource representing the vulnerable components within the version"
   }, {
+    "rel" : "vulnerability-bom",
+    "optional" : true,
+    "description" : "Resource representing the vulnerable components within the version"
+  }, {
     "rel" : "comparison",
     "optional" : true,
     "description" : "Resource to compare the version"
@@ -178,5 +185,9 @@
     "rel" : "issues",
     "optional" : true,
     "description" : "Resource representing the issues associated with components used within the version"
+  }, {
+    "rel" : "bom-status",
+    "optional" : true,
+    "description" : "Resource representing the BOM status of the version"
   } ]
 }

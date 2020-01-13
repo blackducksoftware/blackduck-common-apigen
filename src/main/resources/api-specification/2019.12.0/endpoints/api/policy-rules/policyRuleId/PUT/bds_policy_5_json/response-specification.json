@@ -14,7 +14,8 @@
       "path" : "operator",
       "type" : "String",
       "optional" : false,
-      "description" : "The logical operator of the expression"
+      "description" : "The logical operator of the expression.",
+      "allowedValues" : [ "AND", "OR" ]
     }, {
       "path" : "expressions[]",
       "type" : "Array",

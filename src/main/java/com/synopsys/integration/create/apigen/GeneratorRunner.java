@@ -22,8 +22,6 @@
  */
 package com.synopsys.integration.create.apigen;
 
-import static java.lang.System.exit;
-
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -48,7 +46,6 @@ import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.ClassGenerator;
 import com.synopsys.integration.create.apigen.generation.DiscoveryGenerator;
-import com.synopsys.integration.create.apigen.generation.DummyClassGenerator;
 import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
 import com.synopsys.integration.create.apigen.generation.MediaTypeMapGenerator;
 import com.synopsys.integration.create.apigen.generation.MediaVersionGenerator;
@@ -85,10 +82,6 @@ public class GeneratorRunner {
     private final MediaVersionDataManager mediaVersionDataManager;
     private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
-    public static int classesGenerated = 0;
-
-    public static void incrementClassesGenerated() { classesGenerated++; }
-
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
@@ -115,15 +108,11 @@ public class GeneratorRunner {
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
-        /*
-        // Edit ZipFile
-        ZipParser zipParser = new ZipParser(logger);
-        File zippedRootDirectory = zipParser.getEditedZipRootDirectory(GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION_ZIP));
-        //Get unzipped directory
-        File rootDirectory = zipParser.getDirectoryFromZip(zippedRootDirectory);
-        final DirectoryWalker directoryWalker = new DirectoryWalker(rootDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-         */
         final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
+        if (rootDirectory == null) {
+            logger.info(Application.API_SPECIFICATION_VERSION + " not found in resources");
+            System.exit(0);
+        }
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
 
@@ -153,8 +142,6 @@ public class GeneratorRunner {
         for (final Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
             logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
         }
-
-        logger.info("Classes Generated: " + classesGenerated);
     }
 
     private void generateFiles(final List<ResponseDefinition> responses, final Template randomTemplate) throws Exception {
@@ -179,8 +166,6 @@ public class GeneratorRunner {
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, UtilStrings.PATH_TO_VIEW_FILES, UtilStrings.PATH_TO_RESPONSE_FILES, UtilStrings.PATH_TO_COMPONENT_FILES);
 
         deprecatedClassGenerator.generateDeprecatedClasses();
-
-        //dummyClassGenerator.generateDummyClassesForReferencedButUndefinedObjects(randomTemplate);
     }
 
     private void generateClasses(final FieldDefinition field, final List<ClassGenerator> generators, final String responseMediaType) throws Exception {

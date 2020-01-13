@@ -2,6 +2,7 @@ package ${package};
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import com.synopsys.integration.blackduck.api.core.BlackDuckComponent;
 <#list imports as import>
@@ -18,8 +19,8 @@ public class MediaTypeDiscovery {
 		</#list>
 	}
 
-	public<T extends BlackDuckComponent> String determineMediaType(T bdClass) {
-    		return mediaTypeMap.get(bdClass);
+	public<T extends BlackDuckComponent> Optional<String> determineMediaType(Class<T> bdClass) {
+    		return Optional.ofNullable(mediaTypeMap.get(bdClass));
     	}
 
 }

@@ -8,24 +8,51 @@
   }, {
     "path" : "license",
     "type" : "Object",
-    "optional" : false,
+    "optional" : true,
     "description" : "The combination of licenses to assign to the component version",
     "fields" : [ {
+      "path" : "licenseDisplay",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The display status of the collection of licenses"
+    }, {
       "path" : "type",
       "type" : "String",
-      "optional" : false,
+      "optional" : true,
       "description" : "The relation of contained licenses.",
       "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
     }, {
-      "path" : "license",
-      "type" : "String",
-      "optional" : false,
-      "description" : "URL to the representation of the license for the component version"
-    }, {
       "path" : "licenses[]",
       "type" : "Array",
-      "optional" : false,
-      "description" : "Related licenses which follow the same structure as the license field"
+      "optional" : true,
+      "description" : "Related licenses which follow the same structure as the license field",
+      "fields" : [ {
+        "path" : "license",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the license to assign"
+      }, {
+        "path" : "name",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The name of the license"
+      }, {
+        "path" : "ownership",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The ownership of the license.",
+        "allowedValues" : [ "OPEN_SOURCE", "PROPRIETARY", "UNKNOWN" ]
+      }, {
+        "path" : "licenseDisplay",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The display status of the license"
+      }, {
+        "path" : "licenses[]",
+        "type" : "Array",
+        "optional" : true,
+        "description" : "Related licenses which follow the same structure as the license field"
+      } ]
     } ]
   }, {
     "path" : "notes",
@@ -63,7 +90,7 @@
     "path" : "additionalHomepages",
     "type" : "Array",
     "optional" : false,
-    "description" : "Any addition web addresses containing information on various distributions of the component version"
+    "description" : "Any additional web addresses containing information on various distributions of the component version"
   } ],
   "links" : [ {
     "rel" : "component",

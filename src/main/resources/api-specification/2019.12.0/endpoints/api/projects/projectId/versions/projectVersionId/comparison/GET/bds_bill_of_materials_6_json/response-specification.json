@@ -1,0 +1,100 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of diffed components requested",
+    "fields" : [ {
+      "path" : "component",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "Representation of the component version from the compared (\"right\") project version, or from the original (\"left\") if the component version was removed",
+      "fields" : [ {
+        "path" : "matchTypes",
+        "type" : "Array",
+        "optional" : true,
+        "description" : "The types of matches made to the component within the project.",
+        "allowedValues" : [ "MANUAL", "FILE", "DEPENDENCY", "PARTIAL_FILE", "SNIPPET" ]
+      } ]
+    }, {
+      "path" : "componentVersionState",
+      "type" : "String",
+      "optional" : true,
+      "description" : "State of the component version in the directional diff.",
+      "allowedValues" : [ "UNCHANGED", "ADDED", "REMOVED", "CHANGED" ]
+    }, {
+      "path" : "componentState",
+      "type" : "String",
+      "optional" : true,
+      "description" : "State of the component in the directional diff.",
+      "allowedValues" : [ "UNCHANGED", "ADDED", "REMOVED", "CHANGED" ]
+    }, {
+      "path" : "leftLicenses",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The combination of licenses assigned to the component version in the original (\"left\") project version"
+    }, {
+      "path" : "leftUsages[]",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The usage of the component in the original (\"left\") project version.",
+      "allowedValues" : [ "SOURCE_CODE", "STATICALLY_LINKED", "DYNAMICALLY_LINKED", "SEPARATE_WORK", "MERELY_AGGREGATED", "IMPLEMENTATION_OF_STANDARD", "PREREQUISITE", "DEV_TOOL_EXCLUDED" ]
+    } ]
+  }, {
+    "path" : "totalAddedComponents",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of components in the compared project version that aren't in the original project version"
+  }, {
+    "path" : "totalRemovedComponentVersions",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of component versions in the original project version that aren't in the compared project version"
+  }, {
+    "path" : "totalUnchangedComponents",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of components that are consistent between both project versions"
+  }, {
+    "path" : "totalUnchangedComponentVersions",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of component versions that are consistent between both project versions"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalChangedComponentVersions",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of component versions that are in only one of the project versions"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  }, {
+    "path" : "totalRemovedComponents",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of components in the original project version that aren't in the compared project version"
+  }, {
+    "path" : "totalAddedComponentVersions",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of component versions in the compared project version that aren't in the original project version"
+  }, {
+    "path" : "items",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of diffed BOM component representations requested"
+  }, {
+    "path" : "totalChangedComponents",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of components that are in only one of the project versions"
+  } ],
+  "links" : [ ]
+}

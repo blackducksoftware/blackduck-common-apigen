@@ -4,7 +4,8 @@
     "path" : "reportType",
     "type" : "String",
     "optional" : true,
-    "description" : "The file type for the given report"
+    "description" : "The file type for the given report.",
+    "allowedValues" : [ "VERSION_LICENSE", "VERSION", "VULNERABILITY_REMEDIATION", "VULNERABILITY_STATUS", "VULNERABILITY_UPDATE" ]
   }, {
     "path" : "versionId",
     "type" : "String",

@@ -40,12 +40,6 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 @Component
 public class InputDataFinder {
-    private final NameAndPathManager nameAndPathManager;
-
-    @Autowired
-    public InputDataFinder(final NameAndPathManager nameAndPathManager) {
-        this.nameAndPathManager = nameAndPathManager;
-    }
 
     public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
@@ -96,22 +90,6 @@ public class InputDataFinder {
             inputData.put(UtilStrings.LINKS, links);
         }
         return inputData;
-    }
-
-    private void setPackageAndBaseClass(ClassTypeEnum classType, String fieldPackage, String fieldBaseClass, Set<String> imports) {
-        if (classType.isView()) {
-            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
-            fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
-        } else if (classType.isResponse()) {
-            fieldPackage = UtilStrings.GENERATED_RESPONSE_PACKAGE;
-            fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
-        } else {
-            fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
-            fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
-        }
     }
 
     private void identifyOptionalFields(final List<FieldDefinition> classFields) {
