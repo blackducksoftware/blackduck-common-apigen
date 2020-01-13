@@ -38,9 +38,9 @@
     "optional" : true,
     "description" : "If the project should be matched against for future scans"
   }, {
-    "path" : "customSignatureDepth",
-    "type" : "Number",
+    "path" : "deepLicenseDataEnabled",
+    "type" : "Boolean",
     "optional" : true,
-    "description" : "The match depth when custom signature is enabled for the project"
+    "description" : "Whether Deep License Data is computed, only used when feature is enabled"
   } ]
 }

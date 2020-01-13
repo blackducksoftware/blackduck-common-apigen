@@ -11,6 +11,9 @@
   }, {
     "name" : "q",
     "description" : "A specification of search terms to filter results by. Of format `<field1>:<value1>,...`. Searchable Fields: [name, description, appId]"
+  }, {
+    "name" : "filter",
+    "description" : "A specification of properties to <<filtering,filter>> results by. Of format `<filterKey>:<filterValue>`. Supported Filters: [subscribed]"
   } ],
   "fields" : [ ]
 }

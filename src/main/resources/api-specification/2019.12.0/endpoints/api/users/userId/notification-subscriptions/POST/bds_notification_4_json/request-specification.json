@@ -1,0 +1,7 @@
+{
+  "parameters" : [ {
+    "name" : "subscriptionTarget",
+    "description" : "The URL of the project to subscribe to"
+  } ],
+  "fields" : [ ]
+}

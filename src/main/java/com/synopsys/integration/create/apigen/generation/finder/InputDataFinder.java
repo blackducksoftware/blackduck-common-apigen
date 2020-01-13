@@ -92,22 +92,6 @@ public class InputDataFinder {
         return inputData;
     }
 
-    private void setPackageAndBaseClass(ClassTypeEnum classType, String fieldPackage, String fieldBaseClass, Set<String> imports) {
-        if (classType.isView()) {
-            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
-            fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
-        } else if (classType.isResponse()) {
-            fieldPackage = UtilStrings.GENERATED_RESPONSE_PACKAGE;
-            fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
-        } else {
-            fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
-            fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
-        }
-    }
-
     private void identifyOptionalFields(final List<FieldDefinition> classFields) {
         for (final FieldDefinition field : classFields) {
             if (field.isOptional()) {

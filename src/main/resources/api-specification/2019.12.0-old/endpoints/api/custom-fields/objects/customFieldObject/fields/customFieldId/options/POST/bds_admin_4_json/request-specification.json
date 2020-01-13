@@ -1,0 +1,14 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "position",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "What position the newly created custom field option should appear in, relative to other options on this custom field"
+  }, {
+    "path" : "label",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the option"
+  } ]
+}

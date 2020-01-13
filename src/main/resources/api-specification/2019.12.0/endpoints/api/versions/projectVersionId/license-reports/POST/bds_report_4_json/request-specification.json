@@ -21,7 +21,7 @@
     "type" : "Array",
     "optional" : true,
     "description" : "The version report categories for the given report.",
-    "allowedValues" : [ "VERSION", "CODE_LOCATIONS", "COMPONENTS", "SECURITY", "FILES", "ATTACHMENTS", "CRYPTO_ALGORITHMS", "PROJECT_VERSION_CUSTOM_FIELDS", "BOM_COMPONENT_CUSTOM_FIELDS", "LICENSE_TERM_FULFILLMENT" ]
+    "allowedValues" : [ "COPYRIGHT_TEXT" ]
   }, {
     "path" : "locale",
     "type" : "String",

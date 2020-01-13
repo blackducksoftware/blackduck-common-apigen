@@ -90,11 +90,6 @@ public class MediaVersionGenerator {
                 final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
                 input.put(UtilStrings.IMPORT_PATH, importPath);
 
-                //debug
-                if (latestMediaVersion.getVersionedClassName().endsWith("0")) {
-                    continue;
-                }
-
                 input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
                 generatedClassWriter.writeFile(className, randomTemplate, input, pathToFiles);
             } catch (final NoSuchElementException e) {

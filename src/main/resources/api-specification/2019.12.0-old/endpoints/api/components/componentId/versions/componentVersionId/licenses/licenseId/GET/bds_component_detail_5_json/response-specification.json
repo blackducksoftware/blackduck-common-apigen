@@ -1,0 +1,52 @@
+{
+  "fields" : [ {
+    "path" : "notes",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The license’s notes."
+  }, {
+    "path" : "licenseStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The approval status of the license.",
+    "allowedValues" : [ "UNREVIEWED", "IN_REVIEW", "REVIEWED", "APPROVED", "CONDITIONALLY_APPROVED", "REJECTED", "DEPRECATED" ]
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Label distinguishing the license from other licenses"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "licenseFamily",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The representation of the license family",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The name of the license family"
+    }, {
+      "path" : "href",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The URL to the representation of the license family"
+    } ]
+  }, {
+    "path" : "licenseSource",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The source of the license.",
+    "allowedValues" : [ "CUSTOM", "KB", "MODIFIED_KB" ]
+  }, {
+    "path" : "expirationDate",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license will expire"
+  } ],
+  "links" : [ ]
+}

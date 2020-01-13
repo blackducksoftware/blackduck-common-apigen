@@ -58,10 +58,7 @@ public class GeneratedClassWriter {
     public static File getBaseDirectory() {
         final String baseDirectory = System.getenv(Application.PATH_TO_GENERATED_FILES_KEY);
         if (baseDirectory == null) {
-            logger.info("Please set Environment variable 'BLACKDUCK_COMMON_API_BASE_DIRECTORY' to directory in which generated files will live");
-            for (final Map.Entry<String, String> var : System.getenv().entrySet()) {
-                logger.info(var.getKey() + " : " + var.getValue());
-            }
+            logger.info("Please set Environment variable " + Application.PATH_TO_GENERATED_FILES_KEY + " to directory in which generated files will live");
             System.exit(0);
         }
         return new File(baseDirectory);
@@ -79,7 +76,6 @@ public class GeneratedClassWriter {
         final Writer fileWriter = new FileWriter(new File(testFile, className + ".java"));
         try {
             template.process(input, fileWriter);
-            GeneratorRunner.incrementClassesGenerated();
         } finally {
             fileWriter.close();
         }

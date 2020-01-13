@@ -1,0 +1,57 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  }, {
+    "path" : "items",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of matched file representations requested",
+    "fields" : [ {
+      "path" : "filePath",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The representation of the composite path with archive context",
+      "fields" : [ {
+        "path" : "path",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The local relative path to the matched file"
+      }, {
+        "path" : "archiveContext",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The local path to the archived file relative to the project's root directory"
+      }, {
+        "path" : "fileName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The name of the file"
+      }, {
+        "path" : "compositePathContext",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The composite of the file path and archive context, of form path#archiveContext"
+      } ]
+    }, {
+      "path" : "usages[]",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The usages of the component within the project.",
+      "allowedValues" : [ "SOURCE_CODE", "STATICALLY_LINKED", "DYNAMICALLY_LINKED", "SEPARATE_WORK", "MERELY_AGGREGATED", "IMPLEMENTATION_OF_STANDARD", "PREREQUISITE", "DEV_TOOL_EXCLUDED" ]
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  } ],
+  "links" : [ ]
+}

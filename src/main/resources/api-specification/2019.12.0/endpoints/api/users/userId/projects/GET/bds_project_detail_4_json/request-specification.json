@@ -5,6 +5,9 @@
   }, {
     "name" : "limit",
     "description" : "The maximum number of results to read from the available set"
+  }, {
+    "name" : "sort",
+    "description" : "A specification of one or more fields to sort results by. Of format `<field> [asc | desc]`. Sortable Fields: [name]"
   } ],
   "fields" : [ ]
 }

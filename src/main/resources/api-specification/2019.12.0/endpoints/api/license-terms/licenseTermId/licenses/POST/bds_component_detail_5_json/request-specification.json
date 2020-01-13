@@ -1,0 +1,20 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Collection of license term association requests",
+    "fields" : [ {
+      "path" : "license",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The URL to the representation of the license"
+    }, {
+      "path" : "fulfillmentRequired",
+      "type" : "Boolean",
+      "optional" : false,
+      "description" : "The fulfillment requirement of the license term"
+    } ]
+  } ]
+}

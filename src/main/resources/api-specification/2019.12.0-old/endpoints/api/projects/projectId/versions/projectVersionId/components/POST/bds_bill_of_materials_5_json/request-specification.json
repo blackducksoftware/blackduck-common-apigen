@@ -1,0 +1,29 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "license",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The adjusted license of the component. If not provided, the component or project version's original license will be used."
+  }, {
+    "path" : "component",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to the representation of the component, component version, project, or project version to add to the BOM"
+  }, {
+    "path" : "componentModification",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Description of component modification"
+  }, {
+    "path" : "componentPurpose",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The purpose of the component"
+  }, {
+    "path" : "componentModified",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Displays whether the component has been modified"
+  } ]
+}

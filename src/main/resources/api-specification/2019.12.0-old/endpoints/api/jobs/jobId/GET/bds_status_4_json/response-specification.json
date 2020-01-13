@@ -1,0 +1,54 @@
+{
+  "fields" : [ {
+    "path" : "errorText",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Description of any errors that happened attempting to run the job"
+  }, {
+    "path" : "progressData",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Description of the progress made by the job"
+  }, {
+    "path" : "startedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time the job was started"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Key which indicates the function the job is performing"
+  }, {
+    "path" : "scheduledAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time the job was initially scheduled"
+  }, {
+    "path" : "status",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The current state of the job.",
+    "allowedValues" : [ "SCHEDULED", "DISPATCHED", "RUNNING", "SUSPENDED", "TERMINATED", "COMPLETED", "SKIPPED", "FAILED" ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The last date/time properties of the job were updated"
+  }, {
+    "path" : "finishedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The date/time the job finished"
+  } ],
+  "links" : [ {
+    "rel" : "related-to",
+    "optional" : true,
+    "description" : "If the job is related to another item (like a project version), a link to that item. May also contain a label for the linked item"
+  } ]
+}

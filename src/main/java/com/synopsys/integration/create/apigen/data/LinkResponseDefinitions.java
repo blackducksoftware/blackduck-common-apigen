@@ -45,21 +45,13 @@ public class LinkResponseDefinitions {
     private Map<String, Map<String, LinkResponseDefinitionItem>> populateDefinitions() {
         final Map<String, Map<String, LinkResponseDefinitionItem>> definitions = new HashMap<>();
 
-        /*
-         * - Nothing about it in the docs
-         ** - Can't find example where totalCount != 0
-         *** - Missing a parameter in query...
-         **** - In docs, but no Id in path
-         */
-
-        // CodeLocationView - * response seems like more than a string
+        // CodeLocationView
         final Map<String, LinkResponseDefinitionItem> codeLocationViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem clvScanDefinition = new LinkResponseDefinitionItem(false, "String");
         codeLocationViewDefinitions.put("scans", clvScanDefinition);
         definitions.put("CodeLocationView", codeLocationViewDefinitions);
 
         // ComponentVersionView
-
         final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
         //final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
         //componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
@@ -74,41 +66,16 @@ public class LinkResponseDefinitions {
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
 
         // ComponentView
-
         final Map<String, LinkResponseDefinitionItem> componentViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem cvVersionsDefinition = new LinkResponseDefinitionItem(true, "ComponentVersionView");
         componentViewDefinitions.put("versions", cvVersionsDefinition);
-        //final LinkResponseDefinitionItem cvHomepageDefinition = new LinkResponseDefinitionItem(true, "HomepageView");
-        //componentViewDefinitions.put("homepage", cvHomepageDefinition);
-        //final LinkResponseDefinitionItem cvOpenHubDefinition = new LinkResponseDefinitionItem(true, "OpenHubView");
-        //componentViewDefinitions.put("openhub", cvOpenHubDefinition);
         final LinkResponseDefinitionItem cvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
         componentViewDefinitions.put("vulnerabilities", cvVulnerabilitiesDefinition);
-        //final LinkResponseDefinitionItem cvSmallLogoDefinition = new LinkResponseDefinitionItem(true, "LogoView");
-        //componentViewDefinitions.put("smallLogo", cvSmallLogoDefinition);
-        //final LinkResponseDefinitionItem cvMediumLogoDefinition = new LinkResponseDefinitionItem(true, "LogoView");
-        //componentViewDefinitions.put("mediumLogo", cvMediumLogoDefinition);
         final LinkResponseDefinitionItem cvTagsDefinition = new LinkResponseDefinitionItem(true, "TagView");
         componentViewDefinitions.put("tags", cvTagsDefinition);
         final LinkResponseDefinitionItem cvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
         componentViewDefinitions.put("custom-fields", cvCustomFieldsDefinition);
         definitions.put("ComponentView", componentViewDefinitions);
-
-        // ComponentCustomFieldView ***
-        /*
-        final Map<String, LinkResponseDefinitionItem> componentCustomFieldViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem ccfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
-        componentCustomFieldViewDefinitions.put("custom-field-option-list", ccfvCustomFieldOptionListDefinition);
-        data.put("ComponentCustomFieldView", componentCustomFieldViewDefinitions);
-        */
-
-        // CustomFieldView **
-        /*
-        final Map<String, LinkResponseDefinitionItem> customFieldViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem cfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
-        customFieldViewDefinitions.put("custom-field-option-list", cfvCustomFieldOptionListDefinition);
-        data.put("CustomFieldView", customFieldViewDefinitions);
-        */
 
         // LicenseView
         final Map<String, LinkResponseDefinitionItem> licenseViewDefinitions = new HashMap<>();
@@ -130,17 +97,6 @@ public class LinkResponseDefinitions {
         projectViewDefinitions.put("users", pvUsersDefinition);
         final LinkResponseDefinitionItem pvUserGroupsDefinition = new LinkResponseDefinitionItem(true, "AssignedUserGroupView"); // ****
         projectViewDefinitions.put("usergroups", pvUserGroupsDefinition);
-        /*
-            These ProjectView links I added myself, based on API Specs data (not from definitions_with_links.txt)
-        */
-        //final LinkResponseDefinitionItem pvAssignableUsersDefinition = new LinkResponseDefinitionItem(true, "AssignableUserView");
-        //projectViewDefinitions.put("assignable-users", pvAssignableUsersDefinition);
-        //final LinkResponseDefinitionItem pvAssignableUserGroupsDefinition = new LinkResponseDefinitionItem(true, "AssignableUserGroupView");
-        //projectViewDefinitions.put("assignable-usergroups", pvAssignableUserGroupsDefinition);
-        //final LinkResponseDefinitionItem pvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectCustomFieldView");
-        //projectViewDefinitions.put("custom-fields", pvCustomFieldsDefinition);
-        //final LinkResponseDefinitionItem pvProjectJournalDefinition = new LinkResponseDefinitionItem(true, "ProjectJournalView");
-        //projectViewDefinitions.put("project-journal", pvProjectJournalDefinition);
         definitions.put("ProjectView", projectViewDefinitions);
 
         // ProjectVersionView
@@ -161,21 +117,8 @@ public class LinkResponseDefinitions {
         //projectVersionViewDefinitions.put("versionReport", pvvVersionReportDefinition);
         final LinkResponseDefinitionItem pvvLicenseReportsDefinition = new LinkResponseDefinitionItem(true, "ReportView"); // *
         projectVersionViewDefinitions.put("licenseReports", pvvLicenseReportsDefinition);
-        /*
-            These ProjectVersionView links I added myself, based on API Specs data (not from definitions_with_links.txt)
-        */
-        //final LinkResponseDefinitionItem pvvHierarchicalComponentsDefinition = new LinkResponseDefinitionItem(true, "HierarchicalVersionBomComponentView");
-        //projectVersionViewDefinitions.put("hierarchical-components", pvvHierarchicalComponentsDefinition);
-        //final LinkResponseDefinitionItem pvvComparisonDefinition = new LinkResponseDefinitionItem(true, "VersionBomComponentDiffView");
-        //projectVersionViewDefinitions.put("comparison", pvvComparisonDefinition);
         final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
         projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
-        //final LinkResponseDefinitionItem pvvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionCustomFieldView");
-        //projectVersionViewDefinitions.put("custom-fields", pvvCustomFieldsDefinition);
-        //final LinkResponseDefinitionItem pvvAttachmentsDefinition = new LinkResponseDefinitionItem(true, "VersionBomAttachmentView");
-        //projectVersionViewDefinitions.put("attachments", pvvAttachmentsDefinition);
-        //final LinkResponseDefinitionItem pvvProjectVersionJournalDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionJournalView");
-        //projectVersionViewDefinitions.put("project-version-journal", pvvProjectVersionJournalDefinition);
         definitions.put("ProjectVersionView", projectVersionViewDefinitions);
 
         // ProjectVersionComponentView
@@ -186,23 +129,7 @@ public class LinkResponseDefinitions {
         projectVersionComponentViewDefinitions.put("matched-files", pvcvMatchedFilesDefinition);
         final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "ComponentPolicyRulesView");
         projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
-        //final LinkResponseDefinitionItem pvcvPolicyStatusDefinition = new LinkResponseDefinitionItem(true, "VersionBomPolicyStatusView");
-        //projectVersionComponentViewDefinitions.put("policy-status", pvcvPolicyStatusDefinition);
         definitions.put("ProjectVersionComponentView", projectVersionComponentViewDefinitions);
-
-        // ProjectCustomFieldView - not from definitions_with_links.txt
-        //final Map<String, LinkResponseDefinitionItem> projectCustomFieldViewDefinitions = new HashMap<>();
-        //final LinkResponseDefinitionItem pcfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
-        //projectCustomFieldViewDefinitions.put("custom-field-option-list", pcfvCustomFieldOptionListDefinition);
-        //data.put("ProjectCustomFieldView", projectCustomFieldViewDefinitions);
-
-        // ProjectVersionCustomFieldView - **
-        /*
-        final Map<String, LinkResponseDefinitionItem> projectVersionCustomFieldViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem pvcfvCustomFieldOptionListDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
-        projectVersionCustomFieldViewDefinitions.put("custom-field-option-list", pvcfvCustomFieldOptionListDefinition);
-        data.put("ProjectVersionCustomFieldView", projectVersionCustomFieldViewDefinitions);
-        */
 
         // ReportView
         final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();

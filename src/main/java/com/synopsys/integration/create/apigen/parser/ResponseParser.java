@@ -60,29 +60,11 @@ public class ResponseParser {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
-    public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) throws FileNotFoundException {
-        //FIXME - this is super hacky
-        //final File endpointsPath = getEndpointsPath(specificationRootDirectory);
+    public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
         return parseResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
-    }
-
-    private File getEndpointsPath(File specificationRootDirectory) throws FileNotFoundException {
-        File file = specificationRootDirectory;
-        List<File> files = new ArrayList<>();
-        files.add(specificationRootDirectory);
-        while(!files.isEmpty()) {
-            for (File child : file.listFiles()) {
-                if (child.getName().equals("endpoints")) {
-                    return child;
-                }
-                files.add(child);
-            }
-            file = files.get(0);
-        }
-        throw new FileNotFoundException("Could not find endpoints path");
     }
 
     private ArrayList<ResponseDefinition> parseResponses(final File parent, final int prefixLength) {

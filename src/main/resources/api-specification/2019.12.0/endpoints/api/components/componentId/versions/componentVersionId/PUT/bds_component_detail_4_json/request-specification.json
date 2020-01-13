@@ -59,6 +59,6 @@
     "path" : "additionalHomepages",
     "type" : "Array",
     "optional" : false,
-    "description" : "Any addition web addresses containing information on various distributions of the component version"
+    "description" : "Any additional web addresses containing information on various distributions of the component version"
   } ]
 }

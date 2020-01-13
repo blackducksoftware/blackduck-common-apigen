@@ -3,7 +3,7 @@
     "path" : "items[]",
     "type" : "Array",
     "optional" : false,
-    "description" : "The specific sub-set of <<license-term-representation,license term representations>> requested"
+    "description" : "The specific sub-set of <<license-term-association-representation,license term association representations>> requested"
   }, {
     "path" : "_meta",
     "type" : "Object",

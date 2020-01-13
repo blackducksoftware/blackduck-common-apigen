@@ -86,7 +86,7 @@ public class TypeTranslator {
     }
 
     private Map<String, List<FieldTranslation>> populateFieldTranslations() {
-        // FIXME - this Map is a patch-job– although only way, given format of specs data (as of 11/19/19)
+        // FIXME - this Map is a patch-job– although only way, given format of specs data (as of 1/13/20)
         final Map<String, List<FieldTranslation>> fieldTranslations = new HashMap<>();
 
         // ComponentActivityRiskProfileView

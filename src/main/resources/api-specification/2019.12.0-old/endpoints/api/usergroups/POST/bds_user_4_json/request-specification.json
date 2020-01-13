@@ -1,0 +1,19 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "default",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "The boolean value if the group is default or not"
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the user group"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "The active status of the user group"
+  } ]
+}
