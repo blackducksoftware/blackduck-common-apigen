@@ -137,16 +137,18 @@ public class NameParser {
         redundantNamePrefixes.add("Licenses");
         redundantNamePrefixes.add("LicenseFamilies");
         redundantNamePrefixes.add("LicenseTerms");
+        redundantNamePrefixes.add("LicenseTermCategories");
         redundantNamePrefixes.add("Objects");
+        redundantNamePrefixes.add("Origins");
         redundantNamePrefixes.add("PolicyRules");
         redundantNamePrefixes.add("Projects");
         redundantNamePrefixes.add("Reports");
         redundantNamePrefixes.add("Roles");
         redundantNamePrefixes.add("ScanSummaries");
+        redundantNamePrefixes.add("Tags");
         redundantNamePrefixes.add("Usergroups");
         redundantNamePrefixes.add("Users");
         redundantNamePrefixes.add("Versions");
-        redundantNamePrefixes.add("Objects");
         redundantNamePrefixes.add("Vulnerabilities");
 
         return redundantNamePrefixes;

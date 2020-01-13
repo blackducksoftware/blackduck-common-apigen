@@ -74,7 +74,6 @@ public class GeneratorRunner {
     private final ViewGenerator viewGenerator;
     private final DiscoveryGenerator discoveryGenerator;
     private final MediaTypeMapGenerator mediaTypeMapGenerator;
-    private final DummyClassGenerator dummyClassGenerator;
     private final MediaVersionGenerator mediaVersionGenerator;
     private final DeprecatedClassGenerator deprecatedClassGenerator;
     private final List<ClassGenerator> generators;
@@ -85,7 +84,7 @@ public class GeneratorRunner {
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
-        final MediaTypeMapGenerator mediaTypeMapGenerator, final DummyClassGenerator dummyClassGenerator, final MediaVersionGenerator mediaVersionGenerator, final DeprecatedClassGenerator deprecatedClassGenerator, final List<ClassGenerator> generators,
+        final MediaTypeMapGenerator mediaTypeMapGenerator, final MediaVersionGenerator mediaVersionGenerator, final DeprecatedClassGenerator deprecatedClassGenerator, final List<ClassGenerator> generators,
         final Configuration config, final MediaVersionDataManager mediaVersionDataManager) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
@@ -99,7 +98,6 @@ public class GeneratorRunner {
         this.discoveryGenerator = discoveryGenerator;
         this.mediaTypeMapGenerator = mediaTypeMapGenerator;
         this.deprecatedClassGenerator = deprecatedClassGenerator;
-        this.dummyClassGenerator = dummyClassGenerator;
         this.mediaVersionGenerator = mediaVersionGenerator;
         this.generators = generators;
         this.config = config;

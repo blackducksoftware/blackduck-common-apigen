@@ -53,16 +53,20 @@ public class TypeTranslator {
 
         // swaggerName, api_SpecsName
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
+        translations.put("AssignedProjectView", "UserProjectsView");
         translations.put("ComplexLicenseView", "ProjectVersionLicenseView");
         translations.put("ComplexLicenseType", "ProjectVersionLicenseLicensesTypeType");
         translations.put("ComponentSearchResultView", "ComponentsView");
         translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
+        translations.put("CompositePathWithArchiveContext", "ComponentMatchedFilesItemsFilePathView");
         translations.put("CustomFieldType", "CustomFieldTypeType");
         translations.put("CustomFieldTypeView", "TypesView");
         translations.put("CustomFieldView", "FieldsCustomFieldView");
         translations.put("CustomFieldWithValueView", "CustomFieldView");
         translations.put("LicenseFamilySummaryView", "ProjectVersionLicenseLicenseLicenseFamilySummaryView");
+        translations.put("MatchedFileView", "ComponentMatchedFilesView");
         translations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
+        translations.put("NotificationSubscriptionView", "NotificationSubscriptionsSubscriptionView");
         translations.put("OriginSourceType", "ComponentSourceType");
         translations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
         translations.put("PolicyRuleExpressionParameter", "PolicyRuleExpressionExpressionsParametersView");
@@ -78,9 +82,11 @@ public class TypeTranslator {
         translations.put("RiskCountType", "ComponentVersionRiskProfileRiskDataCountsCountTypeType");
         translations.put("RoleAssignmentView", "UserRoleAssignmentView");
         translations.put("VersionBomLicenseView", "ComponentLicensesView");
+        translations.put("VersionBomComponentDiffView", "ProjectVersionComparisonView");
         translations.put("VersionBomComponentView", "ProjectVersionComponentView");
         translations.put("VersionBomPolicyRuleView", "ComponentPolicyRulesView");
         translations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
+        translations.put("VulnerableComponentView", "ProjectVersionVulnerableBomComponentsView");
 
         return translations;
     }

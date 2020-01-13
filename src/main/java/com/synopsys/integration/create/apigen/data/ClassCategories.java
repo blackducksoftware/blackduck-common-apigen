@@ -69,6 +69,7 @@ public class ClassCategories {
         views.add("ComplexLicenseView");
         views.add("ComponentCustomFieldView");
         views.add("ComponentDetailsView");
+        views.add("ComponentMatchedFilesView");
         views.add("ComponentPolicyStatusView");
         views.add("ComponentPolicyRulesView");
         views.add("ComponentVersionPolicyStatusView");
@@ -113,6 +114,7 @@ public class ClassCategories {
         views.add("ProjectVersionPolicyStatusView");
         views.add("ProjectVersionReportView");
         views.add("ProjectVersionView");
+        views.add("ProjectVersionVulnerableBomComponentsView");
         views.add("ProjectView");
         views.add("RegistrationAttributesInternalView");
         views.add("RegistrationSummaryInternalView");
@@ -169,6 +171,7 @@ public class ClassCategories {
         responses.add("RemediationOptionsView");
         responses.add("TypesView");
         responses.add("UserCommentView");
+        responses.add("UserProjectsView");
         responses.add("VersionBomAttachmentView");
         responses.add("VersionRiskProfileView");
 
@@ -193,6 +196,7 @@ public class ClassCategories {
         components.add("ComponentActivityRiskProfileView");
         components.add("ComponentLicenseRiskProfileView");
         components.add("ComponentLicensesRiskView");
+        components.add("ComponentMatchedFilesItemsFilePathView");
         components.add("ComponentOperationalRiskProfileView");
         components.add("ComponentSecurityRiskProfileView");
         components.add("ComponentReviewedDetailsView");
@@ -239,6 +243,7 @@ public class ClassCategories {
         components.add("LicensesLicenseViewStatusUpdatedBy"); //
         components.add("LicenseUpdatedByView");
         components.add("NameValuePairView");
+        components.add("NotificationSubscriptionsSubscriptionView");
         components.add("PolicyRuleExpressionExpressionsView"); //
         components.add("PolicyRuleExpressionView"); //
         components.add("PolicyRulesPolicyruleViewExpression"); //
@@ -253,6 +258,7 @@ public class ClassCategories {
         components.add("PolicyStatusSummary");
         components.add("ProjectData");
         components.add("ProjectRiskProfile");
+        components.add("ProjectVersionComparisonView");
         components.add("ProjectVersionComponentReviewedDetailsReviewingUserView");
         components.add("ProjectVersionLicenseLicenseLicenseFamilySummaryView"); //
         components.add("ProjectVersionLicenseLicensesLicenseFamilySummaryView"); //
