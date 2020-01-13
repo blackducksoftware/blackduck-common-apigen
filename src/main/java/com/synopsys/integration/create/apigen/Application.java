@@ -45,7 +45,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 public class Application {
     //public static final String RESPONSE_TOKEN = "Id" + File.separator + "GET" + File.separator; <-- old token requiring "Id" in path
     public static final String RESPONSE_TOKEN = "GET" + File.separator;
-    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.10.0";
+    public static final String API_SPECIFICATION_VERSION = "api-specification/2019.12.0";
     public static final String API_SPECIFICATION_VERSION_ZIP = "api-specification/2019.10.0.zip";
     public static final String PATH_TO_GENERATED_FILES_KEY = "BLACKDUCK_COMMON_API_BASE_DIRECTORY";
     public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
