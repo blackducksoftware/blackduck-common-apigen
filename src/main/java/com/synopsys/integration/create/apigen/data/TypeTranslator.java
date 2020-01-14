@@ -68,8 +68,9 @@ public class TypeTranslator {
         translations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
         translations.put("NotificationSubscriptionView", "NotificationSubscriptionsSubscriptionView");
         translations.put("OriginSourceType", "ComponentSourceType");
-        translations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
+        translations.put("PolicyRuleExpressionSetOperatorType", "PolicyRuleExpressionOperatorType");
         translations.put("PolicyRuleExpressionParameter", "PolicyRuleExpressionExpressionsParametersView");
+        translations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
         translations.put("PolicyRuleExpressionView", "PolicyRuleExpressionExpressionsView");
         translations.put("PolicySummaryStatusType", "PolicyStatusType");
         translations.put("PolicyStatusView", "ComponentPolicyStatusView");
@@ -83,6 +84,8 @@ public class TypeTranslator {
         translations.put("RoleAssignmentView", "UserRoleAssignmentView");
         translations.put("VersionBomLicenseView", "ComponentLicensesView");
         translations.put("VersionBomComponentDiffView", "ProjectVersionComparisonView");
+        translations.put("VersionBomComponentMatchType", "ProjectVersionMatchedFilesItemsMatchesMatchTypeType");
+        translations.put("VersionBomComponentReviewStatusType", "ProjectVersionComponentReviewStatusType");
         translations.put("VersionBomComponentView", "ProjectVersionComponentView");
         translations.put("VersionBomPolicyRuleView", "ComponentPolicyRulesView");
         translations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
@@ -122,11 +125,11 @@ public class TypeTranslator {
         final List<FieldTranslation> pvcvTranslations = new ArrayList<>();
         final FieldTranslation pvcvOriginsTranslation = new FieldTranslation("origins", "VersionBomOriginView", UtilStrings.ARRAY);
         pvcvTranslations.add(pvcvOriginsTranslation);
-        final FieldTranslation pvcvMatchTypesTranslation = new FieldTranslation("matchTypes", "VersionBomComponentMatchType", UtilStrings.ARRAY);
+        final FieldTranslation pvcvMatchTypesTranslation = new FieldTranslation("matchTypes", "ProjectVersionMatchedFilesItemsMatchesMatchTypeType", UtilStrings.ARRAY);
         pvcvTranslations.add(pvcvMatchTypesTranslation);
         final FieldTranslation pvcvUsagesTranslation = new FieldTranslation("usages", "LicenseFamilyLicenseFamilyRiskRulesUsageType", UtilStrings.ARRAY);
         pvcvTranslations.add(pvcvUsagesTranslation);
-        final FieldTranslation pvcvReviewStatusTranslation = new FieldTranslation("reviewStatus", "VersionBomComponentReviewStatusType", UtilStrings.STRING);
+        final FieldTranslation pvcvReviewStatusTranslation = new FieldTranslation("reviewStatus", "ProjectVersionComponentReviewStatusType", UtilStrings.STRING);
         pvcvTranslations.add(pvcvReviewStatusTranslation);
         final FieldTranslation pvcvApprovalStatusTranslation = new FieldTranslation("approvalStatus", "PolicyStatusType", UtilStrings.STRING);
         pvcvTranslations.add(pvcvApprovalStatusTranslation);
