@@ -111,7 +111,6 @@ public class ApiPathDataPopulator {
         final Set<ApiPathData> addOns = new HashSet<>();
 
         addOns.add(new ApiPathData("notifications", "NotificationView", true));
-        addOns.add(new ApiPathData("current-version", "CurrentVersionView", false));
 
         return addOns;
     }

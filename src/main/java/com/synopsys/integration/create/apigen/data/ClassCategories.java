@@ -70,8 +70,10 @@ public class ClassCategories {
         views.add("ComponentCustomFieldView");
         views.add("ComponentDetailsView");
         views.add("ComponentMatchedFilesView");
+        views.add("ComponentOriginMatchedFilesView");
         views.add("ComponentPolicyStatusView");
         views.add("ComponentPolicyRulesView");
+        views.add("ComponentVersionMatchedFilesView");
         views.add("ComponentVersionPolicyStatusView");
         views.add("ComponentVersionRiskProfileView");
         views.add("ComponentVersionView");
@@ -172,6 +174,7 @@ public class ClassCategories {
         responses.add("TypesView");
         responses.add("UserCommentView");
         responses.add("UserProjectsView");
+        responses.add("UserGroupProjectsView");
         responses.add("VersionBomAttachmentView");
         responses.add("VersionRiskProfileView");
 
@@ -271,6 +274,7 @@ public class ClassCategories {
         components.add("ProjectVersionComponentViewOperationalRiskProfile");
         components.add("ProjectVersionComponentViewSecurityRiskProfile");
         components.add("ProjectVersionComponentViewVersionRiskProfile");
+        components.add("ProjectVersionMatchedFilesView");
         components.add("ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsSeverityLevelsView");
         components.add("ProjectVersionPolicyStatusComponentVersionStatusCountsView");
         components.add("ProjectVersionRequest");

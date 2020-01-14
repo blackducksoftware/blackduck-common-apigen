@@ -97,7 +97,7 @@ public class MediaVersionGenerator {
                 input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
                 generatedClassWriter.writeFile(className, randomTemplate, input, pathToFiles);
             } catch (final NoSuchElementException e) {
-                logger.info("Class not categorized");
+                logger.info(className + " not categorized in ClassCategories");
             }
             nameAndPathManager.addNonLinkClassName(className);
             nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(className));
