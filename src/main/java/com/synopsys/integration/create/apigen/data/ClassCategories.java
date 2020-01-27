@@ -328,6 +328,7 @@ public class ClassCategories {
         final Set<String> generatedClasses = new HashSet<>();
 
         // component
+        generatedClasses.add("CweCommonConsequencesView");
         generatedClasses.add("PolicyRuleExpressionView");
         generatedClasses.add("PolicyRuleExpressionExpressionsView");
         generatedClasses.add("PolicyRuleExpressionExpressionsParametersView");
@@ -359,6 +360,7 @@ public class ClassCategories {
         generatedClasses.add("CweView");
         generatedClasses.add("CustomFieldTypeView");
         generatedClasses.add("RemediationOptionsView");
+        generatedClasses.add("UserProjectsView");
 
         // views
         generatedClasses.add("CodeLocationView");
@@ -392,6 +394,7 @@ public class ClassCategories {
         generatedClasses.add("RegistrationView");
         generatedClasses.add("RoleView");
         generatedClasses.add("ScanView");
+        generatedClasses.add("TagView");
         generatedClasses.add("UserView");
         generatedClasses.add("UserGroupView");
         generatedClasses.add("RoleAssignmentView");
@@ -470,6 +473,7 @@ public class ClassCategories {
         final Set<String> throwawayClasses = new HashSet<>();
 
         // Views
+        throwawayClasses.add("AssignedUserView");
         throwawayClasses.add("ComponentDetailsView");
         throwawayClasses.add("ComponentVersionView");
         throwawayClasses.add("ExternalExtensionConfigValueView");
@@ -546,7 +550,6 @@ public class ClassCategories {
         throwawayClasses.add("SearchResultSpec");
         throwawayClasses.add("SearchResultStatistics");
         throwawayClasses.add("SignaturePair");
-        throwawayClasses.add("TagView");
         throwawayClasses.add("TemporalUnit");
         throwawayClasses.add("TextByteOffsetView");
         throwawayClasses.add("UserData");

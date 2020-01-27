@@ -125,7 +125,7 @@ public class LinkResponseDefinitions {
         final Map<String, LinkResponseDefinitionItem> projectVersionComponentViewDefinitions = new HashMap<>();
         final LinkResponseDefinitionItem pvcvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
-        final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "MatchedFileView");
+        final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "ComponentMatchedFilesView");
         projectVersionComponentViewDefinitions.put("matched-files", pvcvMatchedFilesDefinition);
         final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "ComponentPolicyRulesView");
         projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
@@ -149,7 +149,7 @@ public class LinkResponseDefinitions {
         userViewDefinitions.put("roles", uvRolesDefinition);
         final LinkResponseDefinitionItem uvNotificationsDefinition = new LinkResponseDefinitionItem(true, "NotificationUserView"); // *
         userViewDefinitions.put("notifications", uvNotificationsDefinition);
-        final LinkResponseDefinitionItem uvProjectsDefinition = new LinkResponseDefinitionItem(true, "AssignedProjectView"); // ****
+        final LinkResponseDefinitionItem uvProjectsDefinition = new LinkResponseDefinitionItem(true, "UserProjectsView"); // ****
         userViewDefinitions.put("projects", uvProjectsDefinition);
         final LinkResponseDefinitionItem uvInheritedRolesDefinition = new LinkResponseDefinitionItem(true, "RoleAssignmentView"); // ****
         userViewDefinitions.put("inherited-roles", uvInheritedRolesDefinition);
