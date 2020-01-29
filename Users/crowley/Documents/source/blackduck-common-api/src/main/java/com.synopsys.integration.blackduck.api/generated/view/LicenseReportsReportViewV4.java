@@ -1,6 +1,7 @@
 package com.synopsys.integration.blackduck.api.generated.view;
 
 import java.math.BigDecimal;
+import com.synopsys.integration.blackduck.api.generated.enumeration.LicenseReportsReportReportTypeType;
 import com.synopsys.integration.blackduck.api.core.BlackDuckView;
 import java.util.Optional;
 import com.synopsys.integration.blackduck.api.generated.enumeration.LicenseReportsReportReportFormatType;
@@ -19,7 +20,7 @@ public class LicenseReportsReportViewV4 extends BlackDuckView {
     private String createdBy;
     private BigDecimal fileSize;
     private String fileName;
-    private String reportType;
+    private LicenseReportsReportReportTypeType reportType;
     private java.util.Date updatedAt;
     private java.util.Date finishedAt;
 
@@ -87,11 +88,11 @@ public class LicenseReportsReportViewV4 extends BlackDuckView {
 	this.fileName = fileName;
     }
 
-    public String getReportType() {
+    public LicenseReportsReportReportTypeType getReportType() {
 	return reportType;
     }
 
-    public void setReportType(String reportType) {
+    public void setReportType(LicenseReportsReportReportTypeType reportType) {
 	this.reportType = reportType;
     }
 
