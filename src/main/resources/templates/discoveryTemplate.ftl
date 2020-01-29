@@ -24,5 +24,4 @@ public class ApiDiscovery {
     		links.put(${data.getJavaConstant()}, ${data.getJavaConstant()}_RESPONSE);
 		</#list>
 	}
-
 }

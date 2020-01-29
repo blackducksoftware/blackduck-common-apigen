@@ -20,7 +20,6 @@ public class MediaTypeDiscovery {
 	}
 
 	public<T extends BlackDuckComponent> Optional<String> determineMediaType(Class<T> bdClass) {
-    		return Optional.ofNullable(mediaTypeMap.get(bdClass));
-    	}
-
+    	return Optional.ofNullable(mediaTypeMap.get(bdClass));
+    }
 }

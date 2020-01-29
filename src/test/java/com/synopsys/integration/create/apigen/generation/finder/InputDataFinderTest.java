@@ -4,13 +4,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.rmi.CORBA.Util;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.LinkData;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
