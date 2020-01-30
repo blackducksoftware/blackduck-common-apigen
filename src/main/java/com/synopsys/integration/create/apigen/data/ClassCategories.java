@@ -55,6 +55,11 @@ public class ClassCategories {
         this.generated = populateGenerated();
         this.manual = populateManual();
         this.throwaway = populateThrowaway();
+        for (String clazz : throwaway) {
+            if (generated.contains(throwaway)) {
+                throwaway.remove(clazz);
+            }
+        }
         this.commonTypes = populateCommonTypes();
         this.nonEnumClassesContainingType = populateNonEnumClassesContainingType();
         this.deprecatedClasses = new HashSet<>();
@@ -89,7 +94,6 @@ public class ClassCategories {
         views.add("FilterView");
         views.add("IssueView");
         views.add("JobView");
-        views.add("JobsJobView"); //
         views.add("LicenseFamilyView");
         views.add("LicenseReportsReportView");  //
         views.add("LicenseTermCategoryView");
@@ -324,6 +328,7 @@ public class ClassCategories {
         final Set<String> generatedClasses = new HashSet<>();
 
         // component
+        generatedClasses.add("CweCommonConsequencesView");
         generatedClasses.add("PolicyRuleExpressionView");
         generatedClasses.add("PolicyRuleExpressionExpressionsView");
         generatedClasses.add("PolicyRuleExpressionExpressionsParametersView");
@@ -351,9 +356,11 @@ public class ClassCategories {
         // responses
         generatedClasses.add("ComponentsView");
         generatedClasses.add("ComponentSearchResultView");
+        generatedClasses.add("CurrentVersionView");
         generatedClasses.add("CweView");
         generatedClasses.add("CustomFieldTypeView");
         generatedClasses.add("RemediationOptionsView");
+        generatedClasses.add("UserProjectsView");
 
         // views
         generatedClasses.add("CodeLocationView");
@@ -367,7 +374,7 @@ public class ClassCategories {
         generatedClasses.add("CustomFieldObjectView");
         generatedClasses.add("CurrentUserView");
         generatedClasses.add("JobView");
-        generatedClasses.add("LicenseFamiliesLicenseFamilyView");
+        generatedClasses.add("LicenseFamilyView");
         generatedClasses.add("LicenseReportsReportView");
         generatedClasses.add("LicenseTermView");
         generatedClasses.add("LicenseTextView");
@@ -387,6 +394,7 @@ public class ClassCategories {
         generatedClasses.add("RegistrationView");
         generatedClasses.add("RoleView");
         generatedClasses.add("ScanView");
+        generatedClasses.add("TagView");
         generatedClasses.add("UserView");
         generatedClasses.add("UserGroupView");
         generatedClasses.add("RoleAssignmentView");
@@ -471,22 +479,18 @@ public class ClassCategories {
         throwawayClasses.add("ExternalExtensionConfigValueView");
         throwawayClasses.add("ExternalExtensionUserView");
         throwawayClasses.add("IssueView");
-        throwawayClasses.add("LicenseFamilyView");
         throwawayClasses.add("LicenseTermAssociationView");
         throwawayClasses.add("LicenseTermCategoryView");
         throwawayClasses.add("OriginView");
         throwawayClasses.add("NotificationUserView");
-        throwawayClasses.add("MatchedFileView");
         throwawayClasses.add("ProjectMappingView");
         throwawayClasses.add("VersionBomOriginView");
         throwawayClasses.add("VulnerabilityWithRemediationView");
         throwawayClasses.add("VulnerableComponentView");
 
         // Responses
-        throwawayClasses.add("AssignedProjectView");
         throwawayClasses.add("ComponentVersionReferenceView");
         throwawayClasses.add("ComponentVersionRiskView");
-        throwawayClasses.add("CurrentVersionView");
         throwawayClasses.add("DashboardSummaryView");
         throwawayClasses.add("EndUserLicenseAgreementView");
         throwawayClasses.add("HealthCheckStatusView");
@@ -546,7 +550,6 @@ public class ClassCategories {
         throwawayClasses.add("SearchResultSpec");
         throwawayClasses.add("SearchResultStatistics");
         throwawayClasses.add("SignaturePair");
-        throwawayClasses.add("TagView");
         throwawayClasses.add("TemporalUnit");
         throwawayClasses.add("TextByteOffsetView");
         throwawayClasses.add("UserData");

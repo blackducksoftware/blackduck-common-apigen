@@ -4307,6 +4307,22 @@
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
   "fields": [
     {
+      "path": "leftUsages",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
+      "optional": true,
+      "allowedValues": [
+        "SOURCE_CODE",
+        "STATICALLY_LINKED",
+        "DYNAMICALLY_LINKED",
+        "SEPARATE_WORK",
+        "MERELY_AGGREGATED",
+        "IMPLEMENTATION_OF_STANDARD",
+        "PREREQUISITE",
+        "DEV_TOOL_EXCLUDED"
+      ],
+      "fields": []
+    },
+    {
       "path": "component",
       "type": "ProjectVersionComparisonItemsComponentViewV4",
       "optional": true,
@@ -4355,22 +4371,6 @@
         "ADDED",
         "REMOVED",
         "CHANGED"
-      ],
-      "fields": []
-    },
-    {
-      "path": "leftUsages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
-      "optional": true,
-      "allowedValues": [
-        "SOURCE_CODE",
-        "STATICALLY_LINKED",
-        "DYNAMICALLY_LINKED",
-        "SEPARATE_WORK",
-        "MERELY_AGGREGATED",
-        "IMPLEMENTATION_OF_STANDARD",
-        "PREREQUISITE",
-        "DEV_TOOL_EXCLUDED"
       ],
       "fields": []
     }
@@ -4384,6 +4384,22 @@
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
+      "path": "leftUsages",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
+      "optional": true,
+      "allowedValues": [
+        "SOURCE_CODE",
+        "STATICALLY_LINKED",
+        "DYNAMICALLY_LINKED",
+        "SEPARATE_WORK",
+        "MERELY_AGGREGATED",
+        "IMPLEMENTATION_OF_STANDARD",
+        "PREREQUISITE",
+        "DEV_TOOL_EXCLUDED"
+      ],
+      "fields": []
+    },
+    {
       "path": "component",
       "type": "ProjectVersionComparisonItemsComponentViewV4",
       "optional": true,
@@ -4432,22 +4448,6 @@
         "ADDED",
         "REMOVED",
         "CHANGED"
-      ],
-      "fields": []
-    },
-    {
-      "path": "leftUsages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
-      "optional": true,
-      "allowedValues": [
-        "SOURCE_CODE",
-        "STATICALLY_LINKED",
-        "DYNAMICALLY_LINKED",
-        "SEPARATE_WORK",
-        "MERELY_AGGREGATED",
-        "IMPLEMENTATION_OF_STANDARD",
-        "PREREQUISITE",
-        "DEV_TOOL_EXCLUDED"
       ],
       "fields": []
     }
@@ -4461,6 +4461,22 @@
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
+      "path": "leftUsages",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
+      "optional": true,
+      "allowedValues": [
+        "SOURCE_CODE",
+        "STATICALLY_LINKED",
+        "DYNAMICALLY_LINKED",
+        "SEPARATE_WORK",
+        "MERELY_AGGREGATED",
+        "IMPLEMENTATION_OF_STANDARD",
+        "PREREQUISITE",
+        "DEV_TOOL_EXCLUDED"
+      ],
+      "fields": []
+    },
+    {
       "path": "component",
       "type": "ProjectVersionComparisonItemsComponentViewV4",
       "optional": true,
@@ -4509,22 +4525,6 @@
         "ADDED",
         "REMOVED",
         "CHANGED"
-      ],
-      "fields": []
-    },
-    {
-      "path": "leftUsages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
-      "optional": true,
-      "allowedValues": [
-        "SOURCE_CODE",
-        "STATICALLY_LINKED",
-        "DYNAMICALLY_LINKED",
-        "SEPARATE_WORK",
-        "MERELY_AGGREGATED",
-        "IMPLEMENTATION_OF_STANDARD",
-        "PREREQUISITE",
-        "DEV_TOOL_EXCLUDED"
       ],
       "fields": []
     }
@@ -6361,7 +6361,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -6422,7 +6422,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -6483,7 +6483,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -7166,7 +7166,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -7227,7 +7227,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -7288,7 +7288,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -7349,7 +7349,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -7410,7 +7410,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",
@@ -7471,7 +7471,7 @@
     },
     {
       "path": "usages",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesUsageType",
+      "type": "java.util.List\u003cLicenseFamilyLicenseFamilyRiskRulesUsageType\u003e",
       "optional": true,
       "allowedValues": [
         "SOURCE_CODE",

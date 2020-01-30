@@ -11,7 +11,7 @@ public enum LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType {
 	INTERNAL,
 	OPENSOURCE;
 
-	private String mediaType = "application/vnd.blackducksoftware.component-detail-5+json";
+	private String mediaType = "application/vnd.blackducksoftware.project-detail-5+json";
 
 	public String getMediaType() {
 	return mediaType;

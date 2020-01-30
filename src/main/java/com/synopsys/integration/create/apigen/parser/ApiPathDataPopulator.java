@@ -93,7 +93,6 @@ public class ApiPathDataPopulator {
 
         apiPathResultClassOverrides.put("projects", "ProjectView");
         apiPathResultClassOverrides.put("current-user", "UserView");
-        apiPathResultClassOverrides.put("components", "ComponentSearchResultView");
 
         return apiPathResultClassOverrides;
     }

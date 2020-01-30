@@ -2,6 +2,7 @@ package com.synopsys.integration.blackduck.api.generated.component;
 
 import java.util.List;
 import com.synopsys.integration.blackduck.api.manual.throwaway.generated.component.NameValuePairView;
+import com.synopsys.integration.blackduck.api.generated.enumeration.PolicyStatusType;
 import com.synopsys.integration.blackduck.api.core.BlackDuckComponent;
 import java.util.Optional;
 
@@ -13,8 +14,16 @@ import java.util.Optional;
 public class ComponentVersionPolicyViolationDetails extends BlackDuckComponent {
 	public static final String mediaType = "application/vnd.blackducksoftware.bill-of-materials-4+json";
 
+    private PolicyStatusType name;
     private java.util.List<NameValuePairView> severityLevels;
-    private String name;
+
+    public PolicyStatusType getName() {
+	return name;
+    }
+
+    public void setName(PolicyStatusType name) {
+	this.name = name;
+    }
 
     public java.util.List<NameValuePairView> getSeverityLevels() {
 	return severityLevels;
@@ -22,14 +31,6 @@ public class ComponentVersionPolicyViolationDetails extends BlackDuckComponent {
 
     public void setSeverityLevels(java.util.List<NameValuePairView> severityLevels) {
 	this.severityLevels = severityLevels;
-    }
-
-    public String getName() {
-	return name;
-    }
-
-    public void setName(String name) {
-	this.name = name;
     }
 
 
