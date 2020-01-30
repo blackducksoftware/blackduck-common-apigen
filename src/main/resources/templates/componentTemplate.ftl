@@ -29,6 +29,6 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 
 </#list>
 	public String getMediaType() {
-	   return mediaType;
+	    return mediaType;
 	}
 }
