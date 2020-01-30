@@ -1,11 +1,12 @@
 package com.synopsys.integration.create.apigen.generation.finder;
 
-import java.lang.reflect.Parameter;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
@@ -30,9 +31,9 @@ public class ImportFinderTest {
 
         importFinder.addFieldImports(imports, fields);
 
-        Assert.assertFalse(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS));
-        Assert.assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS));
-        Assert.assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS));
-        Assert.assertTrue(imports.contains(UtilStrings.GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION + "." + "PolicyStatusType"));
+        assertFalse(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS));
+        assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS));
+        assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS));
+        assertTrue(imports.contains(UtilStrings.GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION + "." + "PolicyStatusType"));
     }
 }

@@ -35,15 +35,14 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 public class FieldsParserTestDataCollector {
 
     public static void writeControlData(final Gson gson, final List<ResponseDefinition> responses) throws IOException {
-        writeData(gson, responses, "FieldsParserTestControlData.txt");
+        writeData(gson, responses, new File(Application.PATH_TO_TEST_RESOURCES, "FieldsParserTestControlData.txt"));
     }
 
-    public static void writeTestData(final Gson gson, final List<ResponseDefinition> responses) throws IOException {
-        writeData(gson, responses, "FieldsParserTestTestingData.txt");
+    public static void writeTestData(final Gson gson, final List<ResponseDefinition> responses, File testFile) throws IOException {
+        writeData(gson, responses, testFile);
     }
 
-    public static void writeData(final Gson gson, final List<ResponseDefinition> responses, final String fileName) throws IOException {
-        final File dataFile = new File(Application.PATH_TO_TEST_RESOURCES + fileName);
+    public static void writeData(final Gson gson, final List<ResponseDefinition> responses, File dataFile) throws IOException {
         final FileWriter writer = new FileWriter(dataFile);
         dataFile.mkdirs();
         writer.write("[");

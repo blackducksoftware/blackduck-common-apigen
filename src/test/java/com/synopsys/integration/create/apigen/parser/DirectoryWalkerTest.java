@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -33,9 +32,9 @@ public class DirectoryWalkerTest {
 
     @Test
     public void test() throws IOException, URISyntaxException {
-        FieldsParserTestDataCollector.writeTestData(gson, directoryWalker.parseDirectoryForResponses(false, false));
+        final File testFile = new File("./build/FieldsParserTestTestingData.txt");
+        FieldsParserTestDataCollector.writeTestData(gson, directoryWalker.parseDirectoryForResponses(false, false), testFile);
         final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
-        final File testFile = new File(Application.PATH_TO_TEST_RESOURCES + "FieldsParserTestTestingData.txt");
 
         String controlData = null;
         String testData = null;

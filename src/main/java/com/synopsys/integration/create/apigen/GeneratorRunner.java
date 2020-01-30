@@ -23,7 +23,8 @@
 package com.synopsys.integration.create.apigen;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -112,13 +113,22 @@ public class GeneratorRunner {
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
-        final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(generatorConfig.getInputPath());
-        if (rootDirectory == null) {
+        generatorConfig.logConfig();
+        String inputPath = generatorConfig.getInputPath();
+        File inputDirectory;
+        try {
+            URI inputDirectoryUri = new URI(inputPath);
+            inputDirectory = new File(inputDirectoryUri);
+        } catch (IllegalArgumentException | URISyntaxException ex) {
+            logger.error("Error getting input path from file URI", ex);
+            inputDirectory = new File(inputPath);
+        }
+        if (!inputDirectory.exists()) {
             logger.info(generatorConfig.getInputPath() + " not found in resources");
             System.exit(0);
         }
-        final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(false, false);
+        final DirectoryWalker directoryWalker = new DirectoryWalker(inputDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun());
 
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());

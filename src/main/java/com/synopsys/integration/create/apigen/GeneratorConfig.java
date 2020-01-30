@@ -27,9 +27,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-@Component
 public class GeneratorConfig {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorConfig.class);
 
@@ -38,12 +36,26 @@ public class GeneratorConfig {
     @Value("${api.gen.output.path}")
     private String outputPath;
 
+    @Value("${api.gen.control.run:false}")
+    private Boolean controlRun;
+
+    @Value("${api.gen.show.output:false}")
+    private Boolean showOutput;
+
     public String getInputPath() {
         return inputPath;
     }
 
     public String getOutputPath() {
         return outputPath;
+    }
+
+    public Boolean getControlRun() {
+        return controlRun;
+    }
+
+    public Boolean getShowOutput() {
+        return showOutput;
     }
 
     // taken from SwaggerHub
@@ -54,5 +66,14 @@ public class GeneratorConfig {
             System.exit(0);
         }
         return new File(baseDirectory);
+    }
+
+    public void logConfig() {
+        logger.info("Config:");
+        logger.info("--------------");
+        logger.info("Input Path  = {}", getInputPath());
+        logger.info("Output Path = {}", getOutputPath());
+        logger.info("Control Run = {}", getControlRun());
+        logger.info("Show Output = {}", getShowOutput());
     }
 }
