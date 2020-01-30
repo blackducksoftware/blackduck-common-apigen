@@ -17,10 +17,10 @@ public enum ${className} {
 	private String mediaType = "${mediaType}";
 
 	public String getMediaType() {
-	   return mediaType;
+	    return mediaType;
 	}
 
 	public String prettyPrint() {
-	   return EnumUtils.prettyPrint(this);
+	    return EnumUtils.prettyPrint(this);
 	}
 }

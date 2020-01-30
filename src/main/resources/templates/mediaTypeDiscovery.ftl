@@ -15,7 +15,7 @@ public class MediaTypeDiscovery {
 
 	public MediaTypeDiscovery() {
 		<#list mostRecentClassVersions as class>
-    			mediaTypeMap.put(${class.getNonVersionedClassName()}.class, "${class.getMediaType()}");
+    	mediaTypeMap.put(${class.getNonVersionedClassName()}.class, "${class.getMediaType()}");
 		</#list>
 	}
 

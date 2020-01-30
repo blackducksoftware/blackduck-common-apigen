@@ -27,42 +27,33 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Component
 public class GeneratedClassWriter {
-
-    private final Configuration cfg;
-    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
     private final ClassCategories classCategories;
 
     @Autowired
-    public GeneratedClassWriter(final Configuration configuration, final ClassCategories classCategories) {
-        this.cfg = configuration;
+    public GeneratedClassWriter(final ClassCategories classCategories) {
         this.classCategories = classCategories;
     }
 
-    // taken from SwaggerHub
-    public static File getBaseDirectory() {
-        final String baseDirectory = System.getenv(Application.PATH_TO_GENERATED_FILES_KEY);
-        if (baseDirectory == null) {
-            logger.info("Please set Environment variable " + Application.PATH_TO_GENERATED_FILES_KEY + " to directory in which generated files will live");
-            System.exit(0);
-        }
-        return new File(baseDirectory);
-    }
+    //    // taken from SwaggerHub
+    //    public static File getBaseDirectory() {
+    //        final String baseDirectory = generator;
+    //        if (baseDirectory == null) {
+    //            logger.info("Please set Environment variable API_GEN_OUTPUT_PATH or the application property api.gen.output.path to directory in which generated files will live");
+    //            System.exit(0);
+    //        }
+    //        return new File(baseDirectory);
+    //    }
 
     public void writeFile(String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
         className = NameParser.stripListAndOptionalNotation(className);

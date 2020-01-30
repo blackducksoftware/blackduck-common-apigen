@@ -38,6 +38,7 @@ import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -56,10 +57,11 @@ public class ComponentGenerator extends ClassGenerator {
     private final NameAndPathManager nameAndPathManager;
     private final MediaVersionDataManager mediaVersionDataManager;
     private final TypeTranslator typeTranslator;
+    private final FilePathUtil filePathUtil;
 
     @Autowired
     public ComponentGenerator(final ClassCategories classCategories, final ImportFinder importFinder, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager,
-        final MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator) {
+        final MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator, FilePathUtil filePathUtil) {
         this.classCategories = classCategories;
         this.importFinder = importFinder;
         this.generatedClassWriter = generatedClassWriter;
@@ -67,6 +69,7 @@ public class ComponentGenerator extends ClassGenerator {
         this.nameAndPathManager = nameAndPathManager;
         this.mediaVersionDataManager = mediaVersionDataManager;
         this.typeTranslator = typeTranslator;
+        this.filePathUtil = filePathUtil;
     }
 
     @Override
@@ -97,17 +100,17 @@ public class ComponentGenerator extends ClassGenerator {
         if (classType.isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
-            pathToFiles = UtilStrings.PATH_TO_VIEW_FILES;
+            pathToFiles = filePathUtil.getOutputPathToViewFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
         } else if (classType.isResponse()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
-            pathToFiles = UtilStrings.PATH_TO_RESPONSE_FILES;
+            pathToFiles = filePathUtil.getOutputPathToResponseFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
         } else {
             fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
             fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
-            pathToFiles = UtilStrings.PATH_TO_COMPONENT_FILES;
+            pathToFiles = filePathUtil.getOutputPathToComponentFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
         }
         final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, fieldType, fieldBaseClass, subFields, responseMediaType);
