@@ -17,8 +17,8 @@ public class VersionBomPolicyStatusView extends BlackDuckView {
 	public static final String mediaType = "application/vnd.blackducksoftware.bill-of-materials-4+json";
 
     private java.util.List<NameValuePairView> componentVersionStatusCounts;
-    private ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView componentVersionPolicyViolationDetails;
     private PolicyStatusType overallStatus;
+    private ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView componentVersionPolicyViolationDetails;
     private java.util.Date updatedAt;
 
     public java.util.List<NameValuePairView> getComponentVersionStatusCounts() {
@@ -29,20 +29,20 @@ public class VersionBomPolicyStatusView extends BlackDuckView {
 	this.componentVersionStatusCounts = componentVersionStatusCounts;
     }
 
-    public ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView getComponentVersionPolicyViolationDetails() {
-	return componentVersionPolicyViolationDetails;
-    }
-
-    public void setComponentVersionPolicyViolationDetails(ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView componentVersionPolicyViolationDetails) {
-	this.componentVersionPolicyViolationDetails = componentVersionPolicyViolationDetails;
-    }
-
     public PolicyStatusType getOverallStatus() {
 	return overallStatus;
     }
 
     public void setOverallStatus(PolicyStatusType overallStatus) {
 	this.overallStatus = overallStatus;
+    }
+
+    public ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView getComponentVersionPolicyViolationDetails() {
+	return componentVersionPolicyViolationDetails;
+    }
+
+    public void setComponentVersionPolicyViolationDetails(ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView componentVersionPolicyViolationDetails) {
+	this.componentVersionPolicyViolationDetails = componentVersionPolicyViolationDetails;
     }
 
     public java.util.Date getUpdatedAt() {

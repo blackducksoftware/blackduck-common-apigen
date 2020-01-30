@@ -34,6 +34,5 @@ public class ImportFinderTest {
         Assert.assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS));
         Assert.assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS));
         Assert.assertTrue(imports.contains(UtilStrings.GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION + "." + "PolicyStatusType"));
-        Assert.assertTrue(imports.contains(UtilStrings.THROWAWAY_CLASS_PATH_PREFIX + UtilStrings.VIEW + "." + "TagView"));
     }
 }
