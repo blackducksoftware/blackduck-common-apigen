@@ -32,9 +32,9 @@ import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassCategoryData;
 import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
@@ -49,13 +49,15 @@ public class EnumGenerator extends ClassGenerator {
     private final GeneratedClassWriter generatedClassWriter;
     private final InputDataFinder inputDataFinder;
     private final TypeTranslator typeTranslator;
+    private final FilePathUtil filePathUtil;
 
     @Autowired
-    public EnumGenerator(final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final TypeTranslator typeTranslator) {
+    public EnumGenerator(final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final TypeTranslator typeTranslator, FilePathUtil filePathUtil) {
         this.classCategories = classCategories;
         this.generatedClassWriter = generatedClassWriter;
         this.inputDataFinder = inputDataFinder;
         this.typeTranslator = typeTranslator;
+        this.filePathUtil = filePathUtil;
     }
 
     @Override
@@ -75,14 +77,14 @@ public class EnumGenerator extends ClassGenerator {
         String swaggerName = typeTranslator.getClassSwaggerName(classType);
         if (swaggerName != null) {
             if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
-                classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
+                classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles());
             }
         }
         if (typeTranslator.getApiGenClassName(classType) != null) {
             input.put(UtilStrings.HAS_NEW_NAME, true);
             input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(classType));
         }
-        generatedClassWriter.writeFile(classType, template, input, UtilStrings.PATH_TO_ENUM_FILES);
+        generatedClassWriter.writeFile(classType, template, input, filePathUtil.getOutputPathToEnumFiles());
 
         for (final FieldDefinition subField : field.getSubFields()) {
             generateClass(subField, responseMediaType, template);

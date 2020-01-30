@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.GeneratorConfig;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.model.MediaVersionData;
@@ -45,11 +46,13 @@ public class MediaTypeMapGenerator {
     private final ImportFinder importFinder;
     private final GeneratedClassWriter generatedClassWriter;
     private final Configuration config;
+    private final GeneratorConfig generatorConfig;
 
-    public MediaTypeMapGenerator(final ImportFinder importFinder, final GeneratedClassWriter generatedClassWriter, final Configuration config) {
+    public MediaTypeMapGenerator(final ImportFinder importFinder, final GeneratedClassWriter generatedClassWriter, final Configuration config, GeneratorConfig generatorConfig) {
         this.importFinder = importFinder;
         this.generatedClassWriter = generatedClassWriter;
         this.config = config;
+        this.generatorConfig = generatorConfig;
     }
 
     public void generateMediaTypeMap(final Set<MediaVersionData> latestMediaVersions) throws Exception {
@@ -70,7 +73,7 @@ public class MediaTypeMapGenerator {
         }
         input.put("imports", imports);
 
-        final File mediaTypeMapBaseDirectory = new File(GeneratedClassWriter.getBaseDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+        final File mediaTypeMapBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         generatedClassWriter.writeFile("MediaTypeDiscovery", config.getTemplate("mediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath());
     }
 }

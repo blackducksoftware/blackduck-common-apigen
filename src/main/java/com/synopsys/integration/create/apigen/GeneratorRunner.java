@@ -37,7 +37,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
-import com.synopsys.integration.create.apigen.generation.DeprecatedClassGenerator;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
@@ -45,11 +44,13 @@ import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.ClassGenerator;
+import com.synopsys.integration.create.apigen.generation.DeprecatedClassGenerator;
 import com.synopsys.integration.create.apigen.generation.DiscoveryGenerator;
 import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
 import com.synopsys.integration.create.apigen.generation.MediaTypeMapGenerator;
 import com.synopsys.integration.create.apigen.generation.MediaVersionGenerator;
 import com.synopsys.integration.create.apigen.generation.ViewGenerator;
+import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
@@ -63,6 +64,7 @@ import freemarker.template.Template;
 
 @Component
 public class GeneratorRunner {
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
     private final ClassCategories classCategories;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final Gson gson;
@@ -79,13 +81,14 @@ public class GeneratorRunner {
     private final List<ClassGenerator> generators;
     private final Configuration config;
     private final MediaVersionDataManager mediaVersionDataManager;
-    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+    private final GeneratorConfig generatorConfig;
+    private final FilePathUtil filePathUtil;
 
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
         final MediaTypeMapGenerator mediaTypeMapGenerator, final MediaVersionGenerator mediaVersionGenerator, final DeprecatedClassGenerator deprecatedClassGenerator, final List<ClassGenerator> generators,
-        final Configuration config, final MediaVersionDataManager mediaVersionDataManager) {
+        final Configuration config, final MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
@@ -102,13 +105,16 @@ public class GeneratorRunner {
         this.generators = generators;
         this.config = config;
         this.mediaVersionDataManager = mediaVersionDataManager;
+        this.generatorConfig = generatorConfig;
+        this.filePathUtil = filePathUtil;
+
     }
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
-        final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
+        final URL rootDirectory = GeneratorRunner.class.getClassLoader().getResource(generatorConfig.getInputPath());
         if (rootDirectory == null) {
-            logger.info(Application.API_SPECIFICATION_VERSION + " not found in resources");
+            logger.info(generatorConfig.getInputPath() + " not found in resources");
             System.exit(0);
         }
         final DirectoryWalker directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
@@ -157,11 +163,11 @@ public class GeneratorRunner {
         final ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(nameAndPathManager);
         apiPathDataPopulator.populateApiPathData(responses);
 
-        final File discoveryBaseDirectory = new File(GeneratedClassWriter.getBaseDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+        final File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         final Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
 
-        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, UtilStrings.PATH_TO_VIEW_FILES, UtilStrings.PATH_TO_RESPONSE_FILES, UtilStrings.PATH_TO_COMPONENT_FILES);
+        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
 
         deprecatedClassGenerator.generateDeprecatedClasses();
     }

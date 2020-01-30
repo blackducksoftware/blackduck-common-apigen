@@ -1,5 +1,16 @@
 package com.synopsys.integration.create.apigen.parser;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -9,20 +20,11 @@ import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DirectoryWalkerTest {
+    private static final String API_SPEC_PATH = "api-specification/2019.12.0";
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
+    private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(API_SPEC_PATH);
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
 
     public DirectoryWalkerTest() throws URISyntaxException {
