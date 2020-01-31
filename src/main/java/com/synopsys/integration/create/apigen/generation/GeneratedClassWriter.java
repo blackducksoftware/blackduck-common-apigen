@@ -45,16 +45,6 @@ public class GeneratedClassWriter {
         this.classCategories = classCategories;
     }
 
-    //    // taken from SwaggerHub
-    //    public static File getBaseDirectory() {
-    //        final String baseDirectory = generator;
-    //        if (baseDirectory == null) {
-    //            logger.info("Please set Environment variable API_GEN_OUTPUT_PATH or the application property api.gen.output.path to directory in which generated files will live");
-    //            System.exit(0);
-    //        }
-    //        return new File(baseDirectory);
-    //    }
-
     public void writeFile(String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
         className = NameParser.stripListAndOptionalNotation(className);
         final ClassTypeEnum classType = classCategories.computeType(className);

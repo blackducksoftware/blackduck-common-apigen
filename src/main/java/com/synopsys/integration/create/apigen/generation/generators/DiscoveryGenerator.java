@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +40,8 @@ import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.FileGenerationData;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.model.ApiPathData;
 import com.synopsys.integration.create.apigen.model.ResultClassData;
 
@@ -47,20 +49,20 @@ import freemarker.template.Template;
 
 @Component
 public class DiscoveryGenerator {
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
     private final ClassCategories classCategories;
     private final NameAndPathManager nameAndPathManager;
-    private final GeneratedClassWriter generatedClassWriter;
-    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+    private final GeneratorDataManager generatorDataManager;
 
     @Autowired
-    public DiscoveryGenerator(final ClassCategories classCategories, final NameAndPathManager nameAndPathManager, final GeneratedClassWriter generatedClassWriter) {
+    public DiscoveryGenerator(ClassCategories classCategories, NameAndPathManager nameAndPathManager, GeneratorDataManager generatorDataManager) {
         this.classCategories = classCategories;
         this.nameAndPathManager = nameAndPathManager;
-        this.generatedClassWriter = generatedClassWriter;
+        this.generatorDataManager = generatorDataManager;
     }
 
     // taken from Swaggerhub
-    public void createDiscoveryFile(final File baseDirectory, final Template template) throws Exception {
+    public void createDiscoveryFile(File baseDirectory, Template template) throws Exception {
 
         final Map<String, Object> model = new HashMap<>();
         model.put("discoveryPackage", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
@@ -88,7 +90,7 @@ public class DiscoveryGenerator {
         Collections.sort(sortedImports);
         model.put("imports", sortedImports);
 
-        generatedClassWriter.writeFile("ApiDiscovery", template, model, baseDirectory.getAbsolutePath());
+        generatorDataManager.addFileData(new FileGenerationData("ApiDiscovery", template, model, baseDirectory.getAbsolutePath()));
     }
 
 }

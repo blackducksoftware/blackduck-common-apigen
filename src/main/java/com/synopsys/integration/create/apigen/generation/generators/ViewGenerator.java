@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -31,79 +31,77 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
-import com.synopsys.integration.create.apigen.data.ClassCategoryData;
-import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.FileGenerationData;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.LinkData;
+import com.synopsys.integration.create.apigen.model.LinksAndImportsData;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Component
-public class ComponentGenerator extends ClassGenerator {
-
-    private final ClassCategories classCategories;
+public class ViewGenerator {
+    private final MediaTypes mediaTypes;
     private final ImportFinder importFinder;
-    private final GeneratedClassWriter generatedClassWriter;
     private final InputDataFinder inputDataFinder;
     private final NameAndPathManager nameAndPathManager;
     private final MediaVersionDataManager mediaVersionDataManager;
     private final TypeTranslator typeTranslator;
+    private final ClassCategories classCategories;
     private final FilePathUtil filePathUtil;
+    private final GeneratorDataManager generatorDataManager;
 
     @Autowired
-    public ComponentGenerator(final ClassCategories classCategories, final ImportFinder importFinder, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager,
-        final MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator, FilePathUtil filePathUtil) {
-        this.classCategories = classCategories;
+    public ViewGenerator(MediaTypes mediaTypes, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator,
+        ClassCategories classCategories, FilePathUtil filePathUtil,
+        GeneratorDataManager generatorDataManager) {
+        this.mediaTypes = mediaTypes;
         this.importFinder = importFinder;
-        this.generatedClassWriter = generatedClassWriter;
         this.inputDataFinder = inputDataFinder;
         this.nameAndPathManager = nameAndPathManager;
         this.mediaVersionDataManager = mediaVersionDataManager;
         this.typeTranslator = typeTranslator;
+        this.classCategories = classCategories;
         this.filePathUtil = filePathUtil;
+        this.generatorDataManager = generatorDataManager;
     }
 
-    @Override
-    public boolean isApplicable(final FieldDefinition field) {
-        final String fieldType = NameParser.stripListNotation(field.getType());
-        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
-        final ClassTypeEnum classType = classCategoryData.getType();
-        final ClassSourceEnum classSource = classCategoryData.getSource();
-        return classType.isNotCommonTypeOrEnum() && !classSource.isThrowaway() && !classSource.isManual();
+    public boolean isApplicable(final ResponseDefinition response) {
+        final Set<String> longMediaTypes = mediaTypes.getLongNames();
+        return (longMediaTypes.contains(response.getMediaType()));
     }
 
-    @Override
-    public void generateClass(final FieldDefinition field, final String responseMediaType, final Template template) throws Exception {
-        final Set<String> imports = new HashSet<>();
-        final Set<FieldDefinition> subFields = field.getSubFields();
-        for (final FieldDefinition subField : subFields) {
-            importFinder.addFieldImports(imports, subField.getType(), subField.isOptional());
-            if (isApplicable(subField)) {
-                generateClass(subField, responseMediaType, template);
-            }
-        }
-        String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
-        fieldType = typeTranslator.getSimplifiedClassName(fieldType);
+    public void generateClasses(final ResponseDefinition response, final Template template) throws Exception {
+        Set<String> imports = new HashSet<>();
+        importFinder.addFieldImports(imports, response.getFields());
+        final LinksAndImportsData helper = importFinder.getLinkImports(imports, response);
+        imports = helper.getImports();
+        final Set<LinkData> links = helper.getLinks();
+
+        final String responseMediaType = response.getMediaType();
+        final String viewName = response.getName();
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
-        final ClassTypeEnum classType = classCategories.computeType(NameParser.getNonVersionedName(fieldType));
+        final ClassTypeEnum classType = classCategories.computeType(NameParser.getNonVersionedName(viewName));
         if (classType.isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
             pathToFiles = filePathUtil.getOutputPathToViewFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
         } else if (classType.isResponse()) {
-            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
+            fieldPackage = UtilStrings.GENERATED_RESPONSE_PACKAGE;
             fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
             pathToFiles = filePathUtil.getOutputPathToResponseFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
@@ -113,27 +111,25 @@ public class ComponentGenerator extends ClassGenerator {
             pathToFiles = filePathUtil.getOutputPathToComponentFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
         }
-        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, fieldType, fieldBaseClass, subFields, responseMediaType);
-        mediaVersionDataManager.updateLatestMediaVersions(fieldType, input, responseMediaType);
+        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, response.getName(), fieldBaseClass, response.getFields(), links, responseMediaType);
 
-        if (isApplicable(field)) {
-            String swaggerName = typeTranslator.getClassSwaggerName(fieldType);
-            if (swaggerName != null) {
-                if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
-                    classCategories.addDeprecatedClass(swaggerName, fieldType, template, input, pathToFiles);
-                }
+        mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
+        String swaggerName = typeTranslator.getClassSwaggerName(viewName);
+        if (swaggerName != null) {
+            if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
+                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToFiles);
             }
-            if (typeTranslator.getApiGenClassName(fieldType) != null) {
-                input.put(UtilStrings.HAS_NEW_NAME, true);
-                input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(fieldType));
-            }
-            generatedClassWriter.writeFile(fieldType, template, input, pathToFiles);
         }
-        nameAndPathManager.addNonLinkClassName(fieldType);
-        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(fieldType));
+        if (typeTranslator.getApiGenClassName(viewName) != null) {
+            input.put(UtilStrings.HAS_NEW_NAME, true);
+            input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(viewName));
+        }
+        generatorDataManager.addFileData(new FileGenerationData(viewName, template, input, pathToFiles));
+
+        nameAndPathManager.addNonLinkClassName(viewName);
+        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(viewName));
     }
 
-    @Override
     public Template getTemplate(final Configuration config) throws IOException {
         return config.getTemplate("viewTemplate.ftl");
     }

@@ -44,15 +44,16 @@ import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
-import com.synopsys.integration.create.apigen.generation.ClassGenerator;
-import com.synopsys.integration.create.apigen.generation.DeprecatedClassGenerator;
-import com.synopsys.integration.create.apigen.generation.DiscoveryGenerator;
 import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
-import com.synopsys.integration.create.apigen.generation.MediaTypeMapGenerator;
-import com.synopsys.integration.create.apigen.generation.MediaVersionGenerator;
-import com.synopsys.integration.create.apigen.generation.ViewGenerator;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
+import com.synopsys.integration.create.apigen.generation.generators.ClassGenerator;
+import com.synopsys.integration.create.apigen.generation.generators.DeprecatedClassGenerator;
+import com.synopsys.integration.create.apigen.generation.generators.DiscoveryGenerator;
+import com.synopsys.integration.create.apigen.generation.generators.MediaTypeMapGenerator;
+import com.synopsys.integration.create.apigen.generation.generators.MediaVersionGenerator;
+import com.synopsys.integration.create.apigen.generation.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -84,12 +85,13 @@ public class GeneratorRunner {
     private final MediaVersionDataManager mediaVersionDataManager;
     private final GeneratorConfig generatorConfig;
     private final FilePathUtil filePathUtil;
+    private final GeneratorDataManager generatorDataManager;
 
     @Autowired
     public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
         final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
         final MediaTypeMapGenerator mediaTypeMapGenerator, final MediaVersionGenerator mediaVersionGenerator, final DeprecatedClassGenerator deprecatedClassGenerator, final List<ClassGenerator> generators,
-        final Configuration config, final MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil) {
+        final Configuration config, final MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
@@ -108,7 +110,7 @@ public class GeneratorRunner {
         this.mediaVersionDataManager = mediaVersionDataManager;
         this.generatorConfig = generatorConfig;
         this.filePathUtil = filePathUtil;
-
+        this.generatorDataManager = generatorDataManager;
     }
 
     @PostConstruct
@@ -180,6 +182,8 @@ public class GeneratorRunner {
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
 
         deprecatedClassGenerator.generateDeprecatedClasses();
+
+        generatorDataManager.writeFiles();
     }
 
     private void generateClasses(final FieldDefinition field, final List<ClassGenerator> generators, final String responseMediaType) throws Exception {

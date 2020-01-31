@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.IOException;
 

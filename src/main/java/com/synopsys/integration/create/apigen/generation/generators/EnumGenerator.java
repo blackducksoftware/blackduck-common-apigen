@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,6 +34,8 @@ import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.FileGenerationData;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -44,24 +46,24 @@ import freemarker.template.Template;
 
 @Component
 public class EnumGenerator extends ClassGenerator {
-
     private final ClassCategories classCategories;
-    private final GeneratedClassWriter generatedClassWriter;
     private final InputDataFinder inputDataFinder;
     private final TypeTranslator typeTranslator;
     private final FilePathUtil filePathUtil;
+    private final GeneratorDataManager generatorDataManager;
 
     @Autowired
-    public EnumGenerator(final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter, final InputDataFinder inputDataFinder, final TypeTranslator typeTranslator, FilePathUtil filePathUtil) {
+    public EnumGenerator(ClassCategories classCategories, InputDataFinder inputDataFinder, TypeTranslator typeTranslator, FilePathUtil filePathUtil,
+        GeneratorDataManager generatorDataManager) {
         this.classCategories = classCategories;
-        this.generatedClassWriter = generatedClassWriter;
         this.inputDataFinder = inputDataFinder;
         this.typeTranslator = typeTranslator;
         this.filePathUtil = filePathUtil;
+        this.generatorDataManager = generatorDataManager;
     }
 
     @Override
-    public boolean isApplicable(final FieldDefinition field) {
+    public boolean isApplicable(FieldDefinition field) {
         final String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
         final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();
@@ -70,7 +72,7 @@ public class EnumGenerator extends ClassGenerator {
     }
 
     @Override
-    public void generateClass(final FieldDefinition field, final String responseMediaType, final Template template) throws Exception {
+    public void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
         classType = typeTranslator.getSimplifiedClassName(classType);
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
@@ -84,7 +86,7 @@ public class EnumGenerator extends ClassGenerator {
             input.put(UtilStrings.HAS_NEW_NAME, true);
             input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(classType));
         }
-        generatedClassWriter.writeFile(classType, template, input, filePathUtil.getOutputPathToEnumFiles());
+        generatorDataManager.addFileData(new FileGenerationData(classType, template, input, filePathUtil.getOutputPathToEnumFiles()));
 
         for (final FieldDefinition subField : field.getSubFields()) {
             generateClass(subField, responseMediaType, template);

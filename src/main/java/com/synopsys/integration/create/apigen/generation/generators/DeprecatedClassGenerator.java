@@ -20,35 +20,30 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.DeprecatedClassData;
-import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
-
-import freemarker.template.Template;
+import com.synopsys.integration.create.apigen.generation.FileGenerationData;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 
 @Component
 public class DeprecatedClassGenerator {
-     private final GeneratedClassWriter generatedClassWriter;
-     private final ClassCategories classCategories;
+    private final ClassCategories classCategories;
+    private final GeneratorDataManager generatorDataManager;
 
-     @Autowired
-     public DeprecatedClassGenerator(GeneratedClassWriter generatedClassWriter, ClassCategories classCategories) {
-         this.generatedClassWriter = generatedClassWriter;
-         this.classCategories = classCategories;
-     }
+    @Autowired
+    public DeprecatedClassGenerator(ClassCategories classCategories, GeneratorDataManager generatorDataManager) {
+        this.classCategories = classCategories;
+        this.generatorDataManager = generatorDataManager;
+    }
 
     public void generateDeprecatedClasses() throws Exception {
         for (DeprecatedClassData deprecatedClassData : classCategories.getDeprecatedClasses()) {
-            generatedClassWriter.writeFile(deprecatedClassData.getSwaggerName(), deprecatedClassData.getTemplate(), deprecatedClassData.getInput(), deprecatedClassData.getDestination());
+            generatorDataManager.addFileData(new FileGenerationData(deprecatedClassData.getSwaggerName(), deprecatedClassData.getTemplate(), deprecatedClassData.getInput(), deprecatedClassData.getDestination()));
         }
     }
 }
