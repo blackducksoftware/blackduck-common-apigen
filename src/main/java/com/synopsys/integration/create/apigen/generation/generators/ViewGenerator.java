@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -111,18 +112,19 @@ public class ViewGenerator {
             pathToFiles = filePathUtil.getOutputPathToComponentFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
         }
-        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, response.getName(), fieldBaseClass, response.getFields(), links, responseMediaType);
+        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, viewName, fieldBaseClass, response.getFields(), links, responseMediaType);
 
         mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
-        if (swaggerName != null) {
-            if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
+        if (StringUtils.isNotBlank(swaggerName)) {
+            if (StringUtils.isBlank(typeTranslator.getClassSwaggerName(swaggerName))) {
                 classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToFiles);
             }
         }
-        if (typeTranslator.getApiGenClassName(viewName) != null) {
+        String apiGenClassName = typeTranslator.getApiGenClassName(viewName);
+        if (StringUtils.isNotBlank(apiGenClassName)) {
             input.put(UtilStrings.HAS_NEW_NAME, true);
-            input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(viewName));
+            input.put(UtilStrings.NEW_NAME, apiGenClassName);
         }
         generatorDataManager.addFileData(new FileGenerationData(viewName, template, input, pathToFiles));
 

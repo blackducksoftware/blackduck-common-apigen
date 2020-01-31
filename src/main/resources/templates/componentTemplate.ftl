@@ -10,7 +10,7 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 <#list classFields as field>
     private ${field.type} ${field.path};
 </#list>
-    private String mediaType = "${mediaType}";
+    private String MEDIA_TYPE = "${mediaType}";
 
 <#if buildable??>
     public static ${className}Builder newBuilder() {
@@ -29,6 +29,6 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 
 </#list>
 	public String getMediaType() {
-	    return mediaType;
+	    return MEDIA_TYPE;
 	}
 }
