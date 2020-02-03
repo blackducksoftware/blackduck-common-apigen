@@ -22,18 +22,36 @@
  */
 package com.synopsys.integration.create.apigen.generation;
 
-import java.io.IOException;
+import java.util.Map;
 
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
-
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-public abstract class ClassGenerator {
+public class FileGenerationData {
+    private final String className;
+    private final Template template;
+    private final Map<String, Object> input;
+    private final String destination;
 
-    public abstract boolean isApplicable(FieldDefinition field);
+    public FileGenerationData(final String className, final Template template, final Map<String, Object> input, final String destination) {
+        this.className = className;
+        this.template = template;
+        this.input = input;
+        this.destination = destination;
+    }
 
-    public abstract void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception;
+    public String getClassName() {
+        return className;
+    }
 
-    public abstract Template getTemplate(Configuration config) throws IOException;
+    public Template getTemplate() {
+        return template;
+    }
+
+    public Map<String, Object> getInput() {
+        return input;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
 }

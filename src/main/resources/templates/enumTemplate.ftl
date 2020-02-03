@@ -14,10 +14,10 @@ import com.synopsys.integration.util.EnumUtils;
 public enum ${className} {
 	${enumValues?join(",\n\t")};
 
-	private String mediaType = "${mediaType}";
+	private String MEDIA_TYPE = "${mediaType}";
 
 	public String getMediaType() {
-	    return mediaType;
+	    return MEDIA_TYPE;
 	}
 
 	public String prettyPrint() {

@@ -20,13 +20,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,8 @@ import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.FileGenerationData;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
@@ -50,7 +53,6 @@ import freemarker.template.Template;
 
 @Component
 public class ViewGenerator {
-    private final GeneratedClassWriter generatedClassWriter;
     private final MediaTypes mediaTypes;
     private final ImportFinder importFinder;
     private final InputDataFinder inputDataFinder;
@@ -59,11 +61,12 @@ public class ViewGenerator {
     private final TypeTranslator typeTranslator;
     private final ClassCategories classCategories;
     private final FilePathUtil filePathUtil;
+    private final GeneratorDataManager generatorDataManager;
 
     @Autowired
-    public ViewGenerator(final GeneratedClassWriter generatedClassWriter, final MediaTypes mediaTypes, final ImportFinder importFinder,
-        final InputDataFinder inputDataFinder, final NameAndPathManager nameAndPathManager, final MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator, ClassCategories classCategories, FilePathUtil filePathUtil) {
-        this.generatedClassWriter = generatedClassWriter;
+    public ViewGenerator(MediaTypes mediaTypes, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator,
+        ClassCategories classCategories, FilePathUtil filePathUtil,
+        GeneratorDataManager generatorDataManager) {
         this.mediaTypes = mediaTypes;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
@@ -72,6 +75,7 @@ public class ViewGenerator {
         this.typeTranslator = typeTranslator;
         this.classCategories = classCategories;
         this.filePathUtil = filePathUtil;
+        this.generatorDataManager = generatorDataManager;
     }
 
     public boolean isApplicable(final ResponseDefinition response) {
@@ -108,20 +112,21 @@ public class ViewGenerator {
             pathToFiles = filePathUtil.getOutputPathToComponentFiles();
             imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
         }
-        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, response.getName(), fieldBaseClass, response.getFields(), links, responseMediaType);
+        final Map<String, Object> input = inputDataFinder.getViewInputData(fieldPackage, imports, viewName, fieldBaseClass, response.getFields(), links, responseMediaType);
 
         mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
-        if (swaggerName != null) {
-            if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
+        if (StringUtils.isNotBlank(swaggerName)) {
+            if (StringUtils.isBlank(typeTranslator.getClassSwaggerName(swaggerName))) {
                 classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToFiles);
             }
         }
-        if (typeTranslator.getApiGenClassName(viewName) != null) {
+        String apiGenClassName = typeTranslator.getApiGenClassName(viewName);
+        if (StringUtils.isNotBlank(apiGenClassName)) {
             input.put(UtilStrings.HAS_NEW_NAME, true);
-            input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(viewName));
+            input.put(UtilStrings.NEW_NAME, apiGenClassName);
         }
-        generatedClassWriter.writeFile(viewName, template, input, pathToFiles);
+        generatorDataManager.addFileData(new FileGenerationData(viewName, template, input, pathToFiles));
 
         nameAndPathManager.addNonLinkClassName(viewName);
         nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(viewName));
