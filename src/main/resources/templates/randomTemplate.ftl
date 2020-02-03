@@ -19,7 +19,6 @@ import ${import};
 * this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 * **/
 public class ${className} extends ${parentClass} <#if buildable??>implements Buildable </#if>{
-	public static final String MEDIA_TYPE = ${parentClass}.MEDIA_TYPE;
 
 <#if hasLinksWithResults??>
 	public static final Map<String, LinkResponse> links = new HashMap<>();
