@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.GeneratorConfig;
+import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
@@ -49,12 +50,14 @@ public class MediaTypeMapGenerator {
     private final Configuration config;
     private final GeneratorConfig generatorConfig;
     private final GeneratorDataManager generatorDataManager;
+    private final MediaTypePathManager mediaTypePathManager;
 
-    public MediaTypeMapGenerator(ImportFinder importFinder, Configuration config, GeneratorConfig generatorConfig, GeneratorDataManager generatorDataManager) {
+    public MediaTypeMapGenerator(ImportFinder importFinder, Configuration config, GeneratorConfig generatorConfig, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager) {
         this.importFinder = importFinder;
         this.config = config;
         this.generatorConfig = generatorConfig;
         this.generatorDataManager = generatorDataManager;
+        this.mediaTypePathManager = mediaTypePathManager;
     }
 
     public void generateMediaTypeMap(final Set<MediaVersionData> latestMediaVersions) throws Exception {
@@ -75,7 +78,10 @@ public class MediaTypeMapGenerator {
         }
         input.put("imports", imports);
 
+        input.put("mediaTypeExpressions", mediaTypePathManager.getMediaTypeMappings());
+
         final File mediaTypeMapBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         generatorDataManager.addFileData(new FileGenerationData("MediaTypeDiscovery", config.getTemplate("mediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
+        generatorDataManager.addFileData(new FileGenerationData("MediaTypeDiscovery2", config.getTemplate("mediaTypeDiscovery2.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
     }
 }
