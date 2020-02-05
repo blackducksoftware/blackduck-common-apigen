@@ -62,12 +62,12 @@ public class DirectoryWalker {
     }
 
     public ParsedApiData parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
-        final ResponseParser responseParser = new ResponseParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final ApiParser apiParser = new ApiParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         boolean actuallyShowOutput = showOutput;
 
         // Get response-specification.json files from directory
-        ParsedApiData parsedApiData = responseParser.parseApi(rootDirectoryFile);
+        ParsedApiData parsedApiData = apiParser.parseApi(rootDirectoryFile);
         final List<ResponseDefinition> responseDefinitions = parsedApiData.getResponseDefinitions();
         final List<ResponseDefinition> finalResponseDefinitions = new ArrayList<>();
 
@@ -87,7 +87,7 @@ public class DirectoryWalker {
             if (responseType.equals(ResponseType.ARRAY)) {
                 actuallyShowOutput = false;
             } else if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
-                finalResponseDefinitions.add(responseParser.extractResponseFromSubfieldsOfItems(response));
+                finalResponseDefinitions.add(apiParser.extractResponseFromSubfieldsOfItems(response));
             } else {
                 finalResponseDefinitions.add(response);
             }
