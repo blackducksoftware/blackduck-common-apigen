@@ -23,7 +23,6 @@
 package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,8 +64,6 @@ public class MediaTypeMapGenerator {
 
         input.put("package", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
         final List<MediaVersionData> sortedLatestMediaVersions = latestMediaVersions.stream().collect(Collectors.toList());
-        Collections.sort(sortedLatestMediaVersions);
-        input.put("mostRecentClassVersions", sortedLatestMediaVersions);
 
         final Set<String> imports = new HashSet<>();
         final Set<String> classNames = new HashSet<>();
@@ -82,6 +79,5 @@ public class MediaTypeMapGenerator {
 
         final File mediaTypeMapBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         generatorDataManager.addFileData(new FileGenerationData("MediaTypeDiscovery", config.getTemplate("mediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
-        generatorDataManager.addFileData(new FileGenerationData("MediaTypeDiscovery2", config.getTemplate("mediaTypeDiscovery2.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
     }
 }

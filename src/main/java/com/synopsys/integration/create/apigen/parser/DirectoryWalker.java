@@ -39,6 +39,7 @@ import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
+import com.synopsys.integration.create.apigen.model.ParsedApiData;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
@@ -60,13 +61,14 @@ public class DirectoryWalker {
         this.nameAndPathManager = nameAndPathManager;
     }
 
-    public List<ResponseDefinition> parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
+    public ParsedApiData parseDirectoryForResponses(final boolean showOutput, final boolean controlRun) throws IOException {
         final ResponseParser responseParser = new ResponseParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         boolean actuallyShowOutput = showOutput;
 
         // Get response-specification.json files from directory
-        final List<ResponseDefinition> responseDefinitions = responseParser.parseResponses(rootDirectoryFile);
+        ParsedApiData parsedApiData = responseParser.parseApi(rootDirectoryFile);
+        final List<ResponseDefinition> responseDefinitions = parsedApiData.getResponseDefinitions();
         final List<ResponseDefinition> finalResponseDefinitions = new ArrayList<>();
 
         // For each response file, parse the JSON for FieldDefinition objects
@@ -100,7 +102,7 @@ public class DirectoryWalker {
         if (controlRun) {
             FieldsParserTestDataCollector.writeControlData(gson, finalResponseDefinitions);
         }
-        return finalResponseDefinitions;
+        return new ParsedApiData(parsedApiData.getRequestDefinitions(), finalResponseDefinitions);
     }
 
 }

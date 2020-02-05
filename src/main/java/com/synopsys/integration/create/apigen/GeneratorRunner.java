@@ -57,6 +57,8 @@ import com.synopsys.integration.create.apigen.generation.generators.MediaVersion
 import com.synopsys.integration.create.apigen.generation.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
+import com.synopsys.integration.create.apigen.model.ParsedApiData;
+import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
@@ -133,8 +135,9 @@ public class GeneratorRunner {
             System.exit(0);
         }
         final DirectoryWalker directoryWalker = new DirectoryWalker(inputDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun());
-
+        final ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun());
+        List<RequestDefinition> requests = apiData.getRequestDefinitions();
+        List<ResponseDefinition> responses = apiData.getResponseDefinitions();
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());
             final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
@@ -146,9 +149,8 @@ public class GeneratorRunner {
                 response.addLinks(missingLinks);
             }
         }
-        final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
 
-        generateFiles(responses, randomTemplate);
+        generateFiles(requests, responses);
 
         logger.info("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
         for (final String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
@@ -163,7 +165,11 @@ public class GeneratorRunner {
         }
     }
 
-    private void generateFiles(final List<ResponseDefinition> responses, final Template randomTemplate) throws Exception {
+    private void generateFiles(List<RequestDefinition> requests, List<ResponseDefinition> responses) throws Exception {
+        for (RequestDefinition request : requests) {
+            mediaTypePathManager.addMapping(request);
+        }
+
         for (final ResponseDefinition response : responses) {
             if (viewGenerator.isApplicable(response)) {
                 final Template template = viewGenerator.getTemplate(config);
@@ -174,7 +180,6 @@ public class GeneratorRunner {
             for (final FieldDefinition field : response.getFields()) {
                 generateClasses(field, generators, response.getMediaType());
             }
-            mediaTypePathManager.addMapping(response);
         }
         final ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(nameAndPathManager);
         apiPathDataPopulator.populateApiPathData(responses);
@@ -183,6 +188,7 @@ public class GeneratorRunner {
         final Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
 
+        final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
 
         deprecatedClassGenerator.generateDeprecatedClasses();
