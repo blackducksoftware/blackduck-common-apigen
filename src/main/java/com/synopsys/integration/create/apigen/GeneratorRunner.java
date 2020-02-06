@@ -166,10 +166,22 @@ public class GeneratorRunner {
     }
 
     private void generateFiles(List<RequestDefinition> requests, List<ResponseDefinition> responses) throws Exception {
+        accumulateRequestMediaTypes(requests);
+        accumulateGeneratedResponseClassData(responses);
+        accumulateApiDiscoveryClassData(responses);
+        accumulateMediaTypeDiscoveryClassData();
+        accumulateLatestViewAndComponentClassData();
+        deprecatedClassGenerator.generateDeprecatedClasses();
+        generatorDataManager.writeFiles();
+    }
+
+    private void accumulateRequestMediaTypes(List<RequestDefinition> requests) {
         for (RequestDefinition request : requests) {
             mediaTypePathManager.addMapping(request);
         }
+    }
 
+    private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses) throws Exception {
         for (final ResponseDefinition response : responses) {
             if (viewGenerator.isApplicable(response)) {
                 final Template template = viewGenerator.getTemplate(config);
@@ -181,19 +193,22 @@ public class GeneratorRunner {
                 generateClasses(field, generators, response.getMediaType());
             }
         }
+    }
+
+    private void accumulateApiDiscoveryClassData(List<ResponseDefinition> responses) {
         final ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(nameAndPathManager);
         apiPathDataPopulator.populateApiPathData(responses);
+    }
 
+    private void accumulateMediaTypeDiscoveryClassData() throws Exception {
         final File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         final Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
+    }
 
+    private void accumulateLatestViewAndComponentClassData() throws Exception {
         final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
-
-        deprecatedClassGenerator.generateDeprecatedClasses();
-
-        generatorDataManager.writeFiles();
     }
 
     private void generateClasses(final FieldDefinition field, final List<ClassGenerator> generators, final String responseMediaType) throws Exception {

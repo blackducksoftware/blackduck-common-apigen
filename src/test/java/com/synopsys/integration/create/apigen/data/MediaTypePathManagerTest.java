@@ -29,8 +29,8 @@ public class MediaTypePathManagerTest {
             pathManager.addMapping(RequestDefinition);
         }
         List<MediaTypeData> mediaTypes = pathManager.getMediaTypeMappings();
-        assertMediaType("componentMediaType", String.format("/api/components/%s/path", MediaTypePathManager.UUID_REGEX), mediaTypes);
-        assertMediaType("projectVersionMediaType", String.format("/api/projects/%s/versions/%s", MediaTypePathManager.UUID_REGEX, MediaTypePathManager.UUID_REGEX), mediaTypes);
+        assertMediaType("componentMediaType", String.format("\\\\/api\\\\/components\\\\/%s\\\\/path", MediaTypePathManager.UUID_REGEX), mediaTypes);
+        assertMediaType("projectVersionMediaType", String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions\\\\/%s", MediaTypePathManager.UUID_REGEX, MediaTypePathManager.UUID_REGEX), mediaTypes);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class MediaTypePathManagerTest {
 
         List<MediaTypeData> mediaTypes = pathManager.getMediaTypeMappings();
         assertFalse(mediaTypes.isEmpty());
-        assertMediaType("reportsMediaType", "/api/reports", mediaTypes);
+        assertMediaType("reportsMediaType", "\\\\/api\\\\/reports", mediaTypes);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class MediaTypePathManagerTest {
         }
 
         List<MediaTypeData> mediaTypes = pathManager.getMediaTypeMappings();
-        assertMediaType("reportsMediaType", "/api/reports/" + MediaTypePathManager.UUID_REGEX, mediaTypes);
+        assertMediaType("reportsMediaType", "\\\\/api\\\\/reports\\\\/" + MediaTypePathManager.UUID_REGEX, mediaTypes);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class MediaTypePathManagerTest {
         }
 
         List<MediaTypeData> mediaTypes = pathManager.getMediaTypeMappings();
-        assertMediaType("projectVersionArrayMediaType", "/api/projects/" + MediaTypePathManager.UUID_REGEX + "/versions", mediaTypes);
+        assertMediaType("projectVersionArrayMediaType", "\\\\/api\\\\/projects\\\\/" + MediaTypePathManager.UUID_REGEX + "\\\\/versions", mediaTypes);
     }
 
     @Test

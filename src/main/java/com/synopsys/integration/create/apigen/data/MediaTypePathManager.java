@@ -49,31 +49,22 @@ public class MediaTypePathManager {
     }
 
     private void addMissingPaths() {
-        String pathRegex = String.format("/api/codelocations/%s/scan-summaries", UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.scan-4+json"));
-
-        pathRegex = String.format("/api/projects/%s/project-mappings", UUID_REGEX);
+        String pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/project-mappings", UUID_REGEX);
         mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json"));
 
-        pathRegex = String.format("/api/projects/%s/versions/%s/code-locations", UUID_REGEX, UUID_REGEX);
+        pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions/\\\\%s\\\\/code-locations", UUID_REGEX, UUID_REGEX);
         mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.internal-1+json"));
 
-        pathRegex = String.format("/api/projects/%s/versions/%s/license-reports", UUID_REGEX, UUID_REGEX);
+        pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions\\\\/%s\\\\/license-reports", UUID_REGEX, UUID_REGEX);
         mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.report-4+json"));
 
-        pathRegex = String.format("/api/projects/%s/versions/%s/issues", UUID_REGEX, UUID_REGEX);
+        pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions\\\\/%s\\\\/issues", UUID_REGEX, UUID_REGEX);
         mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/json"));
 
-        pathRegex = String.format("/api/roles/%s/users", UUID_REGEX);
+        pathRegex = String.format("\\\\/api\\\\/usergroups\\\\/%s\\\\/users", UUID_REGEX);
         mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.user-4+json"));
 
-        pathRegex = String.format("/api/usergroups/%s/users", UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.user-4+json"));
-
-        pathRegex = String.format("/api/users/%s/inherited-roles", UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.user-4+json"));
-
-        pathRegex = String.format("/api/users/%s/notifications", UUID_REGEX);
+        pathRegex = String.format("\\\\/api\\\\/users\\\\/%s\\\\/notifications", UUID_REGEX);
         mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.notification-4+json"));
 
     }
@@ -81,7 +72,7 @@ public class MediaTypePathManager {
     public void addMapping(RequestDefinition requestDefinition) {
         String pathPattern = createPathRegex(requestDefinition.getResponseSpecificationPath());
         if (StringUtils.isNotBlank(pathPattern)) {
-            String pathRegex = "/api/" + pathPattern;
+            String pathRegex = "\\\\/api\\\\/" + pathPattern;
             mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, requestDefinition.getMediaType()));
         }
     }
@@ -113,14 +104,14 @@ public class MediaTypePathManager {
                         pathExpression.append(segment);
                     }
                     if (index <= count - 1) {
-                        pathExpression.append("/");
+                        pathExpression.append("\\\\/");
                     }
                 } else {
                     break;
                 }
             }
         }
-        return StringUtils.removeEnd(pathExpression.toString(), "/");
+        return StringUtils.removeEnd(pathExpression.toString(), "\\\\/");
     }
 
     private Set<String> populatePathSegmentsToIgnore() {
