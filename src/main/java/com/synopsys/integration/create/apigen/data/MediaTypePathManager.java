@@ -34,54 +34,138 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
+import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
 import com.synopsys.integration.create.apigen.model.RequestDefinition;
 
 @Component
 public class MediaTypePathManager {
     public static final String UUID_REGEX = "\\\\b[a-f0-9]{8}\\\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\\\b[a-f0-9]{12}\\\\b";
-    private final Map<String, MediaTypeData> mediaTypeMappings;
+    public static final String UUID_TOKEN = "\" + UUID_REGEX + \"";
+    private final Map<String, MediaTypeDefinition> mediaTypeMappings;
     private final Set<String> ignoredSegments;
+    private final Set<String> uniqueMediaTypes;
+    private final Set<String> uniquePaths;
 
     public MediaTypePathManager() {
         mediaTypeMappings = new LinkedHashMap<>();
+        uniqueMediaTypes = new HashSet<>();
+        uniquePaths = new HashSet<>();
         ignoredSegments = populatePathSegmentsToIgnore();
         addMissingPaths();
     }
 
     private void addMissingPaths() {
-        String pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/project-mappings", UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json"));
+        String pathRegex = "/api/projects/%s/project-mappings";
+        addMapping(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json");
 
-        pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions/\\\\%s\\\\/code-locations", UUID_REGEX, UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.internal-1+json"));
+        pathRegex = "/api/projects/%s/versions/%s/code-locations";
+        addMapping(pathRegex, "application/vnd.blackducksoftware.internal-1+json");
 
-        pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions\\\\/%s\\\\/license-reports", UUID_REGEX, UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.report-4+json"));
+        pathRegex = "/api/projects/%s/versions/%s/license-reports";
+        addMapping(pathRegex, "application/vnd.blackducksoftware.report-4+json");
 
-        pathRegex = String.format("\\\\/api\\\\/projects\\\\/%s\\\\/versions\\\\/%s\\\\/issues", UUID_REGEX, UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/json"));
+        pathRegex = "/api/projects/%s/versions/%s/issues";
+        addMapping(pathRegex, "application/json");
 
-        pathRegex = String.format("\\\\/api\\\\/usergroups\\\\/%s\\\\/users", UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.user-4+json"));
+        pathRegex = "/api/usergroups/%s/users";
+        addMapping(pathRegex, "application/vnd.blackducksoftware.user-4+json");
 
-        pathRegex = String.format("\\\\/api\\\\/users\\\\/%s\\\\/notifications", UUID_REGEX);
-        mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, "application/vnd.blackducksoftware.notification-4+json"));
+        pathRegex = "/api/users/%s/notifications";
+        addMapping(pathRegex, "application/vnd.blackducksoftware.notification-4+json");
 
     }
 
     public void addMapping(RequestDefinition requestDefinition) {
         String pathPattern = createPathRegex(requestDefinition.getResponseSpecificationPath());
         if (StringUtils.isNotBlank(pathPattern)) {
-            String pathRegex = "\\\\/api\\\\/" + pathPattern;
-            mediaTypeMappings.put(pathRegex, new MediaTypeData(pathRegex, requestDefinition.getMediaType()));
+            String mediaType = requestDefinition.getMediaType();
+            String pathRegex = "/api/" + pathPattern;
+            addMapping(pathRegex, mediaType);
         }
     }
 
-    public List<MediaTypeData> getMediaTypeMappings() {
-        List<MediaTypeData> mediatTypes = mediaTypeMappings.values().stream()
-                                              .sorted(Comparator.comparing(MediaTypeData::getPathRegex))
-                                              .collect(Collectors.toList());
+    private void addMapping(String pathRegex, String mediaType) {
+        uniqueMediaTypes.add(mediaType);
+        uniquePaths.add(pathRegex);
+        mediaTypeMappings.put(pathRegex, new MediaTypeDefinition(pathRegex, mediaType));
+    }
+
+    public List<MediaTypeDefinition> getMediaTypeMappings() {
+        List<MediaTypeDefinition> mediatTypes = mediaTypeMappings.values().stream()
+                                                    .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
+                                                    .collect(Collectors.toList());
         return mediatTypes;
+    }
+
+    public MediaTypeData getMediaTypeData() {
+        List<String> mediaTypeConstants = uniqueMediaTypes.stream()
+                                              .sorted()
+                                              .map(this::generateMediaTypeStatic)
+                                              .filter(variable -> !variable.startsWith("JSON"))
+                                              .collect(Collectors.toList());
+        List<String> mediaTypePaths = uniquePaths.stream()
+                                          .sorted()
+                                          .map(this::generatePathStatic)
+                                          .collect(Collectors.toList());
+        Map<String, String> constantsMapping = new LinkedHashMap<>();
+        List<MediaTypeDefinition> sortedDefintions = mediaTypeMappings.values().stream()
+                                                         .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
+                                                         .collect(Collectors.toList());
+        for (MediaTypeDefinition definition : sortedDefintions) {
+            String pathConstant = generatePathConstant(definition.getPathRegex());
+            String mediaTypeConstant = generateMediaTypeConstant(definition.getMediaType());
+            if ("JSON".equals(mediaTypeConstant)) {
+                mediaTypeConstant = "DEFAULT_MEDIA_TYPE";
+            }
+            constantsMapping.put(pathConstant, mediaTypeConstant);
+        }
+
+        return new MediaTypeData(mediaTypeConstants, mediaTypePaths, constantsMapping);
+    }
+
+    private String generateMediaTypeStatic(String mediaType) {
+        String constantName = generateMediaTypeConstant(mediaType);
+        return generateStaticVariable(constantName, mediaType);
+    }
+
+    private String generateMediaTypeConstant(String mediaType) {
+        String constantName = StringUtils.remove(mediaType, "application/");
+        constantName = StringUtils.replace(constantName, ".", "_");
+        constantName = StringUtils.replace(constantName, "-", "_");
+        constantName = StringUtils.replace(constantName, "+", "_");
+        return constantName.toUpperCase();
+    }
+
+    private String generatePathStatic(String pathRegex) {
+        String constantName = generatePathConstant(pathRegex);
+        StringBuilder formattedValue = new StringBuilder();
+        formattedValue.append("String.format(\"");
+        formattedValue.append(pathRegex);
+        formattedValue.append("\",");
+        int uuidConstantCount = StringUtils.countMatches(pathRegex, "%s");
+
+        for (int index = 0; index < uuidConstantCount; index++) {
+            formattedValue.append("UUID_REGEX");
+            if (index < uuidConstantCount - 1) {
+                formattedValue.append(", ");
+            }
+        }
+        formattedValue.append(");");
+
+        return String.format("%s = %s", constantName, formattedValue.toString());
+    }
+
+    private String generatePathConstant(String pathRegex) {
+        String constantName = StringUtils.replace(pathRegex, "/", "_");
+        constantName = StringUtils.replace(constantName, "%s", "");
+        constantName = StringUtils.replace(constantName, "__", "_");
+        constantName = StringUtils.replace(constantName, "-", "_");
+        constantName = StringUtils.replace(constantName, "_", "", 1);
+        return constantName.toUpperCase();
+    }
+
+    private String generateStaticVariable(String constantVariable, String value) {
+        return String.format("%s = \"%s\"", constantVariable, value);
     }
 
     private String createPathRegex(String apiResponsePath) {
@@ -99,19 +183,19 @@ public class MediaTypePathManager {
             } else {
                 if (!ignoredSegments.contains(segment)) {
                     if (StringUtils.endsWith(segment, "Id")) {
-                        pathExpression.append(UUID_REGEX);
+                        pathExpression.append("%s");
                     } else {
                         pathExpression.append(segment);
                     }
                     if (index <= count - 1) {
-                        pathExpression.append("\\\\/");
+                        pathExpression.append("/");
                     }
                 } else {
                     break;
                 }
             }
         }
-        return StringUtils.removeEnd(pathExpression.toString(), "\\\\/");
+        return StringUtils.removeEnd(pathExpression.toString(), "/");
     }
 
     private Set<String> populatePathSegmentsToIgnore() {

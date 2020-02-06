@@ -76,7 +76,7 @@ public class MediaTypeMapGenerator {
         input.put("imports", imports);
 
         input.put("mediaTypeExpressions", mediaTypePathManager.getMediaTypeMappings());
-
+        input.put("mediaTypeData", mediaTypePathManager.getMediaTypeData());
         final File mediaTypeMapBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         generatorDataManager.addFileData(new FileGenerationData("MediaTypeDiscovery", config.getTemplate("mediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
     }
