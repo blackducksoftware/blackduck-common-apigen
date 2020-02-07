@@ -31,8 +31,8 @@ public class MediaTypeDiscovery {
     // The string to escape forward slash is: \\/
     // The regex pattern for a UUID is: \\b[a-f0-9]{8}\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\b[a-f0-9]{12}\\b
     public MediaTypeDiscovery() {
-    <#list mediaTypeData.getConstantsMapping().keys() as constant>
-        mediaTypeMatchers.add(new MediaTypeMatcher(${constant}, ${mediaTypeData.getConstantsMapping().get(constant)}));
+    <#list mediaTypeData.getConstantsMapping() as mediaTypeDefinition>
+        mediaTypeMatchers.add(new MediaTypeMatcher(${mediaTypeDefinition.getPathRegex()}, ${mediaTypeDefinition.getMediaType()}));
     </#list>
     }
 

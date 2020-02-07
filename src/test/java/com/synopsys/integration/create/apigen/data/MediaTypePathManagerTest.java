@@ -1,8 +1,8 @@
 package com.synopsys.integration.create.apigen.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,9 +31,9 @@ public class MediaTypePathManagerTest {
         for (RequestDefinition RequestDefinition : RequestDefinitions) {
             pathManager.addMapping(RequestDefinition);
         }
-        List<MediaTypeDefinition> mediaTypes = pathManager.getMediaTypeMappings();
-        assertMediaType("componentMediaType", "/api/components/%s/path", mediaTypes);
-        assertMediaType("projectVersionMediaType", "/api/projects/%s/versions/%s", mediaTypes);
+        MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
+        assertMediaType("/api/components/%s/path", "componentMediaType", mediaTypeData);
+        assertMediaType("/api/projects/%s/versions/%s", "projectVersionMediaType", mediaTypeData);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class MediaTypePathManagerTest {
             pathManager.addMapping(RequestDefinition);
         }
 
-        assertMediaType("", "", pathManager.getMediaTypeMappings());
+        assertEquals(6, pathManager.getMediaTypeData().getConstantsMapping().size(), "Only missing media types should be present");
     }
 
     @Test
@@ -57,9 +57,8 @@ public class MediaTypePathManagerTest {
             pathManager.addMapping(RequestDefinition);
         }
 
-        List<MediaTypeDefinition> mediaTypes = pathManager.getMediaTypeMappings();
-        assertFalse(mediaTypes.isEmpty());
-        assertMediaType("reportsMediaType", "/api/reports", mediaTypes);
+        MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
+        assertMediaType("/api/reports", "reportsMediaType", mediaTypeData);
     }
 
     @Test
@@ -71,8 +70,8 @@ public class MediaTypePathManagerTest {
             pathManager.addMapping(RequestDefinition);
         }
 
-        List<MediaTypeDefinition> mediaTypes = pathManager.getMediaTypeMappings();
-        assertMediaType("reportsMediaType", "/api/reports/%s", mediaTypes);
+        MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
+        assertMediaType("/api/reports/%s", "reportsMediaType", mediaTypeData);
     }
 
     @Test
@@ -84,8 +83,8 @@ public class MediaTypePathManagerTest {
             pathManager.addMapping(RequestDefinition);
         }
 
-        List<MediaTypeDefinition> mediaTypes = pathManager.getMediaTypeMappings();
-        assertMediaType("projectVersionArrayMediaType", "/api/projects/%s/versions", mediaTypes);
+        MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
+        assertMediaType("/api/projects/%s/versions", "projectVersionArrayMediaType", mediaTypeData);
     }
 
     @Test
@@ -126,14 +125,20 @@ public class MediaTypePathManagerTest {
         assertEquals("projectMediaType", mediaType);
     }
 
-    private void assertMediaType(String expectedMediaType, String expectedRegex, List<MediaTypeDefinition> mediaTypes) {
-        String mediaType = mediaTypes.stream()
-                               .filter(data -> expectedRegex.equals(data.getPathRegex()))
-                               .map(MediaTypeDefinition::getMediaType)
-                               .findFirst()
-                               .orElse("");
+    private void assertMediaType(String expectedPath, String expectedMediaType, MediaTypeData mediaTypeData) {
+        String pathVariable = MediaTypePathManager.generatePathStatic(expectedPath);
+        String mediaTypeVariable = MediaTypePathManager.generateMediaTypeStatic(expectedMediaType);
+        MediaTypeDefinition expectedDefinition = new MediaTypeDefinition(MediaTypePathManager.generatePathConstant(expectedPath), MediaTypePathManager.generateMediaTypeConstant(expectedMediaType));
 
-        assertEquals(expectedMediaType, mediaType);
+        boolean containsPathVar = mediaTypeData.getMediaTypePaths().stream()
+                                      .anyMatch(variable -> variable.contains(pathVariable));
+
+        boolean containsMediaTypeVar = mediaTypeData.getMediaTypeConstants().stream()
+                                           .anyMatch(variable -> variable.contains(mediaTypeVariable));
+
+        assertTrue(containsPathVar, String.format("Expected media path constant missing: %s", pathVariable));
+        assertTrue(containsMediaTypeVar, String.format("Expecte media type constant missing: %s", mediaTypeVariable));
+        assertTrue(mediaTypeData.getConstantsMapping().contains(expectedDefinition), String.format("Expected definition missing: %s", expectedDefinition));
     }
 
     private class MediaTypeMatcher {

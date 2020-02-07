@@ -54,6 +54,54 @@ public class MediaTypePathManager {
         addMissingPaths();
     }
 
+    public static String generateMediaTypeStatic(String mediaType) {
+        String constantName = generateMediaTypeConstant(mediaType);
+        return generateStaticVariable(constantName, mediaType);
+    }
+
+    public static String generateMediaTypeConstant(String mediaType) {
+        String constantName = StringUtils.remove(mediaType, "application/");
+        constantName = StringUtils.replace(constantName, ".", "_");
+        constantName = StringUtils.replace(constantName, "-", "_");
+        constantName = StringUtils.replace(constantName, "+", "_");
+        return constantName.toUpperCase();
+    }
+
+    public static String generatePathStatic(String pathRegex) {
+        String constantName = generatePathConstant(pathRegex);
+        StringBuilder formattedValue = new StringBuilder();
+        formattedValue.append("String.format(\"");
+        formattedValue.append(pathRegex);
+        formattedValue.append("\"");
+        int uuidConstantCount = StringUtils.countMatches(pathRegex, "%s");
+
+        if (uuidConstantCount > 0) {
+            formattedValue.append(", ");
+            for (int index = 0; index < uuidConstantCount; index++) {
+                formattedValue.append("UUID_REGEX");
+                if (index < uuidConstantCount - 1) {
+                    formattedValue.append(", ");
+                }
+            }
+        }
+        formattedValue.append(");");
+
+        return String.format("%s = %s", constantName, formattedValue.toString());
+    }
+
+    public static String generatePathConstant(String pathRegex) {
+        String constantName = StringUtils.replace(pathRegex, "/", "_");
+        constantName = StringUtils.replace(constantName, "%s", "");
+        constantName = StringUtils.replace(constantName, "__", "_");
+        constantName = StringUtils.replace(constantName, "-", "_");
+        constantName = StringUtils.replace(constantName, "_", "", 1);
+        return constantName.toUpperCase();
+    }
+
+    public static String generateStaticVariable(String constantVariable, String value) {
+        return String.format("%s = \"%s\"", constantVariable, value);
+    }
+
     private void addMissingPaths() {
         String pathRegex = "/api/projects/%s/project-mappings";
         addMapping(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json");
@@ -87,7 +135,12 @@ public class MediaTypePathManager {
     private void addMapping(String pathRegex, String mediaType) {
         uniqueMediaTypes.add(mediaType);
         uniquePaths.add(pathRegex);
-        mediaTypeMappings.put(pathRegex, new MediaTypeDefinition(pathRegex, mediaType));
+        String pathConstant = generatePathConstant(pathRegex);
+        String mediaTypeConstant = generateMediaTypeConstant(mediaType);
+        if ("JSON".equals(mediaTypeConstant)) {
+            mediaTypeConstant = "DEFAULT_MEDIA_TYPE";
+        }
+        mediaTypeMappings.put(pathRegex, new MediaTypeDefinition(pathConstant, mediaTypeConstant));
     }
 
     public List<MediaTypeDefinition> getMediaTypeMappings() {
@@ -100,72 +153,18 @@ public class MediaTypePathManager {
     public MediaTypeData getMediaTypeData() {
         List<String> mediaTypeConstants = uniqueMediaTypes.stream()
                                               .sorted()
-                                              .map(this::generateMediaTypeStatic)
+                                              .map(MediaTypePathManager::generateMediaTypeStatic)
                                               .filter(variable -> !variable.startsWith("JSON"))
                                               .collect(Collectors.toList());
         List<String> mediaTypePaths = uniquePaths.stream()
                                           .sorted()
-                                          .map(this::generatePathStatic)
+                                          .map(MediaTypePathManager::generatePathStatic)
                                           .collect(Collectors.toList());
-        Map<String, String> constantsMapping = new LinkedHashMap<>();
         List<MediaTypeDefinition> sortedDefintions = mediaTypeMappings.values().stream()
                                                          .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
                                                          .collect(Collectors.toList());
-        for (MediaTypeDefinition definition : sortedDefintions) {
-            String pathConstant = generatePathConstant(definition.getPathRegex());
-            String mediaTypeConstant = generateMediaTypeConstant(definition.getMediaType());
-            if ("JSON".equals(mediaTypeConstant)) {
-                mediaTypeConstant = "DEFAULT_MEDIA_TYPE";
-            }
-            constantsMapping.put(pathConstant, mediaTypeConstant);
-        }
 
-        return new MediaTypeData(mediaTypeConstants, mediaTypePaths, constantsMapping);
-    }
-
-    private String generateMediaTypeStatic(String mediaType) {
-        String constantName = generateMediaTypeConstant(mediaType);
-        return generateStaticVariable(constantName, mediaType);
-    }
-
-    private String generateMediaTypeConstant(String mediaType) {
-        String constantName = StringUtils.remove(mediaType, "application/");
-        constantName = StringUtils.replace(constantName, ".", "_");
-        constantName = StringUtils.replace(constantName, "-", "_");
-        constantName = StringUtils.replace(constantName, "+", "_");
-        return constantName.toUpperCase();
-    }
-
-    private String generatePathStatic(String pathRegex) {
-        String constantName = generatePathConstant(pathRegex);
-        StringBuilder formattedValue = new StringBuilder();
-        formattedValue.append("String.format(\"");
-        formattedValue.append(pathRegex);
-        formattedValue.append("\",");
-        int uuidConstantCount = StringUtils.countMatches(pathRegex, "%s");
-
-        for (int index = 0; index < uuidConstantCount; index++) {
-            formattedValue.append("UUID_REGEX");
-            if (index < uuidConstantCount - 1) {
-                formattedValue.append(", ");
-            }
-        }
-        formattedValue.append(");");
-
-        return String.format("%s = %s", constantName, formattedValue.toString());
-    }
-
-    private String generatePathConstant(String pathRegex) {
-        String constantName = StringUtils.replace(pathRegex, "/", "_");
-        constantName = StringUtils.replace(constantName, "%s", "");
-        constantName = StringUtils.replace(constantName, "__", "_");
-        constantName = StringUtils.replace(constantName, "-", "_");
-        constantName = StringUtils.replace(constantName, "_", "", 1);
-        return constantName.toUpperCase();
-    }
-
-    private String generateStaticVariable(String constantVariable, String value) {
-        return String.format("%s = \"%s\"", constantVariable, value);
+        return new MediaTypeData(mediaTypeConstants, mediaTypePaths, sortedDefintions);
     }
 
     private String createPathRegex(String apiResponsePath) {
