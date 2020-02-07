@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
@@ -56,6 +57,8 @@ import com.synopsys.integration.create.apigen.generation.generators.MediaVersion
 import com.synopsys.integration.create.apigen.generation.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
+import com.synopsys.integration.create.apigen.model.ParsedApiData;
+import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
@@ -86,12 +89,13 @@ public class GeneratorRunner {
     private final GeneratorConfig generatorConfig;
     private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
+    private final MediaTypePathManager mediaTypePathManager;
 
     @Autowired
-    public GeneratorRunner(final ClassCategories classCategories, final MissingFieldsAndLinks missingFieldsAndLinks, final Gson gson, final MediaTypes mediaTypes, final TypeTranslator typeTranslator,
-        final GeneratedClassWriter generatedClassWriter, final ImportFinder importFinder, final NameAndPathManager nameAndPathManager, final ViewGenerator viewGenerator, final DiscoveryGenerator discoveryGenerator,
-        final MediaTypeMapGenerator mediaTypeMapGenerator, final MediaVersionGenerator mediaVersionGenerator, final DeprecatedClassGenerator deprecatedClassGenerator, final List<ClassGenerator> generators,
-        final Configuration config, final MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager) {
+    public GeneratorRunner(ClassCategories classCategories, MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, MediaTypes mediaTypes, TypeTranslator typeTranslator,
+        GeneratedClassWriter generatedClassWriter, ImportFinder importFinder, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, DiscoveryGenerator discoveryGenerator,
+        MediaTypeMapGenerator mediaTypeMapGenerator, MediaVersionGenerator mediaVersionGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
+        Configuration config, MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager) {
         this.classCategories = classCategories;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
@@ -111,6 +115,7 @@ public class GeneratorRunner {
         this.generatorConfig = generatorConfig;
         this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
+        this.mediaTypePathManager = mediaTypePathManager;
     }
 
     @PostConstruct
@@ -130,8 +135,9 @@ public class GeneratorRunner {
             System.exit(0);
         }
         final DirectoryWalker directoryWalker = new DirectoryWalker(inputDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun());
-
+        final ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun());
+        List<RequestDefinition> requests = apiData.getRequestDefinitions();
+        List<ResponseDefinition> responses = apiData.getResponseDefinitions();
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());
             final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
@@ -143,9 +149,8 @@ public class GeneratorRunner {
                 response.addLinks(missingLinks);
             }
         }
-        final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
 
-        generateFiles(responses, randomTemplate);
+        generateFiles(requests, responses);
 
         logger.info("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
         for (final String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
@@ -160,7 +165,23 @@ public class GeneratorRunner {
         }
     }
 
-    private void generateFiles(final List<ResponseDefinition> responses, final Template randomTemplate) throws Exception {
+    private void generateFiles(List<RequestDefinition> requests, List<ResponseDefinition> responses) throws Exception {
+        accumulateRequestMediaTypes(requests);
+        accumulateGeneratedResponseClassData(responses);
+        accumulateApiDiscoveryClassData(responses);
+        accumulateMediaTypeDiscoveryClassData();
+        accumulateLatestViewAndComponentClassData();
+        deprecatedClassGenerator.generateDeprecatedClasses();
+        generatorDataManager.writeFiles();
+    }
+
+    private void accumulateRequestMediaTypes(List<RequestDefinition> requests) {
+        for (RequestDefinition request : requests) {
+            mediaTypePathManager.addMapping(request);
+        }
+    }
+
+    private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses) throws Exception {
         for (final ResponseDefinition response : responses) {
             if (viewGenerator.isApplicable(response)) {
                 final Template template = viewGenerator.getTemplate(config);
@@ -172,18 +193,22 @@ public class GeneratorRunner {
                 generateClasses(field, generators, response.getMediaType());
             }
         }
+    }
+
+    private void accumulateApiDiscoveryClassData(List<ResponseDefinition> responses) {
         final ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(nameAndPathManager);
         apiPathDataPopulator.populateApiPathData(responses);
+    }
 
+    private void accumulateMediaTypeDiscoveryClassData() throws Exception {
         final File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         final Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
+    }
 
+    private void accumulateLatestViewAndComponentClassData() throws Exception {
+        final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
-
-        deprecatedClassGenerator.generateDeprecatedClasses();
-
-        generatorDataManager.writeFiles();
     }
 
     private void generateClasses(final FieldDefinition field, final List<ClassGenerator> generators, final String responseMediaType) throws Exception {

@@ -23,14 +23,11 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
@@ -41,18 +38,19 @@ import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.ParsedApiData;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
+import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
-public class ResponseParser {
+public class ApiParser {
     private final MediaTypes mediaTypes;
     private final Gson gson;
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
 
-    @Autowired
-    public ResponseParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
+    public ApiParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.mediaTypes = mediaTypes;
         this.gson = gson;
         this.typeTranslator = typeTranslator;
@@ -60,15 +58,17 @@ public class ResponseParser {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
-    public ArrayList<ResponseDefinition> parseResponses(final File specificationRootDirectory) {
+    public ParsedApiData parseApi(final File specificationRootDirectory) {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
-        return parseResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
+        List<RequestDefinition> requestDefinitions = new LinkedList<>();
+        List<ResponseDefinition> responseDefinitions = new LinkedList<>();
+        parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, requestDefinitions, responseDefinitions);
+        return new ParsedApiData(requestDefinitions, responseDefinitions);
     }
 
-    private ArrayList<ResponseDefinition> parseResponses(final File parent, final int prefixLength) {
-        final ArrayList<ResponseDefinition> responseDefinitions = new ArrayList<>();
+    private void parseApi(final File parent, final int prefixLength, List<RequestDefinition> requestDefinitions, List<ResponseDefinition> responseDefinitions) {
         final List<File> children = Arrays.stream(parent.listFiles())
                                         .filter(file -> !file.getName().equals("notifications"))
                                         .sorted()
@@ -76,19 +76,24 @@ public class ResponseParser {
 
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
-            if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON) && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
-                final String responseRelativePath = child.getAbsolutePath().substring(prefixLength);
-                final NameParser nameParser = new NameParser(nameAndPathManager);
-                final String responseName = nameParser.getResponseName(responseRelativePath);
-                final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
-                final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
-                final ResponseDefinition response = new ResponseDefinition(responseRelativePath, responseName, responseMediaType, doesHaveMultipleResults);
-                responseDefinitions.add(response);
+            String fileName = child.getName();
+            boolean requestOrResponseFile = fileName.equals(UtilStrings.REQUEST_SPECIFICATION_JSON) || fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
+            if (requestOrResponseFile && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
+                final String relativePath = child.getAbsolutePath().substring(prefixLength);
+                final String mediaType = mediaTypes.getLongName(child.getParentFile().getName());
+                if (fileName.equals(UtilStrings.REQUEST_SPECIFICATION_JSON)) {
+                    requestDefinitions.add(new RequestDefinition(relativePath, mediaType));
+                } else if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
+                    final NameParser nameParser = new NameParser(nameAndPathManager);
+                    final String responseName = nameParser.getResponseName(relativePath);
+                    final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
+                    final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
+                    responseDefinitions.add(new ResponseDefinition(relativePath, responseName, responseMediaType, doesHaveMultipleResults));
+                }
             } else if (child.isDirectory()) {
-                responseDefinitions.addAll(parseResponses(child, prefixLength));
+                parseApi(child, prefixLength, requestDefinitions, responseDefinitions);
             }
         }
-        return responseDefinitions;
     }
 
     private boolean computeIfHasMultipleResults(final File file) {

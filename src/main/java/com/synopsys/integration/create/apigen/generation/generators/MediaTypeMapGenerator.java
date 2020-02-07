@@ -23,7 +23,6 @@
 package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +33,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.GeneratorConfig;
+import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
@@ -49,12 +49,14 @@ public class MediaTypeMapGenerator {
     private final Configuration config;
     private final GeneratorConfig generatorConfig;
     private final GeneratorDataManager generatorDataManager;
+    private final MediaTypePathManager mediaTypePathManager;
 
-    public MediaTypeMapGenerator(ImportFinder importFinder, Configuration config, GeneratorConfig generatorConfig, GeneratorDataManager generatorDataManager) {
+    public MediaTypeMapGenerator(ImportFinder importFinder, Configuration config, GeneratorConfig generatorConfig, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager) {
         this.importFinder = importFinder;
         this.config = config;
         this.generatorConfig = generatorConfig;
         this.generatorDataManager = generatorDataManager;
+        this.mediaTypePathManager = mediaTypePathManager;
     }
 
     public void generateMediaTypeMap(final Set<MediaVersionData> latestMediaVersions) throws Exception {
@@ -62,8 +64,6 @@ public class MediaTypeMapGenerator {
 
         input.put("package", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
         final List<MediaVersionData> sortedLatestMediaVersions = latestMediaVersions.stream().collect(Collectors.toList());
-        Collections.sort(sortedLatestMediaVersions);
-        input.put("mostRecentClassVersions", sortedLatestMediaVersions);
 
         final Set<String> imports = new HashSet<>();
         final Set<String> classNames = new HashSet<>();
@@ -75,6 +75,8 @@ public class MediaTypeMapGenerator {
         }
         input.put("imports", imports);
 
+        input.put("mediaTypeExpressions", mediaTypePathManager.getMediaTypeMappings());
+        input.put("mediaTypeData", mediaTypePathManager.getMediaTypeData());
         final File mediaTypeMapBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         generatorDataManager.addFileData(new FileGenerationData("MediaTypeDiscovery", config.getTemplate("mediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
     }

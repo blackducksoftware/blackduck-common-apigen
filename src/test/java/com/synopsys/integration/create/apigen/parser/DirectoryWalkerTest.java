@@ -19,6 +19,7 @@ import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
+import com.synopsys.integration.create.apigen.model.ParsedApiData;
 
 public class DirectoryWalkerTest {
     private static final String API_SPEC_PATH = "api-specification/2019.12.0";
@@ -33,7 +34,8 @@ public class DirectoryWalkerTest {
     @Test
     public void test() throws IOException, URISyntaxException {
         final File testFile = new File("./build/FieldsParserTestTestingData.txt");
-        FieldsParserTestDataCollector.writeTestData(gson, directoryWalker.parseDirectoryForResponses(false, false), testFile);
+        ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(false, false);
+        FieldsParserTestDataCollector.writeTestData(gson, apiData.getResponseDefinitions(), testFile);
         final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
 
         String controlData = null;
