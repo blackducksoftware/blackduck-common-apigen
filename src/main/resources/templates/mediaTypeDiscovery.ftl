@@ -13,11 +13,11 @@ public class MediaTypeDiscovery {
     public static final String UUID_REGEX = "\\b[a-f0-9]{8}\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\b[a-f0-9]{12}\\b";
 
     <#list mediaTypeData.getMediaTypeConstants() as mediaTypeConstant>
-    public static final String ${mediaTypeConstant}
+    public static final String ${mediaTypeConstant};
     </#list>
 
     <#list mediaTypeData.getMediaTypePaths() as mediaTypePath>
-    public static final String ${mediaTypePath}
+    public static final String ${mediaTypePath};
     </#list>
 
     private List<MediaTypeMatcher> mediaTypeMatchers = new LinkedList<>();
