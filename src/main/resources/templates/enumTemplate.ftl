@@ -14,8 +14,6 @@ import com.synopsys.integration.util.EnumUtils;
 public enum ${className} {
 	${enumValues?join(",\n\t")};
 
-	public static final String MEDIA_TYPE = "${mediaType}";
-
 	public String prettyPrint() {
 	    return EnumUtils.prettyPrint(this);
 	}
