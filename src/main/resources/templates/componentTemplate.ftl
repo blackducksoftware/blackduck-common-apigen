@@ -10,26 +10,21 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 <#list classFields as field>
     private ${field.type} ${field.path};
 </#list>
-    private String mediaType = "${mediaType}";
 
 <#if buildable??>
     public static ${className}Builder newBuilder() {
-    return new ${className}Builder();
+        return new ${className}Builder();
     }
 
 </#if>
 <#list classFields as field>
     public ${field.type} get${field.path?cap_first}() {
-    return ${field.path};
+        return ${field.path};
     }
 
     public void set${field.path?cap_first}(${field.type} ${field.path}) {
-    this.${field.path} = ${field.path};
+        this.${field.path} = ${field.path};
     }
 
 </#list>
-	public String getMediaType() {
-	return mediaType;
-	}
-
 }

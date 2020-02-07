@@ -1,11 +1,13 @@
 package com.synopsys.integration.create.apigen.parser;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
@@ -20,18 +22,18 @@ public class ApiPathDataPopulatorTest {
 
     @Test
     public void test() {
-        Assert.assertTrue(nameAndPathManager.getApiDiscoveryData().size() == 0);
+        assertTrue(nameAndPathManager.getApiDiscoveryData().size() == 0);
         List<ResponseDefinition> mockResponses = getMockResponses();
         apiPathDataPopulator.populateApiPathData(mockResponses);
         Set<ApiPathData> resultApiDiscoveryData = nameAndPathManager.getApiDiscoveryData();
 
-        Assert.assertFalse(resultApiDiscoveryData.size() > 5);
+        assertFalse(resultApiDiscoveryData.size() > 5);
         for (ApiPathData apiPathData : resultApiDiscoveryData) {
             if (apiPathData.getPath().equals("/api/components")) {
-                Assert.assertTrue(apiPathData.getResultClass().equals("ComponentSearchResultView"));
+                assertTrue(apiPathData.getResultClass().equals("ComponentSearchResultView"));
             }
             if (apiPathData.getPath().equals("/api/vulnerabilities")) {
-                Assert.assertTrue(apiPathData.hasMultipleResults() == false);
+                assertTrue(apiPathData.hasMultipleResults() == false);
             }
         }
     }

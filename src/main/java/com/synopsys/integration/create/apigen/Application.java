@@ -25,20 +25,19 @@ package com.synopsys.integration.create.apigen;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Locale;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @SpringBootApplication
 @Configuration
@@ -50,7 +49,7 @@ public class Application {
     public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
 
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
-//    private static final File FREEMARKER_TEMPLATE_DIRECTORY = new File(Application.class.getClassLoader().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getPath());
+    //    private static final File FREEMARKER_TEMPLATE_DIRECTORY = new File(Application.class.getClassLoader().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getPath());
 
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
@@ -77,6 +76,11 @@ public class Application {
     @Bean
     public PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver() {
         return new PathMatchingResourcePatternResolver(Application.class.getClassLoader());
+    }
+
+    @Bean
+    public GeneratorConfig generatorConfig() {
+        return new GeneratorConfig();
     }
 
 }

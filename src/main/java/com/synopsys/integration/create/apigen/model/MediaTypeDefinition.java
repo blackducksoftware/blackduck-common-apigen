@@ -20,20 +20,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.model;
 
-import java.io.IOException;
+import com.synopsys.integration.util.Stringable;
 
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
+public class MediaTypeDefinition extends Stringable {
+    private final String pathRegex;
+    private final String mediaType;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+    public MediaTypeDefinition(final String pathRegex, final String mediaType) {
+        this.pathRegex = pathRegex;
+        this.mediaType = mediaType;
+    }
 
-public abstract class ClassGenerator {
+    public String getPathRegex() {
+        return pathRegex;
+    }
 
-    public abstract boolean isApplicable(FieldDefinition field);
+    public String getMediaType() {
+        return mediaType;
+    }
 
-    public abstract void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception;
-
-    public abstract Template getTemplate(Configuration config) throws IOException;
 }

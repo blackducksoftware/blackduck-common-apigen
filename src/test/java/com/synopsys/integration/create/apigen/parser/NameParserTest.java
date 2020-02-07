@@ -1,7 +1,8 @@
 package com.synopsys.integration.create.apigen.parser;
 
-import org.junit.Test;
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 
@@ -15,8 +16,8 @@ public class NameParserTest {
         String projectVersionViewPath = "projects/projectId/versions/projectVersionId/GET/bds_project_detail_5_json/response-specification.json";
         String componentsViewPath = "components/GET/bds_component_detail_4_json/response-specification.json";
 
-        Assert.assertTrue(nameParser.getResponseName(componentViewPath).equals("ComponentViewV4"));
-        Assert.assertTrue(NameParser.getNonVersionedName(nameParser.getResponseName(projectVersionViewPath)).equals("ProjectVersionView"));
-        Assert.assertTrue(nameParser.getResponseName(componentsViewPath).equals("ComponentsViewV4"));
+        assertTrue(nameParser.getResponseName(componentViewPath).equals("ComponentViewV4"));
+        assertTrue(NameParser.getNonVersionedName(nameParser.getResponseName(projectVersionViewPath)).equals("ProjectVersionView"));
+        assertTrue(nameParser.getResponseName(componentsViewPath).equals("ComponentsViewV4"));
     }
 }

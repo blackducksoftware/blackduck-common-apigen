@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.generation;
+package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,6 +38,8 @@ import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.generation.FileGenerationData;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.model.MediaVersionData;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
@@ -45,24 +47,24 @@ import freemarker.template.Template;
 
 @Component
 public class MediaVersionGenerator {
+    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     private final MediaVersionDataManager mediaVersionDataManager;
     private final MediaTypeMapGenerator mediaTypeMapGenerator;
     private final ClassCategories classCategories;
-    private final GeneratedClassWriter generatedClassWriter;
     private final NameAndPathManager nameAndPathManager;
-    private final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+    private final GeneratorDataManager generatorDataManager;
 
-    public MediaVersionGenerator(final MediaVersionDataManager mediaVersionDataManager, final MediaTypeMapGenerator mediaTypeMapGenerator, final ClassCategories classCategories, final GeneratedClassWriter generatedClassWriter,
-        final NameAndPathManager nameAndPathManager) {
+    public MediaVersionGenerator(MediaVersionDataManager mediaVersionDataManager, MediaTypeMapGenerator mediaTypeMapGenerator, ClassCategories classCategories,
+        NameAndPathManager nameAndPathManager, GeneratorDataManager generatorDataManager) {
         this.mediaVersionDataManager = mediaVersionDataManager;
         this.mediaTypeMapGenerator = mediaTypeMapGenerator;
         this.classCategories = classCategories;
-        this.generatedClassWriter = generatedClassWriter;
         this.nameAndPathManager = nameAndPathManager;
+        this.generatorDataManager = generatorDataManager;
     }
 
-    public void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles)
+    public void generateMostRecentViewAndComponentMediaVersions(Template randomTemplate, String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles)
         throws Exception {
         final Collection<MediaVersionData> latestViewMediaVersions = mediaVersionDataManager.getLatestViewMediaVersions().values();
         final Collection<MediaVersionData> latestResponseMediaVersions = mediaVersionDataManager.getLatestResponseMediaVersions().values();
@@ -78,7 +80,7 @@ public class MediaVersionGenerator {
         mediaTypeMapGenerator.generateMediaTypeMap(latestMediaVersions);
     }
 
-    private void generateMostRecentViewAndComponentMediaVersions(final Template randomTemplate, final String pathToFiles, final Collection<MediaVersionData> latestMediaVersions) throws Exception {
+    private void generateMostRecentViewAndComponentMediaVersions(Template randomTemplate, String pathToFiles, Collection<MediaVersionData> latestMediaVersions) throws Exception {
         for (final MediaVersionData latestMediaVersion : latestMediaVersions) {
             final Map<String, Object> input = latestMediaVersion.getInput();
             final String className = latestMediaVersion.getNonVersionedClassName();
@@ -95,7 +97,7 @@ public class MediaVersionGenerator {
                 }
 
                 input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
-                generatedClassWriter.writeFile(className, randomTemplate, input, pathToFiles);
+                generatorDataManager.addFileData(new FileGenerationData(className, randomTemplate, input, pathToFiles));
             } catch (final NoSuchElementException e) {
                 logger.info(className + " not categorized in ClassCategories");
             }
