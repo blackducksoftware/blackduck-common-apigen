@@ -62,7 +62,9 @@ import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
+import com.synopsys.integration.create.apigen.parser.FieldDefinitionProcessor;
 import com.synopsys.integration.create.apigen.parser.NameParser;
+import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -134,8 +136,10 @@ public class GeneratorRunner {
             logger.info(generatorConfig.getInputPath() + " not found in resources");
             System.exit(0);
         }
-        final DirectoryWalker directoryWalker = new DirectoryWalker(inputDirectory, gson, mediaTypes, typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun());
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
+        final DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
+        final ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
         List<RequestDefinition> requests = apiData.getRequestDefinitions();
         List<ResponseDefinition> responses = apiData.getResponseDefinitions();
         for (final ResponseDefinition response : responses) {
