@@ -33,22 +33,18 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
-import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
-import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
-import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.generators.ClassGenerator;
 import com.synopsys.integration.create.apigen.generation.generators.DeprecatedClassGenerator;
 import com.synopsys.integration.create.apigen.generation.generators.DiscoveryGenerator;
@@ -60,11 +56,11 @@ import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ParsedApiData;
 import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.ApiGeneratorParser;
+import com.synopsys.integration.create.apigen.parser.ApiParser;
 import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
 import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
-import com.synopsys.integration.create.apigen.parser.FieldDefinitionProcessor;
 import com.synopsys.integration.create.apigen.parser.NameParser;
-import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -72,13 +68,8 @@ import freemarker.template.Template;
 @Component
 public class GeneratorRunner {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
-    private final ClassCategories classCategories;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final Gson gson;
-    private final MediaTypes mediaTypes;
-    private final TypeTranslator typeTranslator;
-    private final GeneratedClassWriter generatedClassWriter;
-    private final ImportFinder importFinder;
     private final NameAndPathManager nameAndPathManager;
     private final ViewGenerator viewGenerator;
     private final DiscoveryGenerator discoveryGenerator;
@@ -92,19 +83,15 @@ public class GeneratorRunner {
     private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
     private final MediaTypePathManager mediaTypePathManager;
+    private final ObjectFactory<ApiGeneratorParser> parserFactory;
 
     @Autowired
-    public GeneratorRunner(ClassCategories classCategories, MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, MediaTypes mediaTypes, TypeTranslator typeTranslator,
-        GeneratedClassWriter generatedClassWriter, ImportFinder importFinder, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, DiscoveryGenerator discoveryGenerator,
+    public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, DiscoveryGenerator discoveryGenerator,
         MediaTypeMapGenerator mediaTypeMapGenerator, MediaVersionGenerator mediaVersionGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
-        Configuration config, MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager) {
-        this.classCategories = classCategories;
+        Configuration config, MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
+        ObjectFactory<ApiGeneratorParser> parserFactory) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
-        this.mediaTypes = mediaTypes;
-        this.typeTranslator = typeTranslator;
-        this.generatedClassWriter = generatedClassWriter;
-        this.importFinder = importFinder;
         this.nameAndPathManager = nameAndPathManager;
         this.viewGenerator = viewGenerator;
         this.discoveryGenerator = discoveryGenerator;
@@ -118,6 +105,7 @@ public class GeneratorRunner {
         this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
         this.mediaTypePathManager = mediaTypePathManager;
+        this.parserFactory = parserFactory;
     }
 
     @PostConstruct
@@ -136,8 +124,7 @@ public class GeneratorRunner {
             logger.info(generatorConfig.getInputPath() + " not found in resources");
             System.exit(0);
         }
-        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
+        final ApiParser apiParser = parserFactory.getObject();
         final DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
         final ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
         List<RequestDefinition> requests = apiData.getRequestDefinitions();

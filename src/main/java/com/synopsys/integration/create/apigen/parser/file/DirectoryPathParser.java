@@ -23,12 +23,16 @@
 package com.synopsys.integration.create.apigen.parser.file;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
@@ -51,6 +55,8 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.create.apigen.parser.ResponseType;
 import com.synopsys.integration.create.apigen.parser.ResponseTypeIdentifier;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DirectoryPathParser implements ApiParser {
     private final MediaTypes mediaTypes;
     private final Gson gson;
@@ -59,6 +65,7 @@ public class DirectoryPathParser implements ApiParser {
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final FieldDefinitionProcessor processor;
 
+    @Autowired
     public DirectoryPathParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks,
         FieldDefinitionProcessor processor) {
         this.mediaTypes = mediaTypes;
@@ -76,12 +83,11 @@ public class DirectoryPathParser implements ApiParser {
 
         List<RequestDefinition> requestDefinitions = new LinkedList<>();
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
-        parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, requestDefinitions, responseDefinitions);
-
-        final List<ResponseDefinition> finalResponseDefinitions = new ArrayList<>();
+        List<ResponseDefinition> tempResponseDefinitions = new LinkedList<>();
+        parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, requestDefinitions, tempResponseDefinitions);
 
         // For each response file, parse the JSON for FieldDefinition objects
-        for (final ResponseDefinition response : responseDefinitions) {
+        for (final ResponseDefinition response : tempResponseDefinitions) {
             final String absolutePath = specificationRootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             final File responseSpecificationFile = new File(absolutePath);
             final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
@@ -95,13 +101,13 @@ public class DirectoryPathParser implements ApiParser {
             ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
             if (responseType.equals(ResponseType.ARRAY)) {
             } else if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
-                finalResponseDefinitions.add(extractResponseFromSubfieldsOfItems(response));
+                responseDefinitions.add(extractResponseFromSubfieldsOfItems(response));
             } else {
-                finalResponseDefinitions.add(response);
+                responseDefinitions.add(response);
             }
         }
 
-        return new ParsedApiData(requestDefinitions, finalResponseDefinitions);
+        return new ParsedApiData(requestDefinitions, responseDefinitions);
     }
 
     private void parseApi(final File parent, final int prefixLength, List<RequestDefinition> requestDefinitions, List<ResponseDefinition> responseDefinitions) {
