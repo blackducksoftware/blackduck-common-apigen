@@ -25,16 +25,10 @@ package com.synopsys.integration.create.apigen.model;
 import java.util.List;
 
 public class ParsedApiData {
-    private List<RequestDefinition> requestDefinitions;
     private List<ResponseDefinition> responseDefinitions;
 
-    public ParsedApiData(List<RequestDefinition> requestDefinitions, List<ResponseDefinition> responseDefinitions) {
-        this.requestDefinitions = requestDefinitions;
+    public ParsedApiData(List<ResponseDefinition> responseDefinitions) {
         this.responseDefinitions = responseDefinitions;
-    }
-
-    public List<RequestDefinition> getRequestDefinitions() {
-        return requestDefinitions;
     }
 
     public List<ResponseDefinition> getResponseDefinitions() {

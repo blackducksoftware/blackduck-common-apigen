@@ -53,8 +53,6 @@ import com.synopsys.integration.create.apigen.generation.generators.MediaVersion
 import com.synopsys.integration.create.apigen.generation.generators.ViewGenerator;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
-import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiGeneratorParser;
 import com.synopsys.integration.create.apigen.parser.ApiParser;
@@ -126,9 +124,7 @@ public class GeneratorRunner {
         }
         final ApiParser apiParser = parserFactory.getObject();
         final DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
-        final ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
-        List<RequestDefinition> requests = apiData.getRequestDefinitions();
-        List<ResponseDefinition> responses = apiData.getResponseDefinitions();
+        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
         for (final ResponseDefinition response : responses) {
             final String responseName = NameParser.getNonVersionedName(response.getName());
             final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
@@ -141,7 +137,7 @@ public class GeneratorRunner {
             }
         }
 
-        generateFiles(requests, responses);
+        generateFiles(responses);
 
         logger.info("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
         for (final String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
@@ -156,7 +152,7 @@ public class GeneratorRunner {
         }
     }
 
-    private void generateFiles(List<RequestDefinition> requests, List<ResponseDefinition> responses) throws Exception {
+    private void generateFiles(List<ResponseDefinition> responses) throws Exception {
         accumulateMediaTypes(responses);
         accumulateGeneratedResponseClassData(responses);
         accumulateApiDiscoveryClassData(responses);

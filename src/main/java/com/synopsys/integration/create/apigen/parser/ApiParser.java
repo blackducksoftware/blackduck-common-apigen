@@ -23,9 +23,10 @@
 package com.synopsys.integration.create.apigen.parser;
 
 import java.io.File;
+import java.util.List;
 
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public interface ApiParser {
-    ParsedApiData parseApi(File target);
+    List<ResponseDefinition> parseApi(File target);
 }

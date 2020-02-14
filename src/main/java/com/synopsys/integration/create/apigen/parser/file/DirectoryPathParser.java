@@ -24,7 +24,6 @@ package com.synopsys.integration.create.apigen.parser.file;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -45,9 +44,7 @@ import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
-import com.synopsys.integration.create.apigen.model.RequestDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiParser;
 import com.synopsys.integration.create.apigen.parser.DefinitionParser;
@@ -78,14 +75,13 @@ public class DirectoryPathParser implements ApiParser {
     }
 
     @Override
-    public ParsedApiData parseApi(File specificationRootDirectory) {
+    public List<ResponseDefinition> parseApi(File specificationRootDirectory) {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
-        Set<RequestDefinition> requestDefinitions = new LinkedHashSet<>();
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
         List<ResponseDefinition> tempResponseDefinitions = new LinkedList<>();
-        parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, requestDefinitions, tempResponseDefinitions);
+        parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, tempResponseDefinitions);
 
         // For each response file, parse the JSON for FieldDefinition objects
         for (final ResponseDefinition response : tempResponseDefinitions) {
@@ -108,10 +104,10 @@ public class DirectoryPathParser implements ApiParser {
             }
         }
 
-        return new ParsedApiData(requestDefinitions.stream().collect(Collectors.toList()), responseDefinitions);
+        return responseDefinitions;
     }
 
-    private void parseApi(final File parent, final int prefixLength, Set<RequestDefinition> requestDefinitions, List<ResponseDefinition> responseDefinitions) {
+    private void parseApi(final File parent, final int prefixLength, List<ResponseDefinition> responseDefinitions) {
         final List<File> children = Arrays.stream(parent.listFiles())
                                         .filter(file -> !file.getName().equals("notifications"))
                                         .sorted()
@@ -129,10 +125,9 @@ public class DirectoryPathParser implements ApiParser {
                     final String responseName = nameParser.getResponseName(relativePath);
                     final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
                     responseDefinitions.add(new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults));
-                    requestDefinitions.add(new RequestDefinition(relativePath, mediaType));
                 }
             } else if (child.isDirectory()) {
-                parseApi(child, prefixLength, requestDefinitions, responseDefinitions);
+                parseApi(child, prefixLength, responseDefinitions);
             }
         }
     }

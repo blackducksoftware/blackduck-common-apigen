@@ -29,6 +29,7 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.compress.archivers.ArchiveException;
@@ -40,7 +41,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiParser;
 import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 import com.synopsys.integration.exception.IntegrationException;
@@ -59,8 +60,8 @@ public class ZipFileExpandingParser implements ApiParser {
     }
 
     @Override
-    public ParsedApiData parseApi(File targetZipFile) {
-        ParsedApiData data = new ParsedApiData(Collections.emptyList(), Collections.emptyList());
+    public List<ResponseDefinition> parseApi(File targetZipFile) {
+        List<ResponseDefinition> responses = Collections.emptyList();
         File expandedZipDirectory = null;
         try {
             Set<PosixFilePermission> permissions = new HashSet<>();
@@ -72,12 +73,12 @@ public class ZipFileExpandingParser implements ApiParser {
             Slf4jIntLogger intLogger = new Slf4jIntLogger(logger);
             CommonZipExpander expander = new CommonZipExpander(intLogger);
             expander.expand(targetZipFile, expandedZipDirectory);
-            data = directoryPathParser.parseApi(expandedZipDirectory);
+            responses = directoryPathParser.parseApi(expandedZipDirectory);
         } catch (IOException | ArchiveException | IntegrationException ex) {
             logger.error("Error expanding archive file.", ex);
         } finally {
             FileUtils.deleteQuietly(expandedZipDirectory);
         }
-        return data;
+        return responses;
     }
 }

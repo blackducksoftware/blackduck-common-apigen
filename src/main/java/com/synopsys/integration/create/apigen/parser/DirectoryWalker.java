@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.GeneratorRunner;
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class DirectoryWalker {
@@ -45,20 +44,19 @@ public class DirectoryWalker {
         this.apiParser = apiParser;
     }
 
-    public ParsedApiData parseDirectoryForResponses(boolean showOutput, boolean controlRun, File target) throws IOException {
+    public List<ResponseDefinition> parseDirectoryForResponses(boolean showOutput, boolean controlRun, File target) throws IOException {
         // Get response-specification.json files from directory
-        ParsedApiData parsedApiData = apiParser.parseApi(target);
-        final List<ResponseDefinition> responseDefinitions = parsedApiData.getResponseDefinitions();
+        List<ResponseDefinition> responses = apiParser.parseApi(target);
 
         // log output
         if (showOutput) {
-            logResponses(responseDefinitions);
+            logResponses(responses);
         }
         // Write output of FieldsParser to test data file
         if (controlRun) {
-            FieldsParserTestDataCollector.writeControlData(gson, responseDefinitions);
+            FieldsParserTestDataCollector.writeControlData(gson, responses);
         }
-        return parsedApiData;
+        return responses;
     }
 
     private void logResponses(Collection<ResponseDefinition> responseDefinitions) {

@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -35,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 import com.synopsys.integration.create.apigen.parser.zip.ZipFileExpandingParser;
 
@@ -52,7 +53,7 @@ public class ApiGeneratorParser implements ApiParser {
     }
 
     @Override
-    public ParsedApiData parseApi(final File target) {
+    public List<ResponseDefinition> parseApi(final File target) {
         if (target.isFile()) {
             String format;
             // we need to use an InputStream where inputStream.markSupported() == true
