@@ -20,7 +20,7 @@ import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.ParsedApiData;
-import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
+import com.synopsys.integration.create.apigen.parser.directory.DirectoryPathParser;
 
 public class DirectoryWalkerTest {
     private static final String API_SPEC_PATH = "api-specification/2019.12.0";

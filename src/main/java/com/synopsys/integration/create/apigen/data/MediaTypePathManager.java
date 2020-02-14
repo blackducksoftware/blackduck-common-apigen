@@ -84,7 +84,7 @@ public class MediaTypePathManager {
                 }
             }
         }
-        formattedValue.append(");");
+        formattedValue.append(")");
 
         return String.format("%s = %s", constantName, formattedValue.toString());
     }
@@ -103,6 +103,7 @@ public class MediaTypePathManager {
     }
 
     private void addMissingPaths() {
+        //TODO May need to update that for each version of the API.  These are not currently in the API spec that we traverse.
         String pathRegex = "/api/projects/%s/project-mappings";
         addMapping(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json");
 

@@ -40,27 +40,22 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-import com.synopsys.integration.create.apigen.data.MediaTypes;
-import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.ParsedApiData;
-import com.synopsys.integration.create.apigen.parser.FieldDefinitionProcessor;
-import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
+import com.synopsys.integration.create.apigen.parser.ApiParser;
+import com.synopsys.integration.create.apigen.parser.directory.DirectoryPathParser;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.log.Slf4jIntLogger;
 import com.synopsys.integration.util.CommonZipExpander;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class ZipFileExpandingParser extends DirectoryPathParser {
+public class ZipFileExpandingParser implements ApiParser {
     private static final Logger logger = LoggerFactory.getLogger(ZipFileExpandingParser.class);
+    private DirectoryPathParser directoryPathParser;
 
     @Autowired
-    public ZipFileExpandingParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks,
-        FieldDefinitionProcessor processor) {
-        super(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
+    public ZipFileExpandingParser(DirectoryPathParser directoryPathParser) {
+        this.directoryPathParser = directoryPathParser;
     }
 
     @Override
@@ -77,7 +72,7 @@ public class ZipFileExpandingParser extends DirectoryPathParser {
             Slf4jIntLogger intLogger = new Slf4jIntLogger(logger);
             CommonZipExpander expander = new CommonZipExpander(intLogger);
             expander.expand(targetZipFile, expandedZipDirectory);
-            data = super.parseApi(expandedZipDirectory);
+            data = directoryPathParser.parseApi(expandedZipDirectory);
         } catch (IOException | ArchiveException | IntegrationException ex) {
             logger.error("Error expanding archive file.", ex);
         } finally {

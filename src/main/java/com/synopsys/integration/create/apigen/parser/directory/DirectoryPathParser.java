@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.parser.file;
+package com.synopsys.integration.create.apigen.parser.directory;
 
 import java.io.File;
 import java.util.Arrays;
