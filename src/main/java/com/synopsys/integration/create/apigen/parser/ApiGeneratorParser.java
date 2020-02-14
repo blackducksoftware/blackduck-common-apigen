@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.model.ParsedApiData;
-import com.synopsys.integration.create.apigen.parser.directory.DirectoryPathParser;
+import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 import com.synopsys.integration.create.apigen.parser.zip.ZipFileExpandingParser;
 
 @Component

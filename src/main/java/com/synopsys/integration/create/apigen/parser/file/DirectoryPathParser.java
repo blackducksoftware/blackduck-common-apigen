@@ -20,10 +20,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.parser.directory;
+package com.synopsys.integration.create.apigen.parser.file;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -81,7 +82,7 @@ public class DirectoryPathParser implements ApiParser {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
-        List<RequestDefinition> requestDefinitions = new LinkedList<>();
+        Set<RequestDefinition> requestDefinitions = new LinkedHashSet<>();
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
         List<ResponseDefinition> tempResponseDefinitions = new LinkedList<>();
         parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, requestDefinitions, tempResponseDefinitions);
@@ -107,10 +108,10 @@ public class DirectoryPathParser implements ApiParser {
             }
         }
 
-        return new ParsedApiData(requestDefinitions, responseDefinitions);
+        return new ParsedApiData(requestDefinitions.stream().collect(Collectors.toList()), responseDefinitions);
     }
 
-    private void parseApi(final File parent, final int prefixLength, List<RequestDefinition> requestDefinitions, List<ResponseDefinition> responseDefinitions) {
+    private void parseApi(final File parent, final int prefixLength, Set<RequestDefinition> requestDefinitions, List<ResponseDefinition> responseDefinitions) {
         final List<File> children = Arrays.stream(parent.listFiles())
                                         .filter(file -> !file.getName().equals("notifications"))
                                         .sorted()
@@ -119,18 +120,16 @@ public class DirectoryPathParser implements ApiParser {
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
             String fileName = child.getName();
-            boolean requestOrResponseFile = fileName.equals(UtilStrings.REQUEST_SPECIFICATION_JSON) || fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
+            boolean requestOrResponseFile = fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
             if (requestOrResponseFile && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String relativePath = child.getAbsolutePath().substring(prefixLength);
                 final String mediaType = mediaTypes.getLongName(child.getParentFile().getName());
-                if (fileName.equals(UtilStrings.REQUEST_SPECIFICATION_JSON)) {
-                    requestDefinitions.add(new RequestDefinition(relativePath, mediaType));
-                } else if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
+                if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
                     final NameParser nameParser = new NameParser(nameAndPathManager);
                     final String responseName = nameParser.getResponseName(relativePath);
-                    final String responseMediaType = mediaTypes.getLongName(child.getParentFile().getName());
                     final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
-                    responseDefinitions.add(new ResponseDefinition(relativePath, responseName, responseMediaType, doesHaveMultipleResults));
+                    responseDefinitions.add(new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults));
+                    requestDefinitions.add(new RequestDefinition(relativePath, mediaType));
                 }
             } else if (child.isDirectory()) {
                 parseApi(child, prefixLength, requestDefinitions, responseDefinitions);

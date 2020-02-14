@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.model.ParsedApiData;
 import com.synopsys.integration.create.apigen.parser.ApiParser;
-import com.synopsys.integration.create.apigen.parser.directory.DirectoryPathParser;
+import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 import com.synopsys.integration.exception.IntegrationException;
 import com.synopsys.integration.log.Slf4jIntLogger;
 import com.synopsys.integration.util.CommonZipExpander;

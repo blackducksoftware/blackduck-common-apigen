@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
 import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
-import com.synopsys.integration.create.apigen.model.RequestDefinition;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 @Component
 public class MediaTypePathManager {
@@ -95,6 +95,10 @@ public class MediaTypePathManager {
         constantName = StringUtils.replace(constantName, "__", "_");
         constantName = StringUtils.replace(constantName, "-", "_");
         constantName = StringUtils.replace(constantName, "_", "", 1);
+        if (pathRegex.endsWith("%s")) {
+            // if path ends with %s then the constant will end with an '_' character so just add W_ID
+            constantName = String.format("%sWITH_ID", constantName);
+        }
         return constantName.toUpperCase();
     }
 
@@ -124,10 +128,10 @@ public class MediaTypePathManager {
 
     }
 
-    public void addMapping(RequestDefinition requestDefinition) {
-        String pathPattern = createPathRegex(requestDefinition.getResponseSpecificationPath());
+    public void addMapping(ResponseDefinition responseDefinition) {
+        String pathPattern = createPathRegex(responseDefinition.getResponseSpecificationPath());
         if (StringUtils.isNotBlank(pathPattern)) {
-            String mediaType = requestDefinition.getMediaType();
+            String mediaType = responseDefinition.getMediaType();
             String pathRegex = "/api/" + pathPattern;
             addMapping(pathRegex, mediaType);
         }

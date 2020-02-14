@@ -157,7 +157,7 @@ public class GeneratorRunner {
     }
 
     private void generateFiles(List<RequestDefinition> requests, List<ResponseDefinition> responses) throws Exception {
-        accumulateRequestMediaTypes(requests);
+        accumulateMediaTypes(responses);
         accumulateGeneratedResponseClassData(responses);
         accumulateApiDiscoveryClassData(responses);
         accumulateMediaTypeDiscoveryClassData();
@@ -166,8 +166,8 @@ public class GeneratorRunner {
         generatorDataManager.writeFiles();
     }
 
-    private void accumulateRequestMediaTypes(List<RequestDefinition> requests) {
-        for (RequestDefinition request : requests) {
+    private void accumulateMediaTypes(List<ResponseDefinition> requests) {
+        for (ResponseDefinition request : requests) {
             mediaTypePathManager.addMapping(request);
         }
     }
