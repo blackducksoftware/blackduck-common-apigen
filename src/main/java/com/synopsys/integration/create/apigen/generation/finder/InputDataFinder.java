@@ -22,17 +22,17 @@
  */
 package com.synopsys.integration.create.apigen.generation.finder;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkData;
@@ -58,7 +58,10 @@ public class InputDataFinder {
         inputData.put(UtilStrings.PACKAGE_NAME, viewPackage);
         inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
-        inputData.put("imports", imports);
+        final List sortedImports = imports.stream()
+                                       .sorted(ImportComparator.of())
+                                       .collect(Collectors.toList());
+        inputData.put("imports", sortedImports);
         inputData.put("baseClass", baseClass);
 
         final Set<FieldDefinition> nonOptionalClassFields = new HashSet<>();
@@ -87,7 +90,10 @@ public class InputDataFinder {
         if (links != null && links.size() > 0) {
             inputData.put("hasLinksWithResults", true);
             inputData.put("hasLinks", true);
-            inputData.put(UtilStrings.LINKS, links);
+            List<LinkData> sortedLinks = links.stream()
+                                             .sorted(Comparator.comparing(LinkData::javaConstant))
+                                             .collect(Collectors.toList());
+            inputData.put(UtilStrings.LINKS, sortedLinks);
         }
         return inputData;
     }

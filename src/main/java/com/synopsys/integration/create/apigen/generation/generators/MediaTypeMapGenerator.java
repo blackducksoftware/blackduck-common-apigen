@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.GeneratorConfig;
+import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
@@ -73,7 +74,10 @@ public class MediaTypeMapGenerator {
         for (final String className : classNames) {
             importFinder.addFieldImports(imports, className, false);
         }
-        input.put("imports", imports);
+        final List sortedImports = imports.stream()
+                                       .sorted(ImportComparator.of())
+                                       .collect(Collectors.toList());
+        input.put("imports", sortedImports);
 
         input.put("mediaTypeExpressions", mediaTypePathManager.getMediaTypeMappings());
         input.put("mediaTypeData", mediaTypePathManager.getMediaTypeData());
