@@ -41,7 +41,10 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 @Component
 public class InputDataFinder {
-    private static List<String> LINK_IMPORTS = Arrays.asList("java.util.HashMap", "java.util.Map", "java.util.Optional");
+    public static final String IMPORT_HASHMAP = "java.util.HashMap";
+    public static final String IMPORT_MAP = "java.util.Map";
+
+    private static List<String> MAP_IMPORTS = Arrays.asList(IMPORT_HASHMAP, IMPORT_MAP);
 
     public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
@@ -92,7 +95,7 @@ public class InputDataFinder {
         boolean hasLinks = links != null && links.size() > 0;
 
         if (hasLinks) {
-            imports.addAll(LINK_IMPORTS);
+            imports.addAll(MAP_IMPORTS);
         }
 
         final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields, mediaType);

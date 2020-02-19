@@ -24,10 +24,14 @@ package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,11 +39,14 @@ import org.springframework.stereotype.Component;
 import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
+import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
+import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.MediaVersionData;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
@@ -86,6 +93,9 @@ public class MediaVersionGenerator {
             final String className = latestMediaVersion.getNonVersionedClassName();
             input.put(UtilStrings.CLASS_NAME, className);
             try {
+                Collection<String> oldImports = (Collection<String>) input.get("imports");
+                List<String> newImports = removeNonLinkRelatedImports(oldImports);
+                input.put("imports", newImports);
                 final ClassTypeEnum classType = classCategories.computeType(className);
                 final String importClass = classType.getImportClass().get();
 
@@ -104,5 +114,14 @@ public class MediaVersionGenerator {
             nameAndPathManager.addNonLinkClassName(className);
             nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(className));
         }
+    }
+
+    private List<String> removeNonLinkRelatedImports(Collection<String> oldImports) {
+        Predicate<String> filterCriteria = item -> StringUtils.containsAny(item,
+            ImportFinder.LINK_MULTIPLE_RESPONSES, ImportFinder.LINK_SINGLE_RESPONSE, ImportFinder.LINK_RESPONSE, ImportFinder.LINK_STRING_RESPONSE, InputDataFinder.IMPORT_HASHMAP, InputDataFinder.IMPORT_MAP);
+        return oldImports.stream()
+                   .filter(filterCriteria)
+                   .sorted(ImportComparator.of())
+                   .collect(Collectors.toList());
     }
 }
