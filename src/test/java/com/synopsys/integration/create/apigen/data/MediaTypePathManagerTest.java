@@ -17,19 +17,19 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
 import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
-import com.synopsys.integration.create.apigen.model.RequestDefinition;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class MediaTypePathManagerTest {
 
     @Test
     public void mediaTypesTest() {
         MediaTypePathManager pathManager = new MediaTypePathManager();
-        List<RequestDefinition> RequestDefinitions = new ArrayList<>();
-        RequestDefinitions.add(new RequestDefinition("components/componentId/path", "componentMediaType"));
-        RequestDefinitions.add(new RequestDefinition("projects/projectId/versions/projectVersionId", "projectVersionMediaType"));
+        List<ResponseDefinition> responseDefinitions = new ArrayList<>();
+        responseDefinitions.add(new ResponseDefinition("components/componentId/path", "", "componentMediaType", false));
+        responseDefinitions.add(new ResponseDefinition("projects/projectId/versions/projectVersionId", "", "projectVersionMediaType", false));
 
-        for (RequestDefinition RequestDefinition : RequestDefinitions) {
-            pathManager.addMapping(RequestDefinition);
+        for (ResponseDefinition responseDefinition : responseDefinitions) {
+            pathManager.addMapping(responseDefinition);
         }
         MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
         assertMediaType("/api/components/%s/path", "componentMediaType", mediaTypeData);
@@ -39,10 +39,10 @@ public class MediaTypePathManagerTest {
     @Test
     public void getOnlyPathTest() {
         MediaTypePathManager pathManager = new MediaTypePathManager();
-        List<RequestDefinition> RequestDefinitions = new ArrayList<>();
-        RequestDefinitions.add(new RequestDefinition("GET", ""));
-        for (RequestDefinition RequestDefinition : RequestDefinitions) {
-            pathManager.addMapping(RequestDefinition);
+        List<ResponseDefinition> responseDefinitions = new ArrayList<>();
+        responseDefinitions.add(new ResponseDefinition("GET", "", "", false));
+        for (ResponseDefinition responseDefinition : responseDefinitions) {
+            pathManager.addMapping(responseDefinition);
         }
 
         assertEquals(6, pathManager.getMediaTypeData().getConstantsMapping().size(), "Only missing media types should be present");
@@ -51,10 +51,10 @@ public class MediaTypePathManagerTest {
     @Test
     public void getInPathTest() {
         MediaTypePathManager pathManager = new MediaTypePathManager();
-        List<RequestDefinition> RequestDefinitions = new ArrayList<>();
-        RequestDefinitions.add(new RequestDefinition("reports.GET", "reportsMediaType"));
-        for (RequestDefinition RequestDefinition : RequestDefinitions) {
-            pathManager.addMapping(RequestDefinition);
+        List<ResponseDefinition> responseDefinitions = new ArrayList<>();
+        responseDefinitions.add(new ResponseDefinition("reports.GET", "", "reportsMediaType", false));
+        for (ResponseDefinition responseDefinition : responseDefinitions) {
+            pathManager.addMapping(responseDefinition);
         }
 
         MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
@@ -64,10 +64,10 @@ public class MediaTypePathManagerTest {
     @Test
     public void uuidAndGetPathTest() {
         MediaTypePathManager pathManager = new MediaTypePathManager();
-        List<RequestDefinition> RequestDefinitions = new ArrayList<>();
-        RequestDefinitions.add(new RequestDefinition("reports.reportId.GET", "reportsMediaType"));
-        for (RequestDefinition RequestDefinition : RequestDefinitions) {
-            pathManager.addMapping(RequestDefinition);
+        List<ResponseDefinition> responseDefinitions = new ArrayList<>();
+        responseDefinitions.add(new ResponseDefinition("reports.reportId.GET", "", "reportsMediaType", false));
+        for (ResponseDefinition responseDefinition : responseDefinitions) {
+            pathManager.addMapping(responseDefinition);
         }
 
         MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
@@ -77,10 +77,10 @@ public class MediaTypePathManagerTest {
     @Test
     public void pathEndsInGETTest() {
         MediaTypePathManager pathManager = new MediaTypePathManager();
-        List<RequestDefinition> RequestDefinitions = new ArrayList<>();
-        RequestDefinitions.add(new RequestDefinition("projects/projectId/versions/GET", "projectVersionArrayMediaType"));
-        for (RequestDefinition RequestDefinition : RequestDefinitions) {
-            pathManager.addMapping(RequestDefinition);
+        List<ResponseDefinition> responseDefinitions = new ArrayList<>();
+        responseDefinitions.add(new ResponseDefinition("projects/projectId/versions/GET", "", "projectVersionArrayMediaType", false));
+        for (ResponseDefinition responseDefinition : responseDefinitions) {
+            pathManager.addMapping(responseDefinition);
         }
 
         MediaTypeData mediaTypeData = pathManager.getMediaTypeData();
@@ -99,12 +99,12 @@ public class MediaTypePathManagerTest {
     @Disabled
     public void testPatternMatch() throws MalformedURLException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
-        List<RequestDefinition> RequestDefinitions = new ArrayList<>();
-        RequestDefinitions.add(new RequestDefinition("projects/projectId/versions", "projectVersionArrayMediaType"));
-        RequestDefinitions.add(new RequestDefinition("projects/projectId/versions/versionId", "projectVersionMediaType"));
-        RequestDefinitions.add(new RequestDefinition("projects/projectId", "projectMediaType"));
-        for (RequestDefinition RequestDefinition : RequestDefinitions) {
-            pathManager.addMapping(RequestDefinition);
+        List<ResponseDefinition> responseDefinitions = new ArrayList<>();
+        responseDefinitions.add(new ResponseDefinition("projects/projectId/versions", "", "projectVersionArrayMediaType", false));
+        responseDefinitions.add(new ResponseDefinition("projects/projectId/versions/versionId", "", "projectVersionMediaType", false));
+        responseDefinitions.add(new ResponseDefinition("projects/projectId", "", "projectMediaType", false));
+        for (ResponseDefinition responseDefinition : responseDefinitions) {
+            pathManager.addMapping(responseDefinition);
         }
 
         String apiUrl = "https://blackduck.example.com/api/projects/8bf90232-025a-480b-aeb0-9be8d0c4c24a?testQuery=test";

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,8 @@ import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
-import com.synopsys.integration.create.apigen.model.ParsedApiData;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 
 public class DirectoryWalkerTest {
     private static final String API_SPEC_PATH = "api-specification/2019.12.0";
@@ -28,14 +30,20 @@ public class DirectoryWalkerTest {
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
 
     public DirectoryWalkerTest() throws URISyntaxException {
-        this.directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, new MediaTypes(), new TypeTranslator(), new NameAndPathManager(), new MissingFieldsAndLinks());
+        MediaTypes mediaTypes = new MediaTypes();
+        TypeTranslator typeTranslator = new TypeTranslator();
+        NameAndPathManager nameAndPathManager = new NameAndPathManager();
+        MissingFieldsAndLinks missingFieldsAndLinks = new MissingFieldsAndLinks();
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
+        this.directoryWalker = new DirectoryWalker(gson, apiParser);
     }
 
     @Test
     public void test() throws IOException, URISyntaxException {
         final File testFile = new File("./build/FieldsParserTestTestingData.txt");
-        ParsedApiData apiData = directoryWalker.parseDirectoryForResponses(false, false);
-        FieldsParserTestDataCollector.writeTestData(gson, apiData.getResponseDefinitions(), testFile);
+        List<ResponseDefinition> apiData = directoryWalker.parseDirectoryForResponses(false, false, new File(rootDirectory.toURI()));
+        FieldsParserTestDataCollector.writeTestData(gson, apiData, testFile);
         final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
 
         String controlData = null;

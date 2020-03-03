@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
 import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
-import com.synopsys.integration.create.apigen.model.RequestDefinition;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 @Component
 public class MediaTypePathManager {
@@ -84,7 +84,7 @@ public class MediaTypePathManager {
                 }
             }
         }
-        formattedValue.append(");");
+        formattedValue.append(")");
 
         return String.format("%s = %s", constantName, formattedValue.toString());
     }
@@ -95,6 +95,10 @@ public class MediaTypePathManager {
         constantName = StringUtils.replace(constantName, "__", "_");
         constantName = StringUtils.replace(constantName, "-", "_");
         constantName = StringUtils.replace(constantName, "_", "", 1);
+        if (pathRegex.endsWith("%s")) {
+            // if path ends with %s then the constant will end with an '_' character so just add W_ID
+            constantName = String.format("%sWITH_ID", constantName);
+        }
         return constantName.toUpperCase();
     }
 
@@ -103,6 +107,7 @@ public class MediaTypePathManager {
     }
 
     private void addMissingPaths() {
+        //TODO May need to update that for each version of the API.  These are not currently in the API spec that we traverse.
         String pathRegex = "/api/projects/%s/project-mappings";
         addMapping(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json");
 
@@ -123,10 +128,10 @@ public class MediaTypePathManager {
 
     }
 
-    public void addMapping(RequestDefinition requestDefinition) {
-        String pathPattern = createPathRegex(requestDefinition.getResponseSpecificationPath());
+    public void addMapping(ResponseDefinition responseDefinition) {
+        String pathPattern = createPathRegex(responseDefinition.getResponseSpecificationPath());
         if (StringUtils.isNotBlank(pathPattern)) {
-            String mediaType = requestDefinition.getMediaType();
+            String mediaType = responseDefinition.getMediaType();
             String pathRegex = "/api/" + pathPattern;
             addMapping(pathRegex, mediaType);
         }

@@ -22,12 +22,15 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -37,6 +40,8 @@ import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FieldDefinitionProcessor {
 
     private final TypeTranslator typeTranslator;
@@ -45,6 +50,7 @@ public class FieldDefinitionProcessor {
     private final Map<Set<RawFieldDefinition>, String> uniqueFieldsToNames;
     private final Map<Set<String>, String> uniqueEnumsToNames;
 
+    @Autowired
     public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.typeTranslator = typeTranslator;
         this.nameAndPathManager = nameAndPathManager;

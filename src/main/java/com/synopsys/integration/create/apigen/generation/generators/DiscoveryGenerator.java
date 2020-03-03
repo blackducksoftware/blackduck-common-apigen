@@ -23,13 +23,12 @@
 package com.synopsys.integration.create.apigen.generation.generators;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +37,7 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
+import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
@@ -86,8 +86,9 @@ public class DiscoveryGenerator {
                 imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPathMultipleResponses");
             }
         }
-        final List sortedImports = new ArrayList<>(imports);
-        Collections.sort(sortedImports);
+        final List sortedImports = imports.stream()
+                                       .sorted(ImportComparator.of())
+                                       .collect(Collectors.toList());
         model.put("imports", sortedImports);
 
         generatorDataManager.addFileData(new FileGenerationData("ApiDiscovery", template, model, baseDirectory.getAbsolutePath()));

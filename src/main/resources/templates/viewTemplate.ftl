@@ -1,10 +1,5 @@
 package ${packageName};
 
-<#if hasLinksWithResults??>
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-</#if>
 <#list imports as import>
 import ${import};
 </#list>
