@@ -117,5 +117,9 @@
     "rel" : "custom-fields",
     "optional" : false,
     "description" : "Resource representing the project's custom fields"
+  }, {
+    "rel" : "notification-subscription",
+    "optional" : true,
+    "description" : "Resource representing a subscription to notifications related to the project. Not present if the current user is not subscribed to this project"
   } ]
 }

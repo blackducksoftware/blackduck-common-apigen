@@ -1,39 +1,50 @@
 package com.synopsys.integration.create.apigen.parser;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.data.MediaTypes;
-import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
-import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
+import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.TypeTranslator;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 
 public class DirectoryWalkerTest {
+    private static final String API_SPEC_PATH = "api-specification/2019.12.0";
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(Application.API_SPECIFICATION_VERSION);
+    private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(API_SPEC_PATH);
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
 
     public DirectoryWalkerTest() throws URISyntaxException {
-        this.directoryWalker = new DirectoryWalker(new File(rootDirectory.toURI()), gson, new MediaTypes(), new TypeTranslator(), new NameAndPathManager(), new MissingFieldsAndLinks());
+        MediaTypes mediaTypes = new MediaTypes();
+        TypeTranslator typeTranslator = new TypeTranslator();
+        NameAndPathManager nameAndPathManager = new NameAndPathManager();
+        MissingFieldsAndLinks missingFieldsAndLinks = new MissingFieldsAndLinks();
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
+        this.directoryWalker = new DirectoryWalker(gson, apiParser);
     }
 
     @Test
     public void test() throws IOException, URISyntaxException {
-        FieldsParserTestDataCollector.writeTestData(gson, directoryWalker.parseDirectoryForResponses(false, false));
+        final File testFile = new File("./build/FieldsParserTestTestingData.txt");
+        List<ResponseDefinition> apiData = directoryWalker.parseDirectoryForResponses(false, false, new File(rootDirectory.toURI()));
+        FieldsParserTestDataCollector.writeTestData(gson, apiData, testFile);
         final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
-        final File testFile = new File(Application.PATH_TO_TEST_RESOURCES + "FieldsParserTestTestingData.txt");
 
         String controlData = null;
         String testData = null;

@@ -1,0 +1,25 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "responsibility",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The type of responsibility obligation defined by the license term.",
+    "allowedValues" : [ "FORBIDDEN", "PERMITTED", "REQUIRED" ]
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the license term"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The description of the license term"
+  }, {
+    "path" : "category",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Resource representing the license term category"
+  } ]
+}

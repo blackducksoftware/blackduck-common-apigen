@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -22,12 +22,15 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -37,6 +40,8 @@ import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FieldDefinitionProcessor {
 
     private final TypeTranslator typeTranslator;
@@ -45,6 +50,7 @@ public class FieldDefinitionProcessor {
     private final Map<Set<RawFieldDefinition>, String> uniqueFieldsToNames;
     private final Map<Set<String>, String> uniqueEnumsToNames;
 
+    @Autowired
     public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.typeTranslator = typeTranslator;
         this.nameAndPathManager = nameAndPathManager;
@@ -90,6 +96,7 @@ public class FieldDefinitionProcessor {
         Set<String> enumValues = rawField.getAllowedValues();
         if (enumValues == null) {
             String trueType = uniqueFieldsToNames.get(rawField.getSubFields());
+            trueType = restoreListNotation(fieldDefinition, trueType);
             if (trueType != null) {
                 fieldDefinition.setType(trueType);
             } else if (rawField.getSubFields() != null) {
@@ -102,10 +109,19 @@ public class FieldDefinitionProcessor {
 
     private void screenForDuplicateEnum(FieldDefinition fieldDefinition, Set<String> enumValues) {
         String trueEnumType = uniqueEnumsToNames.get(enumValues);
+        trueEnumType = restoreListNotation(fieldDefinition, trueEnumType);
+
         if (trueEnumType != null) {
             fieldDefinition.setType(trueEnumType);
         } else {
             uniqueEnumsToNames.put(enumValues, fieldDefinition.getType());
         }
+    }
+
+    private String restoreListNotation(FieldDefinition fieldDefinition, String trueType) {
+        if (trueType != null && !trueType.contains(UtilStrings.JAVA_LIST) && fieldDefinition.getType().contains(UtilStrings.JAVA_LIST)) {
+            trueType = UtilStrings.JAVA_LIST + trueType + ">";
+        }
+        return trueType;
     }
 }

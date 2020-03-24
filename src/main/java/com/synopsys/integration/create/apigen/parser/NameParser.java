@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -75,7 +75,7 @@ public class NameParser {
 
     private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType) {
         final String mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
-        final String responseName = getResponseNameJoinHelper(firstPiece, lastPiece, mediaVersion);
+        final String responseName = getJoinedResponseNamePieces(firstPiece, lastPiece, mediaVersion);
         nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(stripRedundantNamePrefix(responseName, mediaVersion)));
         return stripRedundantNamePrefix(responseName, mediaVersion);
     }
@@ -90,7 +90,7 @@ public class NameParser {
         return StringUtils.capitalize(concatHyphenatedString(piece.replace("Id", "")));
     }
 
-    private String getResponseNameJoinHelper(final String firstPiece, final String lastPiece, final String mediaVersion) {
+    private String getJoinedResponseNamePieces(final String firstPiece, final String lastPiece, final String mediaVersion) {
         String responseName;
         if (lastPiece == null) {
             return "";
@@ -137,16 +137,18 @@ public class NameParser {
         redundantNamePrefixes.add("Licenses");
         redundantNamePrefixes.add("LicenseFamilies");
         redundantNamePrefixes.add("LicenseTerms");
+        redundantNamePrefixes.add("LicenseTermCategories");
         redundantNamePrefixes.add("Objects");
+        redundantNamePrefixes.add("Origins");
         redundantNamePrefixes.add("PolicyRules");
         redundantNamePrefixes.add("Projects");
         redundantNamePrefixes.add("Reports");
         redundantNamePrefixes.add("Roles");
         redundantNamePrefixes.add("ScanSummaries");
+        redundantNamePrefixes.add("Tags");
         redundantNamePrefixes.add("Usergroups");
         redundantNamePrefixes.add("Users");
         redundantNamePrefixes.add("Versions");
-        redundantNamePrefixes.add("Objects");
         redundantNamePrefixes.add("Vulnerabilities");
 
         return redundantNamePrefixes;

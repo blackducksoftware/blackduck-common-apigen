@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -22,17 +22,18 @@
  */
 package com.synopsys.integration.create.apigen.generation.finder;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
+import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkData;
@@ -40,12 +41,10 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 @Component
 public class InputDataFinder {
-    private final NameAndPathManager nameAndPathManager;
+    public static final String IMPORT_HASHMAP = "java.util.HashMap";
+    public static final String IMPORT_MAP = "java.util.Map";
 
-    @Autowired
-    public InputDataFinder(final NameAndPathManager nameAndPathManager) {
-        this.nameAndPathManager = nameAndPathManager;
-    }
+    private static List<String> MAP_IMPORTS = Arrays.asList(IMPORT_HASHMAP, IMPORT_MAP);
 
     public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
@@ -64,8 +63,6 @@ public class InputDataFinder {
         inputData.put(UtilStrings.PACKAGE_NAME, viewPackage);
         inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
-        inputData.put("imports", imports);
-        inputData.put("baseClass", baseClass);
 
         final Set<FieldDefinition> nonOptionalClassFields = new HashSet<>();
         final Set<FieldDefinition> optionalClassFields = new HashSet<>();
@@ -80,6 +77,12 @@ public class InputDataFinder {
                 nonOptionalClassFields.add(classField);
             }
         }
+
+        final List sortedImports = imports.stream()
+                                       .sorted(ImportComparator.of())
+                                       .collect(Collectors.toList());
+        inputData.put("imports", sortedImports);
+        inputData.put("baseClass", baseClass);
         inputData.put(UtilStrings.CLASS_FIELDS, classFields);
         inputData.put("optionalClassFields", optionalClassFields);
         inputData.put("nonOptionalClassFields", nonOptionalClassFields);
@@ -89,29 +92,23 @@ public class InputDataFinder {
 
     public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> classFields, final Set<LinkData> links,
         final String mediaType) {
+        boolean hasLinks = links != null && links.size() > 0;
+
+        if (hasLinks) {
+            imports.addAll(MAP_IMPORTS);
+        }
+
         final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields, mediaType);
-        if (links != null && links.size() > 0) {
+        if (hasLinks) {
             inputData.put("hasLinksWithResults", true);
             inputData.put("hasLinks", true);
-            inputData.put(UtilStrings.LINKS, links);
+
+            List<LinkData> sortedLinks = links.stream()
+                                             .sorted(Comparator.comparing(LinkData::javaConstant))
+                                             .collect(Collectors.toList());
+            inputData.put(UtilStrings.LINKS, sortedLinks);
         }
         return inputData;
-    }
-
-    private void setPackageAndBaseClass(ClassTypeEnum classType, String fieldPackage, String fieldBaseClass, Set<String> imports) {
-        if (classType.isView()) {
-            fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
-            fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
-        } else if (classType.isResponse()) {
-            fieldPackage = UtilStrings.GENERATED_RESPONSE_PACKAGE;
-            fieldBaseClass = UtilStrings.RESPONSE_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.RESPONSE_BASE_CLASS);
-        } else {
-            fieldPackage = UtilStrings.GENERATED_COMPONENT_PACKAGE;
-            fieldBaseClass = UtilStrings.COMPONENT_BASE_CLASS;
-            imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS);
-        }
     }
 
     private void identifyOptionalFields(final List<FieldDefinition> classFields) {

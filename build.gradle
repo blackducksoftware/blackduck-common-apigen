@@ -4,7 +4,7 @@ buildscript {
 }
 
 plugins {
-	id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -12,15 +12,21 @@ apply plugin: 'io.spring.dependency-management'
 group = 'com.synopsys.integration'
 version = '0.0.1-SNAPSHOT'
 
-apply plugin: 'com.blackducksoftware.integration.solution'
+apply plugin: 'com.synopsys.integration.solution'
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter'
 
 	implementation 'com.blackducksoftware.integration:integration-common:20.1.1'
 	implementation 'com.opencsv:opencsv:4.6'
 
-	implementation 'org.freemarker:freemarker:2.3.25-incubating'
+    implementation 'org.freemarker:freemarker:2.3.25-incubating'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
 }

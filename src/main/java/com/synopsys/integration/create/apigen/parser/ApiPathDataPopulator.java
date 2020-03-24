@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -93,7 +93,6 @@ public class ApiPathDataPopulator {
 
         apiPathResultClassOverrides.put("projects", "ProjectView");
         apiPathResultClassOverrides.put("current-user", "UserView");
-        apiPathResultClassOverrides.put("components", "ComponentSearchResultView");
 
         return apiPathResultClassOverrides;
     }
@@ -111,7 +110,6 @@ public class ApiPathDataPopulator {
         final Set<ApiPathData> addOns = new HashSet<>();
 
         addOns.add(new ApiPathData("notifications", "NotificationView", true));
-        addOns.add(new ApiPathData("current-version", "CurrentVersionView", false));
 
         return addOns;
     }

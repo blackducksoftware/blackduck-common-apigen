@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -89,18 +89,24 @@ public class ImportFinder {
         final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         ClassTypeEnum classType = classCategoryData.getType();
-        final String baseClass;
+
+        String baseClass = null;
         if ((classType).isView()) {
             baseClass = VIEW_BASE_CLASS;
         } else if (classType.isResponse()) {
             baseClass = RESPONSE_BASE_CLASS;
-        } else {
+        } else if (!classType.isEnum() && !classType.isCommon()) {
             baseClass = COMPONENT_BASE_CLASS;
         }
-        imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
+
+        if (baseClass != null ) {
+            imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
+        }
+
         if (isOptional) {
             imports.add("java.util.Optional");
         }
+
         final String importPathPrefix = classSource.isThrowaway() ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {

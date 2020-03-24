@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -97,7 +97,6 @@ public class FieldData {
             // append subclass to create new field data type
             String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
             processedType = typeTranslator.getSimplifiedClassName(processedType);
-
             if (mediaVersion != null) {
                 return processedType + "V" + mediaVersion;
             }

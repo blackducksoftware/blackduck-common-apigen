@@ -4,7 +4,8 @@
     "path" : "phase",
     "type" : "String",
     "optional" : false,
-    "description" : "Current phase of development of the version"
+    "description" : "Current phase of development of the version.",
+    "allowedValues" : [ "PLANNING", "DEVELOPMENT", "RELEASED", "DEPRECATED", "ARCHIVED", "PRERELEASE" ]
   }, {
     "path" : "releaseComments",
     "type" : "String",
@@ -45,7 +46,8 @@
     "path" : "distribution",
     "type" : "String",
     "optional" : false,
-    "description" : "The distribution of the version"
+    "description" : "The distribution of the version.",
+    "allowedValues" : [ "EXTERNAL", "SAAS", "INTERNAL", "OPENSOURCE" ]
   }, {
     "path" : "releasedOn",
     "type" : "String",

@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -32,54 +32,39 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 
 @Component
 public class GeneratedClassWriter {
-
-    private final Configuration cfg;
-    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+    private static final Logger logger = LoggerFactory.getLogger(GeneratedClassWriter.class);
     private final ClassCategories classCategories;
 
     @Autowired
-    public GeneratedClassWriter(final Configuration configuration, final ClassCategories classCategories) {
-        this.cfg = configuration;
+    public GeneratedClassWriter(final ClassCategories classCategories) {
         this.classCategories = classCategories;
     }
 
-    // taken from SwaggerHub
-    public static File getBaseDirectory() {
-        final String baseDirectory = System.getenv(Application.PATH_TO_GENERATED_FILES_KEY);
-        if (baseDirectory == null) {
-            logger.info("Please set Environment variable 'BLACKDUCK_COMMON_API_BASE_DIRECTORY' to directory in which generated files will live");
-            for (final Map.Entry<String, String> var : System.getenv().entrySet()) {
-                logger.info(var.getKey() + " : " + var.getValue());
-            }
-            System.exit(0);
-        }
-        return new File(baseDirectory);
-    }
+    public void writeFile(FileGenerationData fileData) throws Exception {
+        String className = fileData.getClassName();
+        Template template = fileData.getTemplate();
+        Map<String, Object> input = fileData.getInput();
+        String destination = fileData.getDestination();
 
-    public void writeFile(String className, final Template template, final Map<String, Object> input, final String destination) throws Exception {
         className = NameParser.stripListAndOptionalNotation(className);
         final ClassTypeEnum classType = classCategories.computeType(className);
         if (classType.isCommon()) {
             return;
         }
-
+        logger.info("Writing class: {} - {}", className, destination);
         final File testFile = new File(destination);
         testFile.mkdirs();
         final Writer fileWriter = new FileWriter(new File(testFile, className + ".java"));
         try {
             template.process(input, fileWriter);
-            GeneratorRunner.incrementClassesGenerated();
         } finally {
             fileWriter.close();
         }

@@ -1,0 +1,24 @@
+{
+  "fields" : [ {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the user group"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Whether the represented user group is active"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "group",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to where the representation of the user group assigned may be read from"
+  } ],
+  "links" : [ ]
+}

@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -45,6 +45,15 @@ public class MediaVersionDataManager {
         this.classCategories = classCategories;
     }
 
+    private static Set<String> populateNamesToIgnore() {
+        final Set<String> namesToIgnore = new HashSet<>();
+
+        namesToIgnore.add("");
+        namesToIgnore.add(UtilStrings.STRING);
+
+        return namesToIgnore;
+    }
+
     public Map<String, MediaVersionData> getLatestViewMediaVersions() {
         return latestViewMediaVersions;
     }
@@ -78,14 +87,27 @@ public class MediaVersionDataManager {
 
             if (mediaVersion != null) {
                 if ((oldData == null || mediaVersion > oldData.getMediaVersion()) && !namesToIgnore.contains(nonVersionedClass)) {
-                    latestMediaVersions.put(nonVersionedClass, newData);
+                    latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
                 }
             } else {
-                latestMediaVersions.put(nonVersionedClass, newData);
+                latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
             }
         } catch (final NullPointerException e) {
             return;
         }
+    }
+
+    private MediaVersionData combineData(MediaVersionData oldData, MediaVersionData newData) {
+        Map<String, Object> newInput = new HashMap<>();
+        if (null != oldData) {
+            newInput.putAll(oldData.getInput());
+        }
+
+        if (null != newData) {
+            newInput.putAll(newData.getInput());
+        }
+
+        return new MediaVersionData(newData.getNonVersionedClassName(), newData.getMediaVersion(), newInput, newData.getMediaType());
     }
 
     private MediaVersionData getMediaVersionData(final String className, final Map<String, Object> input, final String mediaType) {
@@ -104,14 +126,5 @@ public class MediaVersionDataManager {
         } catch (final NullPointerException e) {
             return null;
         }
-    }
-
-    private static Set<String> populateNamesToIgnore() {
-        final Set<String> namesToIgnore = new HashSet<>();
-
-        namesToIgnore.add("");
-        namesToIgnore.add(UtilStrings.STRING);
-
-        return namesToIgnore;
     }
 }

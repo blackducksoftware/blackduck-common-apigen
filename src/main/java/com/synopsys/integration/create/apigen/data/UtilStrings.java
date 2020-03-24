@@ -1,7 +1,7 @@
 /**
  * blackduck-common-apigen
  *
- * Copyright (c) 2019 Synopsys, Inc.
+ * Copyright (c) 2020 Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -25,13 +25,12 @@ package com.synopsys.integration.create.apigen.data;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
-
 public class UtilStrings {
 
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
     public static final String CORE_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.core.";
     public static final String MANUAL_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.manual.";
+    public static final String THROWAWAY_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated");
 
     public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION;
     public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
@@ -46,16 +45,16 @@ public class UtilStrings {
     public static final String PACKAGE_NAME = "packageName";
     public static final String PARENT_CLASS = "parentClass";
     public static final String MEDIA_TYPE = "mediaType";
-    public static final String BLACKDUCK_COMMON_API_BASE_DIRECTORY = GeneratedClassWriter.getBaseDirectory().getAbsolutePath();
-    public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
-    public static final String VIEW_DIRECTORY_SUFFIX = "/view";
-    public static final String RESPONSE_DIRECTORY_SUFFIX = "/response";
-    public static final String COMPONENT_DIRECTORY_SUFFIX = "/component";
+    //    public static final String BLACKDUCK_COMMON_API_BASE_DIRECTORY = GeneratedClassWriter.getBaseDirectory().getAbsolutePath();
+    //    public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
+    //    public static final String VIEW_DIRECTORY_SUFFIX = "/view";
+    //    public static final String RESPONSE_DIRECTORY_SUFFIX = "/response";
+    //    public static final String COMPONENT_DIRECTORY_SUFFIX = "/component";
     public static final String DISCOVERY_DIRECTORY_SUFFIX = "/discovery";
-    public static final String PATH_TO_VIEW_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
-    public static final String PATH_TO_RESPONSE_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + RESPONSE_DIRECTORY_SUFFIX;
-    public static final String PATH_TO_COMPONENT_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
-    public static final String PATH_TO_ENUM_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
+    //    public static final String PATH_TO_VIEW_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
+    //    public static final String PATH_TO_RESPONSE_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + RESPONSE_DIRECTORY_SUFFIX;
+    //    public static final String PATH_TO_COMPONENT_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
+    //    public static final String PATH_TO_ENUM_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
 
     public static final String BIG_DECIMAL = "BigDecimal";
     public static final String JAVA_BIG_DECIMAL = "java.math." + BIG_DECIMAL;
@@ -90,6 +89,7 @@ public class UtilStrings {
     public static final String HAS_NEW_NAME = "hasNewName";
 
     public static final String ITEMS = "items";
+    public static final String TOTAL_COUNT = "totalCount";
 
     public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 

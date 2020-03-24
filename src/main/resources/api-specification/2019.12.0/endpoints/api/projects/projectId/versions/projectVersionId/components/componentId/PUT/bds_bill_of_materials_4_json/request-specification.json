@@ -4,7 +4,8 @@
     "path" : "matchTypes",
     "type" : "Array",
     "optional" : false,
-    "description" : "The types of matches made to the component within the project "
+    "description" : "The types of matches made to the component within the project.",
+    "allowedValues" : [ "MANUAL", "FILE", "DEPENDENCY", "PARTIAL_FILE", "SNIPPET" ]
   }, {
     "path" : "approvalStatus",
     "type" : "String",
@@ -258,7 +259,8 @@
     "path" : "reviewStatus",
     "type" : "String",
     "optional" : true,
-    "description" : "The review status of the component"
+    "description" : "The review status of the component.",
+    "allowedValues" : [ "NOT_REVIEWED", "REVIEWED" ]
   }, {
     "path" : "componentName",
     "type" : "String",
