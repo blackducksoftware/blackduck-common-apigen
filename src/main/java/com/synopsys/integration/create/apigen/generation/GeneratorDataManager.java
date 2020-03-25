@@ -24,6 +24,7 @@ package com.synopsys.integration.create.apigen.generation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,13 +58,22 @@ public class GeneratorDataManager {
 
     public void writeFiles() {
         logger.info("Writing Java files...");
+        // here is where we could iterate through names, edit redundant enum names
         for (FileGenerationData fileData : fileDataList.values()) {
             try {
+                editRedundantName(fileData, fileDataList.keySet());
                 classWriter.writeFile(fileData);
             } catch (Exception ex) {
                 logger.error("Error generating class: {} at destination: {}", fileData.getClassName(), fileData.getDestination());
                 logger.error("Cause: ", ex);
             }
+        }
+    }
+
+    private void editRedundantName(FileGenerationData fileData, Set<String> classNames) {
+        String editedName = fileData.getClassName().replace("TypeType", "Type");
+        if (!classNames.contains(editedName)) {
+            fileData.setClassName(editedName);
         }
     }
 }
