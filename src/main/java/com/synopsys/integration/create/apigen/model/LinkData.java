@@ -33,8 +33,8 @@ public class LinkData extends Stringable {
     public final String javaConstant;
     public final String label;
     private boolean hasMultipleResults;
-    public String resultClass;
-    public String linkType;
+    private String resultClass;
+    private String linkType;
     private final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> linkResponseDefinitionsList;
 
     public LinkData(final String label, final ResponseDefinition response, final LinkResponseDefinitions linkResponseDefinitions) {

@@ -44,16 +44,19 @@ public class FieldsParserTestDataCollector {
 
     public static void writeData(final Gson gson, final List<ResponseDefinition> responses, File dataFile) throws IOException {
         final FileWriter writer = new FileWriter(dataFile);
-        dataFile.mkdirs();
-        writer.write("[");
-        final Iterator<ResponseDefinition> responseIterator = responses.iterator();
-        while (responseIterator.hasNext()) {
-            writer.write(gson.toJson(responseIterator.next()));
-            if (responseIterator.hasNext()) {
-                writer.write(",\n");
+        try {
+            dataFile.mkdirs();
+            writer.write("[");
+            final Iterator<ResponseDefinition> responseIterator = responses.iterator();
+            while (responseIterator.hasNext()) {
+                writer.write(gson.toJson(responseIterator.next()));
+                if (responseIterator.hasNext()) {
+                    writer.write(",\n");
+                }
             }
+            writer.write("]");
+        }  finally {
+            writer.close();
         }
-        writer.write("]");
-        writer.close();
     }
 }

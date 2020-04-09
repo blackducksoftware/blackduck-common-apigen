@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -41,6 +43,7 @@ import com.synopsys.integration.create.apigen.model.ThirdPartyDefinition;
 public class DefinitionParser {
     private final Gson gson;
     private final File definitionFile;
+    private final Logger logger = LoggerFactory.getLogger(DefinitionParser.class);
 
     public DefinitionParser(final Gson gson, final File definitionFile) {
         this.gson = gson;
@@ -52,7 +55,7 @@ public class DefinitionParser {
         try {
             jsonText = FileUtils.readFileToString(definitionFile, StandardCharsets.UTF_8);
         } catch (final IOException e) {
-            e.printStackTrace();
+            logger.debug("Exception", e);
         }
 
         final JsonObject json = gson.fromJson(jsonText, JsonObject.class);

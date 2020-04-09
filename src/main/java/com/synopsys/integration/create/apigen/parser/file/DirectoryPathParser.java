@@ -181,7 +181,9 @@ public class DirectoryPathParser implements ApiParser {
             }
         }
         ResponseDefinition newResponse = new ResponseDefinition(response.getResponseSpecificationPath(), response.getName(), response.getMediaType(), response.hasMultipleResults());
-        newResponse.addFields(items.getSubFields());
+        if (items != null) {
+            newResponse.addFields(items.getSubFields());
+        }
 
         return newResponse;
     }

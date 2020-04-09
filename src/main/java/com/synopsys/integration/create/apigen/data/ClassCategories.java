@@ -55,11 +55,13 @@ public class ClassCategories {
         this.generated = populateGenerated();
         this.manual = populateManual();
         this.throwaway = populateThrowaway();
+        Set<String> noLongerThrowawayClasses = new HashSet<>();
         for (String clazz : throwaway) {
-            if (generated.contains(throwaway)) {
-                throwaway.remove(clazz);
+            if (generated.contains(clazz)) {
+                noLongerThrowawayClasses.add(clazz);
             }
         }
+        throwaway.removeAll(noLongerThrowawayClasses);
         this.commonTypes = populateCommonTypes();
         this.nonEnumClassesContainingType = populateNonEnumClassesContainingType();
         this.deprecatedClasses = new HashSet<>();

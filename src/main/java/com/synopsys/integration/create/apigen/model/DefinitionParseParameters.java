@@ -30,7 +30,7 @@ public abstract class DefinitionParseParameters<T extends ThirdPartyDefinition> 
 
     public abstract Class<T> getResultClass();
 
-    public static DefinitionParseParameters<RawFieldDefinition> RAW_FIELD_PARAMETERS = new DefinitionParseParameters<RawFieldDefinition>() {
+    public static final DefinitionParseParameters<RawFieldDefinition> RAW_FIELD_PARAMETERS = new DefinitionParseParameters<RawFieldDefinition>() {
         @Override
         public String getJsonField() {
             return UtilStrings.FIELDS;
@@ -42,7 +42,7 @@ public abstract class DefinitionParseParameters<T extends ThirdPartyDefinition> 
         }
     };
 
-    public static DefinitionParseParameters<LinkDefinition> LINK_PARAMETERS = new DefinitionParseParameters<LinkDefinition>() {
+    public static final DefinitionParseParameters<LinkDefinition> LINK_PARAMETERS = new DefinitionParseParameters<LinkDefinition>() {
         @Override
         public String getJsonField() {
             return UtilStrings.LINKS;

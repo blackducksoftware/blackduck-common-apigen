@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.data;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -87,17 +88,23 @@ public class MediaVersionDataManager {
 
             if (mediaVersion != null) {
                 if ((oldData == null || mediaVersion > oldData.getMediaVersion()) && !namesToIgnore.contains(nonVersionedClass)) {
-                    latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
+                    Optional<MediaVersionData> combinedData = combineData(oldData, newData);
+                    if (combinedData.isPresent()) {
+                        latestMediaVersions.put(nonVersionedClass, combinedData.get());
+                    }
                 }
             } else {
-                latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
+                Optional<MediaVersionData> combinedData = combineData(oldData, newData);
+                if (combinedData.isPresent()) {
+                    latestMediaVersions.put(nonVersionedClass, combinedData.get());
+                }
             }
         } catch (final NullPointerException e) {
             return;
         }
     }
 
-    private MediaVersionData combineData(MediaVersionData oldData, MediaVersionData newData) {
+    private Optional<MediaVersionData> combineData(MediaVersionData oldData, MediaVersionData newData) {
         Map<String, Object> newInput = new HashMap<>();
         if (null != oldData) {
             newInput.putAll(oldData.getInput());
@@ -105,9 +112,9 @@ public class MediaVersionDataManager {
 
         if (null != newData) {
             newInput.putAll(newData.getInput());
+            return Optional.of(new MediaVersionData(newData.getNonVersionedClassName(), newData.getMediaVersion(), newInput, newData.getMediaType()));
         }
-
-        return new MediaVersionData(newData.getNonVersionedClassName(), newData.getMediaVersion(), newInput, newData.getMediaType());
+        return Optional.empty();
     }
 
     private MediaVersionData getMediaVersionData(final String className, final Map<String, Object> input, final String mediaType) {

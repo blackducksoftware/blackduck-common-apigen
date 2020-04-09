@@ -51,7 +51,7 @@ public class MissingDependencyIdentifier {
     static Set<String> bdCommonDependencies = new HashSet<>();
     static TypeTranslator typeTranslator = new TypeTranslator();
     static ClassCategories classCategories = new ClassCategories();
-    private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+    private static final Logger logger = LoggerFactory.getLogger(MissingDependencyIdentifier.class);
 
     public static void main(final String[] args) throws IOException, URISyntaxException {
         // Go over bd-common import statements, parse for Class dependencies
@@ -82,25 +82,26 @@ public class MissingDependencyIdentifier {
             }
         }
 
-        //final File missingStuff = new File("/Users/crowley/Documents/source/blackduck-common-apigen/src/main/java/com/synopsys/integration/create/apigen/missing_stuff1.txt");
         final File missingStuff = new File(MissingDependencyIdentifier.class.getClassLoader().getResource("missing_stuff1.txt").toURI());
-        final BufferedWriter writer = new BufferedWriter(new FileWriter(missingStuff));
-
-        missingClasses.remove("*");
-        final List<String> missingClassesSorted = new ArrayList<>(missingClasses);
-        Collections.sort(missingClassesSorted);
-        writer.write("********************************************\nThere are " + missingClassesSorted.size() + " missing classes:\n********************************************\n");
-        final List<String> requests = new ArrayList<>();
-        for (final String missingClass : missingClassesSorted) {
-            if (!missingClass.contains("Request")) {
-                writer.write((missingClass + "\n"));
-                logger.info(missingClass);
-            } else {
-                requests.add(missingClass);
+        final BufferedWriter  writer = new BufferedWriter(new FileWriter(missingStuff));
+        try {
+            missingClasses.remove("*");
+            final List<String> missingClassesSorted = new ArrayList<>(missingClasses);
+            Collections.sort(missingClassesSorted);
+            writer.write("********************************************\nThere are " + missingClassesSorted.size() + " missing classes:\n********************************************\n");
+            final List<String> requests = new ArrayList<>();
+            for (final String missingClass : missingClassesSorted) {
+                if (!missingClass.contains("Request")) {
+                    writer.write((missingClass + "\n"));
+                    logger.info(missingClass);
+                } else {
+                    requests.add(missingClass);
+                }
             }
+            writer.write("\n****** " + requests.size() + " of the missing classes were request objects (generator only parses response specs at the moment) *********");
+        } finally {
+            writer.close();
         }
-        writer.write("\n****** " + requests.size() + " of the missing classes were request objects (generator only parses response specs at the moment) *********");
-        writer.close();
     }
 
     private static void getDependencies(final String root, final boolean forBDCommon) throws IOException {
@@ -130,30 +131,31 @@ public class MissingDependencyIdentifier {
             }
             reader = new BufferedReader(new FileReader(file));
 
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            final String[] linePieces = line.split(" ");
-            if (linePieces[0].equals("import")) {
-                final String importedFilePath = linePieces[1];
-                if (importedFilePath.contains("api")) {
-                    final String[] pathPieces = importedFilePath.split("\\.");
-                    final String importedFile = pathPieces[pathPieces.length - 1].replace(";", "");
-                    final ClassCategoryData classCategoryData = ClassCategoryData.computeData(importedFile, classCategories);
-                    final ClassSourceEnum classSource = classCategoryData.getSource();
-                    final ClassTypeEnum classType = classCategoryData.getType();
-                    if (!classSource.isGenerated() && !missingClasses.contains(importedFile) && typeTranslator.getApiGenClassName(importedFile) == null && !classSource.isManual()) {
-                        missingClasses.add(importedFile);
-                        if (forBDCommon) {
-                            bdCommonDependencies.add(importedFile);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                final String[] linePieces = line.split(" ");
+                if (linePieces[0].equals("import")) {
+                    final String importedFilePath = linePieces[1];
+                    if (importedFilePath.contains("api")) {
+                        final String[] pathPieces = importedFilePath.split("\\.");
+                        final String importedFile = pathPieces[pathPieces.length - 1].replace(";", "");
+                        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(importedFile, classCategories);
+                        final ClassSourceEnum classSource = classCategoryData.getSource();
+                        final ClassTypeEnum classType = classCategoryData.getType();
+                        if (!classSource.isGenerated() && !missingClasses.contains(importedFile) && typeTranslator.getApiGenClassName(importedFile) == null && !classSource.isManual()) {
+                            missingClasses.add(importedFile);
+                            if (forBDCommon) {
+                                bdCommonDependencies.add(importedFile);
+                            }
                         }
                     }
                 }
-            } else {
-                continue;
+            }
+        } catch (final FileNotFoundException e) {
+            logger.debug("Exception: ", e);
+        } finally {
+            if (reader != null) {
+                reader.close();
             }
         }
     }

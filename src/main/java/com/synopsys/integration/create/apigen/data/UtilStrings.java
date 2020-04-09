@@ -91,7 +91,11 @@ public class UtilStrings {
     public static final String ITEMS = "items";
     public static final String TOTAL_COUNT = "totalCount";
 
-    public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+    protected static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+    public static String[] getDigitStrings() {
+        return DIGIT_STRINGS;
+    }
 
     public static Set<String> getJavaKeyWords() {
         final Set<String> javaKeyWords = new HashSet<>();

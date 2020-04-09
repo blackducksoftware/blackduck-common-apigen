@@ -117,7 +117,7 @@ public class NameParser {
     }
 
     public static String getMediaVersion(final String responseName) {
-        for (final String digit : UtilStrings.DIGIT_STRINGS) {
+        for (final String digit : UtilStrings.getDigitStrings()) {
             if (stripListNotation(responseName).endsWith(digit)) {
                 return digit;
             }
