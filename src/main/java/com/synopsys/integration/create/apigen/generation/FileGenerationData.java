@@ -27,7 +27,7 @@ import java.util.Map;
 import freemarker.template.Template;
 
 public class FileGenerationData {
-    private final String className;
+    private String className;
     private final Template template;
     private final Map<String, Object> input;
     private final String destination;
@@ -41,6 +41,10 @@ public class FileGenerationData {
 
     public String getClassName() {
         return className;
+    }
+
+    public void setClassName(final String className) {
+        this.className = className;
     }
 
     public Template getTemplate() {
