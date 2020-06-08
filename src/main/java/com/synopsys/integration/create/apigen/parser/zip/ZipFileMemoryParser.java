@@ -92,15 +92,17 @@ public class ZipFileMemoryParser implements ApiParser {
                     try (InputStream zipInputStream = zipFile.getInputStream(entry);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream)) {
-                        int length;
-                        while ((length = zipInputStream.read(buffer)) > 0) {
-                            bufferedOutputStream.write(buffer, 0, length);
-                        }
-                        bufferedOutputStream.flush();
-                        byte[] entryContent = byteArrayOutputStream.toByteArray();
-                        DefinitionParser definitionParser = new DefinitionParser(gson);
-                        Optional<ResponseDefinition> optionalResponse = convertToResponse(entry, entryContent);
+
+                        Optional<ResponseDefinition> optionalResponse = convertToResponse(entry, "endpoints/api/".length());
                         if (optionalResponse.isPresent()) {
+                            DefinitionParser definitionParser = new DefinitionParser(gson);
+                            int length;
+                            while ((length = zipInputStream.read(buffer)) > 0) {
+                                bufferedOutputStream.write(buffer, 0, length);
+                            }
+                            bufferedOutputStream.flush();
+                            byte[] entryContent = byteArrayOutputStream.toByteArray();
+
                             ResponseDefinition response = optionalResponse.get();
                             try (InputStream fileInputStream = new ByteArrayInputStream(entryContent)) {
                                 final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.RAW_FIELD_PARAMETERS);
@@ -123,7 +125,7 @@ public class ZipFileMemoryParser implements ApiParser {
                             } else {
                                 responses.add(response);
                             }
-                            logger.info("Entry: {}, content: {}", entry.getName(), entryContent);
+                            logger.debug("Entry: {}, content: {}", entry.getName(), entryContent);
                         }
                     } catch (IOException ex) {
                         logger.error("Error reading entry", entry.getName());
@@ -138,7 +140,7 @@ public class ZipFileMemoryParser implements ApiParser {
         return responses;
     }
 
-    private Optional<ResponseDefinition> convertToResponse(ZipEntry entry, byte[] entryContent) {
+    private Optional<ResponseDefinition> convertToResponse(ZipEntry entry, int prefixLength) {
         Optional<ResponseDefinition> responseDefinition = Optional.empty();
         String fullPath = entry.getName();
         File file = new File(fullPath);
@@ -147,7 +149,7 @@ public class ZipFileMemoryParser implements ApiParser {
         boolean requestOrResponseFile = fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
         int responseTokenIndex = fullPath.indexOf(Application.RESPONSE_TOKEN);
         if (notNotifications && requestOrResponseFile && responseTokenIndex > -1) {
-            final String relativePath = fullPath.substring(responseTokenIndex);
+            final String relativePath = fullPath.substring(prefixLength);
             final String mediaType = mediaTypes.getLongName(file.getParentFile().getName());
             if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
                 final NameParser nameParser = new NameParser(nameAndPathManager);

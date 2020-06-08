@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +28,12 @@ public class ParserEquivalenceTest {
     private DirectoryPathParser directoryPathParser;
 
     @BeforeEach
-    public void initTest() throws Exception {
+    public void initTest() {
         initDirectoryPathParser();
         initZipFileMemoryParser();
     }
 
-    private void initZipFileMemoryParser() throws Exception {
-        URL rootDirectory = ZipMemoryTest.class.getClassLoader().getResource(API_SPEC_ZIP_FILE_PATH);
-        File targetFile = new File(rootDirectory.toURI());
+    private void initZipFileMemoryParser() {
         MediaTypes mediaTypes = new MediaTypes();
         TypeTranslator typeTranslator = new TypeTranslator();
         NameAndPathManager nameAndPathManager = new NameAndPathManager();
@@ -43,7 +42,7 @@ public class ParserEquivalenceTest {
         zipFileParser = new ZipFileMemoryParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
     }
 
-    private void initDirectoryPathParser() throws Exception {
+    private void initDirectoryPathParser() {
         MediaTypes mediaTypes = new MediaTypes();
         TypeTranslator typeTranslator = new TypeTranslator();
         NameAndPathManager nameAndPathManager = new NameAndPathManager();
@@ -63,7 +62,8 @@ public class ParserEquivalenceTest {
         File testDirectory = createTestFile(API_SPEC_DIRECTORY_PATH);
         List<ResponseDefinition> zipParserResponses = zipFileParser.parseApi(testZipFile);
         List<ResponseDefinition> directoryParserResponses = directoryPathParser.parseApi(testDirectory);
-
+        zipParserResponses.sort(Comparator.comparing(ResponseDefinition::getResponseSpecificationPath));
+        directoryParserResponses.sort(Comparator.comparing(ResponseDefinition::getResponseSpecificationPath));
         assertEquals(directoryParserResponses.size(), zipParserResponses.size());
     }
 }
