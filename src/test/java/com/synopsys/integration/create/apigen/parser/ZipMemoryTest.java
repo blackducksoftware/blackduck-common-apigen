@@ -1,6 +1,6 @@
 package com.synopsys.integration.create.apigen.parser;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.File;
 import java.net.URL;
@@ -32,6 +32,6 @@ public class ZipMemoryTest {
         FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
         ZipFileMemoryParser zipFileParser = new ZipFileMemoryParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
         List<ResponseDefinition> responses = zipFileParser.parseApi(targetFile);
-        assertTrue(responses.isEmpty());
+        assertFalse(responses.isEmpty());
     }
 }

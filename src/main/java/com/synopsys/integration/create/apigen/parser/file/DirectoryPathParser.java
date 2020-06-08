@@ -120,7 +120,7 @@ public class DirectoryPathParser implements ApiParser {
 
     private void parseApi(final File parent, final int prefixLength, List<ResponseDefinition> responseDefinitions) {
         final List<File> children = Arrays.stream(parent.listFiles())
-                                        .filter(file -> !file.getName().equals("notifications"))
+                                        .filter(file -> !file.getName().equals(UtilStrings.PATH_NOTIFICATIONS))
                                         .sorted()
                                         .collect(Collectors.toList());
 
