@@ -23,12 +23,17 @@
 package com.synopsys.integration.create.apigen.generation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 @Component
 public class GeneratorDataManager {
@@ -56,13 +61,42 @@ public class GeneratorDataManager {
     }
 
     public void writeFiles() {
+        makeClassNamesPrettier();
         logger.info("Writing Java files...");
+        // here is where we could iterate through names, edit redundant enum names
         for (FileGenerationData fileData : fileDataList.values()) {
             try {
                 classWriter.writeFile(fileData);
             } catch (Exception ex) {
                 logger.error("Error generating class: {} at destination: {}", fileData.getClassName(), fileData.getDestination());
                 logger.error("Cause: ", ex);
+            }
+        }
+    }
+
+    private void makeClassNamesPrettier() {
+        for (FileGenerationData fileData : fileDataList.values()) {
+            editRedundantName(fileData, fileDataList.keySet());
+        }
+    }
+
+    private void editRedundantName(FileGenerationData fileData, Set<String> classNames) {
+        String oldName = fileData.getClassName();
+        String editedName = oldName.replace("TypeType", "Type");
+        if (!classNames.contains(editedName)) {
+            fileData.setClassName(editedName);
+            fileData.getInput().put(UtilStrings.CLASS_NAME, editedName);
+            // make sure classes that had fields of the previous type get updated
+            for (FileGenerationData fileGenerationData : fileDataList.values()) {
+                Set<FieldDefinition> fields = (Set<FieldDefinition>) fileGenerationData.getInput().get(UtilStrings.CLASS_FIELDS);
+                List<String> imports = (List<String>) fileGenerationData.getInput().get("imports");
+                if (fields == null || imports == null) continue;
+                for (FieldDefinition field : fields) {
+                    if (field.getType().equals(oldName)) {
+                        field.setType(editedName);
+                    }
+                }
+                imports.replaceAll(importString -> importString.replace(oldName, editedName));
             }
         }
     }

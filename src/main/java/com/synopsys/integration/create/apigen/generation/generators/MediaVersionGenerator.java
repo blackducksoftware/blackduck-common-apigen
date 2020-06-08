@@ -94,8 +94,8 @@ public class MediaVersionGenerator {
             input.put(UtilStrings.CLASS_NAME, className);
             try {
                 Collection<String> oldImports = (Collection<String>) input.get("imports");
-                List<String> newImports = removeNonLinkRelatedImports(oldImports);
-                input.put("imports", newImports);
+                //List<String> newImports = removeNonLinkRelatedImports(oldImports);
+                //input.put("imports", newImports);
                 final ClassTypeEnum classType = classCategories.computeType(className);
                 final String importClass = classType.getImportClass().get();
 
