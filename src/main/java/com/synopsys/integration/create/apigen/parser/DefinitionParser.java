@@ -22,15 +22,13 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -40,17 +38,15 @@ import com.synopsys.integration.create.apigen.model.ThirdPartyDefinition;
 
 public class DefinitionParser {
     private final Gson gson;
-    private final File definitionFile;
 
-    public DefinitionParser(final Gson gson, final File definitionFile) {
+    public DefinitionParser(final Gson gson) {
         this.gson = gson;
-        this.definitionFile = definitionFile;
     }
 
-    public <T extends ThirdPartyDefinition> Set<T> getDefinitions(final DefinitionParseParameters<T> parameters) {
+    public <T extends ThirdPartyDefinition> Set<T> getDefinitions(InputStream definitionInputStream, final DefinitionParseParameters<T> parameters) {
         String jsonText = null;
         try {
-            jsonText = FileUtils.readFileToString(definitionFile, StandardCharsets.UTF_8);
+            jsonText = IOUtils.toString(definitionInputStream, StandardCharsets.UTF_8);
         } catch (final IOException e) {
             e.printStackTrace();
         }

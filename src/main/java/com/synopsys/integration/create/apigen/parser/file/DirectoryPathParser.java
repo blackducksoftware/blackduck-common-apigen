@@ -23,6 +23,9 @@
 package com.synopsys.integration.create.apigen.parser.file;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -87,12 +90,20 @@ public class DirectoryPathParser implements ApiParser {
         for (final ResponseDefinition response : tempResponseDefinitions) {
             final String absolutePath = specificationRootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             final File responseSpecificationFile = new File(absolutePath);
-            final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
+            final DefinitionParser definitionParser = new DefinitionParser(gson);
 
-            final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-            final Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
-            response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
-            response.addLinks(links);
+            try (InputStream fileInputStream = new FileInputStream(responseSpecificationFile)) {
+                final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+                response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
+            } catch (IOException ex) {
+
+            }
+            try (InputStream fileInputStream = new FileInputStream(responseSpecificationFile)) {
+                final Set<LinkDefinition> links = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.LINK_PARAMETERS);
+                response.addLinks(links);
+            } catch (IOException ex) {
+
+            }
 
             // Filter out 'Array' responses and extract data from responses where data is subfield of "items" field
             ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
@@ -187,12 +198,17 @@ public class DirectoryPathParser implements ApiParser {
     }
 
     private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
-        final DefinitionParser definitionParser = new DefinitionParser(gson, file);
-        final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-        final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final Set<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
         final ResponseDefinition response = new ResponseDefinition("", "", "", false);
-        response.addFields(fieldDefinitions);
+        try (InputStream fileInputStream = new FileInputStream(file)) {
+            final DefinitionParser definitionParser = new DefinitionParser(gson);
+            final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+            final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+            final Set<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
+
+            response.addFields(fieldDefinitions);
+        } catch (IOException ex) {
+
+        }
         return response;
     }
 }
