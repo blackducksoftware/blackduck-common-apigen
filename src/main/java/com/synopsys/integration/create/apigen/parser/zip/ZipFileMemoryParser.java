@@ -81,55 +81,28 @@ public class ZipFileMemoryParser implements ApiParser {
     @Override
     public List<ResponseDefinition> parseApi(final File target) {
         List<ResponseDefinition> responses = new LinkedList<>();
-
         try (ZipFile zipFile = new ZipFile(target)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
             while (entries.hasMoreElements()) {
                 ZipEntry entry = entries.nextElement();
                 if (!entry.isDirectory()) {
-                    byte[] buffer = new byte[1024];
-                    try (InputStream zipInputStream = zipFile.getInputStream(entry);
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream)) {
+                    String fullPath = entry.getName();
+                    File file = new File(fullPath);
+                    Optional<ResponseDefinition> optionalResponse = convertToResponse(file, "endpoints/api/".length());
+                    if (optionalResponse.isPresent()) {
+                        ResponseDefinition response = optionalResponse.get();
+                        byte[] entryContent = readEntryContent(zipFile, entry);
+                        updateResponseDefinition(response, entryContent);
 
-                        Optional<ResponseDefinition> optionalResponse = convertToResponse(entry, "endpoints/api/".length());
-                        if (optionalResponse.isPresent()) {
-                            DefinitionParser definitionParser = new DefinitionParser(gson);
-                            int length;
-                            while ((length = zipInputStream.read(buffer)) > 0) {
-                                bufferedOutputStream.write(buffer, 0, length);
-                            }
-                            bufferedOutputStream.flush();
-                            byte[] entryContent = byteArrayOutputStream.toByteArray();
-
-                            ResponseDefinition response = optionalResponse.get();
-                            try (InputStream fileInputStream = new ByteArrayInputStream(entryContent)) {
-                                final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-                                response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
-                            } catch (IOException ex) {
-
-                            }
-                            try (InputStream fileInputStream = new ByteArrayInputStream(entryContent)) {
-                                final Set<LinkDefinition> links = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.LINK_PARAMETERS);
-                                response.addLinks(links);
-                            } catch (IOException ex) {
-
-                            }
-
-                            // Filter out 'Array' responses and extract data from responses where data is subfield of "items" field
-                            ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
-                            if (responseType.equals(ResponseType.ARRAY)) {
-                            } else if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
-                                responses.add(extractResponseFromSubfieldsOfItems(response));
-                            } else {
-                                responses.add(response);
-                            }
-                            logger.debug("Entry: {}, content: {}", entry.getName(), entryContent);
+                        // Filter out 'Array' responses and extract data from responses where data is subfield of "items" field
+                        ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
+                        if (responseType.equals(ResponseType.ARRAY)) {
+                        } else if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
+                            responses.add(extractResponseFromSubfieldsOfItems(response));
+                        } else {
+                            responses.add(response);
                         }
-                    } catch (IOException ex) {
-                        logger.error("Error reading entry", entry.getName());
-                        logger.error("Caused by: ", ex);
+                        logger.debug("Entry: {}, content: {}", entry.getName(), entryContent);
                     }
                 }
             }
@@ -140,10 +113,57 @@ public class ZipFileMemoryParser implements ApiParser {
         return responses;
     }
 
-    private Optional<ResponseDefinition> convertToResponse(ZipEntry entry, int prefixLength) {
+    private byte[] readEntryContent(ZipFile zipFile, ZipEntry entry) {
+        byte[] entryContent = new byte[0];
+        byte[] buffer = new byte[1024];
+        try (InputStream zipInputStream = zipFile.getInputStream(entry);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream)) {
+            int length;
+            while ((length = zipInputStream.read(buffer)) > 0) {
+                bufferedOutputStream.write(buffer, 0, length);
+            }
+            bufferedOutputStream.flush();
+            entryContent = byteArrayOutputStream.toByteArray();
+        } catch (IOException ex) {
+            logger.error("Error reading entry", entry.getName());
+            logger.error("Caused by: ", ex);
+        }
+        return entryContent;
+    }
+
+    private void updateResponseDefinition(ResponseDefinition response, byte[] entryContent) {
+        DefinitionParser definitionParser = new DefinitionParser(gson);
+        try (InputStream fileInputStream = new ByteArrayInputStream(entryContent)) {
+            final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+            response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
+        } catch (IOException ex) {
+
+        }
+        try (InputStream fileInputStream = new ByteArrayInputStream(entryContent)) {
+            final Set<LinkDefinition> links = definitionParser.getDefinitions(fileInputStream, DefinitionParseParameters.LINK_PARAMETERS);
+            response.addLinks(links);
+        } catch (IOException ex) {
+
+        }
+    }
+
+    public ResponseDefinition extractResponseFromSubfieldsOfItems(ResponseDefinition response) {
+        FieldDefinition items = null;
+        for (FieldDefinition field : response.getFields()) {
+            if (field.getPath().equals(UtilStrings.ITEMS)) {
+                items = field;
+            }
+        }
+        ResponseDefinition newResponse = new ResponseDefinition(response.getResponseSpecificationPath(), response.getName(), response.getMediaType(), response.hasMultipleResults());
+        newResponse.addFields(items.getSubFields());
+
+        return newResponse;
+    }
+
+    private Optional<ResponseDefinition> convertToResponse(File file, int prefixLength) {
         Optional<ResponseDefinition> responseDefinition = Optional.empty();
-        String fullPath = entry.getName();
-        File file = new File(fullPath);
+        String fullPath = file.getAbsolutePath();
         String fileName = file.getName();
         boolean notNotifications = !fullPath.contains(UtilStrings.PATH_NOTIFICATIONS);
         boolean requestOrResponseFile = fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
@@ -215,18 +235,5 @@ public class ZipFileMemoryParser implements ApiParser {
 
         }
         return response;
-    }
-
-    public ResponseDefinition extractResponseFromSubfieldsOfItems(ResponseDefinition response) {
-        FieldDefinition items = null;
-        for (FieldDefinition field : response.getFields()) {
-            if (field.getPath().equals(UtilStrings.ITEMS)) {
-                items = field;
-            }
-        }
-        ResponseDefinition newResponse = new ResponseDefinition(response.getResponseSpecificationPath(), response.getName(), response.getMediaType(), response.hasMultipleResults());
-        newResponse.addFields(items.getSubFields());
-
-        return newResponse;
     }
 }
