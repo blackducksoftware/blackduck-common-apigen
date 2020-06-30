@@ -1,6 +1,6 @@
 buildscript {
-	apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-repositories.gradle', to: buildscript
-	apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-dependencies.gradle', to: buildscript
+    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-repositories.gradle', to: buildscript
+    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-dependencies.gradle', to: buildscript
 }
 
 plugins {
@@ -17,8 +17,8 @@ apply plugin: 'com.synopsys.integration.solution'
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
 
-	implementation 'com.synopsys.integration:integration-common:20.1.1'
-	implementation 'com.opencsv:opencsv:4.6'
+    implementation 'com.synopsys.integration:integration-common:22.2.0'
+    implementation 'com.opencsv:opencsv:4.6'
 
     implementation 'org.freemarker:freemarker:2.3.25-incubating'
 
