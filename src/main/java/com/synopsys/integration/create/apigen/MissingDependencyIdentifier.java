@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,11 +47,10 @@ import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 
 public class MissingDependencyIdentifier {
-
     static Set<String> missingClasses = new HashSet<>();
     static Set<String> bdCommonDependencies = new HashSet<>();
     static TypeTranslator typeTranslator = new TypeTranslator();
-    static ClassCategories classCategories = new ClassCategories();
+    static ClassCategories classCategories = new ClassCategories(new ClassNameManager());
     private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
 
     public static void main(final String[] args) throws IOException, URISyntaxException {

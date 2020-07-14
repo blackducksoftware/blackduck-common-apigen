@@ -51,7 +51,6 @@ import freemarker.template.Template;
 
 @Component
 public class ComponentGenerator extends ClassGenerator {
-
     private final ClassCategories classCategories;
     private final ImportFinder importFinder;
     private final InputDataFinder inputDataFinder;

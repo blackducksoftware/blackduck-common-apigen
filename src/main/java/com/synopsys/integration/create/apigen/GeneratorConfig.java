@@ -27,7 +27,9 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GeneratorConfig {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorConfig.class);
 
@@ -58,7 +60,6 @@ public class GeneratorConfig {
         return showOutput;
     }
 
-    // taken from SwaggerHub
     public File getOutputDirectory() {
         final String baseDirectory = getOutputPath();
         if (baseDirectory == null) {
@@ -76,4 +77,5 @@ public class GeneratorConfig {
         logger.info("Control Run = {}", getControlRun());
         logger.info("Show Output = {}", getShowOutput());
     }
+
 }

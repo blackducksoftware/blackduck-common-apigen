@@ -52,23 +52,19 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 @Component
 public class ImportFinder {
-
-    public static final String LINK_RESPONSE = "LinkResponse";
-    public static final String LINK_MULTIPLE_RESPONSES = "LinkMultipleResponses";
-    public static final String LINK_SINGLE_RESPONSE = "LinkSingleResponse";
-    public static final String LINK_STRING_RESPONSE = "LinkStringResponse";
-
     private final ClassCategories classCategories;
     private final LinkResponseDefinitions linkResponseDefinitions;
     private final NameAndPathManager nameAndPathManager;
     private final TypeTranslator typeTranslator;
+    private final ClassNameManager classNameManager;
 
     @Autowired
-    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator) {
+    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator, ClassNameManager classNameManager) {
         this.classCategories = classCategories;
         this.linkResponseDefinitions = linkResponseDefinitions;
         this.nameAndPathManager = nameAndPathManager;
         this.typeTranslator = typeTranslator;
+        this.classNameManager = classNameManager;
     }
 
     public void addFieldImports(final Set<String> imports, final Set<FieldDefinition> fields) {
@@ -130,7 +126,7 @@ public class ImportFinder {
         final String responseName = response.getName();
 
         if (!rawLinks.isEmpty()) {
-            imports.add(CORE_CLASS_PATH_PREFIX + LINK_RESPONSE);
+            imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.LINK_RESPONSE));
         }
 
         for (final LinkDefinition rawLink : rawLinks) {
@@ -138,9 +134,12 @@ public class ImportFinder {
             try {
                 final String resultClass = link.resultClass();
                 final String linkType = link.linkType();
-                final String linkImportType = getLinkImportType(linkType);
+                if (null == linkType) {
+                    nameAndPathManager.addNullLinkResultClass(responseName, rawLink.getRel());
+                    continue;
+                }
 
-                final String linkImport = CORE_CLASS_PATH_PREFIX + linkImportType;
+                final String linkImport = classNameManager.getFullyQualifiedClassName(linkType);
                 imports.add(linkImport);
 
                 if (resultClass != null) {
@@ -165,13 +164,4 @@ public class ImportFinder {
         return new LinksAndImportsData(links, imports);
     }
 
-    private String getLinkImportType(final String linkType) {
-        if (linkType.contains(LINK_MULTIPLE_RESPONSES)) {
-            return LINK_MULTIPLE_RESPONSES;
-        } else if (linkType.contains(LINK_SINGLE_RESPONSE)) {
-            return LINK_SINGLE_RESPONSE;
-        } else {
-            return LINK_STRING_RESPONSE;
-        }
-    }
 }

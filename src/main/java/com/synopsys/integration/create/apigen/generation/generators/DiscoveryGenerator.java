@@ -1,8 +1,8 @@
 /**
  * blackduck-common-apigen
- *
+ * <p>
  * Copyright (c) 2020 Synopsys, Inc.
- *
+ * <p>
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -10,9 +10,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,19 +22,6 @@
  */
 package com.synopsys.integration.create.apigen.generation.generators;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.synopsys.integration.create.apigen.GeneratorRunner;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ImportComparator;
@@ -42,10 +29,20 @@ import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
+import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.model.ApiPathData;
 import com.synopsys.integration.create.apigen.model.ResultClassData;
-
 import freemarker.template.Template;
+import net.minidev.json.JSONUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class DiscoveryGenerator {
@@ -53,42 +50,45 @@ public class DiscoveryGenerator {
     private final ClassCategories classCategories;
     private final NameAndPathManager nameAndPathManager;
     private final GeneratorDataManager generatorDataManager;
+    private final ClassNameManager classNameManager;
 
     @Autowired
-    public DiscoveryGenerator(ClassCategories classCategories, NameAndPathManager nameAndPathManager, GeneratorDataManager generatorDataManager) {
+    public DiscoveryGenerator(ClassCategories classCategories, NameAndPathManager nameAndPathManager, GeneratorDataManager generatorDataManager, ClassNameManager classNameManager) {
         this.classCategories = classCategories;
         this.nameAndPathManager = nameAndPathManager;
         this.generatorDataManager = generatorDataManager;
+        this.classNameManager = classNameManager;
     }
 
-    // taken from Swaggerhub
-    public void createDiscoveryFile(File baseDirectory, Template template) throws Exception {
-
-        final Map<String, Object> model = new HashMap<>();
+    public void createDiscoveryFile(File baseDirectory, Template template) {
+        Map<String, Object> model = new HashMap<>();
         model.put("discoveryPackage", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
 
-        final Set<String> imports = new HashSet<>();
-        final Set<ApiPathData> apiData = nameAndPathManager.getApiDiscoveryData();
-        model.put("apiPathData", apiData);
-        for (final ApiPathData data : apiData) {
-            final String resultClass = data.getResultClass();
-            final ResultClassData resultClassData = new ResultClassData(resultClass, classCategories);
-            final String resultImportPath = resultClassData.getResultImportPath();
-            final String resultImportType = resultClassData.getResultImportType();
-            final String importPackage = resultImportPath + resultImportType + "." + resultClass;
+        Set<String> imports = new HashSet<>();
+        Set<ApiPathData> unsortedApiData = nameAndPathManager.getApiDiscoveryData();
+        List<ApiPathData> sortedApiData = new ArrayList<>(unsortedApiData);
+        Collections.sort(sortedApiData, Comparator.comparing(ApiPathData::getPath));
+
+        model.put("apiPathData", sortedApiData);
+        for (ApiPathData data : sortedApiData) {
+            String resultClass = data.getResultClass();
+            ResultClassData resultClassData = new ResultClassData(resultClass, classCategories);
+            String resultImportPath = resultClassData.getResultImportPath();
+            String resultImportType = resultClassData.getResultImportType();
+            String importPackage = resultImportPath + resultImportType + "." + resultClass;
             if (null == importPackage || null == resultImportType) {
                 logger.info("couldn't find package for: " + resultClass);
             } else {
                 imports.add(importPackage);
-                imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "LinkResponse");
-                imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPath");
-                imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPathSingleResponse");
-                imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + "BlackDuckPathMultipleResponses");
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH_RESPONSE));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH_SINGLE_RESPONSE));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH_MULTIPLE_RESPONSE));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH));
             }
         }
-        final List sortedImports = imports.stream()
-                                       .sorted(ImportComparator.of())
-                                       .collect(Collectors.toList());
+        List sortedImports = imports.stream()
+                .sorted(ImportComparator.of())
+                .collect(Collectors.toList());
         model.put("imports", sortedImports);
 
         generatorDataManager.addFileData(new FileGenerationData("ApiDiscovery", template, model, baseDirectory.getAbsolutePath()));

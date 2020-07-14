@@ -93,9 +93,6 @@ public class MediaVersionGenerator {
             final String className = latestMediaVersion.getNonVersionedClassName();
             input.put(UtilStrings.CLASS_NAME, className);
             try {
-                Collection<String> oldImports = (Collection<String>) input.get("imports");
-                //List<String> newImports = removeNonLinkRelatedImports(oldImports);
-                //input.put("imports", newImports);
                 final ClassTypeEnum classType = classCategories.computeType(className);
                 final String importClass = classType.getImportClass().get();
 
@@ -116,12 +113,4 @@ public class MediaVersionGenerator {
         }
     }
 
-    private List<String> removeNonLinkRelatedImports(Collection<String> oldImports) {
-        Predicate<String> filterCriteria = item -> StringUtils.containsAny(item,
-            ImportFinder.LINK_MULTIPLE_RESPONSES, ImportFinder.LINK_SINGLE_RESPONSE, ImportFinder.LINK_RESPONSE, ImportFinder.LINK_STRING_RESPONSE, InputDataFinder.IMPORT_HASHMAP, InputDataFinder.IMPORT_MAP);
-        return oldImports.stream()
-                   .filter(filterCriteria)
-                   .sorted(ImportComparator.of())
-                   .collect(Collectors.toList());
-    }
 }

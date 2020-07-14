@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,7 @@ import freemarker.template.Template;
 
 @Component
 public class ClassCategories {
-
+    private ClassNameManager classNameManager;
     private final Set<String> views;
     private final Set<String> responses;
     private final Set<String> components;
@@ -48,7 +49,8 @@ public class ClassCategories {
     private final Set<DeprecatedClassData> deprecatedClasses;
 
     @Autowired
-    public ClassCategories() {
+    public ClassCategories(ClassNameManager classNameManager) {
+        this.classNameManager = classNameManager;
         this.views = populateViews();
         this.responses = populateResponses();
         this.components = populateComponents();
@@ -408,17 +410,9 @@ public class ClassCategories {
         final Set<String> manualClasses = new HashSet<>();
 
         // core
-        manualClasses.add("BlackDuckComponent");
-        manualClasses.add("BlackDuckResponse");
-        manualClasses.add("BlackDuckPath");
-        manualClasses.add("BlackDuckPathMultipleResponses");
-        manualClasses.add("BlackDuckPathSingleResponse");
-        manualClasses.add("BlackDuckResponse");
-        manualClasses.add("BlackDuckView");
-        manualClasses.add("LinkMultipleResponses");
-        manualClasses.add("LinkResponse");
-        manualClasses.add("LinkStringResponse");
-        manualClasses.add("LinkSingleResponse");
+        classNameManager.getClassNames()
+                .stream()
+                .forEach(manualClasses::add);
 
         // Component
         manualClasses.add("AffectedProjectVersion");

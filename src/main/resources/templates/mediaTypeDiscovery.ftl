@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class MediaTypeDiscovery {
     public static final String DEFAULT_MEDIA_TYPE = "application/json";

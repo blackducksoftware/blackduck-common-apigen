@@ -1,8 +1,8 @@
 /**
  * blackduck-common-apigen
- *
+ * <p>
  * Copyright (c) 2020 Synopsys, Inc.
- *
+ * <p>
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -10,9 +10,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,46 +22,28 @@
  */
 package com.synopsys.integration.create.apigen;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-
+import com.google.gson.Gson;
+import com.synopsys.integration.create.apigen.data.*;
+import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
+import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
+import com.synopsys.integration.create.apigen.generation.generators.*;
+import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.LinkDefinition;
+import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.parser.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
-import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
-import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.UtilStrings;
-import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
-import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
-import com.synopsys.integration.create.apigen.generation.generators.ClassGenerator;
-import com.synopsys.integration.create.apigen.generation.generators.DeprecatedClassGenerator;
-import com.synopsys.integration.create.apigen.generation.generators.DiscoveryGenerator;
-import com.synopsys.integration.create.apigen.generation.generators.MediaTypeMapGenerator;
-import com.synopsys.integration.create.apigen.generation.generators.MediaVersionGenerator;
-import com.synopsys.integration.create.apigen.generation.generators.ViewGenerator;
-import com.synopsys.integration.create.apigen.model.FieldDefinition;
-import com.synopsys.integration.create.apigen.model.LinkDefinition;
-import com.synopsys.integration.create.apigen.model.ResponseDefinition;
-import com.synopsys.integration.create.apigen.parser.ApiGeneratorParser;
-import com.synopsys.integration.create.apigen.parser.ApiParser;
-import com.synopsys.integration.create.apigen.parser.ApiPathDataPopulator;
-import com.synopsys.integration.create.apigen.parser.DirectoryWalker;
-import com.synopsys.integration.create.apigen.parser.NameParser;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class GeneratorRunner {
@@ -85,9 +67,9 @@ public class GeneratorRunner {
 
     @Autowired
     public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, DiscoveryGenerator discoveryGenerator,
-        MediaTypeMapGenerator mediaTypeMapGenerator, MediaVersionGenerator mediaVersionGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
-        Configuration config, MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
-        ObjectFactory<ApiGeneratorParser> parserFactory) {
+                           MediaTypeMapGenerator mediaTypeMapGenerator, MediaVersionGenerator mediaVersionGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
+                           Configuration config, MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
+                           ObjectFactory<ApiGeneratorParser> parserFactory) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
@@ -110,28 +92,21 @@ public class GeneratorRunner {
     public void createGeneratedClasses() throws Exception {
         generatorConfig.logConfig();
         String inputPath = generatorConfig.getInputPath();
-        File inputDirectory;
-        try {
-            URI inputDirectoryUri = new URI(inputPath);
-            inputDirectory = new File(inputDirectoryUri);
-        } catch (IllegalArgumentException | URISyntaxException ex) {
-            logger.error("Error getting input path from file URI", ex);
-            inputDirectory = new File(inputPath);
-        }
+        File inputDirectory = new File(inputPath);
         if (!inputDirectory.exists()) {
             logger.info(generatorConfig.getInputPath() + " not found in resources");
             System.exit(0);
         }
-        final ApiParser apiParser = parserFactory.getObject();
-        final DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
-        final List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
-        for (final ResponseDefinition response : responses) {
-            final String responseName = NameParser.getNonVersionedName(response.getName());
-            final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
+        ApiParser apiParser = parserFactory.getObject();
+        DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
+        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
+        for (ResponseDefinition response : responses) {
+            String responseName = NameParser.getNonVersionedName(response.getName());
+            Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
             if (missingFields.size() > 0) {
                 response.addFields(missingFields);
             }
-            final Set<LinkDefinition> missingLinks = missingFieldsAndLinks.getMissingLinks(responseName);
+            Set<LinkDefinition> missingLinks = missingFieldsAndLinks.getMissingLinks(responseName);
             if (missingLinks.size() > 0) {
                 response.addLinks(missingLinks);
             }
@@ -140,14 +115,14 @@ public class GeneratorRunner {
         generateFiles(responses);
 
         logger.info("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
-        for (final String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
+        for (String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
             logger.info(randomClassName);
         }
 
         logger.info(
-            "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
-                + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
-        for (final Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
+                "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
+                        + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
+        for (Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
             logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
         }
     }
@@ -169,43 +144,43 @@ public class GeneratorRunner {
     }
 
     private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses) throws Exception {
-        for (final ResponseDefinition response : responses) {
+        for (ResponseDefinition response : responses) {
             if (viewGenerator.isApplicable(response)) {
-                final Template template = viewGenerator.getTemplate(config);
+                Template template = viewGenerator.getTemplate(config);
                 viewGenerator.generateClasses(response, template);
             } else {
                 logger.info("Non-applicable response!");
             }
-            for (final FieldDefinition field : response.getFields()) {
+            for (FieldDefinition field : response.getFields()) {
                 generateClasses(field, generators, response.getMediaType());
             }
         }
     }
 
     private void accumulateApiDiscoveryClassData(List<ResponseDefinition> responses) {
-        final ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(nameAndPathManager);
+        ApiPathDataPopulator apiPathDataPopulator = new ApiPathDataPopulator(nameAndPathManager);
         apiPathDataPopulator.populateApiPathData(responses);
     }
 
     private void accumulateMediaTypeDiscoveryClassData() throws Exception {
-        final File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
-        final Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
+        File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+        Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
     }
 
     private void accumulateLatestViewAndComponentClassData() throws Exception {
-        final Template randomTemplate = config.getTemplate("randomTemplate.ftl");
+        Template randomTemplate = config.getTemplate("randomTemplate.ftl");
         mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
     }
 
-    private void generateClasses(final FieldDefinition field, final List<ClassGenerator> generators, final String responseMediaType) throws Exception {
-        for (final ClassGenerator generator : generators) {
+    private void generateClasses(FieldDefinition field, List<ClassGenerator> generators, String responseMediaType) throws Exception {
+        for (ClassGenerator generator : generators) {
             if (generator.isApplicable(field)) {
-                final Template template = generator.getTemplate(config);
+                Template template = generator.getTemplate(config);
                 generator.generateClass(field, responseMediaType, template);
             }
         }
-        for (final FieldDefinition subField : field.getSubFields()) {
+        for (FieldDefinition subField : field.getSubFields()) {
             if (!field.getType().equals(subField.getType())) {
                 generateClasses(subField, generators, responseMediaType);
             }
