@@ -17,4 +17,5 @@ public enum ${className} {
 	public String prettyPrint() {
 	    return EnumUtils.prettyPrint(this);
 	}
+
 }

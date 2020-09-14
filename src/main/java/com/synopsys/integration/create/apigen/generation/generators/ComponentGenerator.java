@@ -77,7 +77,7 @@ public class ComponentGenerator extends ClassGenerator {
     @Override
     public boolean isApplicable(FieldDefinition field) {
         final String fieldType = NameParser.stripListNotation(field.getType());
-        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
+        final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassTypeEnum classType = classCategoryData.getType();
         final ClassSourceEnum classSource = classCategoryData.getSource();
         return classType.isNotCommonTypeOrEnum() && !classSource.isThrowaway() && !classSource.isManual();
@@ -98,7 +98,7 @@ public class ComponentGenerator extends ClassGenerator {
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
-        final ClassTypeEnum classType = classCategories.computeType(NameParser.getNonVersionedName(fieldType));
+        final ClassTypeEnum classType = classCategories.computeData(fieldType).getType();
         if (classType.isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;

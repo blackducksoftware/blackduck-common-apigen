@@ -1,13 +1,19 @@
 package ${package};
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
+import com.synopsys.integration.rest.HttpUrl;
+import com.synopsys.integration.rest.request.Request;
+
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
-public class MediaTypeDiscovery {
+public class BlackDuckMediaTypeDiscovery {
+    public static final Set<String> VALUES_TO_REPLACE = new HashSet<>(Arrays.asList(null, Request.DEFAULT_ACCEPT_MIME_TYPE));
+
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String UUID_REGEX = "\\b[a-f0-9]{8}\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\b[a-f0-9]{12}\\b";
 
@@ -29,24 +35,27 @@ public class MediaTypeDiscovery {
 
     // The string to escape forward slash is: \\/
     // The regex pattern for a UUID is: \\b[a-f0-9]{8}\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\b[a-f0-9]{12}\\b
-    public MediaTypeDiscovery() {
+    public BlackDuckMediaTypeDiscovery() {
     <#list mediaTypeData.getConstantsMapping() as mediaTypeDefinition>
         mediaTypeMatchers.add(new MediaTypeMatcher(${mediaTypeDefinition.getPathRegex()}, ${mediaTypeDefinition.getMediaType()}));
     </#list>
     }
 
-    public String determineMediaType(String url) {
-        try {
-            URL apiUrl = new URL(url);
-            String path = apiUrl.getPath();
-            return mediaTypeMatchers.stream()
-                       .filter(matcher -> matcher.getPattern().matcher(path).matches())
-                       .map(MediaTypeMatcher::getMediaType)
-                       .findFirst()
-                       .orElse(DEFAULT_MEDIA_TYPE);
-        } catch (MalformedURLException ex) {
-            return DEFAULT_MEDIA_TYPE;
+    public String determineMediaType(HttpUrl url, String currentMediaType) {
+        if (null != url && VALUES_TO_REPLACE.contains(currentMediaType)) {
+            return determineMediaType(url);
+        } else {
+            return currentMediaType;
         }
+    }
+
+    public String determineMediaType(HttpUrl url) {
+        String path = url.url().getPath();
+        return mediaTypeMatchers.stream()
+                .filter(matcher -> matcher.getPattern().matcher(path).matches())
+                .map(MediaTypeMatcher::getMediaType)
+                .findFirst()
+                .orElse(DEFAULT_MEDIA_TYPE);
     }
 
     private class MediaTypeMatcher {
@@ -71,4 +80,5 @@ public class MediaTypeDiscovery {
             return mediaType;
         }
     }
+
 }

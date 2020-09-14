@@ -55,7 +55,7 @@ public class GeneratedClassWriter {
         String destination = fileData.getDestination();
 
         className = NameParser.stripListAndOptionalNotation(className);
-        final ClassTypeEnum classType = classCategories.computeType(className);
+        final ClassTypeEnum classType = classCategories.computeData(className).getType();
         if (classType.isCommon()) {
             return;
         }

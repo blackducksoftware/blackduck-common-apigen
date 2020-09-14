@@ -6,7 +6,6 @@ import ${import};
 
 //this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 public class ${className} extends ${baseClass} <#if buildable??>implements Buildable </#if>{
-
 <#list classFields as field>
     private ${field.type} ${field.path};
 </#list>
@@ -27,4 +26,5 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
     }
 
 </#list>
+
 }

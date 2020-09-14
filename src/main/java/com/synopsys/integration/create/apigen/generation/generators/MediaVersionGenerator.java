@@ -93,7 +93,7 @@ public class MediaVersionGenerator {
             final String className = latestMediaVersion.getNonVersionedClassName();
             input.put(UtilStrings.CLASS_NAME, className);
             try {
-                final ClassTypeEnum classType = classCategories.computeType(className);
+                final ClassTypeEnum classType = classCategories.computeData(className).getType();
                 final String importClass = classType.getImportClass().get();
 
                 final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;

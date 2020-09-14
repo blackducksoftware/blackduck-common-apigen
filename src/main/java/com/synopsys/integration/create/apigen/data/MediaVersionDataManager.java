@@ -68,7 +68,7 @@ public class MediaVersionDataManager {
 
     public void updateLatestMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
         final MediaVersionData newData = getMediaVersionData(className, input, mediaType);
-        final ClassTypeEnum classType = classCategories.computeType(className);
+        final ClassTypeEnum classType = classCategories.computeData(className).getType();
         if (newData == null || classType.isCommon()) {
             return;
         }

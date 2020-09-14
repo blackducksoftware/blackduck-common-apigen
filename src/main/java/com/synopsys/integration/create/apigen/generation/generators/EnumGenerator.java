@@ -65,7 +65,7 @@ public class EnumGenerator extends ClassGenerator {
     @Override
     public boolean isApplicable(FieldDefinition field) {
         final String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
-        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
+        final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
         return (classType.isEnum() && field.getAllowedValues().size() != 0 && !classSource.equals(ClassSourceEnum.THROWAWAY));

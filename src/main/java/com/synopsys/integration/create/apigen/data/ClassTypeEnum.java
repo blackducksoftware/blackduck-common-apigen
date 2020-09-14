@@ -30,15 +30,19 @@ public enum ClassTypeEnum {
     VIEW(UtilStrings.VIEW_BASE_CLASS),
     RESPONSE(UtilStrings.RESPONSE_BASE_CLASS),
     COMPONENT(UtilStrings.COMPONENT_BASE_CLASS),
-    ENUM(null),
-    COMMON(null),
-    NON_ENUM_CONTAINING_TYPE(null),
-    NULL(null);
+    ENUM,
+    COMMON,
+    NON_ENUM_CONTAINING_TYPE,
+    NULL;
 
     private final String importClass;
 
-    private ClassTypeEnum(final String importClass) {
+    ClassTypeEnum(final String importClass) {
         this.importClass = importClass;
+    }
+
+    ClassTypeEnum() {
+        this(null);
     }
 
     public Optional<String> getImportClass() {

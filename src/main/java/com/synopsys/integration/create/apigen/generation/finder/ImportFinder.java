@@ -82,7 +82,8 @@ public class ImportFinder {
         }
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
-        final ClassCategoryData classCategoryData = ClassCategoryData.computeData(fieldType, classCategories);
+
+        final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         ClassTypeEnum classType = classCategoryData.getType();
 

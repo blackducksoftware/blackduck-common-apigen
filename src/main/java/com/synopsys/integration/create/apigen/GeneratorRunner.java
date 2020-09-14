@@ -144,9 +144,9 @@ public class GeneratorRunner {
     }
 
     private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses) throws Exception {
+        Template template = viewGenerator.getTemplate(config);
         for (ResponseDefinition response : responses) {
             if (viewGenerator.isApplicable(response)) {
-                Template template = viewGenerator.getTemplate(config);
                 viewGenerator.generateClasses(response, template);
             } else {
                 logger.info("Non-applicable response!");

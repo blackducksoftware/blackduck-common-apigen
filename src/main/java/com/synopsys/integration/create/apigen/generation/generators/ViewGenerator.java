@@ -95,7 +95,7 @@ public class ViewGenerator {
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
-        final ClassTypeEnum classType = classCategories.computeType(NameParser.getNonVersionedName(viewName));
+        final ClassTypeEnum classType = classCategories.computeData(viewName).getType();
         if (classType.isView()) {
             fieldPackage = UtilStrings.GENERATED_VIEW_PACKAGE;
             fieldBaseClass = UtilStrings.VIEW_BASE_CLASS;

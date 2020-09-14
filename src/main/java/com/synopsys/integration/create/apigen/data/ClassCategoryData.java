@@ -23,19 +23,18 @@
 package com.synopsys.integration.create.apigen.data;
 
 public class ClassCategoryData {
+    private final String className;
     private final ClassTypeEnum type;
     private final ClassSourceEnum source;
 
-    public ClassCategoryData(final ClassTypeEnum type, final ClassSourceEnum source) {
+    public ClassCategoryData(String className, ClassTypeEnum type, ClassSourceEnum source) {
+        this.className = className;
         this.type = type;
         this.source = source;
     }
 
-    public static ClassCategoryData computeData(final String className, final ClassCategories classCategories) {
-        final ClassTypeEnum type = classCategories.computeType(className);
-        final ClassSourceEnum source = classCategories.computeSource(className);
-
-        return new ClassCategoryData(type, source);
+    public String getClassName() {
+        return className;
     }
 
     public ClassTypeEnum getType() {
@@ -45,4 +44,5 @@ public class ClassCategoryData {
     public ClassSourceEnum getSource() {
         return source;
     }
+
 }
