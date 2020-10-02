@@ -31,59 +31,66 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.swing.text.View;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 
 public class NameParser {
-    private final NameAndPathManager nameAndPathManager;
+    private static String VIEWV = "ViewV";
+    private static String VIEW = "View";
 
-    private final Set<String> REDUNDANT_NAME_PREFIXES = getRedundantNamePrefixes();
-    private static final String VIEWV = "ViewV";
-    private static final String VIEW = "View";
+    private NameAndPathManager nameAndPathManager;
+    private Set<String> redundantNamePrefixes = getRedundantNamePrefixes();
+    private String GET_ENDPOINT = "GET";
 
     public NameParser(final NameAndPathManager nameAndPathManager) {
         this.nameAndPathManager = nameAndPathManager;
     }
 
-    public String getResponseName(final String responsePath) {
+    public String computeResponseName(final String responsePath) {
         String firstPiece = null;
         String lastPiece = null;
-        String differentiatingPrefix = null;
+        DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder = new DifferentiatingClassnamePrefixBuilder(redundantNamePrefixes);
         final ListIterator<String> pathPieces = Arrays.asList(responsePath.split("/")).listIterator();
         String nextPiece = getGroomedPiece(pathPieces.next());
-        while (!nextPiece.equals("GET") && pathPieces.hasNext()) {
-            differentiatingPrefix = firstPiece;
+        while (pathPieces.hasNext()) {
             firstPiece = lastPiece;
             lastPiece = nextPiece;
             nextPiece = getGroomedPiece(pathPieces.next());
+            if (!nextPiece.equals(GET_ENDPOINT)) {
+                differentiatingPrefixBuilder.addPiece(nextPiece);
+            } else {
+                // Once we've hit the GET endpoint, we have what we need to compute a name for the response
+                break;
+            }
         }
         if (pathPieces.hasNext()) {
-            firstPiece = !nameAndPathManager.getNonLinkClassNames().contains(firstPiece) ? firstPiece : differentiatingPrefix;
+            firstPiece = !nameAndPathManager.getNonLinkClassNames().contains(firstPiece) ? firstPiece : differentiatingPrefixBuilder.getPrefix();
             final String mediaType = pathPieces.next();
-            final String responseName = computeResponseNameFromPieces(firstPiece, lastPiece, mediaType);
-            if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefix)) {
-                return differentiatingPrefix + responseName;
-            } else {
-                return responseName;
-            }
+            return computeResponseNameFromPieces(firstPiece, lastPiece, mediaType, differentiatingPrefixBuilder);
         } else {
             return "";
         }
     }
 
-    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType) {
+    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType, DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder) {
         final String mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
         final String responseName = getJoinedResponseNamePieces(firstPiece, lastPiece, mediaVersion);
-        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(stripRedundantNamePrefix(responseName, mediaVersion)));
-        return stripRedundantNamePrefix(responseName, mediaVersion);
+        final String finalResponseName;
+        if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix())) {
+            finalResponseName = differentiatingPrefixBuilder.getNameWithPrefix(responseName);
+        } else {
+            finalResponseName = responseName;
+        }
+        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(finalResponseName));
+        return finalResponseName;
     }
 
-    // FIXME - this is an in-ideal hack at the moment
     private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix) {
-        //return nameAndPathManager.getNonLinkClassNames().contains(NameParser.getNonVersionedName(responseName)) && differentiatingPrefix != null && !REDUNDANT_NAME_PREFIXES.contains(differentiatingPrefix) && !responseName.startsWith(differentiatingPrefix);
-        return responseName.contains("ComponentView") && differentiatingPrefix != null && differentiatingPrefix.equals("ProjectVersion");
+        return nameAndPathManager.getNonLinkClassNames().contains(getNonVersionedName(responseName)) && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
     }
 
     private String getGroomedPiece(final String piece) {
@@ -103,26 +110,7 @@ public class NameParser {
         if (responseName.endsWith(VIEWV)) {
             responseName = responseName.replace(VIEWV, VIEW);
         }
-        return responseName;
-    }
-
-    public static String getNonVersionedName(final String responseName) {
-        // relies on assumption that there will be < 10 numbered responses
-        final String mediaVersion = getMediaVersion(responseName);
-        if (mediaVersion != null) {
-            return responseName.replace("V" + mediaVersion, "");
-        } else {
-            return responseName.replace(VIEWV, VIEW);
-        }
-    }
-
-    public static String getMediaVersion(final String responseName) {
-        for (final String digit : UtilStrings.DIGIT_STRINGS) {
-            if (stripListNotation(responseName).endsWith(digit)) {
-                return digit;
-            }
-        }
-        return null;
+        return stripRedundantNamePrefix(responseName, mediaVersion);
     }
 
     private Set<String> getRedundantNamePrefixes() {
@@ -133,6 +121,7 @@ public class NameParser {
         redundantNamePrefixes.add("Comments");
         redundantNamePrefixes.add("CustomFields");
         redundantNamePrefixes.add("Cwes");
+        redundantNamePrefixes.add("Issues");
         redundantNamePrefixes.add("Jobs");
         redundantNamePrefixes.add("Licenses");
         redundantNamePrefixes.add("LicenseFamilies");
@@ -155,7 +144,7 @@ public class NameParser {
     }
 
     private String stripRedundantNamePrefix(final String responseName, final String mediaType) {
-        for (final String prefix : REDUNDANT_NAME_PREFIXES) {
+        for (final String prefix : redundantNamePrefixes) {
             final String responseNameStrippedOfRedundantPrefix = responseName.replaceFirst(prefix, "");
             if (responseName.startsWith(prefix) && !responseNameStrippedOfRedundantPrefix.equals(VIEWV + mediaType)) {
                 return responseNameStrippedOfRedundantPrefix;
@@ -164,9 +153,30 @@ public class NameParser {
         return responseName;
     }
 
+    /* Util Methods */
+
+    public static String getNonVersionedName(final String responseName) {
+        // relies on assumption that there will be < 10 numbered responses
+        final String mediaVersion = getMediaVersion(responseName);
+        if (mediaVersion != null) {
+            return responseName.replace("V" + mediaVersion, "");
+        } else {
+            return responseName.replace(VIEWV, VIEW);
+        }
+    }
+
+    public static String getMediaVersion(final String responseName) {
+        for (final String digit : UtilStrings.DIGIT_STRINGS) {
+            if (stripListNotation(responseName).endsWith(digit)) {
+                return digit;
+            }
+        }
+        return null;
+    }
+
     public static String reorderViewInName(final String name) {
-        if (name.contains("View")) {
-            return name.replace("View", "") + "View";
+        if (name.contains(VIEW)) {
+            return name.replace(VIEW, "") + VIEW;
         } else {
             return name;
         }
