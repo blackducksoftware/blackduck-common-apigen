@@ -7,11 +7,12 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
 import com.synopsys.integration.create.apigen.model.MediaVersionData;
 
 public class MediaVersionDataManagerTest {
 
-    private final MediaVersionDataManager mediaVersionDataManager = new MediaVersionDataManager(new ClassCategories());
+    private final MediaVersionDataManager mediaVersionDataManager = new MediaVersionDataManager(new ClassCategories(new ClassNameManager()));
 
     @Test
     public void updateLatestMediaVersionsTest() {

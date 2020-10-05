@@ -86,6 +86,9 @@ public class MediaTypes {
 
         LONG_TO_SHORT.put("application/vnd.blackducksoftware.vulnerability-4+json", "bds_vulnerability_4_json");
         SHORT_TO_LONG.put("bds_vulnerability_4_json", "application/vnd.blackducksoftware.vulnerability-4+json");
+
+        LONG_TO_SHORT.put("application/vnd.blackducksoftware.system-announcement-1+json","bds_system_announcement_1_json");
+        SHORT_TO_LONG.put("bds_system_announcement_1_json","application/vnd.blackducksoftware.system-announcement-1+json");
     }
 
     public static Set<String> getShortNames() {

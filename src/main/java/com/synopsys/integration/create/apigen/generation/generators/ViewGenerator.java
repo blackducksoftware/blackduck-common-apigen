@@ -118,7 +118,7 @@ public class ViewGenerator {
         String swaggerName = typeTranslator.getClassSwaggerName(viewName);
         if (StringUtils.isNotBlank(swaggerName)) {
             if (StringUtils.isBlank(typeTranslator.getClassSwaggerName(swaggerName))) {
-                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToFiles);
+                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToFiles.replace(UtilStrings.GENERATED, "generated.deprecated"), fieldPackage.replace(UtilStrings.GENERATED, "generated.deprecated"));
             }
         }
         String apiGenClassName = typeTranslator.getApiGenClassName(viewName);

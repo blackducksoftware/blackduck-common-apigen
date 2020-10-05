@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
 import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -22,7 +23,7 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 public class MediaTypePathManagerTest {
 
     @Test
-    public void mediaTypesTest() {
+    public void mediaTypesTest() throws NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
         List<ResponseDefinition> responseDefinitions = new ArrayList<>();
         responseDefinitions.add(new ResponseDefinition("components/componentId/path", "", "componentMediaType", false));
@@ -37,7 +38,7 @@ public class MediaTypePathManagerTest {
     }
 
     @Test
-    public void getOnlyPathTest() {
+    public void getOnlyPathTest() throws NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
         List<ResponseDefinition> responseDefinitions = new ArrayList<>();
         responseDefinitions.add(new ResponseDefinition("GET", "", "", false));
@@ -49,7 +50,7 @@ public class MediaTypePathManagerTest {
     }
 
     @Test
-    public void getInPathTest() {
+    public void getInPathTest() throws NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
         List<ResponseDefinition> responseDefinitions = new ArrayList<>();
         responseDefinitions.add(new ResponseDefinition("reports.GET", "", "reportsMediaType", false));
@@ -62,7 +63,7 @@ public class MediaTypePathManagerTest {
     }
 
     @Test
-    public void uuidAndGetPathTest() {
+    public void uuidAndGetPathTest() throws NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
         List<ResponseDefinition> responseDefinitions = new ArrayList<>();
         responseDefinitions.add(new ResponseDefinition("reports.reportId.GET", "", "reportsMediaType", false));
@@ -75,7 +76,7 @@ public class MediaTypePathManagerTest {
     }
 
     @Test
-    public void pathEndsInGETTest() {
+    public void pathEndsInGETTest() throws NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
         List<ResponseDefinition> responseDefinitions = new ArrayList<>();
         responseDefinitions.add(new ResponseDefinition("projects/projectId/versions/GET", "", "projectVersionArrayMediaType", false));
@@ -97,7 +98,7 @@ public class MediaTypePathManagerTest {
 
     @Test
     @Disabled
-    public void testPatternMatch() throws MalformedURLException {
+    public void testPatternMatch() throws MalformedURLException, NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
         List<ResponseDefinition> responseDefinitions = new ArrayList<>();
         responseDefinitions.add(new ResponseDefinition("projects/projectId/versions", "", "projectVersionArrayMediaType", false));

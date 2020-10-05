@@ -55,14 +55,13 @@ public class TypeTranslator {
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
         translations.put("AssignedProjectView", "UserProjectsView");
         translations.put("ComplexLicenseView", "ProjectVersionLicenseView");
-        translations.put("ComplexLicenseType", "ProjectVersionLicenseLicensesTypeType");
+        translations.put("ComplexLicenseType", "ProjectVersionLicenseTypeType"); // * its final name is ProjectVersionLicenseType
         translations.put("ComponentSearchResultView", "ComponentsView");
         translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
         translations.put("CompositePathWithArchiveContext", "ComponentMatchedFilesItemsFilePathView");
         translations.put("CustomFieldType", "CustomFieldTypeType");
         translations.put("CustomFieldTypeView", "TypesView");
-        translations.put("CustomFieldView", "FieldsCustomFieldView");
-        translations.put("CustomFieldWithValueView", "CustomFieldView");
+        translations.put("HealthCheckStatusView", "HealthChecksLivenessView");
         translations.put("LicenseFamilySummaryView", "ProjectVersionLicenseLicenseLicenseFamilySummaryView");
         translations.put("MatchedFileView", "ComponentMatchedFilesView");
         translations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
@@ -78,11 +77,10 @@ public class TypeTranslator {
         translations.put("ReportFormatType", "LicenseReportsReportReportFormatType");
         translations.put("RemediationOptionsView", "ComponentVersionRemediatingView");
         translations.put("RemediatingVersionView", "ComponentVersionRemediatingFixesPreviousVulnerabilitiesView");
-        translations.put("ReviewedDetails", "ComponentReviewedDetailsView");
+        translations.put("ReviewedDetails", "ProjectVersionComponentReviewedDetailsView");
         translations.put("RiskCountView", "ComponentVersionRiskProfileRiskDataCountsView");
         translations.put("RiskCountType", "ComponentVersionRiskProfileRiskDataCountsCountTypeType");
-        translations.put("RoleAssignmentView", "UserRoleAssignmentView");
-        translations.put("VersionBomLicenseView", "ComponentLicensesView");
+        translations.put("VersionBomLicenseView", "ProjectVersionComponentLicensesView");
         translations.put("VersionBomComponentDiffView", "ProjectVersionComparisonView");
         translations.put("VersionBomComponentMatchType", "ProjectVersionMatchedFilesItemsMatchesMatchTypeType");
         translations.put("VersionBomComponentReviewStatusType", "ProjectVersionComponentReviewStatusType");

@@ -27,15 +27,22 @@ import java.util.Set;
 
 public class UtilStrings {
 
+    public static final String GENERATED = "generated";
+    public static final String MANUAL = "manual";
     public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
-    public static final String CORE_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.core.";
-    public static final String MANUAL_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.manual.";
-    public static final String THROWAWAY_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated");
+    public static final String CORE_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, "core");
+    public static final String MANUAL_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, MANUAL);
+    public static final String DEPRECATED_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, "generated.deprecated");
+    public static final String TEMPORARY_CLASS_PATH_PREFIX = MANUAL_CLASS_PATH_PREFIX.replace(MANUAL, "manual.temporary");
 
     public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION;
     public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
     public static final String GENERATED_COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.COMPONENT;
     public static final String GENERATED_RESPONSE_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.RESPONSE;
+    public static final String DEPRECATED_ENUM_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION;
+    public static final String DEPRECATED_VIEW_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
+    public static final String DEPRECATED_COMPONENT_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.COMPONENT;
+    public static final String DEPRECATED_RESPONSE_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.RESPONSE;
     public static final String GENERATED_DISCOVERY_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "discovery";
     public static final String VIEW_BASE_CLASS = "BlackDuckView";
     public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";

@@ -24,6 +24,7 @@ package com.synopsys.integration.create.apigen.model;
 
 import static com.synopsys.integration.create.apigen.data.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.data.UtilStrings.TEMPORARY_CLASS_PATH_PREFIX;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassCategoryData;
@@ -69,8 +70,8 @@ public class ResultClassData {
         if (resultClass != null) {
             if (classSource.isManual()) {
                 resultImportPath = MANUAL_CLASS_PATH_PREFIX;
-            } else if (classSource.isThrowaway()) {
-                resultImportPath = MANUAL_CLASS_PATH_PREFIX + "throwaway.generated.";
+            } else if (classSource.isTemporary()) {
+                resultImportPath = TEMPORARY_CLASS_PATH_PREFIX;
             } else if (classSource.isGenerated()) {
                 resultImportPath = GENERATED_CLASS_PATH_PREFIX;
             }

@@ -122,7 +122,7 @@ public class DirectoryPathParser implements ApiParser {
                 final String mediaType = mediaTypes.getLongName(child.getParentFile().getName());
                 if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
                     final NameParser nameParser = new NameParser(nameAndPathManager);
-                    final String responseName = nameParser.getResponseName(relativePath);
+                    final String responseName = nameParser.computeResponseName(relativePath);
                     final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
                     responseDefinitions.add(new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults));
                 }

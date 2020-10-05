@@ -68,7 +68,7 @@ public class EnumGenerator extends ClassGenerator {
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
-        return (classType.isEnum() && field.getAllowedValues().size() != 0 && !classSource.equals(ClassSourceEnum.THROWAWAY));
+        return (classType.isEnum() && field.getAllowedValues().size() != 0 && !classSource.equals(ClassSourceEnum.TEMPORARY));
     }
 
     @Override
@@ -79,7 +79,7 @@ public class EnumGenerator extends ClassGenerator {
         String swaggerName = typeTranslator.getClassSwaggerName(classType);
         if (swaggerName != null) {
             if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
-                classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles());
+                classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
             }
         }
         if (typeTranslator.getApiGenClassName(classType) != null) {

@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.google.gson.Gson;
@@ -39,6 +40,7 @@ public class DirectoryWalkerTest {
         this.directoryWalker = new DirectoryWalker(gson, apiParser);
     }
 
+    @Disabled
     @Test
     public void test() throws IOException, URISyntaxException {
         final File testFile = new File("./build/FieldsParserTestTestingData.txt");

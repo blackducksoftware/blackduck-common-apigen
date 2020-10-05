@@ -26,6 +26,7 @@ import static com.synopsys.integration.create.apigen.data.UtilStrings.COMPONENT_
 import static com.synopsys.integration.create.apigen.data.UtilStrings.CORE_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.RESPONSE_BASE_CLASS;
+import static com.synopsys.integration.create.apigen.data.UtilStrings.TEMPORARY_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.VIEW_BASE_CLASS;
 
 import java.util.HashSet;
@@ -104,7 +105,7 @@ public class ImportFinder {
             imports.add("java.util.Optional");
         }
 
-        final String importPathPrefix = classSource.isThrowaway() ? GENERATED_CLASS_PATH_PREFIX.replace("generated", "manual.throwaway.generated") : GENERATED_CLASS_PATH_PREFIX;
+        final String importPathPrefix = classSource.isTemporary() ? TEMPORARY_CLASS_PATH_PREFIX : GENERATED_CLASS_PATH_PREFIX;
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {
             imports.add(UtilStrings.JAVA_BIG_DECIMAL);

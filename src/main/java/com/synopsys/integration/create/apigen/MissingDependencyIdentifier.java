@@ -58,7 +58,7 @@ public class MissingDependencyIdentifier {
         //      if not in classTranslations, add to HashSet (bdCommonDependency)
         final String pathToBlackDuckCommon = "/Users/crowley/Documents/source/blackduck-common/src/main/java/com/synopsys/integration/blackduck/";
         final String pathToAPI = "/Users/crowley/Documents/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/";
-        final String pathToThrowaway = pathToAPI + "manual/throwaway/generated/";
+        final String pathToTemporary = pathToAPI + "manual/temporary/";
 
         getDependencies(pathToBlackDuckCommon, true);
         for (final String bdCommonDependency : bdCommonDependencies) {
@@ -68,13 +68,13 @@ public class MissingDependencyIdentifier {
             final ClassTypeEnum classType = classCategoryData.getType();
             if (!classSource.isGenerated() && !missingClasses.contains(bdCommonDependency) && typeTranslator.getApiGenClassName(bdCommonDependency) == null && !classSource.isManual()) {
                 if (classType.isView()) {
-                    pathToFile = pathToThrowaway + "view/";
+                    pathToFile = pathToTemporary + "view/";
                 } else if (classType.isResponse()) {
-                    pathToFile = pathToThrowaway + "response/";
+                    pathToFile = pathToTemporary + "response/";
                 } else if (classType.isComponent()) {
-                    pathToFile = pathToThrowaway + "component/";
+                    pathToFile = pathToTemporary + "component/";
                 } else {
-                    pathToFile = pathToThrowaway + "enumeration/";
+                    pathToFile = pathToTemporary + "enumeration/";
                 }
 
                 final File dependencyFile = new File(pathToFile);

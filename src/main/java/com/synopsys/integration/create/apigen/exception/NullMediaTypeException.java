@@ -20,30 +20,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.data;
+package com.synopsys.integration.create.apigen.exception;
 
-import org.apache.commons.lang3.StringUtils;
+import com.synopsys.integration.exception.IntegrationException;
 
-public enum ClassSourceEnum {
-    GENERATED,
-    MANUAL,
-    DEPRECATED,
-    TEMPORARY,
-    NULL;
+public class NullMediaTypeException extends IntegrationException {
 
-    public String getFormattedValue() {
-        return StringUtils.capitalize(this.toString().toLowerCase());
-    }
-
-    public boolean isGenerated() {
-        return this.equals(GENERATED);
-    }
-
-    public boolean isManual() {
-        return this.equals(MANUAL);
-    }
-
-    public boolean isTemporary() {
-        return this.equals(TEMPORARY);
+    public NullMediaTypeException(String path) {
+        super(String.format("No media type for path: %s.", path));
     }
 }

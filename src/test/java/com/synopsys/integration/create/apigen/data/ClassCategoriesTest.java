@@ -5,28 +5,30 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
+
 public class ClassCategoriesTest {
 
-    private final ClassCategories classCategories = new ClassCategories();
+    private final ClassCategories classCategories = new ClassCategories(new ClassNameManager());
 
     @Test
     public void computeTypeTest() {
-        assertTrue(classCategories.computeType("ProjectVersionView").isView());
-        assertTrue(classCategories.computeType("ProjectVersionViewV4").isView());
-        assertTrue(classCategories.computeType("PolicyStatusType").isEnum());
-        assertFalse(classCategories.computeType("TypesView").isEnum());
-        assertTrue(classCategories.computeType("CustomFieldTypeView").isResponse());
-        assertTrue(classCategories.computeType("ProjectVersionLicenseView").isView());
-        assertTrue(classCategories.computeType("ProjectVersionLicenseViewV5").isView());
-        assertTrue(classCategories.computeType("BigDecimal").isCommon());
+        assertTrue(classCategories.computeData("ProjectVersionView").getType().isView());
+        assertTrue(classCategories.computeData("ProjectVersionViewV4").getType().isView());
+        assertTrue(classCategories.computeData("PolicyStatusType").getType().isEnum());
+        assertFalse(classCategories.computeData("TypesView").getType().isEnum());
+        assertTrue(classCategories.computeData("CustomFieldTypeView").getType().isResponse());
+        assertTrue(classCategories.computeData("ProjectVersionLicenseView").getType().isView());
+        assertTrue(classCategories.computeData("ProjectVersionLicenseViewV5").getType().isView());
+        assertTrue(classCategories.computeData("BigDecimal").getType().isCommon());
     }
 
     @Test
     public void computeSourceTest() {
-        assertTrue(classCategories.computeSource("ProjectVersionView").isGenerated());
-        assertTrue(classCategories.computeSource("ProjectVersionViewV4").isGenerated());
-        assertFalse(classCategories.computeSource("String").isThrowaway());
-        assertTrue(classCategories.computeSource("VulnerableComponentView").isThrowaway());
-        assertTrue(classCategories.computeSource("BlackDuckResponse").isManual());
+        assertTrue(classCategories.computeData("ProjectVersionView").getSource().isGenerated());
+        assertTrue(classCategories.computeData("ProjectVersionViewV4").getSource().isGenerated());
+        assertFalse(classCategories.computeData("String").getSource().isTemporary());
+        assertTrue(classCategories.computeData("VulnerableComponentView").getSource().isTemporary());
+        assertTrue(classCategories.computeData("BlackDuckResponse").getSource().isManual());
     }
 }

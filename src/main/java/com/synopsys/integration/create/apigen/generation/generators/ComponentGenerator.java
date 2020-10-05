@@ -80,7 +80,7 @@ public class ComponentGenerator extends ClassGenerator {
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassTypeEnum classType = classCategoryData.getType();
         final ClassSourceEnum classSource = classCategoryData.getSource();
-        return classType.isNotCommonTypeOrEnum() && !classSource.isThrowaway() && !classSource.isManual();
+        return classType.isNotCommonTypeOrEnum() && !classSource.isTemporary() && !classSource.isManual();
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ComponentGenerator extends ClassGenerator {
             String swaggerName = typeTranslator.getClassSwaggerName(fieldType);
             if (swaggerName != null) {
                 if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
-                    classCategories.addDeprecatedClass(swaggerName, fieldType, template, input, pathToFiles);
+                    classCategories.addDeprecatedClass(swaggerName, fieldType, template, input, pathToFiles.replace(UtilStrings.GENERATED, "generated.deprecated"), fieldPackage.replace(UtilStrings.GENERATED, "generated.deprecated"));
                 }
             }
             if (typeTranslator.getApiGenClassName(fieldType) != null) {

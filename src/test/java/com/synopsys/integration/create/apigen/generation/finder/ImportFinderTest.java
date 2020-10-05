@@ -17,7 +17,7 @@ import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 public class ImportFinderTest {
 
-    private final ImportFinder importFinder = new ImportFinder(new ClassCategories(), new LinkResponseDefinitions(), new NameAndPathManager(), new TypeTranslator());
+    private final ImportFinder importFinder = new ImportFinder(new ClassCategories(new ClassNameManager()), new LinkResponseDefinitions(), new NameAndPathManager(), new TypeTranslator(), new ClassNameManager());
 
     @Test
     public void addFieldImportsTest() {

@@ -105,11 +105,11 @@ public class LinkResponseDefinitions {
         //projectVersionViewDefinitions.put("riskProfile", pvvRiskProfileDefinition);
         final LinkResponseDefinitionItem pvvComponentsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionComponentView");
         projectVersionViewDefinitions.put("components", pvvComponentsDefinition);
-        final LinkResponseDefinitionItem pvvVulnerableComponentsDefinition = new LinkResponseDefinitionItem(true, "VulnerableComponentView"); // *
+        final LinkResponseDefinitionItem pvvVulnerableComponentsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionVulnerableBomComponentsView");
         projectVersionViewDefinitions.put("vulnerable-components", pvvVulnerableComponentsDefinition);
         final LinkResponseDefinitionItem pvvProjectDefinition = new LinkResponseDefinitionItem(false, "ProjectView");
         projectVersionViewDefinitions.put("project", pvvProjectDefinition);
-        final LinkResponseDefinitionItem pvvPolicyStatusDefinition = new LinkResponseDefinitionItem(false, "ProjectVersionPolicyStatusView"); // *
+        final LinkResponseDefinitionItem pvvPolicyStatusDefinition = new LinkResponseDefinitionItem(false, "ProjectVersionPolicyStatusView");
         projectVersionViewDefinitions.put("policy-status", pvvPolicyStatusDefinition);
         final LinkResponseDefinitionItem pvvCodeLocationsDefinition = new LinkResponseDefinitionItem(true, "CodeLocationView");
         projectVersionViewDefinitions.put("codelocations", pvvCodeLocationsDefinition);

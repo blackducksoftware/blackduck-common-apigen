@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
 import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -128,10 +129,13 @@ public class MediaTypePathManager {
 
     }
 
-    public void addMapping(ResponseDefinition responseDefinition) {
+    public void addMapping(ResponseDefinition responseDefinition) throws NullMediaTypeException {
         String pathPattern = createPathRegex(responseDefinition.getResponseSpecificationPath());
         if (StringUtils.isNotBlank(pathPattern)) {
             String mediaType = responseDefinition.getMediaType();
+            if (mediaType == null) {
+                throw new NullMediaTypeException(pathPattern);
+            }
             String pathRegex = "/api/" + pathPattern;
             addMapping(pathRegex, mediaType);
         }
@@ -149,10 +153,10 @@ public class MediaTypePathManager {
     }
 
     public List<MediaTypeDefinition> getMediaTypeMappings() {
-        List<MediaTypeDefinition> mediatTypes = mediaTypeMappings.values().stream()
+        List<MediaTypeDefinition> mediaTypes = mediaTypeMappings.values().stream()
                                                     .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
                                                     .collect(Collectors.toList());
-        return mediatTypes;
+        return mediaTypes;
     }
 
     public MediaTypeData getMediaTypeData() {
