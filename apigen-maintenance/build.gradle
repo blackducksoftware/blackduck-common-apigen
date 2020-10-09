@@ -1,0 +1,13 @@
+buildscript {
+    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-repositories.gradle', to: buildscript
+    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-dependencies.gradle', to: buildscript
+}
+
+version = 'dummy'
+
+apply plugin: 'com.synopsys.integration.simple'
+
+dependencies {
+    implementation 'com.synopsys.integration:integration-common:22.2.0'
+    implementation "org.slf4j:slf4j-api:1.7.30"
+}
