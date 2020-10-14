@@ -23,15 +23,20 @@
 package com.synopsys.integrations.apigen.maintenance;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 public class MaintenanceRunner {
 
     public static void main(String[] args) throws IOException {
         IntegrationsPortfolioCreator creator = new IntegrationsPortfolioCreator();
-        String pathToPortfolio = creator.createOrUpdateIntegrationsPortfolio();
+        //String pathToPortfolio = creator.createOrUpdateIntegrationsPortfolio();
 
         IntegrationsPortfolioSearcher searcher = new IntegrationsPortfolioSearcher();
-        searcher.findUsersOfThrowawayClasses(pathToPortfolio);
-        searcher.findUsersOfTemporaryClasses(pathToPortfolio);
+        //searcher.findUsersOfThrowawayClasses(pathToPortfolio);
+        //searcher.findUsersOfTemporaryClasses(pathToPortfolio);
+
+        GeneratedTemporaryClassIdentifier generatedTemporaryClassIdentifier = new GeneratedTemporaryClassIdentifier();
+        generatedTemporaryClassIdentifier.identifyGeneratedTemporaryClasses();
     }
 }

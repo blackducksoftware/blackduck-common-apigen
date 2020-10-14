@@ -35,6 +35,7 @@ public class IntegrationsPortfolioSearcher {
 
     private static final String THROWAWAY_CLASS_USAGE_TOKEN = "import .*throwaway.*";
     private static final String TEMPORARY_CLASS_USAGE_TOKEN = "import .*temporary.*";
+    private static final String DEPRECATED_CLASS_USAGE_TOKEN = "import .*deprecated.*";
     private static final String CLASS_USAGE_OUTPUT_PATH = "CLASS_USAGE_OUTPUT_PATH";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -49,13 +50,18 @@ public class IntegrationsPortfolioSearcher {
         writeUsageToOutputFile(findings, "temporary-usage.txt");
     }
 
+    public void findUsersOfDeprecatedClasses(String pathToSource) throws IOException {
+        Process findings = searchForToken(DEPRECATED_CLASS_USAGE_TOKEN, pathToSource);
+        writeUsageToOutputFile(findings, "deprecated-usage.txt");
+    }
+
     public void findUsersOfSpecificClass(String className, String pathToSource) throws IOException {
         searchForToken(className, pathToSource);
     }
 
     private Process searchForToken(String token, String pathToSource) throws IOException {
         Runtime runtime = Runtime.getRuntime();
-        String grepCommand = String.format("grep -r -l \"%s\" %s", token, pathToSource);
+        String grepCommand = String.format("grep -r -l \"%s %s\"", token, pathToSource);
         return runtime.exec(grepCommand);
     }
 
