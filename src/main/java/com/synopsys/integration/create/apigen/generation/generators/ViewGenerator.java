@@ -83,7 +83,7 @@ public class ViewGenerator {
         return (longMediaTypes.contains(response.getMediaType()));
     }
 
-    public void generateClasses(final ResponseDefinition response, final Template template) throws Exception {
+    public void generateClasses(final ResponseDefinition response, final Template template) {
         Set<String> imports = new HashSet<>();
         importFinder.addFieldImports(imports, response.getFields());
         final LinksAndImportsData helper = importFinder.getLinkImports(imports, response);

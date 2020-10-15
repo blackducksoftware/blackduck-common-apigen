@@ -78,9 +78,6 @@ public class ImportFinder {
     }
 
     public void addFieldImports(final Set<String> imports, String fieldType, final boolean isOptional) {
-        if (fieldType.contains(UtilStrings.LIST)) {
-            imports.add(UtilStrings.JAVA_LIST.replace("<", ""));
-        }
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
 
@@ -102,7 +99,8 @@ public class ImportFinder {
         }
 
         if (isOptional) {
-            imports.add("java.util.Optional");
+            // If fields that have optional=true in the specs are actually optional, we could wrap them in Optionals
+            //imports.add("java.util.Optional");
         }
 
         final String importPathPrefix = classSource.isTemporary() ? TEMPORARY_CLASS_PATH_PREFIX : GENERATED_CLASS_PATH_PREFIX;

@@ -24,12 +24,12 @@ package com.synopsys.integration.create.apigen.data;
 
 public class FieldTranslation {
     private String path;
-    private String swaggerType;
+    private String trueType;
     private String apiSpecsType;
 
-    public FieldTranslation(final String path, final String swaggerType, final String apiSpecsType) {
+    public FieldTranslation(final String path, final String trueType, final String apiSpecsType) {
         this.path = path;
-        this.swaggerType = swaggerType;
+        this.trueType = trueType;
         this.apiSpecsType = apiSpecsType;
     }
 
@@ -42,11 +42,11 @@ public class FieldTranslation {
     }
 
     public String getSwaggerName() {
-        return swaggerType;
+        return trueType;
     }
 
     public void setSwaggerName(final String swaggerType) {
-        this.swaggerType = swaggerType;
+        this.trueType = swaggerType;
     }
 
     public String getApiSpecsName() {

@@ -28,7 +28,7 @@ public class ClassCategoriesTest {
         assertTrue(classCategories.computeData("ProjectVersionView").getSource().isGenerated());
         assertTrue(classCategories.computeData("ProjectVersionViewV4").getSource().isGenerated());
         assertFalse(classCategories.computeData("String").getSource().isTemporary());
-        assertTrue(classCategories.computeData("VulnerableComponentView").getSource().isTemporary());
+        assertTrue(classCategories.computeData("VulnerableComponentView").getSource().isDeprecated());
         assertTrue(classCategories.computeData("BlackDuckResponse").getSource().isManual());
     }
 }

@@ -40,7 +40,6 @@ public class NameAndPathManager {
     private final Set<String> apiDiscoveryDataPaths;
     private final Set<String> nonLinkClassNames;
     private final Set<String> linkClassNames;
-    private final List<String> randomLinkClassNames;
     private final Map<String, String> nullLinkResultClasses;
 
     public NameAndPathManager() {
@@ -48,7 +47,6 @@ public class NameAndPathManager {
         apiDiscoveryDataPaths = new HashSet<>();
         nonLinkClassNames = new HashSet<>();
         linkClassNames = new HashSet<>();
-        randomLinkClassNames = new ArrayList<>();
         nullLinkResultClasses = new HashMap<>();
     }
 
@@ -80,14 +78,6 @@ public class NameAndPathManager {
 
     public void addLinkClassName(final String className) {
         linkClassNames.add(className);
-    }
-
-    public List<String> getRandomLinkClassNames() {
-        return randomLinkClassNames;
-    }
-
-    public void addRandomLinkClassName(final String randomLinkClassName) {
-        randomLinkClassNames.add(randomLinkClassName);
     }
 
     public Map<String, String> getNullLinkResultClasses() {

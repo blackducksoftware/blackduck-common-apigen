@@ -68,7 +68,7 @@ public class EnumGenerator extends ClassGenerator {
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
-        return (classType.isEnum() && field.getAllowedValues().size() != 0 && !classSource.equals(ClassSourceEnum.TEMPORARY));
+        return (classType.isEnum() && !field.getAllowedValues().isEmpty() && !classSource.equals(ClassSourceEnum.TEMPORARY));
     }
 
     @Override
@@ -89,7 +89,9 @@ public class EnumGenerator extends ClassGenerator {
         generatorDataManager.addFileData(new FileGenerationData(classType, template, input, filePathUtil.getOutputPathToEnumFiles()));
 
         for (final FieldDefinition subField : field.getSubFields()) {
-            generateClass(subField, responseMediaType, template);
+            if (isApplicable(subField)) {
+                generateClass(subField, responseMediaType, template);
+            }
         }
     }
 

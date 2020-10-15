@@ -4,13 +4,6 @@
   "mediaType": "application/vnd.blackducksoftware.status-4+json",
   "fields": [
     {
-      "path": "users",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "apiDocumentation",
       "type": "String",
       "optional": false,
@@ -32,6 +25,90 @@
       "fields": []
     },
     {
+      "path": "policyRules",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "notifications",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "loginAnnouncementManagement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "userStatusFilters",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "bomImport",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "vulnerabilityRemidiationReports",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "footerAnnouncementManagement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "users",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "dormantUsers",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "welcomeAnnouncementManagement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "footerAnnouncement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "notificationTypeFilters",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "customFieldObjects",
       "type": "String",
       "optional": true,
@@ -46,13 +123,6 @@
       "fields": []
     },
     {
-      "path": "notificationTypeFilters",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "components",
       "type": "String",
       "optional": false,
@@ -60,7 +130,14 @@
       "fields": []
     },
     {
-      "path": "policyRules",
+      "path": "loginAnnouncement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "bannerAnnouncementManagement",
       "type": "String",
       "optional": true,
       "allowedValues": [],
@@ -74,16 +151,9 @@
       "fields": []
     },
     {
-      "path": "notifications",
+      "path": "bannerAnnouncement",
       "type": "String",
       "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "userStatusFilters",
-      "type": "String",
-      "optional": false,
       "allowedValues": [],
       "fields": []
     },
@@ -116,13 +186,6 @@
       "fields": []
     },
     {
-      "path": "bomImport",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "customFieldTypes",
       "type": "String",
       "optional": true,
@@ -130,11 +193,291 @@
       "fields": []
     },
     {
-      "path": "vulnerabilityRemidiationReports",
+      "path": "welcomeAnnouncement",
       "type": "String",
       "optional": true,
       "allowedValues": [],
       "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "announcement/banner/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "AnnouncementBannerViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "announcement/banner/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "BannerAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "announcement/footer/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "AnnouncementFooterViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "announcement/footer/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "FooterAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "announcement/login/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "AnnouncementLoginViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "announcement/login/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "LoginAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "announcement/welcome/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "AnnouncementWelcomeViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "announcement/welcome/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "WelcomeAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "message",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "bom-import/graphId/component-import-events/GET/bds_scan_4_json/response-specification.json",
+  "name": "GraphComponentImportEventsViewV4",
+  "mediaType": "application/vnd.blackducksoftware.scan-4+json",
+  "fields": [
+    {
+      "path": "event",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "protexLicenseName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentVersionName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "importComponentName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "importComponentVersionName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "externalId",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "failureReason",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "bom-import/graphId/component-import-events-count/GET/bds_scan_4_json/response-specification.json",
+  "name": "GraphComponentImportEventsCountViewV4",
+  "mediaType": "application/vnd.blackducksoftware.scan-4+json",
+  "fields": [
+    {
+      "path": "counts",
+      "type": "java.util.List\u003cGraphComponentImportEventsCountCountsViewV4\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "event",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "count",
+          "type": "BigDecimal",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
     }
   ],
   "links": [],
@@ -190,11 +533,161 @@
   ],
   "links": [
     {
+      "rel": "scan-data",
+      "optional": true
+    },
+    {
+      "rel": "components",
+      "optional": true
+    },
+    {
       "rel": "scans",
+      "optional": false
+    },
+    {
+      "rel": "latest-scan",
       "optional": false
     }
   ],
   "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "codelocations/codeLocationId/latest-scan-summary/GET/bds_scan_4_json/response-specification.json",
+  "name": "CodeLocationLatestScanSummaryViewV4",
+  "mediaType": "application/vnd.blackducksoftware.scan-4+json",
+  "fields": [
+    {
+      "path": "status",
+      "type": "CodeLocationLatestScanSummaryStatusType",
+      "optional": false,
+      "allowedValues": [
+        "UNSTARTED",
+        "SCANNING",
+        "SAVING_SCAN_DATA",
+        "SCAN_DATA_SAVE_COMPLETE",
+        "REQUESTED_MATCH_JOB",
+        "MATCHING",
+        "BOM_VERSION_CHECK",
+        "BUILDING_BOM",
+        "COMPLETE",
+        "CANCELLED",
+        "CLONED",
+        "SKIPPED",
+        "ERROR_SCANNING",
+        "ERROR_SAVING_SCAN_DATA",
+        "ERROR_MATCHING",
+        "ERROR_BUILDING_BOM",
+        "ERROR"
+      ],
+      "fields": []
+    },
+    {
+      "path": "baseDirectory",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchCount",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "statusMessage",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "scanSize",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "fileCount",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "hostName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "directoryCount",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "scanType",
+      "type": "CodeLocationLatestScanSummaryScanTypeType",
+      "optional": false,
+      "allowedValues": [
+        "BDIO",
+        "FS",
+        "SNIPPET",
+        "BINARY",
+        "STRING_SEARCH",
+        "VULN_IMPACT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "createdByUserName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "serverVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [
+    {
+      "rel": "codelocation",
+      "optional": false
+    },
+    {
+      "rel": "component-import-events",
+      "optional": true
+    },
+    {
+      "rel": "scan-bom-entries",
+      "optional": false
+    }
+  ],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "components/GET/bds_component_detail_4_json/response-specification.json",
@@ -268,6 +761,13 @@
       "fields": []
     },
     {
+      "path": "migrated",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "url",
       "type": "String",
       "optional": true,
@@ -301,6 +801,28 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
+    },
+    {
+      "path": "logo",
+      "type": "ComponentLogoViewV4",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "smallLogoUrl",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "mediumLogoUrl",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
     },
     {
       "path": "source",
@@ -439,7 +961,7 @@
 },
 {
   "responseSpecificationPath": "components/componentId/tags/tagId/GET/bds_component_detail_5_json/response-specification.json",
-  "name": "TagViewV5",
+  "name": "ComponentTagViewV5",
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
@@ -458,6 +980,13 @@
   "name": "ComponentVersionViewV4",
   "mediaType": "application/vnd.blackducksoftware.component-detail-4+json",
   "fields": [
+    {
+      "path": "migrated",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
     {
       "path": "additionalHomepages",
       "type": "java.util.List\u003cString\u003e",
@@ -672,6 +1201,13 @@
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
+      "path": "migrated",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "additionalHomepages",
       "type": "java.util.List\u003cString\u003e",
       "optional": false,
@@ -690,41 +1226,6 @@
         "CONDITIONALLY_APPROVED",
         "REJECTED",
         "DEPRECATED"
-      ],
-      "fields": []
-    },
-    {
-      "path": "releasedOn",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "notes",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "type",
-      "type": "ComponentVersionTypeType",
-      "optional": false,
-      "allowedValues": [
-        "PROJECT",
-        "COMPONENT"
-      ],
-      "fields": []
-    },
-    {
-      "path": "source",
-      "type": "ComponentSourceType",
-      "optional": false,
-      "allowedValues": [
-        "CUSTOM",
-        "KB",
-        "KB_MODIFIED"
       ],
       "fields": []
     },
@@ -770,6 +1271,28 @@
               "optional": false,
               "allowedValues": [],
               "fields": []
+            },
+            {
+              "path": "licenseFamilySummary",
+              "type": "ProjectVersionLicenseLicensesLicenseFamilySummaryView",
+              "optional": true,
+              "allowedValues": [],
+              "fields": [
+                {
+                  "path": "name",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                },
+                {
+                  "path": "href",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                }
+              ]
             },
             {
               "path": "license",
@@ -837,6 +1360,41 @@
       ]
     },
     {
+      "path": "releasedOn",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "notes",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "type",
+      "type": "ComponentVersionTypeType",
+      "optional": false,
+      "allowedValues": [
+        "PROJECT",
+        "COMPONENT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "source",
+      "type": "ComponentSourceType",
+      "optional": false,
+      "allowedValues": [
+        "CUSTOM",
+        "KB",
+        "KB_MODIFIED"
+      ],
+      "fields": []
+    },
+    {
       "path": "versionName",
       "type": "String",
       "optional": false,
@@ -868,13 +1426,17 @@
     {
       "rel": "custom-fields",
       "optional": true
+    },
+    {
+      "rel": "upgrade-guidance",
+      "optional": true
     }
   ],
   "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "components/componentId/versions/componentVersionId/custom-fields/customFieldId/GET/bds_component_detail_5_json/response-specification.json",
-  "name": "CustomFieldViewV5",
+  "name": "ComponentVersionCustomFieldViewV5",
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
@@ -1011,7 +1573,7 @@
 },
 {
   "responseSpecificationPath": "components/componentId/versions/componentVersionId/licenses/licenseId/GET/bds_component_detail_5_json/response-specification.json",
-  "name": "LicenseViewV5",
+  "name": "ComponentVersionLicenseViewV5",
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
@@ -1037,28 +1599,6 @@
       "fields": []
     },
     {
-      "path": "licenseFamily",
-      "type": "LicenseLicenseFamilyViewV5",
-      "optional": false,
-      "allowedValues": [],
-      "fields": [
-        {
-          "path": "href",
-          "type": "String",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "name",
-          "type": "String",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        }
-      ]
-    },
-    {
       "path": "notes",
       "type": "String",
       "optional": true,
@@ -1082,6 +1622,28 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
+    },
+    {
+      "path": "licenseFamily",
+      "type": "ComponentVersionLicenseLicenseFamilyViewV5",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "href",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
     }
   ],
   "links": [],
@@ -1105,13 +1667,379 @@
 },
 {
   "responseSpecificationPath": "components/componentId/versions/componentVersionId/licenses/licenseId/text/GET/bds_component_detail_5_json/response-specification.json",
-  "name": "LicenseTextViewV5",
+  "name": "ComponentVersionLicenseLicenseTextViewV5",
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
       "path": "text",
       "type": "String",
       "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origin/originId/file-copyrights/GET/bds_component_detail_4_json/response-specification.json",
+  "name": "OriginFileCopyrightsViewV4",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-4+json",
+  "fields": [
+    {
+      "path": "startByte",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchDataExtra",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "downloadSha1",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endByte",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchData",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "archivePath",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "path",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origin/originId/file-copyrights/GET/bds_component_detail_5_json/response-specification.json",
+  "name": "ComponentVersionOriginOriginFileCopyrightsViewV5",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
+  "fields": [
+    {
+      "path": "startByte",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchDataExtra",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "downloadSha1",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endByte",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchData",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "archivePath",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "path",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origin/originId/file-licenses/licenseId/GET/bds_component_detail_4_json/response-specification.json",
+  "name": "FileLicensesLicenseViewV4",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-4+json",
+  "fields": [
+    {
+      "path": "offsets",
+      "type": "java.util.List\u003cFileLicensesLicenseItemsOffsetsViewV4\u003e",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "startByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "endByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "downloadSha1",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "archivePath",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "path",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseGroupName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origin/originId/file-licenses/licenseId/GET/bds_component_detail_5_json/response-specification.json",
+  "name": "ComponentVersionOriginFileLicensesFileLicensesLicenseViewV5",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
+  "fields": [
+    {
+      "path": "offsets",
+      "type": "java.util.List\u003cFileLicensesLicenseItemsOffsetsViewV4\u003e",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "startByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "endByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "downloadSha1",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "archivePath",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "path",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseGroupName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origin/originId/file-licenses-fuzzy/GET/bds_component_detail_4_json/response-specification.json",
+  "name": "OriginFileLicensesFuzzyViewV4",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-4+json",
+  "fields": [
+    {
+      "path": "offsets",
+      "type": "java.util.List\u003cFileLicensesLicenseItemsOffsetsViewV4\u003e",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "startByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "endByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "downloadSha1",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "archivePath",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "path",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseGroupName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origin/originId/file-licenses-fuzzy/GET/bds_component_detail_5_json/response-specification.json",
+  "name": "ComponentVersionOriginOriginFileLicensesFuzzyViewV5",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
+  "fields": [
+    {
+      "path": "offsets",
+      "type": "java.util.List\u003cFileLicensesLicenseItemsOffsetsViewV4\u003e",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "startByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "endByte",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "downloadSha1",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "archivePath",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "path",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseGroupName",
+      "type": "String",
+      "optional": true,
       "allowedValues": [],
       "fields": []
     }
@@ -1226,7 +2154,7 @@
 },
 {
   "responseSpecificationPath": "components/componentId/versions/componentVersionId/origins/originId/GET/bds_component_detail_5_json/response-specification.json",
-  "name": "OriginViewV5",
+  "name": "ComponentVersionOriginViewV5",
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
@@ -1269,6 +2197,13 @@
       "fields": []
     },
     {
+      "path": "originUrl",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "source",
       "type": "ComponentSourceType",
       "optional": false,
@@ -1287,6 +2222,13 @@
       "fields": []
     },
     {
+      "path": "externalNamespace",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "versionName",
       "type": "String",
       "optional": false,
@@ -1297,6 +2239,13 @@
       "path": "releasedOn",
       "type": "java.util.Date",
       "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "externalId",
+      "type": "String",
+      "optional": true,
       "allowedValues": [],
       "fields": []
     }
@@ -1328,6 +2277,243 @@
     }
   ],
   "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/origins/originId/upgrade-guidance/GET/bds_component_detail_5_json/response-specification.json",
+  "name": "OriginUpgradeGuidanceViewV5",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
+  "fields": [
+    {
+      "path": "origin",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "component",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "version",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "shortTerm",
+      "type": "OriginUpgradeGuidanceLongTermViewV5",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "origin",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "version",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "versionName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityRisk",
+          "type": "OriginUpgradeGuidanceLongTermVulnerabilityRiskViewV5",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "medium",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "high",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "critical",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "low",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "path": "originExternalNamespace",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originExternalId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "originExternalNamespace",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "longTerm",
+      "type": "OriginUpgradeGuidanceLongTermViewV5",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "origin",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "version",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "versionName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityRisk",
+          "type": "OriginUpgradeGuidanceLongTermVulnerabilityRiskViewV5",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "medium",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "high",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "critical",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "low",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "path": "originExternalNamespace",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originExternalId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "versionName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originExternalId",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "components/componentId/versions/componentVersionId/remediating/GET/bds_component_detail_4_json/response-specification.json",
@@ -1796,6 +2982,243 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "components/componentId/versions/componentVersionId/upgrade-guidance/GET/bds_component_detail_5_json/response-specification.json",
+  "name": "ComponentVersionUpgradeGuidanceViewV5",
+  "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
+  "fields": [
+    {
+      "path": "origin",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "component",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "version",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "shortTerm",
+      "type": "OriginUpgradeGuidanceLongTermViewV5",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "origin",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "version",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "versionName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityRisk",
+          "type": "OriginUpgradeGuidanceLongTermVulnerabilityRiskViewV5",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "medium",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "high",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "critical",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "low",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "path": "originExternalNamespace",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originExternalId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "originExternalNamespace",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "longTerm",
+      "type": "OriginUpgradeGuidanceLongTermViewV5",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "origin",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "version",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "versionName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityRisk",
+          "type": "OriginUpgradeGuidanceLongTermVulnerabilityRiskViewV5",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "medium",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "high",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "critical",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "low",
+              "type": "BigDecimal",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "path": "originExternalNamespace",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "originExternalId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "versionName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originExternalId",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "current-user/GET/bds_user_4_json/response-specification.json",
   "name": "CurrentUserViewV4",
   "mediaType": "application/vnd.blackducksoftware.user-4+json",
@@ -1859,6 +3282,66 @@
   ],
   "links": [],
   "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "current-user/tokens/GET/bds_user_4_json/response-specification.json",
+  "name": "CurrentUserTokensViewV4",
+  "mediaType": "application/vnd.blackducksoftware.user-4+json",
+  "fields": [
+    {
+      "path": "scopes",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "description",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "name",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "current-user/tokens/tokenId/GET/bds_user_4_json/response-specification.json",
+  "name": "TokensTokenViewV4",
+  "mediaType": "application/vnd.blackducksoftware.user-4+json",
+  "fields": [
+    {
+      "path": "scopes",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "description",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "name",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "current-version/GET/bds_status_4_json/response-specification.json",
@@ -2112,6 +3595,38 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "health-checks/liveness/GET/bds_status_4_json/response-specification.json",
+  "name": "HealthChecksLivenessViewV4",
+  "mediaType": "application/vnd.blackducksoftware.status-4+json",
+  "fields": [
+    {
+      "path": "healthy",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "health-checks/readiness/GET/bds_status_4_json/response-specification.json",
+  "name": "HealthChecksReadinessViewV4",
+  "mediaType": "application/vnd.blackducksoftware.status-4+json",
+  "fields": [
+    {
+      "path": "healthy",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "jobs/jobId/GET/bds_status_4_json/response-specification.json",
   "name": "JobViewV4",
   "mediaType": "application/vnd.blackducksoftware.status-4+json",
@@ -2189,6 +3704,418 @@
     }
   ],
   "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "journal/projects/projectId/GET/bds_journal_4_json/response-specification.json",
+  "name": "ProjectViewV4",
+  "mediaType": "application/vnd.blackducksoftware.journal-4+json",
+  "fields": [
+    {
+      "path": "eventId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "action",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originalData",
+      "type": "ProjectItemsOriginalDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "vulnerabilityId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilitySource",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationStatus",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "comment",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentVersion",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "triggerData",
+      "type": "ProjectItemsTriggerDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "type",
+          "type": "ProjectItemsTriggerDataTypeType",
+          "optional": false,
+          "allowedValues": [
+            "USER",
+            "POLICY",
+            "SCAN"
+          ],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "link",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "objectData",
+      "type": "ProjectItemsObjectDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "type",
+          "type": "ProjectItemsObjectDataTypeType",
+          "optional": false,
+          "allowedValues": [
+            "COMPONENT",
+            "KB_COMPONENT",
+            "KB_COMPONENT_VERSION",
+            "POLICY",
+            "USER",
+            "USER_GROUP",
+            "PROJECT",
+            "SCAN",
+            "SNIPPET",
+            "SOURCE_FILE",
+            "VERSION",
+            "VULNERABILITY",
+            "LICENSE_TERM"
+          ],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "link",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "timestamp",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "currentData",
+      "type": "ProjectItemsOriginalDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "vulnerabilityId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilitySource",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationStatus",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "comment",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentVersion",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "journal/projects/projectId/versions/projectVersionId/GET/bds_journal_4_json/response-specification.json",
+  "name": "ProjectVersionViewV4",
+  "mediaType": "application/vnd.blackducksoftware.journal-4+json",
+  "fields": [
+    {
+      "path": "eventId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "action",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originalData",
+      "type": "ProjectItemsOriginalDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "vulnerabilityId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilitySource",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationStatus",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "comment",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentVersion",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "triggerData",
+      "type": "ProjectItemsTriggerDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "type",
+          "type": "ProjectItemsTriggerDataTypeType",
+          "optional": false,
+          "allowedValues": [
+            "USER",
+            "POLICY",
+            "SCAN"
+          ],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "link",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "objectData",
+      "type": "ProjectItemsObjectDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "type",
+          "type": "ProjectItemsObjectDataTypeType",
+          "optional": false,
+          "allowedValues": [
+            "COMPONENT",
+            "KB_COMPONENT",
+            "KB_COMPONENT_VERSION",
+            "POLICY",
+            "USER",
+            "USER_GROUP",
+            "PROJECT",
+            "SCAN",
+            "SNIPPET",
+            "SOURCE_FILE",
+            "VERSION",
+            "VULNERABILITY",
+            "LICENSE_TERM"
+          ],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "link",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "timestamp",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "currentData",
+      "type": "ProjectItemsOriginalDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "vulnerabilityId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilitySource",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationStatus",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "comment",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "componentVersion",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "license-families/licenseFamilyId/GET/bds_component_detail_5_json/response-specification.json",
@@ -2366,8 +4293,8 @@
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
-      "path": "updatedBy",
-      "type": "Object",
+      "path": "createdBy",
+      "type": "LicenseFamilyUpdatedByView",
       "optional": false,
       "allowedValues": [],
       "fields": []
@@ -2394,8 +4321,8 @@
       "fields": []
     },
     {
-      "path": "createdBy",
-      "type": "Object",
+      "path": "updatedBy",
+      "type": "LicenseFamilyUpdatedByView",
       "optional": false,
       "allowedValues": [],
       "fields": []
@@ -2452,28 +4379,6 @@
       "fields": []
     },
     {
-      "path": "category",
-      "type": "LicenseLicenseFamilyViewV5",
-      "optional": false,
-      "allowedValues": [],
-      "fields": [
-        {
-          "path": "href",
-          "type": "String",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "name",
-          "type": "String",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        }
-      ]
-    },
-    {
       "path": "name",
       "type": "String",
       "optional": false,
@@ -2495,6 +4400,28 @@
       "fields": []
     },
     {
+      "path": "category",
+      "type": "ComponentVersionLicenseLicenseFamilyViewV5",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "href",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
       "path": "description",
       "type": "String",
       "optional": false,
@@ -2514,7 +4441,7 @@
 },
 {
   "responseSpecificationPath": "license-terms/licenseTermId/licenses/licenseId/GET/bds_component_detail_5_json/response-specification.json",
-  "name": "LicenseViewV5",
+  "name": "LicenseTermLicenseViewV5",
   "mediaType": "application/vnd.blackducksoftware.component-detail-5+json",
   "fields": [
     {
@@ -2755,28 +4682,6 @@
       "fields": []
     },
     {
-      "path": "licenseFamily",
-      "type": "LicenseLicenseFamilyViewV5",
-      "optional": false,
-      "allowedValues": [],
-      "fields": [
-        {
-          "path": "href",
-          "type": "String",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "name",
-          "type": "String",
-          "optional": false,
-          "allowedValues": [],
-          "fields": []
-        }
-      ]
-    },
-    {
       "path": "licenseSource",
       "type": "LicenseLicenseSourceType",
       "optional": true,
@@ -2915,6 +4820,28 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
+    },
+    {
+      "path": "licenseFamily",
+      "type": "ComponentVersionLicenseLicenseFamilyViewV5",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "href",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "name",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
     },
     {
       "path": "ownership",
@@ -3183,6 +5110,596 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "manage-announcement/banner/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "ManageAnnouncementBannerViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "manage-announcement/banner/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "BannerAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "manage-announcement/footer/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "ManageAnnouncementFooterViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "manage-announcement/footer/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "FooterAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "manage-announcement/login/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "ManageAnnouncementLoginViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "manage-announcement/login/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "LoginAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "manage-announcement/welcome/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "ManageAnnouncementWelcomeViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "canSuppress",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "manage-announcement/welcome/announcementId/GET/bds_system_announcement_1_json/response-specification.json",
+  "name": "WelcomeAnnouncementViewV1",
+  "mediaType": "application/vnd.blackducksoftware.system-announcement-1+json",
+  "fields": [
+    {
+      "path": "startDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "endDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "message",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "canSuppress",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "enabled",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
   "responseSpecificationPath": "policy-rules/policyRuleId/GET/bds_policy_4_json/response-specification.json",
   "name": "PolicyRuleViewV4",
   "mediaType": "application/vnd.blackducksoftware.policy-4+json",
@@ -3281,6 +5798,19 @@
         "MAJOR",
         "CRITICAL",
         "BLOCKER"
+      ],
+      "fields": []
+    },
+    {
+      "path": "category",
+      "type": "PolicyRuleCategoryType",
+      "optional": false,
+      "allowedValues": [
+        "UNCATEGORIZED",
+        "COMPONENT",
+        "LICENSE",
+        "OPERATIONAL",
+        "SECURITY"
       ],
       "fields": []
     }
@@ -3389,6 +5919,19 @@
         "BLOCKER"
       ],
       "fields": []
+    },
+    {
+      "path": "category",
+      "type": "PolicyRuleCategoryType",
+      "optional": false,
+      "allowedValues": [
+        "UNCATEGORIZED",
+        "COMPONENT",
+        "LICENSE",
+        "OPERATIONAL",
+        "SECURITY"
+      ],
+      "fields": []
     }
   ],
   "links": [],
@@ -3463,6 +6006,13 @@
       "fields": []
     },
     {
+      "path": "snippetAdjustmentApplied",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "customSignatureDepth",
       "type": "BigDecimal",
       "optional": true,
@@ -3497,7 +6047,8 @@
       "allowedValues": [
         "COMPONENT_DATA",
         "VULN_DATA",
-        "LICENSE_TERM_FULFILLMENT"
+        "LICENSE_TERM_FULFILLMENT",
+        "CUSTOM_FIELD_DATA"
       ],
       "fields": []
     }
@@ -3552,7 +6103,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/custom-fields/customFieldId/GET/bds_project_detail_5_json/response-specification.json",
-  "name": "CustomFieldViewV5",
+  "name": "ProjectCustomFieldViewV5",
   "mediaType": "application/vnd.blackducksoftware.project-detail-5+json",
   "fields": [
     {
@@ -3615,8 +6166,24 @@
   "hasMultipleResults": true
 },
 {
+  "responseSpecificationPath": "projects/projectId/project-mappings/projectMappingId/GET/bds_project_detail_4_json/response-specification.json",
+  "name": "ProjectMappingsProjectMappingViewV4",
+  "mediaType": "application/vnd.blackducksoftware.project-detail-4+json",
+  "fields": [
+    {
+      "path": "applicationId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": true
+},
+{
   "responseSpecificationPath": "projects/projectId/tags/tagId/GET/bds_project_detail_4_json/response-specification.json",
-  "name": "TagViewV4",
+  "name": "ProjectTagViewV4",
   "mediaType": "application/vnd.blackducksoftware.project-detail-4+json",
   "fields": [
     {
@@ -3632,7 +6199,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/tags/tagId/GET/bds_project_detail_5_json/response-specification.json",
-  "name": "TagViewV5",
+  "name": "ProjectTagViewV5",
   "mediaType": "application/vnd.blackducksoftware.project-detail-5+json",
   "fields": [
     {
@@ -3974,15 +6541,19 @@
       "optional": true
     },
     {
+      "rel": "version-risk-profile",
+      "optional": true
+    },
+    {
       "rel": "hierarchical-components",
       "optional": true
     },
     {
-      "rel": "attachments",
+      "rel": "bom-status",
       "optional": true
     },
     {
-      "rel": "bom-status",
+      "rel": "origin-risk-profile",
       "optional": true
     },
     {
@@ -4077,6 +6648,25 @@
       "fields": []
     },
     {
+      "path": "releasedOn",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "distribution",
+      "type": "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType",
+      "optional": false,
+      "allowedValues": [
+        "EXTERNAL",
+        "SAAS",
+        "INTERNAL",
+        "OPENSOURCE"
+      ],
+      "fields": []
+    },
+    {
       "path": "license",
       "type": "ProjectVersionLicenseViewV5",
       "optional": true,
@@ -4093,7 +6683,10 @@
           "path": "type",
           "type": "ProjectVersionLicenseTypeType",
           "optional": true,
-          "allowedValues": [],
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
           "fields": []
         },
         {
@@ -4117,6 +6710,28 @@
               "fields": []
             },
             {
+              "path": "licenseFamilySummary",
+              "type": "ProjectVersionLicenseLicensesLicenseFamilySummaryView",
+              "optional": true,
+              "allowedValues": [],
+              "fields": [
+                {
+                  "path": "name",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                },
+                {
+                  "path": "href",
+                  "type": "String",
+                  "optional": true,
+                  "allowedValues": [],
+                  "fields": []
+                }
+              ]
+            },
+            {
               "path": "license",
               "type": "String",
               "optional": true,
@@ -4136,28 +6751,6 @@
               "optional": true,
               "allowedValues": [],
               "fields": []
-            },
-            {
-              "path": "licenseFamilySummary",
-              "type": "ProjectVersionLicenseLicensesLicenseFamilySummaryViewV5",
-              "optional": true,
-              "allowedValues": [],
-              "fields": [
-                {
-                  "path": "name",
-                  "type": "String",
-                  "optional": true,
-                  "allowedValues": [],
-                  "fields": []
-                },
-                {
-                  "path": "href",
-                  "type": "String",
-                  "optional": true,
-                  "allowedValues": [],
-                  "fields": []
-                }
-              ]
             },
             {
               "path": "licenses",
@@ -4191,25 +6784,6 @@
           ]
         }
       ]
-    },
-    {
-      "path": "releasedOn",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "distribution",
-      "type": "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType",
-      "optional": false,
-      "allowedValues": [
-        "EXTERNAL",
-        "SAAS",
-        "INTERNAL",
-        "OPENSOURCE"
-      ],
-      "fields": []
     },
     {
       "path": "versionName",
@@ -4267,15 +6841,19 @@
       "optional": true
     },
     {
+      "rel": "version-risk-profile",
+      "optional": true
+    },
+    {
       "rel": "hierarchical-components",
       "optional": true
     },
     {
-      "rel": "attachments",
+      "rel": "bom-status",
       "optional": true
     },
     {
-      "rel": "bom-status",
+      "rel": "origin-risk-profile",
       "optional": true
     },
     {
@@ -4755,6 +7333,26 @@
       "fields": []
     },
     {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
+      "optional": false,
+      "allowedValues": [
+        "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
+        "FILE_DEPENDENCY",
+        "FILE_DEPENDENCY_DIRECT",
+        "FILE_DEPENDENCY_TRANSITIVE",
+        "FILE_EXACT",
+        "FILE_EXACT_FILE_MATCH",
+        "FILE_SOME_FILES_MODIFIED",
+        "MANUAL_BOM_COMPONENT",
+        "MANUAL_BOM_FILE",
+        "PARTIAL_FILE",
+        "SNIPPET",
+        "BINARY"
+      ],
+      "fields": []
+    },
+    {
       "path": "approvalStatus",
       "type": "PolicyStatusType",
       "optional": true,
@@ -4788,19 +7386,6 @@
       "type": "BigDecimal",
       "optional": false,
       "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "matchTypes",
-      "type": "java.util.List\u003cProjectVersionComparisonItemsComponentMatchTypesType\u003e",
-      "optional": false,
-      "allowedValues": [
-        "MANUAL",
-        "FILE",
-        "DEPENDENCY",
-        "PARTIAL_FILE",
-        "SNIPPET"
-      ],
       "fields": []
     },
     {
@@ -5079,6 +7664,37 @@
       ]
     },
     {
+      "path": "componentType",
+      "type": "ProjectVersionComponentComponentTypeType",
+      "optional": false,
+      "allowedValues": [
+        "KB_COMPONENT",
+        "CUSTOM_COMPONENT",
+        "SUB_PROJECT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
+      "optional": false,
+      "allowedValues": [
+        "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
+        "FILE_DEPENDENCY",
+        "FILE_DEPENDENCY_DIRECT",
+        "FILE_DEPENDENCY_TRANSITIVE",
+        "FILE_EXACT",
+        "FILE_EXACT_FILE_MATCH",
+        "FILE_SOME_FILES_MODIFIED",
+        "MANUAL_BOM_COMPONENT",
+        "MANUAL_BOM_FILE",
+        "PARTIAL_FILE",
+        "SNIPPET",
+        "BINARY"
+      ],
+      "fields": []
+    },
+    {
       "path": "approvalStatus",
       "type": "PolicyStatusType",
       "optional": true,
@@ -5226,19 +7842,6 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
-    },
-    {
-      "path": "matchTypes",
-      "type": "java.util.List\u003cProjectVersionComparisonItemsComponentMatchTypesType\u003e",
-      "optional": false,
-      "allowedValues": [
-        "MANUAL",
-        "FILE",
-        "DEPENDENCY",
-        "PARTIAL_FILE",
-        "SNIPPET"
-      ],
-      "fields": []
     }
   ],
   "links": [
@@ -5276,6 +7879,10 @@
     },
     {
       "rel": "custom-fields",
+      "optional": true
+    },
+    {
+      "rel": "upgrade-guidance",
       "optional": true
     }
   ],
@@ -5498,6 +8105,37 @@
       ]
     },
     {
+      "path": "componentType",
+      "type": "ProjectVersionComponentComponentTypeType",
+      "optional": false,
+      "allowedValues": [
+        "KB_COMPONENT",
+        "CUSTOM_COMPONENT",
+        "SUB_PROJECT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
+      "optional": false,
+      "allowedValues": [
+        "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
+        "FILE_DEPENDENCY",
+        "FILE_DEPENDENCY_DIRECT",
+        "FILE_DEPENDENCY_TRANSITIVE",
+        "FILE_EXACT",
+        "FILE_EXACT_FILE_MATCH",
+        "FILE_SOME_FILES_MODIFIED",
+        "MANUAL_BOM_COMPONENT",
+        "MANUAL_BOM_FILE",
+        "PARTIAL_FILE",
+        "SNIPPET",
+        "BINARY"
+      ],
+      "fields": []
+    },
+    {
       "path": "approvalStatus",
       "type": "PolicyStatusType",
       "optional": true,
@@ -5645,19 +8283,6 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
-    },
-    {
-      "path": "matchTypes",
-      "type": "java.util.List\u003cProjectVersionComparisonItemsComponentMatchTypesType\u003e",
-      "optional": false,
-      "allowedValues": [
-        "MANUAL",
-        "FILE",
-        "DEPENDENCY",
-        "PARTIAL_FILE",
-        "SNIPPET"
-      ],
-      "fields": []
     }
   ],
   "links": [
@@ -5692,39 +8317,22 @@
     {
       "rel": "custom-fields",
       "optional": true
+    },
+    {
+      "rel": "upgrade-guidance",
+      "optional": true
     }
   ],
   "hasMultipleResults": true
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/comments/commentId/GET/bds_bill_of_materials_4_json/response-specification.json",
-  "name": "CommentViewV4",
+  "name": "ProjectVersionComponentCommentViewV4",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
   "fields": [
     {
-      "path": "createdAt",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "comment",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "commentType",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "user",
-      "type": "CommentUserViewV4",
+      "type": "ProjectVersionComponentCommentUserViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -5766,6 +8374,27 @@
       ]
     },
     {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "comment",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "commentType",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "updatedAt",
       "type": "java.util.Date",
       "optional": true,
@@ -5791,7 +8420,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/comments/commentId/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "CommentViewV5",
+  "name": "ProjectVersionComponentCommentViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -5884,33 +8513,12 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/comments/commentId/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "CommentViewV6",
+  "name": "ProjectVersionComponentCommentViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
-      "path": "createdAt",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "comment",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "commentType",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "user",
-      "type": "CommentUserViewV4",
+      "type": "ProjectVersionComponentCommentUserViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -5950,6 +8558,27 @@
           "fields": []
         }
       ]
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "comment",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "commentType",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
     },
     {
       "path": "updatedAt",
@@ -5977,33 +8606,12 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/component-versions/componentVersionId/comments/commentId/GET/bds_bill_of_materials_4_json/response-specification.json",
-  "name": "CommentViewV4",
+  "name": "ProjectVersionComponentVersionsComponentVersionCommentViewV4",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
   "fields": [
     {
-      "path": "createdAt",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "comment",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "commentType",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "user",
-      "type": "CommentUserViewV4",
+      "type": "ProjectVersionComponentCommentUserViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -6045,6 +8653,27 @@
       ]
     },
     {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "comment",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "commentType",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "updatedAt",
       "type": "java.util.Date",
       "optional": true,
@@ -6070,7 +8699,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/component-versions/componentVersionId/comments/commentId/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "CommentViewV5",
+  "name": "ProjectVersionComponentVersionsComponentVersionCommentViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -6163,33 +8792,12 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/component-versions/componentVersionId/comments/commentId/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "CommentViewV6",
+  "name": "ProjectVersionComponentVersionsComponentVersionCommentViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
-      "path": "createdAt",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "comment",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "commentType",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "user",
-      "type": "CommentUserViewV4",
+      "type": "ProjectVersionComponentCommentUserViewV4",
       "optional": false,
       "allowedValues": [],
       "fields": [
@@ -6231,6 +8839,27 @@
       ]
     },
     {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "comment",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "commentType",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "updatedAt",
       "type": "java.util.Date",
       "optional": true,
@@ -6255,8 +8884,66 @@
   "hasMultipleResults": true
 },
 {
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/component-versions/componentVersionId/issues/issueId/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "IssueViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "issueDescription",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueAssignee",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueStatus",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueUpdatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueLink",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueCreatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/custom-fields/customFieldId/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "CustomFieldViewV6",
+  "name": "ProjectVersionComponentCustomFieldViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -6317,6 +9004,64 @@
     }
   ],
   "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/issues/issueId/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "ProjectVersionComponentIssueViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "issueDescription",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueAssignee",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueStatus",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueUpdatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueLink",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueCreatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/matched-files/GET/bds_bill_of_materials_4_json/response-specification.json",
@@ -6381,7 +9126,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/matched-files/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "ComponentMatchedFilesViewV5",
+  "name": "ProjectVersionComponentComponentMatchedFilesViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -6442,7 +9187,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/matched-files/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "ComponentMatchedFilesViewV6",
+  "name": "ProjectVersionComponentComponentMatchedFilesViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -6669,7 +9414,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/policy-rules/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "ComponentPolicyRulesViewV5",
+  "name": "ProjectVersionComponentPolicyRulesViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -6835,7 +9580,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/policy-rules/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "ComponentPolicyRulesViewV6",
+  "name": "ProjectVersionComponentPolicyRulesViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -7021,7 +9766,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/policy-status/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "ComponentPolicyStatusViewV5",
+  "name": "ProjectVersionComponentComponentPolicyStatusViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -7041,7 +9786,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/policy-status/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "ComponentPolicyStatusViewV6",
+  "name": "ProjectVersionComponentComponentPolicyStatusViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -7060,8 +9805,1223 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/GET/bds_bill_of_materials_4_json/response-specification.json",
+  "name": "ProjectVersionComponentVersionViewV4",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
+  "fields": [
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "component",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "activityData",
+      "type": "ComponentVersionRiskProfileActivityDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "commitCount12Month",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "newerReleases",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "trending",
+          "type": "ComponentVersionRiskProfileActivityDataTrendingType",
+          "optional": true,
+          "allowedValues": [
+            "DECREASING",
+            "STABLE",
+            "INCREASING",
+            "UNKNOWN"
+          ],
+          "fields": []
+        },
+        {
+          "path": "contributorCount12Month",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "lastCommitDate",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentVersionName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "versionRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "activityRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "licenses",
+      "type": "java.util.List\u003cProjectVersionComponentLicensesViewV4\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "license",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenses",
+          "type": "java.util.List\u003cProjectVersionComponentLicensesView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseDisplay",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "spdxId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseType",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": false,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "licenseRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "policyStatus",
+      "type": "PolicyStatusType",
+      "optional": true,
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
+      "fields": []
+    },
+    {
+      "path": "origins",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "releasedOn",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "securityRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "reviewStatus",
+      "type": "ProjectVersionComponentReviewStatusType",
+      "optional": true,
+      "allowedValues": [
+        "NOT_REVIEWED",
+        "REVIEWED"
+      ],
+      "fields": []
+    },
+    {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
+      "optional": false,
+      "allowedValues": [
+        "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
+        "FILE_DEPENDENCY",
+        "FILE_DEPENDENCY_DIRECT",
+        "FILE_DEPENDENCY_TRANSITIVE",
+        "FILE_EXACT",
+        "FILE_EXACT_FILE_MATCH",
+        "FILE_SOME_FILES_MODIFIED",
+        "MANUAL_BOM_COMPONENT",
+        "MANUAL_BOM_FILE",
+        "PARTIAL_FILE",
+        "SNIPPET",
+        "BINARY"
+      ],
+      "fields": []
+    },
+    {
+      "path": "reviewedDetails",
+      "type": "ProjectVersionComponentReviewedDetailsViewV4",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "reviewedAt",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "reviewedBy",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "approvalStatus",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "totalFileMatchCount",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "operationalRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "usages",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [
+    {
+      "rel": "component-issues",
+      "optional": false
+    },
+    {
+      "rel": "comments",
+      "optional": false
+    },
+    {
+      "rel": "policy-rules",
+      "optional": false
+    },
+    {
+      "rel": "crypto-algorithms",
+      "optional": true
+    },
+    {
+      "rel": "origins",
+      "optional": true
+    },
+    {
+      "rel": "vulnerabilities",
+      "optional": false
+    },
+    {
+      "rel": "policy-status",
+      "optional": false
+    },
+    {
+      "rel": "matched-files",
+      "optional": false
+    }
+  ],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/GET/bds_bill_of_materials_5_json/response-specification.json",
+  "name": "ProjectVersionComponentVersionViewV5",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
+  "fields": [
+    {
+      "path": "component",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "ignored",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "activityData",
+      "type": "ComponentVersionRiskProfileActivityDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "commitCount12Month",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "newerReleases",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "trending",
+          "type": "ComponentVersionRiskProfileActivityDataTrendingType",
+          "optional": true,
+          "allowedValues": [
+            "DECREASING",
+            "STABLE",
+            "INCREASING",
+            "UNKNOWN"
+          ],
+          "fields": []
+        },
+        {
+          "path": "contributorCount12Month",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "lastCommitDate",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "reviewedDetails",
+      "type": "ProjectVersionComponentReviewedDetailsViewV5",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "reviewedAt",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "reviewingUser",
+          "type": "ProjectVersionComponentReviewedDetailsReviewingUserViewV5",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "username",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "lastName",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "firstName",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "user",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "path": "reviewedBy",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentVersionName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "manuallyAdjusted",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "activityRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentModified",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "policyStatus",
+      "type": "PolicyStatusType",
+      "optional": true,
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
+      "fields": []
+    },
+    {
+      "path": "componentPurpose",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "securityRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentType",
+      "type": "ProjectVersionComponentComponentTypeType",
+      "optional": false,
+      "allowedValues": [
+        "KB_COMPONENT",
+        "CUSTOM_COMPONENT",
+        "SUB_PROJECT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
+      "optional": false,
+      "allowedValues": [
+        "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
+        "FILE_DEPENDENCY",
+        "FILE_DEPENDENCY_DIRECT",
+        "FILE_DEPENDENCY_TRANSITIVE",
+        "FILE_EXACT",
+        "FILE_EXACT_FILE_MATCH",
+        "FILE_SOME_FILES_MODIFIED",
+        "MANUAL_BOM_COMPONENT",
+        "MANUAL_BOM_FILE",
+        "PARTIAL_FILE",
+        "SNIPPET",
+        "BINARY"
+      ],
+      "fields": []
+    },
+    {
+      "path": "totalFileMatchCount",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentModification",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "operationalRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "usages",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "inAttributionReport",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "versionRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "licenses",
+      "type": "java.util.List\u003cProjectVersionComponentLicensesViewV4\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "license",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenses",
+          "type": "java.util.List\u003cProjectVersionComponentLicensesView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseDisplay",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "spdxId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseType",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": false,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "origins",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "releasedOn",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "reviewStatus",
+      "type": "ProjectVersionComponentReviewStatusType",
+      "optional": true,
+      "allowedValues": [
+        "NOT_REVIEWED",
+        "REVIEWED"
+      ],
+      "fields": []
+    },
+    {
+      "path": "attributionStatement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "approvalStatus",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [
+    {
+      "rel": "component-issues",
+      "optional": false
+    },
+    {
+      "rel": "comments",
+      "optional": false
+    },
+    {
+      "rel": "policy-rules",
+      "optional": false
+    },
+    {
+      "rel": "crypto-algorithms",
+      "optional": true
+    },
+    {
+      "rel": "origins",
+      "optional": true
+    },
+    {
+      "rel": "vulnerabilities",
+      "optional": false
+    },
+    {
+      "rel": "policy-status",
+      "optional": false
+    },
+    {
+      "rel": "matched-files",
+      "optional": false
+    },
+    {
+      "rel": "custom-fields",
+      "optional": true
+    },
+    {
+      "rel": "upgrade-guidance",
+      "optional": true
+    }
+  ],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "ProjectVersionComponentVersionViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "component",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "ignored",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "activityData",
+      "type": "ComponentVersionRiskProfileActivityDataViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "commitCount12Month",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "newerReleases",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "trending",
+          "type": "ComponentVersionRiskProfileActivityDataTrendingType",
+          "optional": true,
+          "allowedValues": [
+            "DECREASING",
+            "STABLE",
+            "INCREASING",
+            "UNKNOWN"
+          ],
+          "fields": []
+        },
+        {
+          "path": "contributorCount12Month",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "lastCommitDate",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "reviewedDetails",
+      "type": "ProjectVersionComponentReviewedDetailsViewV5",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "reviewedAt",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "reviewingUser",
+          "type": "ProjectVersionComponentReviewedDetailsReviewingUserViewV5",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "username",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "lastName",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "firstName",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "user",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "path": "reviewedBy",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentVersionName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "manuallyAdjusted",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "activityRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentModified",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "licenseRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "policyStatus",
+      "type": "PolicyStatusType",
+      "optional": true,
+      "allowedValues": [
+        "NOT_IN_VIOLATION",
+        "IN_VIOLATION_OVERRIDDEN",
+        "IN_VIOLATION"
+      ],
+      "fields": []
+    },
+    {
+      "path": "componentPurpose",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "securityRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "componentType",
+      "type": "ProjectVersionComponentComponentTypeType",
+      "optional": false,
+      "allowedValues": [
+        "KB_COMPONENT",
+        "CUSTOM_COMPONENT",
+        "SUB_PROJECT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "matchTypes",
+      "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
+      "optional": false,
+      "allowedValues": [
+        "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
+        "FILE_DEPENDENCY",
+        "FILE_DEPENDENCY_DIRECT",
+        "FILE_DEPENDENCY_TRANSITIVE",
+        "FILE_EXACT",
+        "FILE_EXACT_FILE_MATCH",
+        "FILE_SOME_FILES_MODIFIED",
+        "MANUAL_BOM_COMPONENT",
+        "MANUAL_BOM_FILE",
+        "PARTIAL_FILE",
+        "SNIPPET",
+        "BINARY"
+      ],
+      "fields": []
+    },
+    {
+      "path": "totalFileMatchCount",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentModification",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "operationalRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "usages",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "inAttributionReport",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "versionRiskProfile",
+      "type": "RiskProfileViewV4",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "counts",
+          "type": "java.util.List\u003cComponentVersionRiskProfileRiskDataCountsView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "licenses",
+      "type": "java.util.List\u003cProjectVersionComponentLicensesViewV4\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "license",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenses",
+          "type": "java.util.List\u003cProjectVersionComponentLicensesView\u003e",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseDisplay",
+          "type": "String",
+          "optional": false,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "spdxId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "licenseType",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": false,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "origins",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "releasedOn",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "reviewStatus",
+      "type": "ProjectVersionComponentReviewStatusType",
+      "optional": true,
+      "allowedValues": [
+        "NOT_REVIEWED",
+        "REVIEWED"
+      ],
+      "fields": []
+    },
+    {
+      "path": "attributionStatement",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "approvalStatus",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [
+    {
+      "rel": "component-issues",
+      "optional": false
+    },
+    {
+      "rel": "comments",
+      "optional": false
+    },
+    {
+      "rel": "policy-rules",
+      "optional": false
+    },
+    {
+      "rel": "origins",
+      "optional": true
+    },
+    {
+      "rel": "vulnerabilities",
+      "optional": false
+    },
+    {
+      "rel": "policy-status",
+      "optional": false
+    },
+    {
+      "rel": "matched-files",
+      "optional": false
+    },
+    {
+      "rel": "custom-fields",
+      "optional": true
+    },
+    {
+      "rel": "upgrade-guidance",
+      "optional": true
+    }
+  ],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/custom-fields/customFieldId/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "CustomFieldViewV6",
+  "name": "ProjectVersionComponentVersionCustomFieldViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -7186,7 +11146,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/matched-files/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "ComponentVersionMatchedFilesViewV5",
+  "name": "ProjectVersionComponentVersionComponentVersionMatchedFilesViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -7247,7 +11207,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/matched-files/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "ComponentVersionMatchedFilesViewV6",
+  "name": "ProjectVersionComponentVersionComponentVersionMatchedFilesViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -7369,7 +11329,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/origins/componentOriginId/matched-files/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "ComponentOriginMatchedFilesViewV5",
+  "name": "ProjectVersionComponentVersionComponentOriginComponentOriginMatchedFilesViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -7430,7 +11390,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/origins/componentOriginId/matched-files/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "ComponentOriginMatchedFilesViewV6",
+  "name": "ProjectVersionComponentVersionComponentOriginComponentOriginMatchedFilesViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -7490,6 +11450,288 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/origins/originId/vulnerabilities/vulnerabilityId/remediation/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "VulnerabilityRemediationViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "useCvss3",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "disclosureDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "summary",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdByUser",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solutionDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "relatedVulnerability",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "comment",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solution",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "lastModifiedDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedByUser",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "publishedDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solutionAvailable",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "workaroundAvailable",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "cvss3",
+      "type": "VulnerabilityRemediationCvss3ViewV6",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "impactSubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "baseScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "severity",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
+          "optional": true,
+          "allowedValues": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "fields": []
+        },
+        {
+          "path": "exploitabilitySubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "overallScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "id",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "overallScore",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "technicalDescription",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "remediationStatus",
+      "type": "VulnerabilityRemediationRemediationStatusType",
+      "optional": false,
+      "allowedValues": [
+        "DUPLICATE",
+        "IGNORED",
+        "MITIGATED",
+        "NEEDS_REVIEW",
+        "NEW",
+        "PATCHED",
+        "REMEDIATION_COMPLETE",
+        "REMEDIATION_REQUIRED"
+      ],
+      "fields": []
+    },
+    {
+      "path": "exploitPublishDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "cvss2",
+      "type": "VulnerabilityRemediationCvss3ViewV6",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "impactSubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "baseScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "severity",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
+          "optional": true,
+          "allowedValues": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "fields": []
+        },
+        {
+          "path": "exploitabilitySubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "overallScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "exploitAvailable",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/policy-status/GET/bds_bill_of_materials_4_json/response-specification.json",
   "name": "ComponentVersionPolicyStatusViewV4",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
@@ -7511,7 +11753,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/policy-status/GET/bds_bill_of_materials_5_json/response-specification.json",
-  "name": "ComponentVersionPolicyStatusViewV5",
+  "name": "ProjectVersionComponentVersionComponentVersionPolicyStatusViewV5",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
   "fields": [
     {
@@ -7531,7 +11773,7 @@
 },
 {
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/policy-status/GET/bds_bill_of_materials_6_json/response-specification.json",
-  "name": "ComponentVersionPolicyStatusViewV6",
+  "name": "ProjectVersionComponentVersionComponentVersionPolicyStatusViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
   "fields": [
     {
@@ -7550,8 +11792,290 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/vulnerabilities/vulnerabilityId/remediation/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "ProjectVersionComponentVersionVulnerabilityVulnerabilityRemediationViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "useCvss3",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "disclosureDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "summary",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdByUser",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solutionDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "relatedVulnerability",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "comment",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solution",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "lastModifiedDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedByUser",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "publishedDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solutionAvailable",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "workaroundAvailable",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "cvss3",
+      "type": "VulnerabilityRemediationCvss3ViewV6",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "impactSubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "baseScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "severity",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
+          "optional": true,
+          "allowedValues": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "fields": []
+        },
+        {
+          "path": "exploitabilitySubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "overallScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "id",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "overallScore",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "technicalDescription",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "remediationStatus",
+      "type": "VulnerabilityRemediationRemediationStatusType",
+      "optional": false,
+      "allowedValues": [
+        "DUPLICATE",
+        "IGNORED",
+        "MITIGATED",
+        "NEEDS_REVIEW",
+        "NEW",
+        "PATCHED",
+        "REMEDIATION_COMPLETE",
+        "REMEDIATION_REQUIRED"
+      ],
+      "fields": []
+    },
+    {
+      "path": "exploitPublishDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "cvss2",
+      "type": "VulnerabilityRemediationCvss3ViewV6",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "impactSubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "baseScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "severity",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
+          "optional": true,
+          "allowedValues": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "fields": []
+        },
+        {
+          "path": "exploitabilitySubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "overallScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
+    },
+    {
+      "path": "exploitAvailable",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/custom-fields/customFieldId/GET/bds_project_detail_5_json/response-specification.json",
-  "name": "CustomFieldViewV5",
+  "name": "ProjectVersionCustomFieldViewV5",
   "mediaType": "application/vnd.blackducksoftware.project-detail-5+json",
   "fields": [
     {
@@ -7614,6 +12138,266 @@
   "hasMultipleResults": true
 },
 {
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/issues/GET/bds_bill_of_materials_4_json/response-specification.json",
+  "name": "ProjectVersionIssuesViewV4",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
+  "fields": [
+    {
+      "path": "issueDescription",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueAssignee",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueStatus",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueUpdatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "releaseVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueLink",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueCreatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "projectName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/issues/GET/bds_bill_of_materials_5_json/response-specification.json",
+  "name": "ProjectVersionIssuesViewV5",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
+  "fields": [
+    {
+      "path": "issueDescription",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueAssignee",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueStatus",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueUpdatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "releaseVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueLink",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueCreatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "projectName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/issues/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "ProjectVersionIssuesViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "issueDescription",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueAssignee",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueId",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueStatus",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueUpdatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "releaseVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueLink",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "issueCreatedAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "projectName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/matched-components/GET/bds_bill_of_materials_6_json/response-specification.json",
+  "name": "ProjectVersionMatchedComponentsViewV6",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
+  "fields": [
+    {
+      "path": "namespace",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "version",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "name",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "identifier",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "originatesFrom",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/matched-files/GET/bds_bill_of_materials_4_json/response-specification.json",
   "name": "ProjectVersionMatchedFilesViewV4",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
@@ -7640,7 +12424,7 @@
       "fields": [
         {
           "path": "matchType",
-          "type": "ProjectVersionMatchedFilesItemsMatchesMatchTypeType",
+          "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
           "optional": true,
           "allowedValues": [
             "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
@@ -7656,6 +12440,13 @@
             "SNIPPET",
             "BINARY"
           ],
+          "fields": []
+        },
+        {
+          "path": "matchConfidencePercentage",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
           "fields": []
         },
         {
@@ -7705,7 +12496,7 @@
       "fields": [
         {
           "path": "matchType",
-          "type": "ProjectVersionMatchedFilesItemsMatchesMatchTypeType",
+          "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
           "optional": true,
           "allowedValues": [
             "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
@@ -7721,6 +12512,13 @@
             "SNIPPET",
             "BINARY"
           ],
+          "fields": []
+        },
+        {
+          "path": "matchConfidencePercentage",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
           "fields": []
         },
         {
@@ -7770,7 +12568,7 @@
       "fields": [
         {
           "path": "matchType",
-          "type": "ProjectVersionMatchedFilesItemsMatchesMatchTypeType",
+          "type": "java.util.List\u003cProjectVersionComponentMatchTypesType\u003e",
           "optional": true,
           "allowedValues": [
             "FILE_FILES_ADDED_DELETED_AND_MODIFIED",
@@ -7786,6 +12584,13 @@
             "SNIPPET",
             "BINARY"
           ],
+          "fields": []
+        },
+        {
+          "path": "matchConfidencePercentage",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
           "fields": []
         },
         {
@@ -8112,6 +12917,22 @@
   "hasMultipleResults": false
 },
 {
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/vulnerable-bom-components/GET/bds_bill_of_materials_4_json/response-specification.json",
+  "name": "ProjectVersionVulnerableBomComponentsViewV4",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-4+json",
+  "fields": [],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
+  "responseSpecificationPath": "projects/projectId/versions/projectVersionId/vulnerable-bom-components/GET/bds_bill_of_materials_5_json/response-specification.json",
+  "name": "ProjectVersionVulnerableBomComponentsViewV5",
+  "mediaType": "application/vnd.blackducksoftware.bill-of-materials-5+json",
+  "fields": [],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "projects/projectId/versions/projectVersionId/vulnerable-bom-components/GET/bds_bill_of_materials_6_json/response-specification.json",
   "name": "ProjectVersionVulnerableBomComponentsViewV6",
   "mediaType": "application/vnd.blackducksoftware.bill-of-materials-6+json",
@@ -8136,144 +12957,6 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
-    },
-    {
-      "path": "vulnerabilityWithRemediation",
-      "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationViewV6",
-      "optional": true,
-      "allowedValues": [],
-      "fields": [
-        {
-          "path": "source",
-          "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSourceType",
-          "optional": true,
-          "allowedValues": [
-            "NVD",
-            "VULNDB",
-            "BDSA"
-          ],
-          "fields": []
-        },
-        {
-          "path": "description",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "baseScore",
-          "type": "BigDecimal",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "severity",
-          "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSeverityType",
-          "optional": true,
-          "allowedValues": [
-            "LOW",
-            "MEDIUM",
-            "HIGH",
-            "CRITICAL"
-          ],
-          "fields": []
-        },
-        {
-          "path": "remediationTargetAt",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "exploitabilitySubscore",
-          "type": "BigDecimal",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "cweId",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "remediationActualAt",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "remediationUpdatedAt",
-          "type": "java.util.Date",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "impactSubscore",
-          "type": "BigDecimal",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "vulnerabilityName",
-          "type": "String",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "vulnerabilityPublishedDate",
-          "type": "java.util.Date",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "vulnerabilityUpdatedDate",
-          "type": "java.util.Date",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "remediationStatus",
-          "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationRemediationStatusType",
-          "optional": true,
-          "allowedValues": [
-            "DUPLICATE",
-            "IGNORED",
-            "MITIGATED",
-            "NEEDS_REVIEW",
-            "NEW",
-            "PATCHED",
-            "REMEDIATION_COMPLETE",
-            "REMEDIATION_REQUIRED"
-          ],
-          "fields": []
-        },
-        {
-          "path": "remediationCreatedAt",
-          "type": "java.util.Date",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "overallScore",
-          "type": "BigDecimal",
-          "optional": true,
-          "allowedValues": [],
-          "fields": []
-        }
-      ]
     },
     {
       "path": "componentVersionOriginId",
@@ -8396,6 +13079,172 @@
       "optional": true,
       "allowedValues": [],
       "fields": []
+    },
+    {
+      "path": "ignored",
+      "type": "Boolean",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "vulnerabilityWithRemediation",
+      "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationViewV4",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "source",
+          "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSourceType",
+          "optional": true,
+          "allowedValues": [
+            "NVD",
+            "VULNDB",
+            "BDSA"
+          ],
+          "fields": []
+        },
+        {
+          "path": "description",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "baseScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationStatus",
+          "type": "VulnerabilityRemediationRemediationStatusType",
+          "optional": true,
+          "allowedValues": [
+            "DUPLICATE",
+            "IGNORED",
+            "MITIGATED",
+            "NEEDS_REVIEW",
+            "NEW",
+            "PATCHED",
+            "REMEDIATION_COMPLETE",
+            "REMEDIATION_REQUIRED"
+          ],
+          "fields": []
+        },
+        {
+          "path": "remediationTargetAt",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "exploitabilitySubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "cweId",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationActualAt",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationCreatedBy",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationUpdatedAt",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationUpdatedBy",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "impactSubscore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "severity",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
+          "optional": true,
+          "allowedValues": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "fields": []
+        },
+        {
+          "path": "relatedVulnerability",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityName",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityPublishedDate",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "vulnerabilityUpdatedDate",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "remediationCreatedAt",
+          "type": "java.util.Date",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "overallScore",
+          "type": "BigDecimal",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        }
+      ]
     }
   ],
   "links": [],
@@ -8630,41 +13479,149 @@
   "hasMultipleResults": true
 },
 {
+  "responseSpecificationPath": "scan/scanId/bom-entries/GET/bds_scan_4_json/response-specification.json",
+  "name": "ScanBomEntriesViewV4",
+  "mediaType": "application/vnd.blackducksoftware.scan-4+json",
+  "fields": [
+    {
+      "path": "componentName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "component",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchType",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "componentVersionName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "externalNamespace",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "license",
+      "type": "ScanBomEntriesItemsLicenseViewV4",
+      "optional": true,
+      "allowedValues": [],
+      "fields": [
+        {
+          "path": "licenseDisplay",
+          "type": "String",
+          "optional": true,
+          "allowedValues": [],
+          "fields": []
+        },
+        {
+          "path": "type",
+          "type": "ProjectVersionLicenseTypeType",
+          "optional": true,
+          "allowedValues": [
+            "CONJUNCTIVE",
+            "DISJUNCTIVE"
+          ],
+          "fields": []
+        },
+        {
+          "path": "licenses",
+          "type": "java.util.List\u003cScanBomEntriesItemsLicenseLicensesViewV4\u003e",
+          "optional": true,
+          "allowedValues": [],
+          "fields": [
+            {
+              "path": "licenseDisplay",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "licenses",
+              "type": "java.util.List\u003cString\u003e",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "type",
+              "type": "ProjectVersionLicenseTypeType",
+              "optional": true,
+              "allowedValues": [
+                "CONJUNCTIVE",
+                "DISJUNCTIVE"
+              ],
+              "fields": []
+            },
+            {
+              "path": "license",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            },
+            {
+              "path": "name",
+              "type": "String",
+              "optional": true,
+              "allowedValues": [],
+              "fields": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "componentVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "kbFilePaths",
+      "type": "java.util.List\u003cString\u003e",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "externalId",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
+},
+{
   "responseSpecificationPath": "scan-summaries/scanId/GET/bds_scan_4_json/response-specification.json",
   "name": "ScanViewV4",
   "mediaType": "application/vnd.blackducksoftware.scan-4+json",
   "fields": [
     {
-      "path": "statusMessage",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "createdAt",
-      "type": "java.util.Date",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "scanSize",
-      "type": "BigDecimal",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "serverVersion",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "status",
-      "type": "ScanStatusType",
+      "type": "CodeLocationLatestScanSummaryStatusType",
       "optional": false,
       "allowedValues": [
         "UNSTARTED",
@@ -8688,6 +13645,90 @@
       "fields": []
     },
     {
+      "path": "baseDirectory",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "matchCount",
+      "type": "BigDecimal",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "createdAt",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "statusMessage",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "scanSize",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "fileCount",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "hostName",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "directoryCount",
+      "type": "BigDecimal",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "scanType",
+      "type": "CodeLocationLatestScanSummaryScanTypeType",
+      "optional": false,
+      "allowedValues": [
+        "BDIO",
+        "FS",
+        "SNIPPET",
+        "BINARY",
+        "STRING_SEARCH",
+        "VULN_IMPACT"
+      ],
+      "fields": []
+    },
+    {
+      "path": "createdByUserName",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "serverVersion",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "updatedAt",
       "type": "java.util.Date",
       "optional": true,
@@ -8698,6 +13739,14 @@
   "links": [
     {
       "rel": "codelocation",
+      "optional": false
+    },
+    {
+      "rel": "component-import-events",
+      "optional": true
+    },
+    {
+      "rel": "scan-bom-entries",
       "optional": false
     }
   ],
@@ -8804,13 +13853,6 @@
       "fields": []
     },
     {
-      "path": "user",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "lastName",
       "type": "String",
       "optional": false,
@@ -8846,8 +13888,84 @@
       "fields": []
     }
   ],
-  "links": [],
+  "links": [
+    {
+      "rel": "projects",
+      "optional": false
+    },
+    {
+      "rel": "notification-counts",
+      "optional": false
+    },
+    {
+      "rel": "notifications",
+      "optional": false
+    },
+    {
+      "rel": "last-login",
+      "optional": false
+    },
+    {
+      "rel": "assignable-projects",
+      "optional": false
+    },
+    {
+      "rel": "change-password",
+      "optional": false
+    },
+    {
+      "rel": "inherited-roles",
+      "optional": false
+    },
+    {
+      "rel": "notification-subscriptions",
+      "optional": false
+    },
+    {
+      "rel": "roles",
+      "optional": false
+    },
+    {
+      "rel": "usergroups",
+      "optional": false
+    },
+    {
+      "rel": "reset-password",
+      "optional": false
+    },
+    {
+      "rel": "profile-image",
+      "optional": true
+    },
+    {
+      "rel": "notification-states",
+      "optional": false
+    }
+  ],
   "hasMultipleResults": true
+},
+{
+  "responseSpecificationPath": "users/userId/last-login/GET/bds_user_4_json/response-specification.json",
+  "name": "UserLastLoginViewV4",
+  "mediaType": "application/vnd.blackducksoftware.user-4+json",
+  "fields": [
+    {
+      "path": "lastLogin",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "username",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    }
+  ],
+  "links": [],
+  "hasMultipleResults": false
 },
 {
   "responseSpecificationPath": "users/userId/notification-subscriptions/subscriptionId/GET/bds_notification_4_json/response-specification.json",
@@ -8966,6 +14084,17 @@
       "fields": []
     },
     {
+      "path": "status",
+      "type": "LicenseReportsReportStatusType",
+      "optional": false,
+      "allowedValues": [
+        "IN_PROGRESS",
+        "COMPLETED",
+        "FAILED"
+      ],
+      "fields": []
+    },
+    {
       "path": "reportFormat",
       "type": "LicenseReportsReportReportFormatType",
       "optional": false,
@@ -8984,6 +14113,13 @@
       "fields": []
     },
     {
+      "path": "createdBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "fileNamePrefix",
       "type": "String",
       "optional": true,
@@ -8994,13 +14130,6 @@
       "path": "createdAt",
       "type": "java.util.Date",
       "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "createdBy",
-      "type": "String",
-      "optional": false,
       "allowedValues": [],
       "fields": []
     },
@@ -9062,6 +14191,17 @@
       "fields": []
     },
     {
+      "path": "status",
+      "type": "LicenseReportsReportStatusType",
+      "optional": false,
+      "allowedValues": [
+        "IN_PROGRESS",
+        "COMPLETED",
+        "FAILED"
+      ],
+      "fields": []
+    },
+    {
       "path": "reportFormat",
       "type": "LicenseReportsReportReportFormatType",
       "optional": false,
@@ -9080,6 +14220,13 @@
       "fields": []
     },
     {
+      "path": "createdBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "fileNamePrefix",
       "type": "String",
       "optional": true,
@@ -9090,13 +14237,6 @@
       "path": "createdAt",
       "type": "java.util.Date",
       "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "createdBy",
-      "type": "String",
-      "optional": false,
       "allowedValues": [],
       "fields": []
     },
@@ -9151,81 +14291,6 @@
   "mediaType": "application/vnd.blackducksoftware.vulnerability-4+json",
   "fields": [
     {
-      "path": "exploitPublishDate",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "severity",
-      "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSeverityType",
-      "optional": true,
-      "allowedValues": [
-        "LOW",
-        "MEDIUM",
-        "HIGH",
-        "CRITICAL"
-      ],
-      "fields": []
-    },
-    {
-      "path": "name",
-      "type": "String",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "solution",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "title",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "useCvss3",
-      "type": "Boolean",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "disclosureDate",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "updatedDate",
-      "type": "java.util.Date",
-      "optional": false,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "solutionDate",
-      "type": "java.util.Date",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "technicalDescription",
-      "type": "String",
-      "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
       "path": "cvss2",
       "type": "VulnerabilityCvss2ViewV4",
       "optional": true,
@@ -9258,7 +14323,7 @@
         },
         {
           "path": "severity",
-          "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSeverityType",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
           "optional": true,
           "allowedValues": [
             "LOW",
@@ -9392,10 +14457,85 @@
       ]
     },
     {
+      "path": "exploitPublishDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "name",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solution",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "title",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "useCvss3",
+      "type": "Boolean",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "disclosureDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "updatedDate",
+      "type": "java.util.Date",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "solutionDate",
+      "type": "java.util.Date",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "technicalDescription",
+      "type": "String",
+      "optional": true,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "classifications",
       "type": "java.util.List\u003cString\u003e",
       "optional": false,
       "allowedValues": [],
+      "fields": []
+    },
+    {
+      "path": "severity",
+      "type": "VulnerabilityRemediationCvss3SeverityType",
+      "optional": true,
+      "allowedValues": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ],
       "fields": []
     },
     {
@@ -9434,18 +14574,6 @@
           "type": "BigDecimal",
           "optional": true,
           "allowedValues": [],
-          "fields": []
-        },
-        {
-          "path": "severity",
-          "type": "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSeverityType",
-          "optional": true,
-          "allowedValues": [
-            "LOW",
-            "MEDIUM",
-            "HIGH",
-            "CRITICAL"
-          ],
           "fields": []
         },
         {
@@ -9522,6 +14650,18 @@
             "HIGH",
             "LOW",
             "NONE"
+          ],
+          "fields": []
+        },
+        {
+          "path": "severity",
+          "type": "VulnerabilityRemediationCvss3SeverityType",
+          "optional": true,
+          "allowedValues": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
           ],
           "fields": []
         },
@@ -9671,6 +14811,17 @@
       "fields": []
     },
     {
+      "path": "status",
+      "type": "LicenseReportsReportStatusType",
+      "optional": false,
+      "allowedValues": [
+        "IN_PROGRESS",
+        "COMPLETED",
+        "FAILED"
+      ],
+      "fields": []
+    },
+    {
       "path": "reportFormat",
       "type": "LicenseReportsReportReportFormatType",
       "optional": false,
@@ -9689,6 +14840,13 @@
       "fields": []
     },
     {
+      "path": "createdBy",
+      "type": "String",
+      "optional": false,
+      "allowedValues": [],
+      "fields": []
+    },
+    {
       "path": "fileNamePrefix",
       "type": "String",
       "optional": true,
@@ -9699,13 +14857,6 @@
       "path": "createdAt",
       "type": "java.util.Date",
       "optional": true,
-      "allowedValues": [],
-      "fields": []
-    },
-    {
-      "path": "createdBy",
-      "type": "String",
-      "optional": false,
       "allowedValues": [],
       "fields": []
     },
@@ -9752,5 +14903,5 @@
     }
   ],
   "links": [],
-  "hasMultipleResults": false
+  "hasMultipleResults": true
 }]

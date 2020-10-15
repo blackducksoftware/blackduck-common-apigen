@@ -46,4 +46,8 @@ public enum ClassSourceEnum {
     public boolean isTemporary() {
         return this.equals(TEMPORARY);
     }
+
+    public boolean isDeprecated() {
+        return this.equals(DEPRECATED);
+    }
 }

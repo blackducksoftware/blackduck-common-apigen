@@ -69,23 +69,26 @@ public class ClassCategories {
 
         populate(VIEW, GENERATED, "AnnouncementBannerView");
         populate(VIEW, GENERATED, "CodeLocationView");
-        populate(VIEW, GENERATED, "CommentView");
         populate(VIEW, GENERATED, "ComponentMatchedFilesView");
         populate(VIEW, GENERATED, "ComponentPolicyRulesView");
         populate(VIEW, GENERATED, "ComponentVersionPolicyStatusView");
+        populate(VIEW, GENERATED, "ComponentVersionView");
         populate(VIEW, GENERATED, "ComponentView");
         populate(VIEW, GENERATED, "CurrentUserView");
         populate(VIEW, GENERATED, "CustomFieldObjectView");
         populate(VIEW, GENERATED, "CustomFieldView");
         populate(VIEW, GENERATED, "GraphComponentImportEventsView");
         populate(VIEW, GENERATED, "HealthChecksLivenessView");
+        populate(VIEW, GENERATED, "IssueView");
         populate(VIEW, GENERATED, "JobView");
         populate(VIEW, GENERATED, "LicenseFamilyView");
         populate(VIEW, GENERATED, "LicenseReportsReportView");
+        populate(VIEW, GENERATED, "LicenseTermCategoryView");
         populate(VIEW, GENERATED, "LicenseTermView");
         populate(VIEW, GENERATED, "LicenseTextView");
         populate(VIEW, GENERATED, "LicenseView");
         populate(VIEW, GENERATED, "ManageAnnouncementBannerView");
+        populate(VIEW, GENERATED, "OriginView");
         populate(VIEW, GENERATED, "PolicyRuleView");
         populate(VIEW, GENERATED, "ProjectCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentCustomFieldView");
@@ -96,6 +99,8 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectVersionLicenseView");
         populate(VIEW, GENERATED, "ProjectVersionPolicyStatusView");
         populate(VIEW, GENERATED, "ProjectVersionView");
+        populate(VIEW, GENERATED, "ProjectVersionVulnerableBomComponentsView");
+        populate(VIEW, GENERATED, "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationView");
         populate(VIEW, GENERATED, "ProjectView");
         populate(VIEW, GENERATED, "RegistrationView");
         populate(VIEW, GENERATED, "ReportContentsView");
@@ -124,12 +129,8 @@ public class ClassCategories {
 
         populate(VIEW, TEMPORARY, "AssignedUserView");
         populate(VIEW, TEMPORARY, "ComponentDetailsView");
-        populate(VIEW, TEMPORARY, "ComponentVersionView");
         populate(VIEW, TEMPORARY, "ExternalExtensionConfigValueView");
         populate(VIEW, TEMPORARY, "ExternalExtensionUserView");
-        populate(VIEW, TEMPORARY, "IssueView");
-        populate(VIEW, TEMPORARY, "LicenseTermCategoryView");
-        populate(VIEW, TEMPORARY, "OriginView");
         populate(VIEW, TEMPORARY, "VulnerabilityWithRemediationView");
 
         populate(VIEW, ClassSourceEnum.NULL, "ComponentCustomFieldView");
@@ -144,12 +145,12 @@ public class ClassCategories {
         populate(VIEW, ClassSourceEnum.NULL, "LicensesLicenseView");
         populate(VIEW, ClassSourceEnum.NULL, "ProjectDashboardRiskAmalgamation");
         populate(VIEW, ClassSourceEnum.NULL, "ProjectVersionReportView");
-        populate(VIEW, ClassSourceEnum.NULL, "ProjectVersionVulnerableBomComponentsView");
         populate(VIEW, ClassSourceEnum.NULL, "RegistrationAttributesInternalView");
         populate(VIEW, ClassSourceEnum.NULL, "RegistrationSummaryInternalView");
         populate(VIEW, ClassSourceEnum.NULL, "ReportView");
         populate(VIEW, ClassSourceEnum.NULL, "VulnerabilityAffectedProjectsView");
 
+        populate(RESPONSE, GENERATED, "CommentView");
         populate(RESPONSE, GENERATED, "ComponentsView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
         populate(RESPONSE, GENERATED, "CweView");
@@ -195,12 +196,14 @@ public class ClassCategories {
         populate(COMPONENT, GENERATED, "ProjectVersionComponentLicensesView");
         populate(COMPONENT, GENERATED, "ProjectVersionComponentReviewedDetailsReviewingUserView");
         populate(COMPONENT, GENERATED, "ProjectVersionLicenseLicensesLicenseFamilySummaryView");
+        populate(COMPONENT, GENERATED, "RegistrationFeaturesView");
         populate(COMPONENT, GENERATED, "VulnerabilityCvss2TemporalMetricsView");
         populate(COMPONENT, GENERATED, "VulnerabilityCvss3TemporalMetricsView");
 
         populate(COMPONENT, DEPRECATED, "ActivityDataView");
         populate(COMPONENT, DEPRECATED, "ComponentVersionPolicyViolationDetails");
         populate(COMPONENT, DEPRECATED, "CompositePathWithArchiveContext");
+        populate(COMPONENT, DEPRECATED, "LicenseFamilyRiskRuleView");
         populate(COMPONENT, DEPRECATED, "LicenseFamilySummaryView");
         populate(COMPONENT, DEPRECATED, "PolicyRuleExpressionParameter");
         populate(COMPONENT, DEPRECATED, "PolicyRuleExpressionSetView");
@@ -234,7 +237,6 @@ public class ClassCategories {
         populate(COMPONENT, TEMPORARY, "LegacyAppliedFilterView");
         populate(COMPONENT, TEMPORARY, "LegacyFilterValueView");
         populate(COMPONENT, TEMPORARY, "LicenseDefinition");
-        populate(COMPONENT, TEMPORARY, "LicenseFamilyRiskRuleView");
         populate(COMPONENT, TEMPORARY, "LicenseTermCategorySummaryView");
         populate(COMPONENT, TEMPORARY, "NameValuePairView");
         populate(COMPONENT, TEMPORARY, "PolicyStatusSummary");
@@ -307,7 +309,6 @@ public class ClassCategories {
         populate(COMPONENT, ClassSourceEnum.NULL, "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsSeverityLevelsView");
         populate(COMPONENT, ClassSourceEnum.NULL, "ProjectVersionPolicyStatusComponentVersionStatusCountsView");
         populate(COMPONENT, ClassSourceEnum.NULL, "RegistrationAttributesView");
-        populate(COMPONENT, ClassSourceEnum.NULL, "RegistrationFeaturesView");
         populate(COMPONENT, ClassSourceEnum.NULL, "RegistrationMessagesView");
         populate(COMPONENT, ClassSourceEnum.NULL, "RegistrationViewFeatures");
         populate(COMPONENT, ClassSourceEnum.NULL, "ReportContentsReportContentView");

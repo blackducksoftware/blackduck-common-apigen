@@ -160,6 +160,15 @@ public class LinkResponseDefinitions {
         final LinkResponseDefinitionItem ugvRolesDefinition = new LinkResponseDefinitionItem(true, "UserView");
         userGroupViewDefinitions.put("users", ugvRolesDefinition);
         definitions.put("UserGroupView", userGroupViewDefinitions);
+
+        // ProjectVersionVulnerableBomComponentsView
+        final Map<String, LinkResponseDefinitionItem> projectVersionVulnerableBomComponentsViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem pvvbcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "ComponentMatchedFilesView");
+        projectVersionVulnerableBomComponentsViewDefinitions.put("matched-files", pvvbcvMatchedFilesDefinition);
+        final LinkResponseDefinitionItem pvvbcvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
+        projectVersionVulnerableBomComponentsViewDefinitions.put("vulnerabilities", pvvbcvVulnerabilitiesDefinition);
+        definitions.put("ProjectVersionVulnerableBomComponentsView", projectVersionVulnerableBomComponentsViewDefinitions);
+
         return definitions;
     }
 

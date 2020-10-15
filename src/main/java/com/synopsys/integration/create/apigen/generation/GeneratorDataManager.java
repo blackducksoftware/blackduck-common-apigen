@@ -63,7 +63,6 @@ public class GeneratorDataManager {
     public void writeFiles() {
         makeClassNamesPrettier();
         logger.info("Writing Java files...");
-        // here is where we could iterate through names, edit redundant enum names
         for (FileGenerationData fileData : fileDataList.values()) {
             try {
                 classWriter.writeFile(fileData);

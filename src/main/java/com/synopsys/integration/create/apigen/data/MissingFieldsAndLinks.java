@@ -55,7 +55,6 @@ public class MissingFieldsAndLinks {
         lvFieldsAndLinks.addLink(new LinkDefinition("text", false));
         missingFieldAndLinkMap.put("LicenseView", lvFieldsAndLinks);
 
-        // TODO - we shouldn't need to insert these fields
         // ProjectVersionLicenseLicensesView
         final MissingFieldAndLinkHelper pvllvFieldsAndLinks = new MissingFieldAndLinkHelper();
         pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionLicenseTypeType", false));
@@ -85,6 +84,12 @@ public class MissingFieldsAndLinks {
         final MissingFieldAndLinkHelper ravFieldsAndLinks = new MissingFieldAndLinkHelper();
         ravFieldsAndLinks.addLink(new LinkDefinition("user", false));
         missingFieldAndLinkMap.put("RoleAssignmentView", ravFieldsAndLinks);
+
+        // ProjectVersionVulnerableBomComponentsView
+        final MissingFieldAndLinkHelper pvvbcvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        pvvbcvFieldsAndLinks.addLink(new LinkDefinition("matched-files", false));
+        pvvbcvFieldsAndLinks.addLink(new LinkDefinition("vulnerabilities", false));
+        missingFieldAndLinkMap.put("ProjectVersionVulnerableBomComponentsView", pvvbcvFieldsAndLinks);
 
         return missingFieldAndLinkMap;
     }

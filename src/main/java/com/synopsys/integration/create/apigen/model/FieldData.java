@@ -67,7 +67,6 @@ public class FieldData {
         if (javaKeyWords.contains(path)) {
             path = path + "_";
         }
-        path = typeTranslator.getSimplifiedClassName(path);
         return path.replace("[]", "");
     }
 
@@ -87,13 +86,18 @@ public class FieldData {
             }
         }
 
-        // Deal with special Swaggerhub - Apigen naming convention conflicts
-        final String swaggerName = typeTranslator.getFieldSwaggerName(nonVersionedFieldDefinitionName, path, type);
+        // Override name of certain fields
+        final String swaggerName = typeTranslator.getTrueFieldName(nonVersionedFieldDefinitionName, path, type);
         if (swaggerName != null) {
             return swaggerName;
         }
 
-        if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && hasSubFields) {
+        if (hasSubFields) {
+            //debug
+            if (path.equals("items")) {
+                System.out.println();
+            }
+
             // append subclass to create new field data type
             String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
             processedType = typeTranslator.getSimplifiedClassName(processedType);

@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.synopsys.integration.create.apigen.GeneratorConfig;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -25,7 +26,7 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 
 public class DirectoryWalkerTest {
-    private static final String API_SPEC_PATH = "api-specification/2019.12.0";
+    private static final String API_SPEC_PATH = "api-specification/2020.8.0";
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(API_SPEC_PATH);
     private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;

@@ -30,7 +30,9 @@ import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.generators.*;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
+import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
+import com.synopsys.integration.create.apigen.model.SimpleFieldDefinition;
 import com.synopsys.integration.create.apigen.parser.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -42,6 +44,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -95,7 +98,7 @@ public class GeneratorRunner {
         String inputPath = generatorConfig.getInputPath();
         File inputDirectory = new File(inputPath);
         if (!inputDirectory.exists()) {
-            logger.info(generatorConfig.getInputPath() + " not found in resources");
+            logger.info(generatorConfig.getInputPath() + " not found");
             System.exit(0);
         }
         ApiParser apiParser = parserFactory.getObject();
@@ -104,21 +107,13 @@ public class GeneratorRunner {
         for (ResponseDefinition response : responses) {
             String responseName = NameParser.getNonVersionedName(response.getName());
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
-            if (missingFields.size() > 0) {
-                response.addFields(missingFields);
-            }
+            response.addFields(missingFields);
+
             Set<LinkDefinition> missingLinks = missingFieldsAndLinks.getMissingLinks(responseName);
-            if (missingLinks.size() > 0) {
-                response.addLinks(missingLinks);
-            }
+            response.addLinks(missingLinks);
         }
 
         generateFiles(responses);
-
-        logger.info("\n******************************\nThere are " + nameAndPathManager.getRandomLinkClassNames().size() + " classes that are referenced but have no data in the API specs: \n");
-        for (String randomClassName : nameAndPathManager.getRandomLinkClassNames()) {
-            logger.info(randomClassName);
-        }
 
         logger.info(
                 "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
@@ -138,9 +133,9 @@ public class GeneratorRunner {
         generatorDataManager.writeFiles();
     }
 
-    private void accumulateMediaTypes(List<ResponseDefinition> requests) throws NullMediaTypeException {
-        for (ResponseDefinition request : requests) {
-            mediaTypePathManager.addMapping(request);
+    private void accumulateMediaTypes(List<ResponseDefinition> responses) throws NullMediaTypeException {
+        for (ResponseDefinition response : responses) {
+            mediaTypePathManager.addMapping(response);
         }
     }
 
@@ -170,8 +165,8 @@ public class GeneratorRunner {
     }
 
     private void accumulateLatestViewAndComponentClassData() throws Exception {
-        Template randomTemplate = config.getTemplate("randomTemplate.ftl");
-        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(randomTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
+        Template simpleTemplate = config.getTemplate("simpleTemplate.ftl");
+        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(simpleTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
     }
 
     private void generateClasses(FieldDefinition field, List<ClassGenerator> generators, String responseMediaType) throws Exception {

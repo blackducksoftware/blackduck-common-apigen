@@ -71,15 +71,15 @@ public class MediaVersionGenerator {
         this.generatorDataManager = generatorDataManager;
     }
 
-    public void generateMostRecentViewAndComponentMediaVersions(Template randomTemplate, String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles)
+    public void generateMostRecentViewAndComponentMediaVersions(Template simpleTemplate, String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles)
         throws Exception {
         final Collection<MediaVersionData> latestViewMediaVersions = mediaVersionDataManager.getLatestViewMediaVersions().values();
         final Collection<MediaVersionData> latestResponseMediaVersions = mediaVersionDataManager.getLatestResponseMediaVersions().values();
         final Collection<MediaVersionData> latestComponentMediaVersions = mediaVersionDataManager.getLatestComponentMediaVersions().values();
 
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToViewFiles, latestViewMediaVersions);
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToResponseFiles, latestResponseMediaVersions);
-        generateMostRecentViewAndComponentMediaVersions(randomTemplate, pathToComponentFiles, latestComponentMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(simpleTemplate, pathToViewFiles, latestViewMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(simpleTemplate, pathToResponseFiles, latestResponseMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(simpleTemplate, pathToComponentFiles, latestComponentMediaVersions);
 
         final Set<MediaVersionData> latestMediaVersions = new HashSet<>();
         latestMediaVersions.addAll(latestComponentMediaVersions);
@@ -87,7 +87,7 @@ public class MediaVersionGenerator {
         mediaTypeMapGenerator.generateMediaTypeMap(latestMediaVersions);
     }
 
-    private void generateMostRecentViewAndComponentMediaVersions(Template randomTemplate, String pathToFiles, Collection<MediaVersionData> latestMediaVersions) throws Exception {
+    private void generateMostRecentViewAndComponentMediaVersions(Template simpleTemplate, String pathToFiles, Collection<MediaVersionData> latestMediaVersions) throws Exception {
         for (final MediaVersionData latestMediaVersion : latestMediaVersions) {
             final Map<String, Object> input = latestMediaVersion.getInput();
             final String className = latestMediaVersion.getNonVersionedClassName();
@@ -104,7 +104,7 @@ public class MediaVersionGenerator {
                 }
 
                 input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
-                generatorDataManager.addFileData(new FileGenerationData(className, randomTemplate, input, pathToFiles));
+                generatorDataManager.addFileData(new FileGenerationData(className, simpleTemplate, input, pathToFiles));
             } catch (final NoSuchElementException e) {
                 logger.info(className + " not categorized in ClassCategories");
             }
