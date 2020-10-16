@@ -42,6 +42,7 @@ public class DirectoryWalkerTest {
     }
 
     @Disabled
+    // Test fails on different ordering of fields.  Worth running to make sure there are no significant alterations, but it is disabled so it does not cause builds to fail.
     @Test
     public void test() throws IOException, URISyntaxException {
         final File testFile = new File("./build/FieldsParserTestTestingData.txt");

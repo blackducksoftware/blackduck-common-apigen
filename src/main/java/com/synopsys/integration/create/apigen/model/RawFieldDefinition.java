@@ -27,6 +27,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class RawFieldDefinition extends ThirdPartyDefinition {
 
@@ -68,10 +72,69 @@ public class RawFieldDefinition extends ThirdPartyDefinition {
 
     public Set<RawFieldDefinition> getSubFields() { return fields; }
 
+    public void addSubFields(Set<RawFieldDefinition> fields) {
+        this.fields.addAll(fields);
+    }
+
+    public void addSubField(RawFieldDefinition field) {
+        this.fields.add(field);
+    }
+
     public Set<LinkDefinition> getLinks() { return links; }
 
     @Override
     public String toString() {
         return "path: " + path + " type: " + type + " optional: " + optional + " fields: " + fields;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = this.path.length()/11
+                       * this.type.length();
+        if (this.allowedValues != null) {
+            for (String value : this.allowedValues) {
+                hash += value.length();
+            }
+        }
+        if (this.fields != null) {
+            for (RawFieldDefinition subField : this.fields) {
+                hash += subField.hashCode();
+            }
+        }
+        return hash;
+    }
+
+    @Override
+    public boolean equals(final Object field) {
+        // null check
+        if (field == null) {
+            return false;
+        }
+
+        // this instance check
+        if (this == field) {
+            return true;
+        }
+
+        //debug
+        try {
+            if (field instanceof RawFieldDefinition) {
+                RawFieldDefinition rawField = ((RawFieldDefinition) field);
+                return rawField.getPath().equals(this.path) &&
+                           rawField.getType().equals(this.type) &&
+                           ((rawField.getAllowedValues() == null && this.allowedValues == null) || rawField.getAllowedValues().equals(this.allowedValues)) &&
+                           (
+                               (rawField.getSubFields() == null && this.fields == null) || ((rawField.getSubFields() != null && this.fields != null) &&
+                                                                                                rawField.getSubFields().stream()
+                                                                                                    .filter(it -> !this.fields.contains(it))
+                                                                                                    .collect(Collectors.toSet())
+                                                                                                    .isEmpty())
+                           );
+            }
+        } catch (NullPointerException e) {
+            System.out.println();
+        }
+        return false;
+    }
+
 }

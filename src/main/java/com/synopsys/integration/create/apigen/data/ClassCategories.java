@@ -320,7 +320,9 @@ public class ClassCategories {
         populate(COMPONENT, ClassSourceEnum.NULL, "VulnerabilityCvss2View");
         populate(COMPONENT, ClassSourceEnum.NULL, "VulnerabilityCvss3View");
 
-        populate(ClassTypeEnum.ENUM, TEMPORARY, "ProjectVersionDistributionType");
+        populate(ClassTypeEnum.ENUM, DEPRECATED, "ProjectVersionDistributionType");
+        populate(ClassTypeEnum.ENUM, DEPRECATED, "LicenseOwnershipType");
+        populate(ClassTypeEnum.ENUM, DEPRECATED, "OriginSourceType");
         populate(ClassTypeEnum.ENUM, TEMPORARY, "ProjectVersionPhaseType");
         populate(ClassTypeEnum.ENUM, TEMPORARY, "VersionBomComponentMatchType");
         populate(ClassTypeEnum.ENUM, TEMPORARY, "VersionBomComponentReviewStatusType");
