@@ -38,12 +38,11 @@ import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 public class FieldDefinitionBuilder {
     private final String path;
-    private final String type;
+    private String type;
     private final Set<String> allowedValues;
-    private final String nonVersionedFieldDefinitionName;
+    private String nonVersionedFieldDefinitionName;
     private boolean optional;
-    private final boolean isArray;
-    private Set<FieldDefinition> subFields = Collections.emptySet();
+    private boolean isArray;
 
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final TypeTranslator typeTranslator;
@@ -78,17 +77,17 @@ public class FieldDefinitionBuilder {
                 fieldDefinition = new FieldDefinition(path, nameOfEnum, optional, allowedValues);
             }
         }
-        fieldDefinition.addSubFields(subFields);
         final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(type));
-        if (missingFields.size() > 0) {
-            fieldDefinition.addSubFields(missingFields);
-        }
+        fieldDefinition.addSubFields(missingFields);
+
         return fieldDefinition;
     }
 
     public String getPath() {
         return path;
     }
+
+
 
     public String getType() {
         return type;
@@ -100,14 +99,6 @@ public class FieldDefinitionBuilder {
 
     public void setOptional(final boolean optional) {
         this.optional = optional;
-    }
-
-    public Set<FieldDefinition> getSubFields() {
-        return subFields;
-    }
-
-    public void setSubFields(final Set<FieldDefinition> subFields) {
-        this.subFields = subFields;
     }
 
     public Set<String> getAllowedValues() {

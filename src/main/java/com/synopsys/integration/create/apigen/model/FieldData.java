@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.parser.DuplicateTypeIdentifier;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 
 public class FieldData {
@@ -53,6 +54,7 @@ public class FieldData {
         this.isArray = type.equals(UtilStrings.ARRAY);
         this.typeTranslator = typeTranslator;
         this.nameAndPathManager = nameAndPathManager;
+
     }
 
     public String getPath() {
@@ -86,10 +88,10 @@ public class FieldData {
             }
         }
 
-        // Override name of certain fields
-        final String swaggerName = typeTranslator.getTrueFieldName(nonVersionedFieldDefinitionName, path, type);
-        if (swaggerName != null) {
-            return swaggerName;
+        // Override type of certain fields
+        final String overrideType = typeTranslator.getTrueFieldName(nonVersionedFieldDefinitionName, path, type);
+        if (overrideType != null) {
+            return overrideType;
         }
 
         if (hasSubFields) {

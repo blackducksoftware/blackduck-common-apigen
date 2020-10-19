@@ -60,6 +60,7 @@ public class DirectoryPathParser implements ApiParser {
     private final Gson gson;
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
+    private final NameParser nameParser;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final FieldDefinitionProcessor processor;
 
@@ -70,6 +71,7 @@ public class DirectoryPathParser implements ApiParser {
         this.gson = gson;
         this.typeTranslator = typeTranslator;
         this.nameAndPathManager = nameAndPathManager;
+        this.nameParser = new NameParser(nameAndPathManager);
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.processor = processor;
     }
@@ -91,6 +93,7 @@ public class DirectoryPathParser implements ApiParser {
 
             final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
             final Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
+
             response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
 
@@ -121,7 +124,6 @@ public class DirectoryPathParser implements ApiParser {
                 final String relativePath = child.getAbsolutePath().substring(prefixLength);
                 final String mediaType = mediaTypes.getLongName(child.getParentFile().getName());
                 if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
-                    final NameParser nameParser = new NameParser(nameAndPathManager);
                     final String responseName = nameParser.computeResponseName(relativePath);
                     final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
                     responseDefinitions.add(new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults));

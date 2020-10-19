@@ -60,7 +60,7 @@ public class MissingFieldsAndLinks {
         pvllvFieldsAndLinks.addField(new FieldDefinition("type", "ProjectVersionLicenseTypeType", false));
         pvllvFieldsAndLinks.addField(new FieldDefinition("licenseDisplay", "String", true));
         pvllvFieldsAndLinks.addField(new FieldDefinition("ownership", "String", true));
-        missingFieldAndLinkMap.put("ProjectVersionLicenseLicensesView", pvllvFieldsAndLinks);
+        //missingFieldAndLinkMap.put("ProjectVersionLicenseLicensesView", pvllvFieldsAndLinks);
 
         // UserView
         final MissingFieldAndLinkHelper uvFieldsAndLinks = new MissingFieldAndLinkHelper();

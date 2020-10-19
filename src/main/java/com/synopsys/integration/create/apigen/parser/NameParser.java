@@ -31,8 +31,6 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.swing.text.View;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -55,6 +53,12 @@ public class NameParser {
         String lastPiece = null;
         DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder = new DifferentiatingClassnamePrefixBuilder(redundantNamePrefixes);
         final ListIterator<String> pathPieces = Arrays.asList(responsePath.split("/")).listIterator();
+
+        //debug
+        if (responsePath.contains("licenses/licenseId/GET")) {
+            System.out.println();
+        }
+
         String nextPiece = getGroomedPiece(pathPieces.next());
         while (pathPieces.hasNext()) {
             firstPiece = lastPiece;
@@ -68,29 +72,33 @@ public class NameParser {
             }
         }
         if (pathPieces.hasNext()) {
-            firstPiece = !nameAndPathManager.getNonLinkClassNames().contains(firstPiece) ? firstPiece : differentiatingPrefixBuilder.getPrefix();
+            firstPiece = !nameAndPathManager.getResponseNamesAndEndpoints().keySet().contains(firstPiece) ? firstPiece : differentiatingPrefixBuilder.getPrefix();
             final String mediaType = pathPieces.next();
-            return computeResponseNameFromPieces(firstPiece, lastPiece, mediaType, differentiatingPrefixBuilder);
+            String currentEndpoint = responsePath.split("GET")[0];
+            return computeResponseNameFromPieces(firstPiece, lastPiece, mediaType, differentiatingPrefixBuilder, currentEndpoint);
         } else {
             return "";
         }
     }
 
-    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType, DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder) {
+    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType, DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder, String currentEndpoint) {
         final String mediaVersion = getMediaVersion(mediaType.substring(mediaType.length() - 6, mediaType.length() - 5));
         final String responseName = getJoinedResponseNamePieces(firstPiece, lastPiece, mediaVersion);
         final String finalResponseName;
-        if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix())) {
+        if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix(), currentEndpoint)) {
             finalResponseName = differentiatingPrefixBuilder.getNameWithPrefix(responseName);
         } else {
             finalResponseName = responseName;
         }
-        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(finalResponseName));
+        nameAndPathManager.addResponseNameAndEndpoint(getNonVersionedName(finalResponseName), currentEndpoint);
+
         return finalResponseName;
     }
 
-    private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix) {
-        return nameAndPathManager.getNonLinkClassNames().contains(getNonVersionedName(responseName)) && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
+    private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix, String currentEndpoint) {
+        String incumbentEndpoint = nameAndPathManager.getResponseNamesAndEndpoints().get(getNonVersionedName(responseName));
+        return incumbentEndpoint != null && !incumbentEndpoint.equals(currentEndpoint)
+                   && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
     }
 
     private String getGroomedPiece(final String piece) {

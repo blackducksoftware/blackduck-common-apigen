@@ -22,10 +22,8 @@
  */
 package com.synopsys.integration.create.apigen.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +36,7 @@ public class NameAndPathManager {
 
     private final Set<ApiPathData> apiDiscoveryData;
     private final Set<String> apiDiscoveryDataPaths;
+    private final Map<String, String> responseNamesAndEndpoints;
     private final Set<String> nonLinkClassNames;
     private final Set<String> linkClassNames;
     private final Map<String, String> nullLinkResultClasses;
@@ -45,6 +44,7 @@ public class NameAndPathManager {
     public NameAndPathManager() {
         apiDiscoveryData = new HashSet<>();
         apiDiscoveryDataPaths = new HashSet<>();
+        responseNamesAndEndpoints = new HashMap<>();
         nonLinkClassNames = new HashSet<>();
         linkClassNames = new HashSet<>();
         nullLinkResultClasses = new HashMap<>();
@@ -62,6 +62,14 @@ public class NameAndPathManager {
 
     public void addApiDiscoveryPath(final String path) {
         apiDiscoveryDataPaths.add(path);
+    }
+
+    public Map<String, String> getResponseNamesAndEndpoints() {
+        return responseNamesAndEndpoints;
+    }
+
+    public void addResponseNameAndEndpoint(String name, String path) {
+        responseNamesAndEndpoints.put(name, path);
     }
 
     public Set<String> getNonLinkClassNames() {

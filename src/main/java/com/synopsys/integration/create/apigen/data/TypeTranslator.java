@@ -84,9 +84,9 @@ public class TypeTranslator {
         translations.put("JournalTriggerType", "ProjectItemsTriggerDataType");
         translations.put("JournalTriggerView", "ProjectItemsTriggerDataView");
         translations.put("LicenseFamilyRiskRuleView", "LicenseFamilyLicenseFamilyRiskRulesView");
-        translations.put("LicenseFamilySummaryView", "ProjectVersionLicenseLicensesLicenseFamilySummaryView");
+        translations.put("LicenseFamilySummaryView", "ComponentVersionLicenseLicensesLicenseFamilySummaryView");
         translations.put("LicenseTermCategorySummaryView", "ProjectVersionLicenseLicensesLicenseFamilySummaryView");
-        translations.put("LicenseOwnershipType", "ProjectVersionLicenseLicensesOwnershipType");
+        //translations.put("LicenseOwnershipType", "ComponentVersionLicenseLicensesOwnershipType");
         translations.put("LicenseSourceType", "LicenseLicenseSourceType");
         translations.put("MatchedFileView", "ComponentMatchedFilesView");
         translations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
@@ -94,14 +94,14 @@ public class TypeTranslator {
         translations.put("OriginFileLevelCopyrightDataView", "OriginFileCopyrightsView");
         translations.put("OriginFuzzyFileLevelDataView", "OriginFileLicensesFuzzyView");
         translations.put("OriginLicenseFileLevelDataView", "FileLicensesLicenseView");
-        translations.put("OriginSourceType", "ComponentSourceType");
+        //translations.put("OriginSourceType", "ComponentSourceType");
         translations.put("PolicyRuleExpressionSetOperatorType", "PolicyRuleExpressionOperatorType");
         translations.put("PolicyRuleExpressionParameter", "PolicyRuleExpressionExpressionsParametersView");
         translations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
         translations.put("PolicyRuleExpressionView", "PolicyRuleExpressionExpressionsView");
         translations.put("PolicySummaryStatusType", "PolicyStatusType");
         translations.put("PolicyStatusView", "ComponentPolicyStatusView");
-        translations.put("ProjectVersionDistributionType", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType");
+        //translations.put("ProjectVersionDistributionType", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType");
         translations.put("RegistrationAttributeType", "RegistrationAttributesAttributeType");
         translations.put("RegistrationAttributeView", "RegistrationAttributesView");
         translations.put("RegistrationFeatureView", "RegistrationFeaturesView");
@@ -129,10 +129,10 @@ public class TypeTranslator {
         translations.put("VersionBomPolicyRuleView", "ComponentPolicyRulesView");
         translations.put("VersionBomPolicyStatusView", "ProjectVersionPolicyStatusView");
         translations.put("VersionDataView", "ComponentVersionRiskProfileVersionDataView");
-        translations.put("VulnerabilityCvss2IntegrityImpactType", "VulnerabilityCvss2ConfidentialityImpactType");
-        translations.put("VulnerabilityCvss3IntegrityImpactType", "VulnerabilityCvss3ConfidentialityImpactType");
+        //translations.put("VulnerabilityCvss2IntegrityImpactType", "VulnerabilityCvss2ConfidentialityImpactType");
+        //translations.put("VulnerabilityCvss3IntegrityImpactType", "VulnerabilityCvss3ConfidentialityImpactType");
         translations.put("VulnerabilityWithRemediationSeverityType", "VulnerabilityRemediationCvss3SeverityType");
-        translations.put("VulnerabilitySourceType", "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSourceType");
+        //translations.put("VulnerabilitySourceType", "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationSourceType");
         translations.put("VulnerabilityWithRemediationStatusType", "VulnerabilityRemediationRemediationStatusType");
         translations.put("VulnerabilityWithRemediationView", "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationView");
         translations.put("VulnerableComponentView", "ProjectVersionVulnerableBomComponentsView");
@@ -153,13 +153,6 @@ public class TypeTranslator {
         // ComponentVersionRemediatingNoVulnerabilitiesView
         List<FieldTranslation> cvrnvvTranslations = new ArrayList<>();
         fieldTranslations.put("ComponentVersionRemediatingNoVulnerabilitiesView", cvrnvvTranslations);
-
-        // ComponentVersionView
-        List<FieldTranslation> cvvTranslations = new ArrayList<>();
-        // As of 2020.8.0 - the specs do not reflect this, but REST responses from blackduck do
-        FieldTranslation cvvLicenseTranslation = new FieldTranslation("license", "ProjectVersionLicenseView", UtilStrings.OBJECT);
-        cvvTranslations.add(cvvLicenseTranslation);
-        fieldTranslations.put("ComponentVersionView", cvvTranslations);
 
         // ComponentVersionLicenseLicensesView
         List<FieldTranslation> cvllvTranslations = new ArrayList<>();
@@ -224,7 +217,7 @@ public class TypeTranslator {
         // ProjectVersionView
         List<FieldTranslation> pvvTranslations = new ArrayList<>();
         FieldTranslation pvvDistributionTranslation = new FieldTranslation("distribution", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType", UtilStrings.STRING);
-        pvvTranslations.add(pvvDistributionTranslation);
+        //pvvTranslations.add(pvvDistributionTranslation);
         FieldTranslation pvvPhaseTranslation = new FieldTranslation("phase", "ProjectVersionPhaseType", UtilStrings.STRING);
         pvvTranslations.add(pvvPhaseTranslation);
         fieldTranslations.put("ProjectVersionView", pvvTranslations);

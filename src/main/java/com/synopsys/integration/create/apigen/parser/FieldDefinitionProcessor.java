@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.parser;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,12 +62,12 @@ public class FieldDefinitionProcessor {
 
     public Set<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final Set<RawFieldDefinition> rawFieldDefinitions) {
         final Set<FieldDefinition> fieldDefinitions = new HashSet<>();
-        for (final RawFieldDefinition field : rawFieldDefinitions) {
-            final String path = field.getPath();
-            final String type = field.getType();
-            final boolean optional = field.isOptional();
+        for (final RawFieldDefinition rawField : rawFieldDefinitions) {
+            final String path = rawField.getPath();
+            final String type = rawField.getType();
+            final boolean optional = rawField.isOptional();
 
-            final FieldData fieldData = new FieldData(path, type, fieldDefinitionName, field.getSubFields() != null, typeTranslator, nameAndPathManager);
+            final FieldData fieldData = new FieldData(path, type, fieldDefinitionName, rawField.getSubFields() != null, typeTranslator, nameAndPathManager);
 
             final FieldDefinition fieldDefinition;
 
@@ -75,16 +76,16 @@ public class FieldDefinitionProcessor {
                 continue;
             }
 
-            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, field.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
+            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, rawField.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
             builder.setOptional(optional);
             fieldDefinition = builder.build();
-            screenForDuplicateField(field, fieldDefinition);
+            fieldDefinition.setType(screenForDuplicateField(rawField, fieldDefinition.getType()));
 
             // If field has subfields, recursively parse and link its subfields
-            if ((type.equals(UtilStrings.OBJECT) || type.equals(UtilStrings.ARRAY)) && field.getSubFields() != null) {
+            if (rawField.getSubFields() != null) {
 
                 // append subclass to create new field data type
-                final Set<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), field.getSubFields());
+                final Set<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }
             fieldDefinitions.add(fieldDefinition);
@@ -92,34 +93,49 @@ public class FieldDefinitionProcessor {
         return fieldDefinitions;
     }
 
-    private void screenForDuplicateField(RawFieldDefinition rawField, FieldDefinition fieldDefinition) {
+    private String screenForDuplicateField(RawFieldDefinition rawField, String originalType) {
         Set<String> enumValues = rawField.getAllowedValues();
         if (enumValues == null) {
+
+            //debug
+            if ((rawField != null && rawField.getSubFields() != null && rawField.getSubFields().stream().anyMatch(it -> it.getPath().equals("ownership")))) {
+                System.out.println();
+            }
+
+            originalType = NameParser.getNonVersionedName(originalType);
+            //originalType = NameParser.stripListNotation(originalType);
+
             String trueType = uniqueFieldsToNames.get(rawField.getSubFields());
-            trueType = restoreListNotation(fieldDefinition, trueType);
             if (trueType != null) {
-                fieldDefinition.setType(trueType);
+                trueType = restoreListNotation(originalType, trueType);
+                return trueType;
             } else if (rawField.getSubFields() != null) {
-                uniqueFieldsToNames.put(rawField.getSubFields(), fieldDefinition.getType());
+                //debug
+                if (uniqueFieldsToNames.values().contains(originalType)) {
+                    System.out.println();
+                }
+                uniqueFieldsToNames.put(rawField.getSubFields(), originalType);
             }
         } else {
-            screenForDuplicateEnum(fieldDefinition, enumValues);
+            screenForDuplicateEnum(originalType, enumValues);
         }
+        return originalType;
     }
 
-    private void screenForDuplicateEnum(FieldDefinition fieldDefinition, Set<String> enumValues) {
+    private String screenForDuplicateEnum(String originalType, Set<String> enumValues) {
         String trueEnumType = uniqueEnumsToNames.get(enumValues);
-        trueEnumType = restoreListNotation(fieldDefinition, trueEnumType);
+        trueEnumType = restoreListNotation(originalType, trueEnumType);
 
         if (trueEnumType != null) {
-            fieldDefinition.setType(trueEnumType);
+            return trueEnumType;
         } else {
-            uniqueEnumsToNames.put(enumValues, fieldDefinition.getType());
+            uniqueEnumsToNames.put(enumValues, originalType);
         }
+        return originalType;
     }
 
-    private String restoreListNotation(FieldDefinition fieldDefinition, String trueType) {
-        if (trueType != null && !trueType.contains(UtilStrings.JAVA_LIST) && fieldDefinition.getType().contains(UtilStrings.JAVA_LIST)) {
+    private String restoreListNotation(String originalType, String trueType) {
+        if (trueType != null && !trueType.contains(UtilStrings.JAVA_LIST) && originalType.contains(UtilStrings.JAVA_LIST)) {
             trueType = UtilStrings.JAVA_LIST + trueType + ">";
         }
         return trueType;
