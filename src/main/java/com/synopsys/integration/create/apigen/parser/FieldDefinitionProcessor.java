@@ -25,7 +25,6 @@ package com.synopsys.integration.create.apigen.parser;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +46,16 @@ public class FieldDefinitionProcessor {
 
     private final TypeTranslator typeTranslator;
     private final NameAndPathManager nameAndPathManager;
+    private final DuplicateTypeIdentifier duplicateTypeIdentifier;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final Map<Set<RawFieldDefinition>, String> uniqueFieldsToNames;
     private final Map<Set<String>, String> uniqueEnumsToNames;
 
     @Autowired
-    public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks) {
+    public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final DuplicateTypeIdentifier duplicateTypeIdentifier, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.typeTranslator = typeTranslator;
         this.nameAndPathManager = nameAndPathManager;
+        this.duplicateTypeIdentifier = duplicateTypeIdentifier;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.uniqueFieldsToNames = new HashMap<>();
         this.uniqueEnumsToNames = new HashMap<>();
@@ -79,7 +80,7 @@ public class FieldDefinitionProcessor {
             final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, rawField.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
             builder.setOptional(optional);
             fieldDefinition = builder.build();
-            fieldDefinition.setType(screenForDuplicateField(rawField, fieldDefinition.getType()));
+            fieldDefinition.setType(duplicateTypeIdentifier.screenForDuplicateType(rawField, fieldDefinition.getType()));
 
             // If field has subfields, recursively parse and link its subfields
             if (rawField.getSubFields() != null) {
@@ -93,51 +94,4 @@ public class FieldDefinitionProcessor {
         return fieldDefinitions;
     }
 
-    private String screenForDuplicateField(RawFieldDefinition rawField, String originalType) {
-        Set<String> enumValues = rawField.getAllowedValues();
-        if (enumValues == null) {
-
-            //debug
-            if ((rawField != null && rawField.getSubFields() != null && rawField.getSubFields().stream().anyMatch(it -> it.getPath().equals("ownership")))) {
-                System.out.println();
-            }
-
-            originalType = NameParser.getNonVersionedName(originalType);
-            //originalType = NameParser.stripListNotation(originalType);
-
-            String trueType = uniqueFieldsToNames.get(rawField.getSubFields());
-            if (trueType != null) {
-                trueType = restoreListNotation(originalType, trueType);
-                return trueType;
-            } else if (rawField.getSubFields() != null) {
-                //debug
-                if (uniqueFieldsToNames.values().contains(originalType)) {
-                    System.out.println();
-                }
-                uniqueFieldsToNames.put(rawField.getSubFields(), originalType);
-            }
-        } else {
-            screenForDuplicateEnum(originalType, enumValues);
-        }
-        return originalType;
-    }
-
-    private String screenForDuplicateEnum(String originalType, Set<String> enumValues) {
-        String trueEnumType = uniqueEnumsToNames.get(enumValues);
-        trueEnumType = restoreListNotation(originalType, trueEnumType);
-
-        if (trueEnumType != null) {
-            return trueEnumType;
-        } else {
-            uniqueEnumsToNames.put(enumValues, originalType);
-        }
-        return originalType;
-    }
-
-    private String restoreListNotation(String originalType, String trueType) {
-        if (trueType != null && !trueType.contains(UtilStrings.JAVA_LIST) && originalType.contains(UtilStrings.JAVA_LIST)) {
-            trueType = UtilStrings.JAVA_LIST + trueType + ">";
-        }
-        return trueType;
-    }
 }

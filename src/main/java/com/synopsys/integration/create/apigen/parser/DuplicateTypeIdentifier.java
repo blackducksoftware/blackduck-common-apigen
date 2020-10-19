@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
+
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
+@Component
 public class DuplicateTypeIdentifier {
 
     private final Map<Set<RawFieldDefinition>, String> uniqueFieldsToNames;
@@ -17,7 +20,7 @@ public class DuplicateTypeIdentifier {
         this.uniqueEnumsToNames = new HashMap<>();
     }
 
-    public String screenForDuplicateField(RawFieldDefinition rawField, String originalType) {
+    public String screenForDuplicateType(RawFieldDefinition rawField, String originalType) {
         Set<String> enumValues = rawField.getAllowedValues();
         if (enumValues == null) {
             originalType = NameParser.getNonVersionedName(originalType);
@@ -30,16 +33,15 @@ public class DuplicateTypeIdentifier {
                 uniqueFieldsToNames.put(rawField.getSubFields(), originalType);
             }
         } else {
-            screenForDuplicateEnum(originalType, enumValues);
+            return screenForDuplicateEnum(originalType, enumValues);
         }
         return originalType;
     }
 
     private String screenForDuplicateEnum(String originalType, Set<String> enumValues) {
         String trueEnumType = uniqueEnumsToNames.get(enumValues);
-        trueEnumType = restoreListNotation(originalType, trueEnumType);
-
         if (trueEnumType != null) {
+            trueEnumType = restoreListNotation(originalType, trueEnumType);
             return trueEnumType;
         } else {
             uniqueEnumsToNames.put(enumValues, originalType);

@@ -48,6 +48,7 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiParser;
 import com.synopsys.integration.create.apigen.parser.DefinitionParser;
+import com.synopsys.integration.create.apigen.parser.DuplicateTypeIdentifier;
 import com.synopsys.integration.create.apigen.parser.FieldDefinitionProcessor;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.create.apigen.parser.ResponseType;
@@ -191,8 +192,8 @@ public class DirectoryPathParser implements ApiParser {
     private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
         final DefinitionParser definitionParser = new DefinitionParser(gson, file);
         final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-        final FieldDefinitionProcessor fieldDefinitionProcessor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
-        final Set<FieldDefinition> fieldDefinitions = fieldDefinitionProcessor.parseFieldDefinitions("", rawFieldDefinitions);
+        FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, new DuplicateTypeIdentifier(), missingFieldsAndLinks);
+        final Set<FieldDefinition> fieldDefinitions = processor.parseFieldDefinitions("", rawFieldDefinitions);
         final ResponseDefinition response = new ResponseDefinition("", "", "", false);
         response.addFields(fieldDefinitions);
         return response;
