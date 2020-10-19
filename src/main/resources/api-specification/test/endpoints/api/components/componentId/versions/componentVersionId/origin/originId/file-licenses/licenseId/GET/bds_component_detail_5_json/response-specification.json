@@ -1,0 +1,65 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "The specific sub-set of license file level data representations requested",
+    "fields" : [ {
+      "path" : "licenseName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the license associated with the file"
+    }, {
+      "path" : "licenseGroupName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the license group associated with the file"
+    }, {
+      "path" : "downloadSha1",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The sha1 encoding of the file contents"
+    }, {
+      "path" : "path",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relative path to the file"
+    }, {
+      "path" : "offsets[]",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The representation of the text offset",
+      "fields" : [ {
+        "path" : "startByte",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The byte where the copryright data begins"
+      }, {
+        "path" : "endByte",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The byte where the copryright data ends"
+      } ]
+    }, {
+      "path" : "archivePath",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relative path to the archive file"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ {
+    "rel" : "next",
+    "optional" : true,
+    "description" : "A link to the next page of the results set, present only if there is another page of results"
+  } ]
+}

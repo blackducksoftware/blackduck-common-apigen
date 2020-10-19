@@ -1,0 +1,50 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of components requested",
+    "fields" : [ {
+      "path" : "componentName",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Label summarizing the identity of the component found"
+    }, {
+      "path" : "versionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Label specifying the specific version of the component found"
+    }, {
+      "path" : "originId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "ID indicating where the component came from"
+    }, {
+      "path" : "component",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Resource representing the component the search matched"
+    }, {
+      "path" : "version",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Resource representing the specific version the search matched"
+    }, {
+      "path" : "variant",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Resource representing the specific origin the search matched"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}
