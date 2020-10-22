@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,46 +46,30 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 public class FieldDefinitionProcessor {
 
     private final TypeTranslator typeTranslator;
-    private final NameAndPathManager nameAndPathManager;
     private final DuplicateTypeIdentifier duplicateTypeIdentifier;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
-    private final Map<Set<RawFieldDefinition>, String> uniqueFieldsToNames;
-    private final Map<Set<String>, String> uniqueEnumsToNames;
 
     @Autowired
-    public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final DuplicateTypeIdentifier duplicateTypeIdentifier, final MissingFieldsAndLinks missingFieldsAndLinks) {
+    public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final DuplicateTypeIdentifier duplicateTypeIdentifier, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.typeTranslator = typeTranslator;
-        this.nameAndPathManager = nameAndPathManager;
         this.duplicateTypeIdentifier = duplicateTypeIdentifier;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
-        this.uniqueFieldsToNames = new HashMap<>();
-        this.uniqueEnumsToNames = new HashMap<>();
     }
 
     public Set<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final Set<RawFieldDefinition> rawFieldDefinitions) {
         final Set<FieldDefinition> fieldDefinitions = new HashSet<>();
         for (final RawFieldDefinition rawField : rawFieldDefinitions) {
-            final String path = rawField.getPath();
-            final String type = rawField.getType();
-            final boolean optional = rawField.isOptional();
-
-            final FieldData fieldData = new FieldData(path, type, fieldDefinitionName, rawField.getSubFields() != null, typeTranslator, nameAndPathManager);
-
-            final FieldDefinition fieldDefinition;
-
             // Ignore 'data' and '_meta' fields
-            if (path.equals(UtilStrings.DATA) || path.equals(UtilStrings.META)) {
+            if (rawField.getPath().equals(UtilStrings.DATA) || rawField.getPath().equals(UtilStrings.META)) {
                 continue;
             }
 
-            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, rawField.getAllowedValues(), missingFieldsAndLinks, typeTranslator);
-            builder.setOptional(optional);
-            fieldDefinition = builder.build();
-            fieldDefinition.setType(duplicateTypeIdentifier.screenForDuplicateType(rawField, fieldDefinition.getType()));
+            final FieldData fieldData = new FieldData(rawField, fieldDefinitionName, typeTranslator, duplicateTypeIdentifier);
+            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, rawField.getAllowedValues(), missingFieldsAndLinks);
+            final FieldDefinition fieldDefinition = builder.build();
 
             // If field has subfields, recursively parse and link its subfields
             if (rawField.getSubFields() != null) {
-
                 // append subclass to create new field data type
                 final Set<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
                 fieldDefinition.addSubFields(subFields);

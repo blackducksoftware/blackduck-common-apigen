@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.create.apigen.generation;
 
+import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,13 +53,38 @@ public class GeneratorDataManager {
         FileGenerationData dataToStore = data;
         if (fileDataList.containsKey(data.getClassName())) {
             FileGenerationData currentData = fileDataList.get(data.getClassName());
-            Map<String, Object> newInputMap = new HashMap<>();
-            newInputMap.putAll(currentData.getInput());
-            newInputMap.putAll(data.getInput());
+            Map<String, Object> newInputMap = aggregateInputData(currentData.getInput(), data.getInput());
             dataToStore = new FileGenerationData(dataToStore.getClassName(), data.getTemplate(), newInputMap, data.getDestination());
         }
 
         fileDataList.put(dataToStore.getClassName(), dataToStore);
+    }
+
+    private Map<String, Object> aggregateInputData(Map<String, Object> currentInput, Map<String, Object> newInput) {
+        Map<String, Object> finalInput = new HashMap<>(currentInput);
+        for (Map.Entry<String, Object> newEntry : newInput.entrySet()) {
+            // We want to add new values to the already existing entry
+            Object currentValueForKey = finalInput.get(newEntry.getKey());
+            if (currentValueForKey == null) {
+                finalInput.put(newEntry.getKey(), newEntry.getValue());
+            } else if (currentValueForKey instanceof Collection) {
+                // If the current value for this key is a Collection, we want to add values, not override it
+                if (newEntry.getValue() instanceof Collection) {
+                    Collection currentCollectionForKey = ((Collection) currentValueForKey);
+                    for (Object item : ((Collection) newEntry.getValue())) {
+                        if (!currentCollectionForKey.contains(item)) {
+                            currentCollectionForKey.add(item);
+                        }
+                    }
+                } else {
+                    ((Collection) currentValueForKey).add(newEntry.getValue());
+                }
+                finalInput.put(newEntry.getKey(), currentValueForKey);
+            }
+            // If there is a non-Collection value that already exists for this key, we are going to leave it there
+            // This implementation assumes values for file data input will consist solely of Objects and Collections of Objects
+        }
+        return finalInput;
     }
 
     public void writeFiles() {

@@ -36,7 +36,7 @@ public class DirectoryWalkerTest {
         TypeTranslator typeTranslator = new TypeTranslator();
         NameAndPathManager nameAndPathManager = new NameAndPathManager();
         MissingFieldsAndLinks missingFieldsAndLinks = new MissingFieldsAndLinks();
-        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, nameAndPathManager, missingFieldsAndLinks);
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, new DuplicateTypeIdentifier(), missingFieldsAndLinks);
         final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
         this.directoryWalker = new DirectoryWalker(gson, apiParser);
     }

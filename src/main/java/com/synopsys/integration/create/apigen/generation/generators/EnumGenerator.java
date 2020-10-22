@@ -87,12 +87,6 @@ public class EnumGenerator extends ClassGenerator {
             input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(classType));
         }
         generatorDataManager.addFileData(new FileGenerationData(classType, template, input, filePathUtil.getOutputPathToEnumFiles()));
-
-        for (final FieldDefinition subField : field.getSubFields()) {
-            if (isApplicable(subField)) {
-                generateClass(subField, responseMediaType, template);
-            }
-        }
     }
 
     @Override

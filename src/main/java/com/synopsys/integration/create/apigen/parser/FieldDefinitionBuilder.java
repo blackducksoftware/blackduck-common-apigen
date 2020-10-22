@@ -40,43 +40,27 @@ public class FieldDefinitionBuilder {
     private final String path;
     private String type;
     private final Set<String> allowedValues;
-    private String nonVersionedFieldDefinitionName;
     private boolean optional;
-    private boolean isArray;
 
     private final MissingFieldsAndLinks missingFieldsAndLinks;
-    private final TypeTranslator typeTranslator;
 
-    public FieldDefinitionBuilder(final FieldData fieldData, final Set<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks, final TypeTranslator typeTranslator) {
+    public FieldDefinitionBuilder(final FieldData fieldData, final Set<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.path = fieldData.getProcessedPath();
         this.type = fieldData.getProcessedType();
-        this.nonVersionedFieldDefinitionName = fieldData.getNonVersionedFieldDefinitionName();
+        this.optional = fieldData.isOptional();
         this.allowedValues = allowedValues;
-        this.isArray = fieldData.isArray();
         this.missingFieldsAndLinks = missingFieldsAndLinks;
-        this.typeTranslator = typeTranslator;
     }
 
     public FieldDefinition build() {
 
         final FieldDefinition fieldDefinition;
-
-        String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(path) + UtilStrings.ENUM;
-        nameOfEnum = typeTranslator.getSimplifiedClassName(nameOfEnum);
-
-        // For fields with type 'Array', change type to a Java List<E>
-        if (isArray) {
-            final String coreType = type.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : type;
-            fieldDefinition = allowedValues == null ? new FieldDefinition(path, "java.util.List<" + coreType + ">", optional) : new FieldDefinition(path, "java.util.List<" + nameOfEnum + ">", optional, allowedValues);
+        if (allowedValues == null) {
+            fieldDefinition = new FieldDefinition(path, type, optional);
         } else {
-            if (allowedValues == null) {
-                fieldDefinition = new FieldDefinition(path, type, optional);
-            } else if (NumberUtils.isCreatable(allowedValues.iterator().next())) {
-                fieldDefinition = new FieldDefinition(path, UtilStrings.INTEGER, optional);
-            } else {
-                fieldDefinition = new FieldDefinition(path, nameOfEnum, optional, allowedValues);
-            }
+            fieldDefinition = new FieldDefinition(path, type, optional, allowedValues);
         }
+
         final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(type));
         fieldDefinition.addSubFields(missingFields);
 
@@ -86,8 +70,6 @@ public class FieldDefinitionBuilder {
     public String getPath() {
         return path;
     }
-
-
 
     public String getType() {
         return type;
@@ -103,9 +85,5 @@ public class FieldDefinitionBuilder {
 
     public Set<String> getAllowedValues() {
         return allowedValues;
-    }
-
-    public String getNonVersionedFieldDefinitionName() {
-        return nonVersionedFieldDefinitionName;
     }
 }

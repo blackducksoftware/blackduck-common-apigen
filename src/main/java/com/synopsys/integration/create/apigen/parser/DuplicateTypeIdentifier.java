@@ -24,7 +24,6 @@ public class DuplicateTypeIdentifier {
         Set<String> enumValues = rawField.getAllowedValues();
         if (enumValues == null) {
             originalType = NameParser.getNonVersionedName(originalType);
-            originalType = NameParser.stripListNotation(originalType);
             String trueType = uniqueFieldsToNames.get(rawField.getSubFields());
             if (trueType != null) {
                 trueType = restoreListNotation(originalType, trueType);

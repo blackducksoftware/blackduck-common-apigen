@@ -116,23 +116,18 @@ public class RawFieldDefinition extends ThirdPartyDefinition {
             return true;
         }
 
-        //debug
-        try {
-            if (field instanceof RawFieldDefinition) {
-                RawFieldDefinition rawField = ((RawFieldDefinition) field);
-                return rawField.getPath().equals(this.path) &&
-                           rawField.getType().equals(this.type) &&
-                           ((rawField.getAllowedValues() == null && this.allowedValues == null) || rawField.getAllowedValues().equals(this.allowedValues)) &&
-                           (
-                               (rawField.getSubFields() == null && this.fields == null) || ((rawField.getSubFields() != null && this.fields != null) &&
-                                                                                                rawField.getSubFields().stream()
-                                                                                                    .filter(it -> !this.fields.contains(it))
-                                                                                                    .collect(Collectors.toSet())
-                                                                                                    .isEmpty())
-                           );
-            }
-        } catch (NullPointerException e) {
-            System.out.println();
+        if (field instanceof RawFieldDefinition) {
+            RawFieldDefinition rawField = ((RawFieldDefinition) field);
+            return rawField.getPath().equals(this.path) &&
+                       rawField.getType().equals(this.type) &&
+                       ((rawField.getAllowedValues() == null && this.allowedValues == null) || rawField.getAllowedValues().equals(this.allowedValues)) &&
+                       (
+                           (rawField.getSubFields() == null && this.fields == null) || ((rawField.getSubFields() != null && this.fields != null) &&
+                                                                                            rawField.getSubFields().stream()
+                                                                                                .filter(it -> !this.fields.contains(it))
+                                                                                                .collect(Collectors.toSet())
+                                                                                                .isEmpty())
+                       );
         }
         return false;
     }

@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FieldDefinition extends Definition {
     private final String path;
@@ -68,4 +69,30 @@ public class FieldDefinition extends Definition {
 
     public void addSubFields(final Set<FieldDefinition> subFields) { fields.addAll(subFields); }
 
+    // When comparing constructed FieldDefinition's, we will only consider path and type, as the construction process will have already
+    // assigned distinct types to distinct definitions.
+    @Override
+    public int hashCode() {
+        return this.path.length()/11 * this.type.length();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        // null check
+        if (obj == null) {
+            return false;
+        }
+
+        // this instance check
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof FieldDefinition) {
+            FieldDefinition field = ((FieldDefinition) obj);
+            return field.getPath().equals(this.path) &&
+                       field.getType().equals(this.type);
+        }
+        return false;
+    }
 }

@@ -89,9 +89,6 @@ public class ComponentGenerator extends ClassGenerator {
         final Set<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
             importFinder.addFieldImports(imports, subField.getType(), subField.isOptional());
-            if (isApplicable(subField)) {
-                generateClass(subField, responseMediaType, template);
-            }
         }
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
         fieldType = typeTranslator.getSimplifiedClassName(fieldType);

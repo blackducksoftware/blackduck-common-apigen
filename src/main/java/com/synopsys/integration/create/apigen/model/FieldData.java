@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.model;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -35,26 +36,23 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 
 public class FieldData {
     private final TypeTranslator typeTranslator;
-    private final NameAndPathManager nameAndPathManager;
+    private final DuplicateTypeIdentifier duplicateTypeIdentifier;
     private static final Set<String> javaKeyWords = UtilStrings.getJavaKeyWords();
     private static final Set<String> dateSuffixes = UtilStrings.getDateSuffixes();
-
+    
+    private final RawFieldDefinition rawFieldDefinition;
     private final String fieldDefinitionName;
     private String path;
     private final String type;
-    private final boolean hasSubFields;
-    private final boolean isArray;
 
     @Autowired
-    public FieldData(final String path, final String type, final String fieldDefinitionName, final boolean hasSubFields, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager) {
+    public FieldData(final RawFieldDefinition rawFieldDefinition, final String fieldDefinitionName, final TypeTranslator typeTranslator, DuplicateTypeIdentifier duplicateTypeIdentifier) {
+        this.rawFieldDefinition = rawFieldDefinition;
         this.fieldDefinitionName = fieldDefinitionName;
-        this.path = path;
-        this.type = type;
-        this.hasSubFields = hasSubFields;
-        this.isArray = type.equals(UtilStrings.ARRAY);
+        this.path = rawFieldDefinition.getPath();
+        this.type = rawFieldDefinition.getType();
         this.typeTranslator = typeTranslator;
-        this.nameAndPathManager = nameAndPathManager;
-
+        this.duplicateTypeIdentifier = duplicateTypeIdentifier;
     }
 
     public String getPath() {
@@ -63,6 +61,10 @@ public class FieldData {
 
     public String getType() {
         return type;
+    }
+
+    public boolean isOptional() {
+        return rawFieldDefinition.isOptional();
     }
 
     public String getProcessedPath() {
@@ -75,48 +77,64 @@ public class FieldData {
     public String getProcessedType() {
         final String mediaVersion = NameParser.getMediaVersion(fieldDefinitionName);
         final String nonVersionedFieldDefinitionName = NameParser.getNonVersionedName(fieldDefinitionName);
+        String processedType = type;
 
-        // Deal with fields of type 'Number'
-        if (type.equals(UtilStrings.NUMBER)) {
-            return UtilStrings.BIG_DECIMAL;
+        // Handle fields of type 'Number'
+        if (processedType.equals(UtilStrings.NUMBER)) {
+            processedType = UtilStrings.BIG_DECIMAL;
         }
 
-        // Deal with Date fields
+        // Handle Date fields
         for (String dateSuffix : dateSuffixes) {
             if (path.endsWith(dateSuffix)) {
-                return UtilStrings.JAVA_DATE;
+                processedType = UtilStrings.JAVA_DATE;
             }
         }
+        
+        // Handle objects that have subfields
+        if (rawFieldDefinition.getSubFields() != null) {
+            // append path (name) of field to create new type
+            processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
+            if (mediaVersion != null) {
+                processedType = processedType + "V" + mediaVersion;
+            }
+        }
+
+        // Handle enums
+        if (rawFieldDefinition.getAllowedValues() != null) {
+            // If it is an enum with integer values, it is just an integer
+            if (NumberUtils.isCreatable(rawFieldDefinition.getAllowedValues().iterator().next())) {
+                processedType = UtilStrings.INTEGER;
+            } else {
+                String nameOfEnum = nonVersionedFieldDefinitionName.replace("View", "") + StringUtils.capitalize(getProcessedPath()) + UtilStrings.ENUM;
+                processedType = nameOfEnum;
+            }
+        }
+        
+        // Handle naming simplifications
+        processedType = typeTranslator.getSimplifiedClassName(processedType);
 
         // Override type of certain fields
         final String overrideType = typeTranslator.getTrueFieldName(nonVersionedFieldDefinitionName, path, type);
         if (overrideType != null) {
-            return overrideType;
+            processedType = overrideType;
         }
 
-        if (hasSubFields) {
-            //debug
-            if (path.equals("items")) {
-                System.out.println();
-            }
-
-            // append subclass to create new field data type
-            String processedType = NameParser.reorderViewInName(nonVersionedFieldDefinitionName + StringUtils.capitalize(getProcessedPath()));
-            processedType = typeTranslator.getSimplifiedClassName(processedType);
-            if (mediaVersion != null) {
-                return processedType + "V" + mediaVersion;
-            }
-            return processedType;
+        // Appropriately wrap list types
+        if (type.equals(UtilStrings.ARRAY)) {
+            final String coreType = processedType.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : processedType;
+            processedType = "java.util.List<" + coreType + ">";
         }
-        return typeTranslator.getSimplifiedClassName(type);
-    }
 
-    public String getNonVersionedFieldDefinitionName() {
-        return NameParser.getNonVersionedName(fieldDefinitionName);
-    }
+        // Make sure this is not a duplicate type
+        processedType = duplicateTypeIdentifier.screenForDuplicateType(rawFieldDefinition, processedType);
 
-    public boolean isArray() {
-        return isArray;
+        //debug
+        if (processedType.equals("RiskProfileView")) {
+            System.out.println();
+        }
+        
+        return processedType;
     }
 
 }
