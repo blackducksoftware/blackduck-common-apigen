@@ -24,9 +24,7 @@ package com.synopsys.integration.create.apigen.model;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class FieldDefinition extends Definition {
     private final String path;
@@ -34,17 +32,28 @@ public class FieldDefinition extends Definition {
     private final boolean optional;
     private final Set<String> allowedValues;
     private final Set<FieldDefinition> fields;
+    private boolean typeWasOverrided;
 
-    public FieldDefinition(final String path, final String type, final boolean optional, final Set<String> allowedValues) {
+    public FieldDefinition(final String path, final String type, final boolean optional, final Set<String> allowedValues, boolean typeWasOverrided) {
         this.path = path;
         this.type = type;
         this.optional = optional;
         this.allowedValues = allowedValues;
         this.fields = new HashSet<>();
+        this.typeWasOverrided = typeWasOverrided;
     }
 
-    public FieldDefinition(final String path, final String type, final boolean optional) {
-        this(path, type, optional, Collections.emptySet());
+    // Constructor to effectively clone a FieldDefinition
+    public FieldDefinition(FieldDefinition fieldDefinition) {
+        this.path = fieldDefinition.getPath();
+        this.type = fieldDefinition.getType();
+        this.optional = fieldDefinition.isOptional();
+        this.allowedValues = fieldDefinition.getAllowedValues();
+        this.fields = fieldDefinition.getSubFields();
+    }
+
+    public FieldDefinition(final String path, final String type, final boolean optional, boolean typeWasOverrided) {
+        this(path, type, optional, Collections.emptySet(), typeWasOverrided);
     }
 
     public String getPath() {
@@ -66,6 +75,10 @@ public class FieldDefinition extends Definition {
     }
 
     public Set<FieldDefinition> getSubFields() { return fields; }
+
+    public boolean typeWasOverrided() {
+        return typeWasOverrided;
+    }
 
     public void addSubFields(final Set<FieldDefinition> subFields) { fields.addAll(subFields); }
 

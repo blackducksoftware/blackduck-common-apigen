@@ -44,7 +44,8 @@ public class ResponseTypeIdentifier {
         boolean isArrayResponse = true;
         for (final FieldDefinition field : response.getFields()) {
             final String fieldName = field.getPath();
-            if (fieldName.equals(UtilStrings.ITEMS) && field.getSubFields().size() > 0) {
+            if (fieldName.equals(UtilStrings.ITEMS) && !field.getSubFields().isEmpty() && response.getFields().stream().allMatch(it -> arrayFieldNames.contains(it.getPath()))) {
+                // If the only field with relevant data in the response object is a field 'items', then we will want to extract solely that field's subfields
                 return ResponseType.DATA_IS_SUBFIELD_OF_ITEMS;
             }
             if (!arrayFieldNames.contains(fieldName)) {

@@ -72,7 +72,13 @@ public class ImportFinder {
         imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
 
         for (final FieldDefinition field : fields) {
-            final String fieldType = typeTranslator.getSimplifiedClassName(field.getType());
+            String fieldType = field.getType();
+            /*
+            if (!typeTranslator.getSimplifiedClassName(field.getType()).equals(field.getType())) {
+                fieldType= typeTranslator.getSimplifiedClassName(field.getType());
+            }
+
+             */
             addFieldImports(imports, fieldType, field.isOptional());
         }
     }

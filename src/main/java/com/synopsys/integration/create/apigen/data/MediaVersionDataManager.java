@@ -38,6 +38,7 @@ public class MediaVersionDataManager {
     private final Map<String, MediaVersionData> latestViewMediaVersions = new HashMap<>();
     private final Map<String, MediaVersionData> latestComponentMediaVersions = new HashMap<>();
     private final Map<String, MediaVersionData> latestResponseMediaVersions = new HashMap<>();
+    private final Map<String, MediaVersionData> latestEnumMediaVersions = new HashMap<>();
     private final ClassCategories classCategories;
     private final Set<String> namesToIgnore = populateNamesToIgnore();
 
@@ -66,6 +67,10 @@ public class MediaVersionDataManager {
         return latestResponseMediaVersions;
     }
 
+    public Map<String, MediaVersionData> getLatestEnumMediaVersions() {
+        return latestEnumMediaVersions;
+    }
+
     public void updateLatestMediaVersions(final String className, final Map<String, Object> input, final String mediaType) {
         final MediaVersionData newData = getMediaVersionData(className, input, mediaType);
         final ClassTypeEnum classType = classCategories.computeData(className).getType();
@@ -77,24 +82,24 @@ public class MediaVersionDataManager {
             latestMediaVersions = latestViewMediaVersions;
         } else if (classType.isResponse()) {
             latestMediaVersions = latestResponseMediaVersions;
+        } else if (classType.isEnum()) {
+            latestMediaVersions = latestEnumMediaVersions;
         } else {
             latestMediaVersions = latestComponentMediaVersions;
         }
-        try {
-            final String nonVersionedClass = newData.getNonVersionedClassName();
-            final Integer mediaVersion = newData.getMediaVersion();
-            final MediaVersionData oldData = latestMediaVersions.get(nonVersionedClass);
 
-            if (mediaVersion != null) {
-                if ((oldData == null || mediaVersion > oldData.getMediaVersion()) && !namesToIgnore.contains(nonVersionedClass)) {
-                    latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
-                }
-            } else {
+        final String nonVersionedClass = newData.getNonVersionedClassName();
+        final Integer mediaVersion = newData.getMediaVersion();
+        final MediaVersionData oldData = latestMediaVersions.get(nonVersionedClass);
+
+        if (mediaVersion != null) {
+            if ((oldData == null || mediaVersion > oldData.getMediaVersion()) && !namesToIgnore.contains(nonVersionedClass)) {
                 latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
             }
-        } catch (final NullPointerException e) {
-            return;
+        } else {
+            latestMediaVersions.put(nonVersionedClass, combineData(oldData, newData));
         }
+
     }
 
     private MediaVersionData combineData(MediaVersionData oldData, MediaVersionData newData) {
@@ -115,7 +120,7 @@ public class MediaVersionDataManager {
         final String nonVersionedClassName;
         try {
             nonVersionedClassName = NameParser.getNonVersionedName(className);
-            final String mediaVersionStr = NameParser.getMediaVersion(className);
+            final String mediaVersionStr = NameParser.getMediaVersionFromResponseName(className);
             if (mediaVersionStr == null) {
                 return new MediaVersionData(nonVersionedClassName, new Integer(0), input, mediaType);
             }

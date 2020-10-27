@@ -32,6 +32,7 @@ import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassCategoryData;
 import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
+import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
@@ -50,15 +51,17 @@ public class EnumGenerator extends ClassGenerator {
     private final InputDataFinder inputDataFinder;
     private final TypeTranslator typeTranslator;
     private final FilePathUtil filePathUtil;
+    private final MediaVersionDataManager mediaVersionDataManager;
     private final GeneratorDataManager generatorDataManager;
 
     @Autowired
-    public EnumGenerator(ClassCategories classCategories, InputDataFinder inputDataFinder, TypeTranslator typeTranslator, FilePathUtil filePathUtil,
+    public EnumGenerator(ClassCategories classCategories, InputDataFinder inputDataFinder, TypeTranslator typeTranslator, FilePathUtil filePathUtil, MediaVersionDataManager mediaVersionDataManager,
         GeneratorDataManager generatorDataManager) {
         this.classCategories = classCategories;
         this.inputDataFinder = inputDataFinder;
         this.typeTranslator = typeTranslator;
         this.filePathUtil = filePathUtil;
+        this.mediaVersionDataManager = mediaVersionDataManager;
         this.generatorDataManager = generatorDataManager;
     }
 
@@ -68,13 +71,12 @@ public class EnumGenerator extends ClassGenerator {
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
-        return (classType.isEnum() && !field.getAllowedValues().isEmpty() && !classSource.equals(ClassSourceEnum.TEMPORARY));
+        return (classType.isEnum() && !field.getAllowedValues().isEmpty() && !classSource.equals(ClassSourceEnum.TEMPORARY) && !field.typeWasOverrided());
     }
 
     @Override
     public void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
-        classType = typeTranslator.getSimplifiedClassName(classType);
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(classType);
         if (swaggerName != null) {
@@ -86,6 +88,7 @@ public class EnumGenerator extends ClassGenerator {
             input.put(UtilStrings.HAS_NEW_NAME, true);
             input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(classType));
         }
+        mediaVersionDataManager.updateLatestMediaVersions(classType, input, responseMediaType);
         generatorDataManager.addFileData(new FileGenerationData(classType, template, input, filePathUtil.getOutputPathToEnumFiles()));
     }
 

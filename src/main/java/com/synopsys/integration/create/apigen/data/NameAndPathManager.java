@@ -36,7 +36,8 @@ public class NameAndPathManager {
 
     private final Set<ApiPathData> apiDiscoveryData;
     private final Set<String> apiDiscoveryDataPaths;
-    private final Map<String, String> responseNamesAndEndpoints;
+    private final Map<String, String> responseNamesAndEndpoints; // should this be in NameParser?
+    private final Map<String, String> responseNameOverrides; // should this be in NameParser?  is there a better way to handle this?
     private final Set<String> nonLinkClassNames;
     private final Set<String> linkClassNames;
     private final Map<String, String> nullLinkResultClasses;
@@ -45,6 +46,7 @@ public class NameAndPathManager {
         apiDiscoveryData = new HashSet<>();
         apiDiscoveryDataPaths = new HashSet<>();
         responseNamesAndEndpoints = new HashMap<>();
+        responseNameOverrides = populateResponseNameOverrides();
         nonLinkClassNames = new HashSet<>();
         linkClassNames = new HashSet<>();
         nullLinkResultClasses = new HashMap<>();
@@ -94,6 +96,17 @@ public class NameAndPathManager {
 
     public void addNullLinkResultClass(final String key, final String value) {
         nullLinkResultClasses.put(key, value);
+    }
+
+    private Map<String, String> populateResponseNameOverrides() {
+        Map<String, String> overrides = new HashMap<>();
+        overrides.put("components/componentId/versions/componentVersionId/licenses/licenseId", "ComponentVersionLicenseLicensesLicense");
+        return overrides;
+    }
+
+    public String getResponseNameOverride(String responsePath) {
+        String key = responsePath.split("/GET")[0];
+        return responseNameOverrides.get(key);
     }
 
 }

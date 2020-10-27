@@ -22,17 +22,8 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
-import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
@@ -41,24 +32,25 @@ public class FieldDefinitionBuilder {
     private String type;
     private final Set<String> allowedValues;
     private boolean optional;
+    private boolean typeWasOverrided;
 
     private final MissingFieldsAndLinks missingFieldsAndLinks;
-
+    //TODO - delete this class, annotate allowedValues as Nullable
     public FieldDefinitionBuilder(final FieldData fieldData, final Set<String> allowedValues, final MissingFieldsAndLinks missingFieldsAndLinks) {
         this.path = fieldData.getProcessedPath();
         this.type = fieldData.getProcessedType();
         this.optional = fieldData.isOptional();
+        this.typeWasOverrided = fieldData.typeWasOverrided();
         this.allowedValues = allowedValues;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
     public FieldDefinition build() {
-
         final FieldDefinition fieldDefinition;
         if (allowedValues == null) {
-            fieldDefinition = new FieldDefinition(path, type, optional);
+            fieldDefinition = new FieldDefinition(path, type, optional, typeWasOverrided);
         } else {
-            fieldDefinition = new FieldDefinition(path, type, optional, allowedValues);
+            fieldDefinition = new FieldDefinition(path, type, optional, allowedValues, typeWasOverrided);
         }
 
         final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(type));

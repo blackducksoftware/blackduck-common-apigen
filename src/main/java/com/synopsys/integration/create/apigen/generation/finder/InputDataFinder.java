@@ -23,6 +23,7 @@
 package com.synopsys.integration.create.apigen.generation.finder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,7 +58,7 @@ public class InputDataFinder {
         return inputData;
     }
 
-    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> classFields, final String mediaType) {
+    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> originalClassFields, final String mediaType) {
         final HashMap<String, Object> inputData = new HashMap<>();
 
         inputData.put(UtilStrings.PACKAGE_NAME, viewPackage);
@@ -66,6 +67,7 @@ public class InputDataFinder {
 
         final Set<FieldDefinition> nonOptionalClassFields = new HashSet<>();
         final Set<FieldDefinition> optionalClassFields = new HashSet<>();
+        Set<FieldDefinition> classFields = originalClassFields.stream().map(FieldDefinition::new).collect(Collectors.toSet());
         for (final FieldDefinition classField : classFields) {
             final String oldType = classField.getType();
             final String newType = NameParser.getNonVersionedName(oldType);
@@ -82,7 +84,7 @@ public class InputDataFinder {
                                        .sorted(ImportComparator.of())
                                        .collect(Collectors.toList());
         inputData.put("imports", sortedImports);
-        inputData.put("baseClass", baseClass);
+        inputData.put(UtilStrings.BASE_CLASS, baseClass);
         inputData.put(UtilStrings.CLASS_FIELDS, classFields);
         inputData.put("optionalClassFields", optionalClassFields);
         inputData.put("nonOptionalClassFields", nonOptionalClassFields);

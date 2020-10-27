@@ -34,7 +34,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
@@ -68,9 +67,8 @@ public class FieldDefinitionProcessor {
             final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, rawField.getAllowedValues(), missingFieldsAndLinks);
             final FieldDefinition fieldDefinition = builder.build();
 
-            // If field has subfields, recursively parse and link its subfields
-            if (rawField.getSubFields() != null) {
-                // append subclass to create new field data type
+            if (rawField.getSubFields() != null && !fieldDefinition.typeWasOverrided()) {
+                // If field has subfields, and its type was not overrided, recursively parse and add its subfields
                 final Set<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }

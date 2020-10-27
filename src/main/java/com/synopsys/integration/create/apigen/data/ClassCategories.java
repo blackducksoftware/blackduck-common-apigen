@@ -71,7 +71,10 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "CodeLocationView");
         populate(VIEW, GENERATED, "ComponentMatchedFilesView");
         populate(VIEW, GENERATED, "ComponentPolicyRulesView");
+        populate(VIEW, GENERATED, "ComponentVersionLicenseView");
+        populate(VIEW, GENERATED, "ComponentVersionLicenseLicensesView");
         populate(VIEW, GENERATED, "ComponentVersionPolicyStatusView");
+        populate(VIEW, GENERATED, "ComponentVersionRiskProfileRiskDataView");
         populate(VIEW, GENERATED, "ComponentVersionView");
         populate(VIEW, GENERATED, "ComponentView");
         populate(VIEW, GENERATED, "CurrentUserView");
@@ -104,7 +107,6 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectView");
         populate(VIEW, GENERATED, "RegistrationView");
         populate(VIEW, GENERATED, "ReportContentsView");
-        populate(VIEW, GENERATED, "RiskProfileView");
         populate(VIEW, GENERATED, "RoleAssignmentView");
         populate(VIEW, GENERATED, "RoleView");
         populate(VIEW, GENERATED, "ScanBomEntriesView");
@@ -122,6 +124,7 @@ public class ClassCategories {
         populate(VIEW, DEPRECATED, "ComplexLicenseView");
         populate(VIEW, DEPRECATED, "MatchedFileView");
         populate(VIEW, DEPRECATED, "PolicyStatusView");
+        populate(VIEW, DEPRECATED, "RiskProfileView");
         populate(VIEW, DEPRECATED, "VersionBomComponentView");
         populate(VIEW, DEPRECATED, "VersionBomPolicyRuleView");
         populate(VIEW, DEPRECATED, "VersionBomPolicyStatusView");

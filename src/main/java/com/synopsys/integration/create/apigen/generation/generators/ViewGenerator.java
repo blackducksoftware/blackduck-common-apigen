@@ -92,6 +92,7 @@ public class ViewGenerator {
 
         final String responseMediaType = response.getMediaType();
         final String viewName = response.getName();
+
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;

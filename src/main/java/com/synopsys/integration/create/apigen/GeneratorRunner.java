@@ -103,6 +103,12 @@ public class GeneratorRunner {
         DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
         List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
         for (ResponseDefinition response : responses) {
+
+            //debug
+            if (response.getName().contains("ComponentVersionView")) {
+                System.out.println();
+            }
+
             String responseName = NameParser.getNonVersionedName(response.getName());
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
             response.addFields(missingFields);
@@ -146,6 +152,12 @@ public class GeneratorRunner {
                 logger.info("Non-applicable response!");
             }
             for (FieldDefinition field : response.getFields()) {
+
+                //debug
+                if (response.getName().contains("ProjectVersionVulnerableBomComponentsView") && field.getType().contains("VulnerabilityWithRemediation")) {
+                    System.out.println();
+                }
+
                 generateClasses(field, generators, response.getMediaType());
             }
         }
@@ -163,8 +175,9 @@ public class GeneratorRunner {
     }
 
     private void accumulateLatestViewAndComponentClassData() throws Exception {
-        Template simpleTemplate = config.getTemplate("simpleTemplate.ftl");
-        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(simpleTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles());
+        Template viewTemplate = config.getTemplate("viewTemplate.ftl");
+        Template enumTemplate = config.getTemplate("enumTemplate.ftl");
+        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(viewTemplate, enumTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles(), filePathUtil.getOutputPathToEnumFiles());
     }
 
     private void generateClasses(FieldDefinition field, List<ClassGenerator> generators, String responseMediaType) throws Exception {

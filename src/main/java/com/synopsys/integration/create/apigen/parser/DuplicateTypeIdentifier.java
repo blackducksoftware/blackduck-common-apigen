@@ -23,13 +23,12 @@ public class DuplicateTypeIdentifier {
     public String screenForDuplicateType(RawFieldDefinition rawField, String originalType) {
         Set<String> enumValues = rawField.getAllowedValues();
         if (enumValues == null) {
-            originalType = NameParser.getNonVersionedName(originalType);
             String trueType = uniqueFieldsToNames.get(rawField.getSubFields());
             if (trueType != null) {
                 trueType = restoreListNotation(originalType, trueType);
                 return trueType;
             } else if (rawField.getSubFields() != null) {
-                uniqueFieldsToNames.put(rawField.getSubFields(), originalType);
+                uniqueFieldsToNames.put(rawField.getSubFields(), NameParser.stripListNotation(originalType));
             }
         } else {
             return screenForDuplicateEnum(originalType, enumValues);
@@ -43,7 +42,7 @@ public class DuplicateTypeIdentifier {
             trueEnumType = restoreListNotation(originalType, trueEnumType);
             return trueEnumType;
         } else {
-            uniqueEnumsToNames.put(enumValues, originalType);
+            uniqueEnumsToNames.put(enumValues, NameParser.stripListNotation(originalType));
         }
         return originalType;
     }

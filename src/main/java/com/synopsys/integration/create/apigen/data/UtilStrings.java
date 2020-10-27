@@ -50,8 +50,9 @@ public class UtilStrings {
     public static final String CLASS_NAME = "className";
     public static final String IMPORT_PATH = "importPath";
     public static final String PACKAGE_NAME = "packageName";
-    public static final String PARENT_CLASS = "parentClass";
+    public static final String BASE_CLASS = "baseClass";
     public static final String MEDIA_TYPE = "mediaType";
+    public static final String MEDIA_TYPE_SUFFIX = "_json";
     //    public static final String BLACKDUCK_COMMON_API_BASE_DIRECTORY = GeneratedClassWriter.getBaseDirectory().getAbsolutePath();
     //    public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
     //    public static final String VIEW_DIRECTORY_SUFFIX = "/view";

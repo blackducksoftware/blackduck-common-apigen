@@ -91,19 +91,17 @@ public class DirectoryPathParser implements ApiParser {
             final String absolutePath = specificationRootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             final File responseSpecificationFile = new File(absolutePath);
             final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
-
             final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
             final Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
 
             response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
 
-            // Filter out 'Array' responses and extract data from responses where data is subfield of "items" field
+            // Filter out 'Array' responses (those comprised solely of fields like 'items', 'meta', and 'totalCount') and extract data from responses where data is subfield of "items" field
             ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
-            if (responseType.equals(ResponseType.ARRAY)) {
-            } else if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
+            if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
                 responseDefinitions.add(extractResponseFromSubfieldsOfItems(response));
-            } else {
+            } else if (!responseType.equals(ResponseType.ARRAY)){
                 responseDefinitions.add(response);
             }
         }

@@ -22,6 +22,8 @@
  */
 package com.synopsys.integration.create.apigen.generation.generators;
 
+import static java.util.Collections.emptySet;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -71,40 +73,52 @@ public class MediaVersionGenerator {
         this.generatorDataManager = generatorDataManager;
     }
 
-    public void generateMostRecentViewAndComponentMediaVersions(Template simpleTemplate, String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles)
+    public void generateMostRecentViewAndComponentMediaVersions(Template viewTemplate, Template enumTemplate, String pathToViewFiles, final String pathToResponseFiles, final String pathToComponentFiles, final String pathToEnumFiles)
         throws Exception {
         final Collection<MediaVersionData> latestViewMediaVersions = mediaVersionDataManager.getLatestViewMediaVersions().values();
         final Collection<MediaVersionData> latestResponseMediaVersions = mediaVersionDataManager.getLatestResponseMediaVersions().values();
         final Collection<MediaVersionData> latestComponentMediaVersions = mediaVersionDataManager.getLatestComponentMediaVersions().values();
+        final Collection<MediaVersionData> latestEnumMediaVersions = mediaVersionDataManager.getLatestEnumMediaVersions().values();
 
-        generateMostRecentViewAndComponentMediaVersions(simpleTemplate, pathToViewFiles, latestViewMediaVersions);
-        generateMostRecentViewAndComponentMediaVersions(simpleTemplate, pathToResponseFiles, latestResponseMediaVersions);
-        generateMostRecentViewAndComponentMediaVersions(simpleTemplate, pathToComponentFiles, latestComponentMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(viewTemplate, pathToViewFiles, latestViewMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(viewTemplate, pathToResponseFiles, latestResponseMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(viewTemplate, pathToComponentFiles, latestComponentMediaVersions);
+        generateMostRecentViewAndComponentMediaVersions(enumTemplate, pathToEnumFiles, latestEnumMediaVersions);
 
         final Set<MediaVersionData> latestMediaVersions = new HashSet<>();
         latestMediaVersions.addAll(latestComponentMediaVersions);
         latestMediaVersions.addAll(latestViewMediaVersions);
+        latestMediaVersions.addAll(latestResponseMediaVersions);
+        latestMediaVersions.addAll(latestEnumMediaVersions);
         mediaTypeMapGenerator.generateMediaTypeMap(latestMediaVersions);
     }
 
-    private void generateMostRecentViewAndComponentMediaVersions(Template simpleTemplate, String pathToFiles, Collection<MediaVersionData> latestMediaVersions) throws Exception {
+    private void generateMostRecentViewAndComponentMediaVersions(Template template, String pathToFiles, Collection<MediaVersionData> latestMediaVersions) throws Exception {
         for (final MediaVersionData latestMediaVersion : latestMediaVersions) {
+            if (latestMediaVersion.getVersionedClassName().endsWith("0")) {
+                continue;
+            }
             final Map<String, Object> input = latestMediaVersion.getInput();
             final String className = latestMediaVersion.getNonVersionedClassName();
-            input.put(UtilStrings.CLASS_NAME, className);
             try {
                 final ClassTypeEnum classType = classCategories.computeData(className).getType();
-                final String importClass = classType.getImportClass().get();
 
-                final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
-                input.put(UtilStrings.IMPORT_PATH, importPath);
+                if (classType.isEnum()) {
+                    input.put("isLatestMediaVersionEnum", true);
+                    input.put("latestEnumMediaVersion", latestMediaVersion.getMediaVersion());
+                } else {
+                    final String importClass = classType.getImportClass().get();
+                    final String importPath = UtilStrings.CORE_CLASS_PATH_PREFIX + importClass;
+                    input.put(UtilStrings.IMPORT_PATH, importPath);
 
-                if (latestMediaVersion.getVersionedClassName().endsWith("0")) {
-                    continue;
+                    // No fields are necessary for non-versioned class
+                    input.put(UtilStrings.CLASS_FIELDS, emptySet());
                 }
 
-                input.put(UtilStrings.PARENT_CLASS, latestMediaVersion.getVersionedClassName());
-                generatorDataManager.addFileData(new FileGenerationData(className, simpleTemplate, input, pathToFiles));
+                input.put(UtilStrings.CLASS_NAME, className);
+                input.put(UtilStrings.BASE_CLASS, latestMediaVersion.getVersionedClassName());
+
+                generatorDataManager.addFileData(new FileGenerationData(className, template, input, pathToFiles));
             } catch (final NoSuchElementException e) {
                 logger.info(className + " not categorized in ClassCategories");
             }

@@ -80,7 +80,7 @@ public class ComponentGenerator extends ClassGenerator {
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassTypeEnum classType = classCategoryData.getType();
         final ClassSourceEnum classSource = classCategoryData.getSource();
-        return classType.isNotCommonTypeOrEnum() && !classSource.isTemporary() && !classSource.isManual();
+        return classType.isNotCommonTypeOrEnum() && !classSource.isTemporary() && !classSource.isManual() && !field.typeWasOverrided();
     }
 
     @Override
@@ -91,7 +91,6 @@ public class ComponentGenerator extends ClassGenerator {
             importFinder.addFieldImports(imports, subField.getType(), subField.isOptional());
         }
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
-        fieldType = typeTranslator.getSimplifiedClassName(fieldType);
         final String fieldPackage;
         final String fieldBaseClass;
         final String pathToFiles;
