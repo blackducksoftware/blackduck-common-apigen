@@ -22,10 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -44,14 +40,12 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FieldDefinitionProcessor {
 
-    private final TypeTranslator typeTranslator;
-    private final DuplicateTypeIdentifier duplicateTypeIdentifier;
+    private FieldDataProcessor fieldDataProcessor;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
 
     @Autowired
-    public FieldDefinitionProcessor(final TypeTranslator typeTranslator, final DuplicateTypeIdentifier duplicateTypeIdentifier, final MissingFieldsAndLinks missingFieldsAndLinks) {
-        this.typeTranslator = typeTranslator;
-        this.duplicateTypeIdentifier = duplicateTypeIdentifier;
+    public FieldDefinitionProcessor(FieldDataProcessor fieldDataProcessor, final MissingFieldsAndLinks missingFieldsAndLinks) {
+        this.fieldDataProcessor = fieldDataProcessor;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
@@ -63,9 +57,10 @@ public class FieldDefinitionProcessor {
                 continue;
             }
 
-            final FieldData fieldData = new FieldData(rawField, fieldDefinitionName, typeTranslator, duplicateTypeIdentifier);
-            final FieldDefinitionBuilder builder = new FieldDefinitionBuilder(fieldData, rawField.getAllowedValues(), missingFieldsAndLinks);
-            final FieldDefinition fieldDefinition = builder.build();
+            final FieldData fieldData = fieldDataProcessor.process(rawField, fieldDefinitionName);
+            final FieldDefinition fieldDefinition = new FieldDefinition(fieldData.getPath(), fieldData.getType(), rawField.isOptional(), rawField.getAllowedValues(), fieldData.typeWasOverrided());
+            final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(fieldData.getType()));
+            fieldDefinition.addSubFields(missingFields);
 
             if (rawField.getSubFields() != null && !fieldDefinition.typeWasOverrided()) {
                 // If field has subfields, and its type was not overrided, recursively parse and add its subfields

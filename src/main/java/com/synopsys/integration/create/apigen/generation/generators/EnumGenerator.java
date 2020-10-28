@@ -71,7 +71,7 @@ public class EnumGenerator extends ClassGenerator {
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         final ClassTypeEnum classType = classCategoryData.getType();
-        return (classType.isEnum() && !field.getAllowedValues().isEmpty() && !classSource.equals(ClassSourceEnum.TEMPORARY) && !field.typeWasOverrided());
+        return (classType.isEnum() && field.getAllowedValues() != null && !field.getAllowedValues().isEmpty() && !classSource.equals(ClassSourceEnum.TEMPORARY) && !field.typeWasOverrided());
     }
 
     @Override
@@ -79,10 +79,8 @@ public class EnumGenerator extends ClassGenerator {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(classType);
-        if (swaggerName != null) {
-            if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
-                classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
-            }
+        if (swaggerName != null && typeTranslator.getClassSwaggerName(swaggerName) == null) {
+            classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
         }
         if (typeTranslator.getApiGenClassName(classType) != null) {
             input.put(UtilStrings.HAS_NEW_NAME, true);

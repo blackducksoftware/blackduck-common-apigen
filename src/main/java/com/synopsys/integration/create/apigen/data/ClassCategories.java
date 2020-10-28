@@ -153,6 +153,7 @@ public class ClassCategories {
         populate(VIEW, ClassSourceEnum.NULL, "ReportView");
         populate(VIEW, ClassSourceEnum.NULL, "VulnerabilityAffectedProjectsView");
 
+        populate(RESPONSE, GENERATED, "AssignedProjectView");
         populate(RESPONSE, GENERATED, "CommentView");
         populate(RESPONSE, GENERATED, "ComponentsView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
@@ -160,9 +161,7 @@ public class ClassCategories {
         populate(RESPONSE, GENERATED, "HealthChecksLivenessView");
         populate(RESPONSE, GENERATED, "ProjectJournalView");
         populate(RESPONSE, GENERATED, "TypesView");
-        populate(RESPONSE, GENERATED, "UserProjectsView");
 
-        populate(RESPONSE, DEPRECATED, "AssignedProjectView");
         populate(RESPONSE, DEPRECATED, "ComponentSearchResultView");
         populate(RESPONSE, DEPRECATED, "CustomFieldTypeView");
         populate(RESPONSE, DEPRECATED, "HealthCheckStatusView");

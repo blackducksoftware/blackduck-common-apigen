@@ -26,15 +26,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jetbrains.annotations.Nullable;
+
 public class FieldDefinition extends Definition {
     private final String path;
     private String type;
     private final boolean optional;
+    @Nullable
     private final Set<String> allowedValues;
     private final Set<FieldDefinition> fields;
     private boolean typeWasOverrided;
 
-    public FieldDefinition(final String path, final String type, final boolean optional, final Set<String> allowedValues, boolean typeWasOverrided) {
+    public FieldDefinition(final String path, final String type, final boolean optional, @Nullable final Set<String> allowedValues, boolean typeWasOverrided) {
         this.path = path;
         this.type = type;
         this.optional = optional;

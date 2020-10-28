@@ -55,7 +55,6 @@ public class TypeTranslator {
         translations.put("ActivityDataTrendingType", "ComponentVersionRiskProfileActivityDataTrendingType");
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
         translations.put("AssignableProjectView", "ProjectTagView");
-        translations.put("AssignedProjectView", "UserProjectsView");
         translations.put("BomComponentIssueView", "ProjectVersionIssuesView");
         translations.put("CommentUserData", "CommentUserView");
         translations.put("ComplexLicenseView", "ComponentVersionLicenseView");
@@ -191,8 +190,6 @@ public class TypeTranslator {
         pvcvTranslations.add(pvcvOriginsTranslation);
         FieldTranslation pvcvUsagesTranslation = new FieldTranslation("usages", "LicenseFamilyLicenseFamilyRiskRulesUsageType", ARRAY);
         pvcvTranslations.add(pvcvUsagesTranslation);
-        FieldTranslation pvcvReviewStatusTranslation = new FieldTranslation("reviewStatus", "ProjectVersionComponentReviewStatusType", STRING);
-        pvcvTranslations.add(pvcvReviewStatusTranslation);
         FieldTranslation pvcvApprovalStatusTranslation = new FieldTranslation("approvalStatus", "ProjectVersionComponentPolicyStatusType", STRING);
         pvcvTranslations.add(pvcvApprovalStatusTranslation);
         FieldTranslation pvcvSecurityRiskProfileTranslation = new FieldTranslation("securityRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
