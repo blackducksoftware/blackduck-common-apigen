@@ -22,6 +22,8 @@
  */
 package com.synopsys.integrations.apigen.maintenance;
 
+import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.CLASS_USAGE_OUTPUT_PATH;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,7 +38,6 @@ public class IntegrationsPortfolioSearcher {
     private static final String THROWAWAY_CLASS_USAGE_TOKEN = "import .*throwaway.*";
     private static final String TEMPORARY_CLASS_USAGE_TOKEN = "import .*temporary.*";
     private static final String DEPRECATED_CLASS_USAGE_TOKEN = "import .*deprecated.*";
-    private static final String CLASS_USAGE_OUTPUT_PATH = "CLASS_USAGE_OUTPUT_PATH";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

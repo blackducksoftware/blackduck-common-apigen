@@ -22,6 +22,9 @@
  */
 package com.synopsys.integrations.apigen.maintenance;
 
+import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.GIT_PATH;
+import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.INTEGRATIONS_PORTFOLIO_PATH;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -31,8 +34,6 @@ import org.slf4j.LoggerFactory;
 import com.synopsys.integrations.apigen.maintenance.model.BlackDuckGitHubRepo;
 
 public class IntegrationsPortfolioCreator {
-    private static final String INTEGRATIONS_PORTFOLIO_PATH = "INTEGRATIONS_PORTFOLIO_PATH";
-    private static final String GIT_PATH = "GIT_PATH";
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -56,7 +57,8 @@ public class IntegrationsPortfolioCreator {
             new BlackDuckGitHubRepo("blackduck-alert"),
             new BlackDuckGitHubRepo("blackduck-docker-inspector"),
             new BlackDuckGitHubRepo("blackduck-artifactory"),
-            new BlackDuckGitHubRepo("blackduck-common")
+            new BlackDuckGitHubRepo("blackduck-common"),
+            new BlackDuckGitHubRepo("blackduck-common-api")
         };
 
         for (BlackDuckGitHubRepo projectRepo : projectRepos) {

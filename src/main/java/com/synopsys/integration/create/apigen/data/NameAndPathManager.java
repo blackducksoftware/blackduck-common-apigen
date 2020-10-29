@@ -101,6 +101,7 @@ public class NameAndPathManager {
     private Map<String, String> populateResponseNameOverrides() {
         Map<String, String> overrides = new HashMap<>();
         overrides.put("components/componentId/versions/componentVersionId/licenses/licenseId", "ComponentVersionLicenseLicensesLicense");
+        overrides.put("usergroups/userGroupId/projects", "AssignedProject");
         return overrides;
     }
 

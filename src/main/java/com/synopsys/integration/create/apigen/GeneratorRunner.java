@@ -103,12 +103,6 @@ public class GeneratorRunner {
         DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
         List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
         for (ResponseDefinition response : responses) {
-
-            //debug
-            if (response.getName().contains("ComponentVersionView")) {
-                System.out.println();
-            }
-
             String responseName = NameParser.getNonVersionedName(response.getName());
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
             response.addFields(missingFields);
@@ -152,12 +146,6 @@ public class GeneratorRunner {
                 logger.info("Non-applicable response!");
             }
             for (FieldDefinition field : response.getFields()) {
-
-                //debug
-                if (response.getName().contains("ProjectVersionVulnerableBomComponentsView") && field.getType().contains("VulnerabilityWithRemediation")) {
-                    System.out.println();
-                }
-
                 generateClasses(field, generators, response.getMediaType());
             }
         }

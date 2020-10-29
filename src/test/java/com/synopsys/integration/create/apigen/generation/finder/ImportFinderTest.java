@@ -24,10 +24,10 @@ public class ImportFinderTest {
         Set<String> imports = new HashSet<>();
 
         Set<FieldDefinition> fields = new HashSet<>();
-        fields.add(new FieldDefinition("", "ProjectVersionLicenseLicensesView", false, null));
-        fields.add(new FieldDefinition("", "TagView", false, null));
-        fields.add(new FieldDefinition("", "List<PolicyStatusType>", false, null));
-        fields.add(new FieldDefinition("", "ComponentsView", false, null));
+        fields.add(new FieldDefinition("", "ProjectVersionLicenseLicensesView", false, null, false));
+        fields.add(new FieldDefinition("", "TagView", false, null, false));
+        fields.add(new FieldDefinition("", "List<PolicyStatusType>", false, null, false));
+        fields.add(new FieldDefinition("", "ComponentsView", false, null, false));
 
         importFinder.addFieldImports(imports, fields);
 

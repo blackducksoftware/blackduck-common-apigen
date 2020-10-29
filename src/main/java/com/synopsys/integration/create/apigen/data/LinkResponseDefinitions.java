@@ -149,7 +149,7 @@ public class LinkResponseDefinitions {
         userViewDefinitions.put("roles", uvRolesDefinition);
         final LinkResponseDefinitionItem uvNotificationsDefinition = new LinkResponseDefinitionItem(true, "NotificationUserView"); // *
         userViewDefinitions.put("notifications", uvNotificationsDefinition);
-        final LinkResponseDefinitionItem uvProjectsDefinition = new LinkResponseDefinitionItem(true, "UserProjectsView"); // ****
+        final LinkResponseDefinitionItem uvProjectsDefinition = new LinkResponseDefinitionItem(true, "AssignedProjectView"); // ****
         userViewDefinitions.put("projects", uvProjectsDefinition);
         final LinkResponseDefinitionItem uvInheritedRolesDefinition = new LinkResponseDefinitionItem(true, "RoleAssignmentView"); // ****
         userViewDefinitions.put("inherited-roles", uvInheritedRolesDefinition);

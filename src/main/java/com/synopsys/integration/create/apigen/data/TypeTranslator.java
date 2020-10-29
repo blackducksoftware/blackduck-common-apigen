@@ -191,8 +191,6 @@ public class TypeTranslator {
         pvcvTranslations.add(pvcvOriginsTranslation);
         FieldTranslation pvcvUsagesTranslation = new FieldTranslation("usages", "LicenseFamilyLicenseFamilyRiskRulesUsageType", ARRAY);
         pvcvTranslations.add(pvcvUsagesTranslation);
-        FieldTranslation pvcvReviewStatusTranslation = new FieldTranslation("reviewStatus", "ProjectVersionComponentReviewStatusType", STRING);
-        pvcvTranslations.add(pvcvReviewStatusTranslation);
         FieldTranslation pvcvApprovalStatusTranslation = new FieldTranslation("approvalStatus", "ProjectVersionComponentPolicyStatusType", STRING);
         pvcvTranslations.add(pvcvApprovalStatusTranslation);
         FieldTranslation pvcvSecurityRiskProfileTranslation = new FieldTranslation("securityRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
