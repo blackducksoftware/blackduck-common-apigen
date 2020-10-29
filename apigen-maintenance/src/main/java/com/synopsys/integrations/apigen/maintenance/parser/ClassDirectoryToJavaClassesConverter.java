@@ -3,7 +3,9 @@ package com.synopsys.integrations.apigen.maintenance.parser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.sun.org.apache.bcel.internal.classfile.ClassParser;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
@@ -15,21 +17,21 @@ public class ClassDirectoryToJavaClassesConverter {
         File generatedDirectory = new File(apiBuildDirectory, "generated");
         File[] excludedDirectories = {
             new File(generatedDirectory, "discovery"),
-            new File(generatedDirectory,"deprecated")
+            new File(generatedDirectory,"deprecated"),
         };
         return convertClassDirectoryToJavaClassObjects(generatedDirectory, excludedDirectories);
     }
 
     public List<JavaClass> convertClassDirectoryToJavaClassObjects(File classFileDirectory, File[] excludedDirectories) throws IOException {
         List<JavaClass> javaClasses = new ArrayList<>();
-        for (File javaFile : classFileDirectory.listFiles()) {
-            if (javaFile.isDirectory()) {
-                if (!isExcludedDirectory(javaFile, excludedDirectories)) {
-                    javaClasses.addAll(convertClassDirectoryToJavaClassObjects(javaFile, excludedDirectories));
+        for (File file : classFileDirectory.listFiles()) {
+            if (file.isDirectory()) {
+                if (!isExcludedDirectory(file, excludedDirectories)) {
+                    javaClasses.addAll(convertClassDirectoryToJavaClassObjects(file, excludedDirectories));
                 }
-            } else {
+            } else if (file.getName().endsWith(".class")){
                 // TODO - this parser gets confused by classes with links (it recognizes the links as fields, and then not any of the class's other fields-which we are more interested in), so should explore other options
-                ClassParser classParser = new ClassParser(javaFile.getAbsolutePath());
+                ClassParser classParser = new ClassParser(file.getAbsolutePath());
                 javaClasses.add(classParser.parse());
             }
         }
