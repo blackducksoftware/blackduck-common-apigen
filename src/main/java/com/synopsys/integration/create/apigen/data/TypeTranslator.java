@@ -55,7 +55,6 @@ public class TypeTranslator {
         translations.put("ActivityDataTrendingType", "ComponentVersionRiskProfileActivityDataTrendingType");
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
         translations.put("AssignableProjectView", "ProjectTagView");
-        translations.put("AssignedProjectView", "UserProjectsView");
         translations.put("BomComponentIssueView", "ProjectVersionIssuesView");
         translations.put("CommentUserData", "CommentUserView");
         translations.put("ComplexLicenseView", "ComponentVersionLicenseView");
