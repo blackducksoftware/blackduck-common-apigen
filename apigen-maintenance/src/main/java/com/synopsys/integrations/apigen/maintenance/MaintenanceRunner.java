@@ -22,6 +22,8 @@
  */
 package com.synopsys.integrations.apigen.maintenance;
 
+import static java.lang.System.exit;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -44,9 +46,16 @@ public class MaintenanceRunner {
         String apiDirectoryPath = System.getenv(API_DIRECTORY_PATH);
         if (apiDirectoryPath == null) {
             logger.info(String.format("You must set the environment variable %s to specify where to find your local blackduck-common-api directory.", API_DIRECTORY_PATH));
-            return;
+            exit(-1);
         }
         File apiDirectory = new File(apiDirectoryPath);
+
+        String integrationsPortfolioPath = System.getenv(INTEGRATIONS_PORTFOLIO_PATH);
+        if (integrationsPortfolioPath == null) {
+            logger.info(String.format("You must set the environment variable %s to specify where to find your local integrations-portfolio directory is being generated.", INTEGRATIONS_PORTFOLIO_PATH));
+            exit(-1);
+        }
+        File integrationsPortfolio = new File(integrationsPortfolioPath);
 
         IntegrationsPortfolioCreator creator = new IntegrationsPortfolioCreator();
         //String pathToPortfolio = creator.createOrUpdateIntegrationsPortfolio();
@@ -55,16 +64,13 @@ public class MaintenanceRunner {
         //searcher.findUsersOfThrowawayClasses(pathToPortfolio);
         //searcher.findUsersOfTemporaryClasses(pathToPortfolio);
 
-        GeneratedTemporaryClassIdentifier generatedTemporaryClassIdentifier = new GeneratedTemporaryClassIdentifier(logger);
-        //generatedTemporaryClassIdentifier.identifyGeneratedTemporaryClasses(apiDirectory);
+        RedundantClassFinder redundantClassFinder = new RedundantClassFinder(logger);
+        //redundantClassFinder.identifyGeneratedTemporaryClasses(apiDirectory);
+        File swaggerApi = new File("/Users/crowley/Documents/source/swagger-api");
+        //redundantClassFinder.identifyRedundantClasses(apiDirectory, swaggerApi, new File[0], null);
 
         MissingClassFinder missingClassFinder = new MissingClassFinder(logger);
-        String integrationsPortfolioPath = System.getenv(INTEGRATIONS_PORTFOLIO_PATH);
-        if (integrationsPortfolioPath == null) {
-            logger.info(String.format("You must set the environment variable %s to specify where to find your local integrations-portfolio directory is being generated.", INTEGRATIONS_PORTFOLIO_PATH));
-            return;
-        }
-        File controlDirectory = new File(new File(integrationsPortfolioPath), "blackduck-common-api");
+        File controlDirectory = new File(integrationsPortfolio, "blackduck-common-api");
         //missingClassFinder.findMissingClassesInOutput(apiDirectory, controlDirectory);
     }
 }

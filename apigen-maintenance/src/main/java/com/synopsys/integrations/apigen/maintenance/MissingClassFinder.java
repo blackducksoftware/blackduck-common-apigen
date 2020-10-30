@@ -3,10 +3,8 @@ package com.synopsys.integrations.apigen.maintenance;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -18,11 +16,11 @@ public class MissingClassFinder {
 
     protected static final String MISSING_CLASSES_PATH = "MISSING_CLASSES_PATH";
     private Logger logger;
-    private EquivalentClassFinder equivalentClassFinder;
+    private EquivalentClassIdentifier equivalentClassIdentifier;
 
     public MissingClassFinder(final Logger logger) {
         this.logger = logger;
-        this.equivalentClassFinder = new EquivalentClassFinder();
+        this.equivalentClassIdentifier = new EquivalentClassIdentifier();
     }
 
     public void findMissingClassesInOutput(File testApiDirectory, File controlApiDirectory) throws IOException {
@@ -37,7 +35,7 @@ public class MissingClassFinder {
     public Set<String> checkForMissingClasses(List<JavaClass> classes1, List<JavaClass> classes2) {
         Set<String> missingClasses = new HashSet<>();
         for (JavaClass clazz : classes1) {
-            if (!equivalentClassFinder.hasAnEquivalent(clazz, classes2)) {
+            if (!equivalentClassIdentifier.hasAnEquivalent(clazz, classes2)) {
                 missingClasses.add(clazz.getClassName());
             }
         }

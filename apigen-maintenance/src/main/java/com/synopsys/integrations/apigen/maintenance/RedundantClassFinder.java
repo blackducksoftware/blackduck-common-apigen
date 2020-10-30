@@ -27,25 +27,22 @@ import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.GEN
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.sun.org.apache.bcel.internal.classfile.Field;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 import com.synopsys.integrations.apigen.maintenance.parser.ClassDirectoryToJavaClassesConverter;
 
-public class GeneratedTemporaryClassIdentifier {
+public class RedundantClassFinder {
 
     private Logger logger;
 
-    public GeneratedTemporaryClassIdentifier(Logger logger) {
+    public RedundantClassFinder(Logger logger) {
         this.logger = logger;
     }
 
@@ -57,14 +54,17 @@ public class GeneratedTemporaryClassIdentifier {
             new File(generatedDirectory, "discovery"),
             new File(generatedDirectory,"deprecated")
         };
-        ClassDirectoryToJavaClassesConverter converter = new ClassDirectoryToJavaClassesConverter();
-        List<JavaClass> generatedClasses = converter.convertClassDirectoryToJavaClassObjects(generatedDirectory, excludedDirectories);
-        List<JavaClass> temporaryClasses = converter.convertClassDirectoryToJavaClassObjects(temporaryDirectory, excludedDirectories).stream()
-                                               .filter(it -> !it.getClassName().endsWith("Request"))
-                                               .collect(Collectors.toList());
+        Pattern namesToIgnore = Pattern.compile(".*Request");
+        identifyRedundantClasses(generatedDirectory, temporaryDirectory, excludedDirectories, namesToIgnore);
+    }
 
-        EquivalentClassFinder equivalentClassFinder = new EquivalentClassFinder();
-        Map<String, Set<String>> potentialEquivalents = equivalentClassFinder.checkForPotentiallyEquivalentClasses(generatedClasses, temporaryClasses);
+    public void identifyRedundantClasses(File directory1, File directory2, File[] excludedDirectories, Pattern namesToIgnore) throws IOException {
+        ClassDirectoryToJavaClassesConverter converter = new ClassDirectoryToJavaClassesConverter();
+        List<JavaClass> generatedClasses = converter.convertClassDirectoryToJavaClassObjects(directory1, excludedDirectories);
+        List<JavaClass> temporaryClasses = converter.convertClassDirectoryToJavaClassObjects(directory2, excludedDirectories);
+
+        EquivalentClassIdentifier equivalentClassIdentifier = new EquivalentClassIdentifier();
+        Map<String, Set<String>> potentialEquivalents = equivalentClassIdentifier.checkForPotentiallyEquivalentClasses(generatedClasses, temporaryClasses, namesToIgnore);
         writePotentialEquivalentsToFile(potentialEquivalents);
     }
 

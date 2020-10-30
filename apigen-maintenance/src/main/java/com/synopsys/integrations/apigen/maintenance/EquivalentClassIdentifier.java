@@ -6,11 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import com.sun.org.apache.bcel.internal.classfile.Field;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
-public class EquivalentClassFinder {
+public class EquivalentClassIdentifier {
 
     public boolean hasAnEquivalent(JavaClass clazz1, List<JavaClass> classes) {
         for (JavaClass clazz2 : classes) {
@@ -39,10 +40,10 @@ public class EquivalentClassFinder {
         return true;
     }
 
-    public Map<String, Set<String>> checkForPotentiallyEquivalentClasses(List<JavaClass> classes1, List<JavaClass> classes2) {
+    public Map<String, Set<String>> checkForPotentiallyEquivalentClasses(List<JavaClass> classes1, List<JavaClass> classes2, Pattern namesToIgnore) {
         Map<String, Set<String>> classesAndPotentialEquivalents = new HashMap<>();
         for (JavaClass clazz : classes2) {
-            Set<String> potentialEquivalents = findPotentialEquivalents(clazz, classes1);
+            Set<String> potentialEquivalents = findPotentialEquivalents(clazz, classes1, namesToIgnore);
             if (!potentialEquivalents.isEmpty()) {
                 classesAndPotentialEquivalents.put(clazz.getClassName(), potentialEquivalents);
             }
@@ -50,7 +51,7 @@ public class EquivalentClassFinder {
         return classesAndPotentialEquivalents;
     }
 
-    public Set<String> findPotentialEquivalents(JavaClass class1, List<JavaClass> classes) {
+    public Set<String> findPotentialEquivalents(JavaClass class1, List<JavaClass> classes, Pattern namesToIgnore) {
         Set<String> potentialEquivalents = new HashSet<>();
         for (JavaClass class2 : classes) {
             int class2FieldCount = class2.getFields().length;
@@ -65,7 +66,7 @@ public class EquivalentClassFinder {
                     }
                 }
             }
-            if (fieldNamesInCommon/class2FieldCount > .8 && fieldNamesInCommon/class1.getFields().length > .8) {
+            if (fieldNamesInCommon/class2FieldCount > .8 && fieldNamesInCommon/class1.getFields().length > .8 && namesToIgnore != null && !namesToIgnore.matcher(class2.getClassName()).matches()) {
                 potentialEquivalents.add(class2.getClassName());
             }
         }
