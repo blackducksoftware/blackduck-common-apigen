@@ -43,6 +43,7 @@ import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
+import com.synopsys.integration.create.apigen.model.FirstPassFieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -51,6 +52,7 @@ import com.synopsys.integration.create.apigen.parser.DefinitionParser;
 import com.synopsys.integration.create.apigen.parser.DuplicateTypeIdentifier;
 import com.synopsys.integration.create.apigen.parser.FieldDataProcessor;
 import com.synopsys.integration.create.apigen.parser.FieldDefinitionProcessor;
+import com.synopsys.integration.create.apigen.parser.FirstPassFieldDefinitionProcessor;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.create.apigen.parser.ResponseType;
 import com.synopsys.integration.create.apigen.parser.ResponseTypeIdentifier;
@@ -95,7 +97,7 @@ public class DirectoryPathParser implements ApiParser {
             final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
             final Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
 
-            response.addFields(processor.parseFieldDefinitions(response.getName(), fields));
+            response.addFields(processor.processFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
 
             // Filter out 'Array' responses (those comprised solely of fields like 'items', 'meta', and 'totalCount') and extract data from responses where data is subfield of "items" field
@@ -192,7 +194,7 @@ public class DirectoryPathParser implements ApiParser {
         final DefinitionParser definitionParser = new DefinitionParser(gson, file);
         final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
         FieldDefinitionProcessor processor = new FieldDefinitionProcessor(new FieldDataProcessor(typeTranslator, new DuplicateTypeIdentifier()), missingFieldsAndLinks);
-        final Set<FieldDefinition> fieldDefinitions = processor.parseFieldDefinitions("", rawFieldDefinitions);
+        final Set<FieldDefinition> fieldDefinitions = processor.processFieldDefinitions("", rawFieldDefinitions);
         final ResponseDefinition response = new ResponseDefinition("", "", "", false);
         response.addFields(fieldDefinitions);
         return response;

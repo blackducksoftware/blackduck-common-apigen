@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.synopsys.integration.create.apigen.GeneratorConfig;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -36,7 +35,8 @@ public class DirectoryWalkerTest {
         TypeTranslator typeTranslator = new TypeTranslator();
         NameAndPathManager nameAndPathManager = new NameAndPathManager();
         MissingFieldsAndLinks missingFieldsAndLinks = new MissingFieldsAndLinks();
-        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(typeTranslator, new DuplicateTypeIdentifier(), missingFieldsAndLinks);
+        FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(typeTranslator, new DuplicateTypeIdentifier());
+        final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(fieldDataProcessor, missingFieldsAndLinks);
         final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
         this.directoryWalker = new DirectoryWalker(gson, apiParser);
     }

@@ -39,7 +39,6 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FieldDefinitionProcessor {
-
     private FieldDataProcessor fieldDataProcessor;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
 
@@ -49,7 +48,7 @@ public class FieldDefinitionProcessor {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
     }
 
-    public Set<FieldDefinition> parseFieldDefinitions(final String fieldDefinitionName, final Set<RawFieldDefinition> rawFieldDefinitions) {
+    public Set<FieldDefinition> processFieldDefinitions(final String parentDefinitionName, final Set<RawFieldDefinition> rawFieldDefinitions) {
         final Set<FieldDefinition> fieldDefinitions = new HashSet<>();
         for (final RawFieldDefinition rawField : rawFieldDefinitions) {
             // Ignore 'data' and '_meta' fields
@@ -57,14 +56,14 @@ public class FieldDefinitionProcessor {
                 continue;
             }
 
-            final FieldData fieldData = fieldDataProcessor.process(rawField, fieldDefinitionName);
+            final FieldData fieldData = fieldDataProcessor.process(rawField, parentDefinitionName);
             final FieldDefinition fieldDefinition = new FieldDefinition(fieldData.getPath(), fieldData.getType(), rawField.isOptional(), rawField.getAllowedValues(), fieldData.typeWasOverrided());
             final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(fieldData.getType()));
             fieldDefinition.addSubFields(missingFields);
 
             if (rawField.getSubFields() != null && !fieldDefinition.typeWasOverrided()) {
                 // If field has subfields, and its type was not overrided, recursively parse and add its subfields
-                final Set<FieldDefinition> subFields = parseFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
+                final Set<FieldDefinition> subFields = processFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }
             fieldDefinitions.add(fieldDefinition);
