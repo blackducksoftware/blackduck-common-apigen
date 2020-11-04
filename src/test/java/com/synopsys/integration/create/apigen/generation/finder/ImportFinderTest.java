@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Test;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
-import com.synopsys.integration.create.apigen.model.LinkData;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.LinksAndImportsData;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -34,7 +32,7 @@ public class ImportFinderTest {
         fields.add(new FieldDefinition("", "List<PolicyStatusType>", false, null, false));
         fields.add(new FieldDefinition("", "ComponentsView", false, null, false));
 
-        imports.addAll(importFinder.getFieldImports(fields));
+        imports.addAll(importFinder.findFieldImports(fields));
 
         assertFalse(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS));
         assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS));
@@ -48,7 +46,7 @@ public class ImportFinderTest {
         response.addLink(new LinkDefinition("projects", false));
         response.addLink(new LinkDefinition("roles", false));
 
-        LinksAndImportsData linksAndImportsData = importFinder.getLinkImports(response);
+        LinksAndImportsData linksAndImportsData = importFinder.findLinkAndImportsData(response);
         Set<String> imports = linksAndImportsData.getImports();
         Assertions.assertTrue(imports.contains("com.synopsys.integration.blackduck.api.generated.view.RoleAssignmentView"));
         Assertions.assertTrue(imports.contains("com.synopsys.integration.blackduck.api.core.response.LinkResponse"));

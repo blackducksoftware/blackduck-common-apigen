@@ -44,7 +44,6 @@ import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.ClassTypeData;
-import com.synopsys.integration.create.apigen.model.LinkData;
 import com.synopsys.integration.create.apigen.model.LinksAndImportsData;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.NameParser;
@@ -86,28 +85,27 @@ public class ViewGenerator {
 
     public void generateClasses(final ResponseDefinition response, final Template template) {
         Set<String> imports = new HashSet<>();
-        imports.addAll(importFinder.getFieldImports(response.getFields()));
-        final LinksAndImportsData helper = importFinder.getLinkImports(response);
-        imports.addAll(helper.getImports());
-        final Set<LinkData> links = helper.getLinks();
+        imports.addAll(importFinder.findFieldImports(response.getFields()));
+        final LinksAndImportsData linkAndImportsData = importFinder.findLinkAndImportsData(response);
+        imports.addAll(linkAndImportsData.getImports());
 
         final String responseMediaType = response.getMediaType();
         final String viewName = response.getName();
 
         final ClassTypeEnum classType = classCategories.computeData(viewName).getType();
         ClassTypeData classTypeData = new ClassTypeData(classType, filePathUtil);
-        final Map<String, Object> input = inputDataFinder.getInputData(classTypeData, imports, viewName, response.getFields(), links, responseMediaType);
+        final Map<String, Object> input = inputDataFinder.getInputData(classTypeData, imports, viewName, response.getFields(), linkAndImportsData.getLinks(), responseMediaType);
 
         mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
-        String swaggerName = typeTranslator.getClassSwaggerName(viewName);
-        if (StringUtils.isNotBlank(swaggerName)) {
-            if (StringUtils.isBlank(typeTranslator.getClassSwaggerName(swaggerName))) {
+        String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(viewName);
+        if (StringUtils.isNotBlank(deprecatedName)) {
+            if (StringUtils.isBlank(typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName))) {
                 String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated.deprecated");
                 String deprecatedPackage = classTypeData.getPackageName().replace(UtilStrings.GENERATED, "generated.deprecated");
-                classCategories.addDeprecatedClass(swaggerName, viewName, template, input, pathToDeprecatedFiles, deprecatedPackage);
+                classCategories.addDeprecatedClass(deprecatedName, viewName, template, input, pathToDeprecatedFiles, deprecatedPackage);
             }
         }
-        String apiGenClassName = typeTranslator.getApiGenClassName(viewName);
+        String apiGenClassName = typeTranslator.getNewName(viewName);
         if (StringUtils.isNotBlank(apiGenClassName)) {
             input.put(UtilStrings.HAS_NEW_NAME, true);
             input.put(UtilStrings.NEW_NAME, apiGenClassName);

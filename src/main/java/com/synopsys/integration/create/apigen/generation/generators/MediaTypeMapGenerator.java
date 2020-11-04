@@ -66,7 +66,7 @@ public class MediaTypeMapGenerator {
             classNames.add(helper.getNonVersionedClassName());
         }
         for (String className : classNames) {
-            imports.addAll(importFinder.getFieldImports(className, false));
+            imports.addAll(importFinder.findFieldImports(className, false));
         }
         List sortedImports = imports.stream()
                 .sorted(ImportComparator.of())

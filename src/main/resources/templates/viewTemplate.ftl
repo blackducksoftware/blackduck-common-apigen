@@ -9,7 +9,7 @@ import ${import};
 </#if>
 /**
 <#if hasNewName??>
-* ${className} is now called ${newName}
+* ${className} from the previous API is now called ${newName}
 </#if>
 * this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
 * **/

@@ -42,7 +42,6 @@ import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
-import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkData;
@@ -67,16 +66,16 @@ public class ImportFinder {
         this.classNameManager = classNameManager;
     }
 
-    public Set<String> getFieldImports(final Set<FieldDefinition> fields) {
+    public Set<String> findFieldImports(final Set<FieldDefinition> fields) {
         Set<String> fieldImports = new HashSet<>();
         for (final FieldDefinition field : fields) {
             String fieldType = field.getType();
-            fieldImports.addAll(getFieldImports(fieldType, field.isOptional()));
+            fieldImports.addAll(findFieldImports(fieldType, field.isOptional()));
         }
         return fieldImports;
     }
 
-    public Set<String> getFieldImports(String fieldType, final boolean isOptional) {
+    public Set<String> findFieldImports(String fieldType, final boolean isOptional) {
         Set<String> fieldImports = new HashSet<>();
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
@@ -128,7 +127,7 @@ public class ImportFinder {
         return fieldImports;
     }
 
-    public LinksAndImportsData getLinkImports(final ResponseDefinition response) {
+    public LinksAndImportsData findLinkAndImportsData(final ResponseDefinition response) {
         final Set<LinkDefinition> rawLinks = response.getLinks();
         final Set<LinkData> links = new HashSet<>();
         final Set<String> linkImports = new HashSet<>();

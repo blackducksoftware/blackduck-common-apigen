@@ -89,7 +89,7 @@ public class ComponentGenerator extends ClassGenerator {
         final Set<String> imports = new HashSet<>();
         final Set<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
-            imports.addAll(importFinder.getFieldImports(subField.getType(), subField.isOptional()));
+            imports.addAll(importFinder.findFieldImports(subField.getType(), subField.isOptional()));
         }
 
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
@@ -99,17 +99,18 @@ public class ComponentGenerator extends ClassGenerator {
         mediaVersionDataManager.updateLatestMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
-            String swaggerName = typeTranslator.getClassSwaggerName(fieldType);
-            if (swaggerName != null) {
-                if (typeTranslator.getClassSwaggerName(swaggerName) == null) {
+            String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(fieldType);
+            if (deprecatedName != null) {
+                if (typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName) == null) {
                     String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated.deprecated");
                     String deprecatedPackage = classTypeData.getPackageName().replace(UtilStrings.GENERATED, "generated.deprecated");
-                    classCategories.addDeprecatedClass(swaggerName, fieldType, template, input, pathToDeprecatedFiles, deprecatedPackage);
+                    classCategories.addDeprecatedClass(deprecatedName, fieldType, template, input, pathToDeprecatedFiles, deprecatedPackage);
                 }
             }
-            if (typeTranslator.getApiGenClassName(fieldType) != null) {
+            // If a class has the same name as a class from the previous API, but is a different class, then this will be noted at the top of the class.
+            if (typeTranslator.getNewName(fieldType) != null) {
                 input.put(UtilStrings.HAS_NEW_NAME, true);
-                input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(fieldType));
+                input.put(UtilStrings.NEW_NAME, typeTranslator.getNewName(fieldType));
             }
             generatorDataManager.addFileData(new FileGenerationData(fieldType, template, input, classTypeData.getPathToOutputDirectory()));
         }
