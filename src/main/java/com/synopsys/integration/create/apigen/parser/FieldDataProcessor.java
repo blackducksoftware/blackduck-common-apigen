@@ -60,15 +60,13 @@ public class FieldDataProcessor {
     }
 
     private String getProcessedType(RawFieldDefinition rawFieldDefinition, String parentDefinitionName, String processedPath) {
-        String rawPath = rawFieldDefinition.getPath();
-        String rawType = rawFieldDefinition.getType();
         final String mediaVersion = NameParser.getMediaVersionFromResponseName(parentDefinitionName);
         final String nonVersionedParentDefinitionName = NameParser.getNonVersionedName(parentDefinitionName);
         typeWasOverrided = false;
 
         String processedType;
         processedType = processFirstPassType(rawFieldDefinition, processedPath, nonVersionedParentDefinitionName, mediaVersion);
-        processedType = overrideErrantType(nonVersionedParentDefinitionName, rawPath, rawType, processedType, mediaVersion);
+        processedType = overrideErrantType(nonVersionedParentDefinitionName, rawFieldDefinition.getPath(), rawFieldDefinition.getType(), processedType, mediaVersion);
         processedType = filterDuplicateType(rawFieldDefinition, processedType);
 
         return processedType;
