@@ -136,9 +136,9 @@ public class FieldDataProcessor {
 
     private String filterDuplicateType(RawFieldDefinition rawFieldDefinition, String processedType) {
         // Make sure this is not a duplicate type
-        String trueType = duplicateTypeIdentifier.screenForDuplicateType(rawFieldDefinition, processedType);
+        String trueType = duplicateTypeIdentifier.screenForDuplicateType(rawFieldDefinition, NameParser.stripListNotation(processedType));
+        trueType = restoreListNotation(processedType, trueType);
         if (!trueType.equals(processedType)) {
-            trueType = restoreListNotation(processedType, trueType);
             typeWasOverrided = true;
             return trueType;
         }
