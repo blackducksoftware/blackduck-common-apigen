@@ -53,16 +53,18 @@ public class EnumGenerator extends ClassGenerator {
     private final FilePathUtil filePathUtil;
     private final MediaVersionDataManager mediaVersionDataManager;
     private final GeneratorDataManager generatorDataManager;
+    private final DeprecatedClassGenerator deprecatedClassGenerator;
 
     @Autowired
     public EnumGenerator(ClassCategories classCategories, InputDataFinder inputDataFinder, TypeTranslator typeTranslator, FilePathUtil filePathUtil, MediaVersionDataManager mediaVersionDataManager,
-        GeneratorDataManager generatorDataManager) {
+        GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
         this.classCategories = classCategories;
         this.inputDataFinder = inputDataFinder;
         this.typeTranslator = typeTranslator;
         this.filePathUtil = filePathUtil;
         this.mediaVersionDataManager = mediaVersionDataManager;
         this.generatorDataManager = generatorDataManager;
+        this.deprecatedClassGenerator = deprecatedClassGenerator;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class EnumGenerator extends ClassGenerator {
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(classType);
         if (deprecatedName != null && typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName) == null) {
-            classCategories.addDeprecatedClass(typeTranslator.getNameOfDeprecatedEquivalent(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
+            deprecatedClassGenerator.addDeprecatedClass(typeTranslator.getNameOfDeprecatedEquivalent(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
         }
         if (typeTranslator.getNewName(classType) != null) {
             input.put(UtilStrings.HAS_NEW_NAME, true);

@@ -16,8 +16,7 @@ public class ClassDirectoryToJavaClassesConverter {
         File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/synopsys/integration/blackduck/api");
         File generatedDirectory = new File(apiBuildDirectory, "generated");
         File[] excludedDirectories = {
-            new File(generatedDirectory, "discovery"),
-            new File(generatedDirectory,"deprecated"),
+            new File(generatedDirectory, "discovery")
         };
         return convertClassDirectoryToJavaClassObjects(generatedDirectory, excludedDirectories);
     }

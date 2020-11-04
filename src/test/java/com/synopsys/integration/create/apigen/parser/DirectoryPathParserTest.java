@@ -46,7 +46,7 @@ public class DirectoryPathParserTest {
     public void test() throws IOException, URISyntaxException {
         final File testFile = new File("./build/DirectoryPathParserTestTestingData.txt");
         List<ResponseDefinition> apiData = directoryPathParser.parseApi(new File(rootDirectory.toURI()));
-        FieldsParserTestDataCollector.writeTestData(gson, apiData, testFile);
+        DirectoryPathParserTestDataCollector.writeTestData(gson, apiData, testFile);
         final File controlFile = new File(DirectoryPathParserTest.class.getClassLoader().getResource("DirectoryPathParserTestControlData.txt").toURI());
 
         String controlData = null;

@@ -62,11 +62,12 @@ public class ViewGenerator {
     private final ClassCategories classCategories;
     private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
+    private final DeprecatedClassGenerator deprecatedClassGenerator;
 
     @Autowired
     public ViewGenerator(MediaTypes mediaTypes, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator,
         ClassCategories classCategories, FilePathUtil filePathUtil,
-        GeneratorDataManager generatorDataManager) {
+        GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
         this.mediaTypes = mediaTypes;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
@@ -76,6 +77,7 @@ public class ViewGenerator {
         this.classCategories = classCategories;
         this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
+        this.deprecatedClassGenerator = deprecatedClassGenerator;
     }
 
     public boolean isApplicable(final ResponseDefinition response) {
@@ -102,7 +104,7 @@ public class ViewGenerator {
             if (StringUtils.isBlank(typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName))) {
                 String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated.deprecated");
                 String deprecatedPackage = classTypeData.getPackageName().replace(UtilStrings.GENERATED, "generated.deprecated");
-                classCategories.addDeprecatedClass(deprecatedName, viewName, template, input, pathToDeprecatedFiles, deprecatedPackage);
+                deprecatedClassGenerator.addDeprecatedClass(deprecatedName, viewName, template, input, pathToDeprecatedFiles, deprecatedPackage);
             }
         }
         String apiGenClassName = typeTranslator.getNewName(viewName);

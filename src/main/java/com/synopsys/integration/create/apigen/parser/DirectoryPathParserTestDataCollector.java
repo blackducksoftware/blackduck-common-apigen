@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
-public class FieldsParserTestDataCollector {
+public class DirectoryPathParserTestDataCollector {
 
     public static void writeControlData(final Gson gson, final List<ResponseDefinition> responses) throws IOException {
         writeData(gson, responses, new File(Application.PATH_TO_TEST_RESOURCES, "FieldsParserTestControlData.txt"));

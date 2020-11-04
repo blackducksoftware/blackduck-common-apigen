@@ -22,7 +22,6 @@
  */
 package com.synopsys.integration.create.apigen.data;
 
-import com.synopsys.integration.create.apigen.generation.GeneratedClassWriter;
 import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
 import com.synopsys.integration.create.apigen.parser.NameParser;
 import freemarker.template.Template;
@@ -40,15 +39,11 @@ import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.*;
 @Component
 public class ClassCategories {
     private ClassNameManager classNameManager;
-    private final Set<DeprecatedClassData> deprecatedClasses;
-
     private final Map<String, ClassCategoryData> classNameData = new HashMap<>();
 
     @Autowired
     public ClassCategories(ClassNameManager classNameManager) {
         this.classNameManager = classNameManager;
-        this.deprecatedClasses = new HashSet<>();
-
         populateData();
     }
 
@@ -381,28 +376,6 @@ public class ClassCategories {
 
     private void populate(ClassTypeEnum type, ClassSourceEnum source, String className) {
         classNameData.put(className, new ClassCategoryData(className, type, source));
-    }
-
-    public Set<DeprecatedClassData> getDeprecatedClasses() {
-        return deprecatedClasses;
-    }
-
-    public void addDeprecatedClass(String swaggerName, String apigenName, Template template, Map<String, Object> input, String destination, String packageOverride) {
-        Map<String, Object> newInput = new HashMap<>();
-        for (Map.Entry<String, Object> entry : input.entrySet()) {
-            newInput.put(entry.getKey(), entry.getValue());
-        }
-        newInput.put(UtilStrings.CLASS_NAME, swaggerName);
-        newInput.put("hasNewName", true);
-        newInput.put("newName", NameParser.getNonVersionedName(apigenName));
-        newInput.put("isDeprecated", true);
-        newInput.put(UtilStrings.PACKAGE_NAME, packageOverride);
-        for (DeprecatedClassData deprecatedClass : deprecatedClasses) {
-            if (deprecatedClass.getSwaggerName().equals(swaggerName)) {
-                return;
-            }
-        }
-        deprecatedClasses.add(new DeprecatedClassData(swaggerName, apigenName, template, newInput, destination));
     }
 
     public ClassCategoryData computeData(String className) {

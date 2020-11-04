@@ -60,11 +60,12 @@ public class ComponentGenerator extends ClassGenerator {
     private final TypeTranslator typeTranslator;
     private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
+    private final DeprecatedClassGenerator deprecatedClassGenerator;
 
     @Autowired
     public ComponentGenerator(ClassCategories classCategories, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager,
         MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator, FilePathUtil filePathUtil,
-        GeneratorDataManager generatorDataManager) {
+        GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
         this.classCategories = classCategories;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
@@ -73,6 +74,7 @@ public class ComponentGenerator extends ClassGenerator {
         this.typeTranslator = typeTranslator;
         this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
+        this.deprecatedClassGenerator = deprecatedClassGenerator;
     }
 
     @Override
@@ -104,7 +106,7 @@ public class ComponentGenerator extends ClassGenerator {
                 if (typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName) == null) {
                     String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated.deprecated");
                     String deprecatedPackage = classTypeData.getPackageName().replace(UtilStrings.GENERATED, "generated.deprecated");
-                    classCategories.addDeprecatedClass(deprecatedName, fieldType, template, input, pathToDeprecatedFiles, deprecatedPackage);
+                    deprecatedClassGenerator.addDeprecatedClass(deprecatedName, fieldType, template, input, pathToDeprecatedFiles, deprecatedPackage);
                 }
             }
             // If a class has the same name as a class from the previous API, but is a different class, then this will be noted at the top of the class.

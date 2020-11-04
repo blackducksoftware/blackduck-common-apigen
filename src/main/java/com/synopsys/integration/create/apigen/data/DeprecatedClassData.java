@@ -28,22 +28,22 @@ import freemarker.template.Template;
 
 public class DeprecatedClassData {
 
-    private final String swaggerName;
+    private final String oldName;
     private final String apigenName;
     private final Template template;
     private final Map<String, Object> input;
     private final String destination;
 
-    public DeprecatedClassData(final String swaggerName, final String apigenName, final Template template, final Map<String, Object> input, final String destination) {
-        this.swaggerName = swaggerName;
+    public DeprecatedClassData(final String oldName, final String apigenName, final Template template, final Map<String, Object> input, final String destination) {
+        this.oldName = oldName;
         this.apigenName = apigenName;
         this.template = template;
         this.input = input;
         this.destination = destination;
     }
 
-    public String getSwaggerName() {
-        return swaggerName;
+    public String getOldName() {
+        return oldName;
     }
 
     public String getApigenName() {

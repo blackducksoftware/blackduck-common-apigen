@@ -54,7 +54,7 @@ public class DirectoryWalker {
         }
         // Write output of FieldsParser to test data file
         if (controlRun) {
-            FieldsParserTestDataCollector.writeControlData(gson, responses);
+            DirectoryPathParserTestDataCollector.writeControlData(gson, responses);
         }
         return responses;
     }
