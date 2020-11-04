@@ -54,7 +54,7 @@ public class MissingClassFinder {
         File outputFile = new File(outputDirectory, "missing-classes.txt");
         FileWriter writer = new FileWriter(outputFile);
 
-        writer.write("************* CLASSES MISSING FROM GENERATED API *************\n\n");
+        writer.write(String.format("************* CLASSES MISSING FROM GENERATED API: %d *************\n\n", missingClasses.size()));
         for (String missingClass : missingClasses) {
             writer.write(String.format("%s\n", missingClass));
             writer.write("\n");

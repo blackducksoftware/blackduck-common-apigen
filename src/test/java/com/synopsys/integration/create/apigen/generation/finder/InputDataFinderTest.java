@@ -21,7 +21,7 @@ public class InputDataFinderTest {
     public void getViewInputDataTest() {
         Set<String> imports = new HashSet<>();
         imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
-        Map<String, Object> inputData1 = inputDataFinder.getViewInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, "java.util.List<ProjectViewV4>", UtilStrings.VIEW_BASE_CLASS, new HashSet<>(), new HashSet<>(), "json4");
+        Map<String, Object> inputData1 = inputDataFinder.getInputData(UtilStrings.GENERATED_VIEW_PACKAGE, imports, "java.util.List<ProjectViewV4>", UtilStrings.VIEW_BASE_CLASS, new HashSet<>(), new HashSet<>(), "json4");
 
         assertTrue(inputData1.size() == 8);
         assertTrue(inputData1.get(UtilStrings.PACKAGE_NAME).equals(UtilStrings.GENERATED_VIEW_PACKAGE));
@@ -31,7 +31,7 @@ public class InputDataFinderTest {
 
         Set<LinkData> links = new HashSet<>();
         links.add(new LinkData("label", new ResponseDefinition("", "", "", false), new LinkResponseDefinitions()));
-        Map<String, Object> inputData2 = inputDataFinder.getViewInputData("", new HashSet<>(), "", "", new HashSet<>(), links, "");
+        Map<String, Object> inputData2 = inputDataFinder.getInputData("", new HashSet<>(), "", "", new HashSet<>(), links, "");
 
         assertTrue(inputData2.size() == 11);
     }

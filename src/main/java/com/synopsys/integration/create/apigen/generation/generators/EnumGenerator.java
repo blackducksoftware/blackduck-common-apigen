@@ -75,7 +75,7 @@ public class EnumGenerator extends ClassGenerator {
     }
 
     @Override
-    public void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception {
+    public void generateClass(FieldDefinition field, String responseMediaType, Template template) {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
         String swaggerName = typeTranslator.getClassSwaggerName(classType);

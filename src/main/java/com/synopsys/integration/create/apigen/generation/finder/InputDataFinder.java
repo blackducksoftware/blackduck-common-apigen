@@ -23,7 +23,6 @@
 package com.synopsys.integration.create.apigen.generation.finder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,6 +35,7 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.model.ClassTypeData;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkData;
 import com.synopsys.integration.create.apigen.parser.NameParser;
@@ -47,21 +47,21 @@ public class InputDataFinder {
 
     private static List<String> MAP_IMPORTS = Arrays.asList(IMPORT_HASHMAP, IMPORT_MAP);
 
-    public Map<String, Object> getEnumInputData(final String enumPackage, final String enumClassName, final Set<String> enumValues, final String mediaType) {
+    public Map<String, Object> getEnumInputData(final String packageName, final String className, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
 
-        inputData.put(UtilStrings.PACKAGE_NAME, enumPackage);
+        inputData.put(UtilStrings.PACKAGE_NAME, packageName);
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
-        inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(enumClassName));
+        inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
         inputData.put("enumValues", enumValues);
 
         return inputData;
     }
 
-    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> originalClassFields, final String mediaType) {
+    public HashMap<String, Object> getInputData(final ClassTypeData classTypeData, final Set<String> imports, final String className, final Set<FieldDefinition> originalClassFields, final String mediaType) {
         final HashMap<String, Object> inputData = new HashMap<>();
 
-        inputData.put(UtilStrings.PACKAGE_NAME, viewPackage);
+        inputData.put(UtilStrings.PACKAGE_NAME, classTypeData.getPackageName());
         inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
 
@@ -80,11 +80,12 @@ public class InputDataFinder {
             }
         }
 
+        imports.add(classTypeData.getBaseClassImportPath());
         final List sortedImports = imports.stream()
                                        .sorted(ImportComparator.of())
                                        .collect(Collectors.toList());
         inputData.put("imports", sortedImports);
-        inputData.put(UtilStrings.BASE_CLASS, baseClass);
+        inputData.put(UtilStrings.BASE_CLASS, classTypeData.getBaseClass());
         inputData.put(UtilStrings.CLASS_FIELDS, classFields);
         inputData.put("optionalClassFields", optionalClassFields);
         inputData.put("nonOptionalClassFields", nonOptionalClassFields);
@@ -92,7 +93,7 @@ public class InputDataFinder {
         return inputData;
     }
 
-    public HashMap<String, Object> getViewInputData(final String viewPackage, final Set<String> imports, final String className, final String baseClass, final Set<FieldDefinition> classFields, final Set<LinkData> links,
+    public HashMap<String, Object> getInputData(final ClassTypeData classTypeData, final Set<String> imports, final String className, final Set<FieldDefinition> classFields, final Set<LinkData> links,
         final String mediaType) {
         boolean hasLinks = links != null && links.size() > 0;
 
@@ -100,7 +101,7 @@ public class InputDataFinder {
             imports.addAll(MAP_IMPORTS);
         }
 
-        final HashMap<String, Object> inputData = getViewInputData(viewPackage, imports, className, baseClass, classFields, mediaType);
+        final HashMap<String, Object> inputData = getInputData(classTypeData, imports, className, classFields, mediaType);
         if (hasLinks) {
             inputData.put("hasLinksWithResults", true);
             inputData.put("hasLinks", true);
