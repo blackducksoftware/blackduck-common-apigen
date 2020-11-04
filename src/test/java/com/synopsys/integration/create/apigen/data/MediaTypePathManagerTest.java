@@ -46,7 +46,7 @@ public class MediaTypePathManagerTest {
             pathManager.addMapping(responseDefinition);
         }
 
-        assertEquals(6, pathManager.getMediaTypeData().getConstantsMapping().size(), "Only missing media types should be present");
+        assertEquals(4, pathManager.getMediaTypeData().getConstantsMapping().size(), "Only missing media types should be present");
     }
 
     @Test

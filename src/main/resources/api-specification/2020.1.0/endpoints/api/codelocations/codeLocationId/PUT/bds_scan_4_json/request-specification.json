@@ -1,9 +1,0 @@
-{
-  "parameters" : [ ],
-  "fields" : [ {
-    "path" : "mappedProjectVersion",
-    "type" : "String",
-    "optional" : true,
-    "description" : "URL specifying the project version linked to the code location"
-  } ]
-}

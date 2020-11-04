@@ -1,9 +1,0 @@
-{
-  "parameters" : [ ],
-  "fields" : [ {
-    "path" : "text",
-    "type" : "String",
-    "optional" : false,
-    "description" : "The new text of the license to be stored for the given component version"
-  } ]
-}

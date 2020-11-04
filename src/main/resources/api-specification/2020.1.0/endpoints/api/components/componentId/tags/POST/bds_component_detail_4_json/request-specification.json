@@ -1,9 +1,0 @@
-{
-  "parameters" : [ ],
-  "fields" : [ {
-    "path" : "name",
-    "type" : "String",
-    "optional" : false,
-    "description" : "The name of the tag to be created. Can only include alphanumeric characters, and uppercase letters will be converted to lowercase."
-  } ]
-}
