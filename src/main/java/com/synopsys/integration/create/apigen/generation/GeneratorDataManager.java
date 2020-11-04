@@ -52,12 +52,6 @@ public class GeneratorDataManager {
         FileGenerationData dataToStore = data;
 
         if (fileDataList.containsKey(data.getClassName())) {
-
-            //debug
-            if (data.getClassName().contains("ComponentVersionRiskProfileRiskDataView")) {
-                System.out.println();
-            }
-
             FileGenerationData currentData = fileDataList.get(data.getClassName());
             Map<String, Object> newInputMap = new HashMap<>();
             newInputMap.putAll(currentData.getInput());
@@ -83,30 +77,33 @@ public class GeneratorDataManager {
 
     private void makeClassNamesPrettier() {
         for (FileGenerationData fileData : fileDataList.values()) {
-            editRedundantName(fileData, fileDataList.keySet());
+            String oldName = fileData.getClassName();
+            String editedName = modifyName(oldName);
+            String nonVersionedOldName = NameParser.getNonVersionedName(oldName);
+            String nonVersionedEditedName = NameParser.getNonVersionedName(editedName);
+            if (!fileDataList.keySet().contains(editedName)) {
+                fileData.setClassName(editedName);
+                fileData.getInput().put(UtilStrings.CLASS_NAME, editedName);
+                // make sure classes that had fields of the previous type get updated
+                for (FileGenerationData fileGenerationData : fileDataList.values()) {
+                    Set<FieldDefinition> fields = (Set<FieldDefinition>) fileGenerationData.getInput().get(UtilStrings.CLASS_FIELDS);
+                    List<String> imports = (List<String>) fileGenerationData.getInput().get("imports");
+                    if (fields == null || imports == null) continue;
+                    for (FieldDefinition field : fields) {
+                        if (field.getType().equals(nonVersionedOldName)) {
+                            field.setType(nonVersionedEditedName);
+                        }
+                    }
+                    imports.replaceAll(importString -> importString.replace(nonVersionedOldName, nonVersionedEditedName));
+                }
+            }
         }
     }
 
-    private void editRedundantName(FileGenerationData fileData, Set<String> classNames) {
-        String oldName = fileData.getClassName();
-        String editedName = oldName.replace("TypeType", "Type");
-        String nonVersionedOldName = NameParser.getNonVersionedName(oldName);
-        String nonVersionedEditedName = NameParser.getNonVersionedName(editedName);
-        if (!classNames.contains(editedName)) {
-            fileData.setClassName(editedName);
-            fileData.getInput().put(UtilStrings.CLASS_NAME, editedName);
-            // make sure classes that had fields of the previous type get updated
-            for (FileGenerationData fileGenerationData : fileDataList.values()) {
-                Set<FieldDefinition> fields = (Set<FieldDefinition>) fileGenerationData.getInput().get(UtilStrings.CLASS_FIELDS);
-                List<String> imports = (List<String>) fileGenerationData.getInput().get("imports");
-                if (fields == null || imports == null) continue;
-                for (FieldDefinition field : fields) {
-                    if (field.getType().equals(nonVersionedOldName)) {
-                        field.setType(nonVersionedEditedName);
-                    }
-                }
-                imports.replaceAll(importString -> importString.replace(nonVersionedOldName, nonVersionedEditedName));
-            }
-        }
+    // TODO - here is where we can make further modifications to API class names
+    private String modifyName(String oldName) {
+        String modifiedName;
+        modifiedName = oldName.replace("TypeType", "Type");
+        return modifiedName;
     }
 }
