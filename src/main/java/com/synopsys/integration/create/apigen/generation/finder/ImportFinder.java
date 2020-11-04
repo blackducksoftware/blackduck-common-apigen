@@ -25,6 +25,7 @@ package com.synopsys.integration.create.apigen.generation.finder;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.COMPONENT_BASE_CLASS;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.CORE_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
+import static com.synopsys.integration.create.apigen.data.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.RESPONSE_BASE_CLASS;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.TEMPORARY_CLASS_PATH_PREFIX;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.VIEW_BASE_CLASS;
@@ -56,15 +57,13 @@ public class ImportFinder {
     private final ClassCategories classCategories;
     private final LinkResponseDefinitions linkResponseDefinitions;
     private final NameAndPathManager nameAndPathManager;
-    private final TypeTranslator typeTranslator;
     private final ClassNameManager classNameManager;
 
     @Autowired
-    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator, ClassNameManager classNameManager) {
+    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager, ClassNameManager classNameManager) {
         this.classCategories = classCategories;
         this.linkResponseDefinitions = linkResponseDefinitions;
         this.nameAndPathManager = nameAndPathManager;
-        this.typeTranslator = typeTranslator;
         this.classNameManager = classNameManager;
     }
 
@@ -74,7 +73,6 @@ public class ImportFinder {
             String fieldType = field.getType();
             fieldImports.addAll(getFieldImports(fieldType, field.isOptional()));
         }
-
         return fieldImports;
     }
 
@@ -87,75 +85,80 @@ public class ImportFinder {
         final ClassSourceEnum classSource = classCategoryData.getSource();
         ClassTypeEnum classType = classCategoryData.getType();
 
-        String baseClass = null;
-        if ((classType).isView()) {
-            baseClass = VIEW_BASE_CLASS;
-        } else if (classType.isResponse()) {
-            baseClass = RESPONSE_BASE_CLASS;
-        } else if (!classType.isEnum() && !classType.isCommon()) {
-            baseClass = COMPONENT_BASE_CLASS;
-        }
-
-        if (baseClass != null ) {
-            fieldImports.add(CORE_CLASS_PATH_PREFIX + baseClass);
-        }
-
         if (isOptional) {
             // If fields that have optional=true in the specs are actually optional, we could wrap them in Optionals
             //imports.add("java.util.Optional");
         }
 
-        final String importPathPrefix = classSource.isTemporary() ? TEMPORARY_CLASS_PATH_PREFIX : GENERATED_CLASS_PATH_PREFIX;
-
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {
             fieldImports.add(UtilStrings.JAVA_BIG_DECIMAL);
         }
 
+        String importPathPrefix;
+        if (classSource.isTemporary()) {
+            importPathPrefix = TEMPORARY_CLASS_PATH_PREFIX;
+        } else if (classSource.isManual()) {
+            importPathPrefix = MANUAL_CLASS_PATH_PREFIX;
+        } else {
+            importPathPrefix = GENERATED_CLASS_PATH_PREFIX;
+        }
+
+        String baseClass = null;
+        String classCategory = null;
         if (classType.isEnum()) {
-            fieldImports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
+            classCategory = UtilStrings.ENUMERATION;
         } else if (classType.isResponse()) {
-            fieldImports.add(importPathPrefix + UtilStrings.RESPONSE + "." + fieldType);
+            classCategory = UtilStrings.RESPONSE;
+            baseClass = RESPONSE_BASE_CLASS;
         } else if (classType.isView()) {
-            fieldImports.add(importPathPrefix + UtilStrings.VIEW + "." + fieldType);
+            classCategory = UtilStrings.VIEW;
+            baseClass = VIEW_BASE_CLASS;
         } else if (!classType.isCommon()) {
-            fieldImports.add(importPathPrefix + UtilStrings.COMPONENT + "." + fieldType);
+            classCategory = UtilStrings.COMPONENT;
+            baseClass = COMPONENT_BASE_CLASS;
+        }
+
+        if (classCategory != null) {
+            fieldImports.add(String.format("%s%s.%s", importPathPrefix, classCategory, fieldType));
+        }
+        if (baseClass != null ) {
+            fieldImports.add(CORE_CLASS_PATH_PREFIX + baseClass);
         }
 
         return fieldImports;
     }
 
-    public LinksAndImportsData getLinkImports(final Set<String> imports, final ResponseDefinition response) {
+    public LinksAndImportsData getLinkImports(final ResponseDefinition response) {
         final Set<LinkDefinition> rawLinks = response.getLinks();
         final Set<LinkData> links = new HashSet<>();
+        final Set<String> linkImports = new HashSet<>();
         final String responseName = response.getName();
 
         if (!rawLinks.isEmpty()) {
-            imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.LINK_RESPONSE));
+            linkImports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.LINK_RESPONSE));
         }
 
         for (final LinkDefinition rawLink : rawLinks) {
             final LinkData link = new LinkData(rawLink.getRel(), response, linkResponseDefinitions);
             try {
-                final String resultClass = link.resultClass();
                 final String linkType = link.linkType();
                 if (null == linkType) {
                     nameAndPathManager.addNullLinkResultClass(responseName, rawLink.getRel());
                     continue;
                 }
-
                 final String linkImport = classNameManager.getFullyQualifiedClassName(linkType);
-                imports.add(linkImport);
+                linkImports.add(linkImport);
 
+                final String resultClass = link.resultClass();
                 if (resultClass != null) {
                     nameAndPathManager.addLinkClassName(resultClass);
-
                     final ResultClassData resultClassData = new ResultClassData(resultClass, classCategories);
                     final String resultImportPath = resultClassData.getResultImportPath();
                     final String resultImportType = resultClassData.getResultImportType();
                     final boolean shouldAddImport = resultClassData.shouldAddImport();
 
                     if (shouldAddImport) {
-                        imports.add(resultImportPath + resultImportType + "." + resultClass);
+                        linkImports.add(resultImportPath + resultImportType + "." + resultClass);
                     }
                     links.add(link);
                 } else {
@@ -165,7 +168,7 @@ public class ImportFinder {
                 nameAndPathManager.addNullLinkResultClass(responseName, rawLink.getRel());
             }
         }
-        return new LinksAndImportsData(links, imports);
+        return new LinksAndImportsData(links, linkImports);
     }
 
 }

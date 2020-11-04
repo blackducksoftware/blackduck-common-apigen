@@ -87,8 +87,8 @@ public class ViewGenerator {
     public void generateClasses(final ResponseDefinition response, final Template template) {
         Set<String> imports = new HashSet<>();
         imports.addAll(importFinder.getFieldImports(response.getFields()));
-        final LinksAndImportsData helper = importFinder.getLinkImports(imports, response);
-        imports = helper.getImports();
+        final LinksAndImportsData helper = importFinder.getLinkImports(response);
+        imports.addAll(helper.getImports());
         final Set<LinkData> links = helper.getLinks();
 
         final String responseMediaType = response.getMediaType();

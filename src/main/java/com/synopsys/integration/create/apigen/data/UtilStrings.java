@@ -35,14 +35,20 @@ public class UtilStrings {
     public static final String DEPRECATED_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, "generated.deprecated");
     public static final String TEMPORARY_CLASS_PATH_PREFIX = MANUAL_CLASS_PATH_PREFIX.replace(MANUAL, "manual.temporary");
 
-    public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION;
-    public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
-    public static final String GENERATED_COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.COMPONENT;
-    public static final String GENERATED_RESPONSE_PACKAGE = GENERATED_CLASS_PATH_PREFIX + UtilStrings.RESPONSE;
-    public static final String DEPRECATED_ENUM_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.ENUMERATION;
-    public static final String DEPRECATED_VIEW_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.VIEW;
-    public static final String DEPRECATED_COMPONENT_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.COMPONENT;
-    public static final String DEPRECATED_RESPONSE_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + UtilStrings.RESPONSE;
+    public static final String VIEW = "view";
+    public static final String COMPONENT = "component";
+    public static final String RESPONSE = "response";
+    public static final String ENUMERATION = "enumeration";
+    public static final String ENUM = "Type";
+
+    public static final String GENERATED_ENUM_PACKAGE = GENERATED_CLASS_PATH_PREFIX + ENUMERATION;
+    public static final String GENERATED_VIEW_PACKAGE = GENERATED_CLASS_PATH_PREFIX + VIEW;
+    public static final String GENERATED_COMPONENT_PACKAGE = GENERATED_CLASS_PATH_PREFIX + COMPONENT;
+    public static final String GENERATED_RESPONSE_PACKAGE = GENERATED_CLASS_PATH_PREFIX + RESPONSE;
+    public static final String DEPRECATED_ENUM_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + ENUMERATION;
+    public static final String DEPRECATED_VIEW_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + VIEW;
+    public static final String DEPRECATED_COMPONENT_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + COMPONENT;
+    public static final String DEPRECATED_RESPONSE_PACKAGE = DEPRECATED_CLASS_PATH_PREFIX + RESPONSE;
     public static final String GENERATED_DISCOVERY_PACKAGE = GENERATED_CLASS_PATH_PREFIX + "discovery";
     public static final String VIEW_BASE_CLASS = "BlackDuckView";
     public static final String COMPONENT_BASE_CLASS = "BlackDuckComponent";
@@ -53,16 +59,7 @@ public class UtilStrings {
     public static final String BASE_CLASS = "baseClass";
     public static final String MEDIA_TYPE = "mediaType";
     public static final String MEDIA_TYPE_SUFFIX = "_json";
-    //    public static final String BLACKDUCK_COMMON_API_BASE_DIRECTORY = GeneratedClassWriter.getBaseDirectory().getAbsolutePath();
-    //    public static final String ENUM_DIRECTORY_SUFFIX = "/enumeration";
-    //    public static final String VIEW_DIRECTORY_SUFFIX = "/view";
-    //    public static final String RESPONSE_DIRECTORY_SUFFIX = "/response";
-    //    public static final String COMPONENT_DIRECTORY_SUFFIX = "/component";
     public static final String DISCOVERY_DIRECTORY_SUFFIX = "/discovery";
-    //    public static final String PATH_TO_VIEW_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + VIEW_DIRECTORY_SUFFIX;
-    //    public static final String PATH_TO_RESPONSE_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + RESPONSE_DIRECTORY_SUFFIX;
-    //    public static final String PATH_TO_COMPONENT_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + COMPONENT_DIRECTORY_SUFFIX;
-    //    public static final String PATH_TO_ENUM_FILES = BLACKDUCK_COMMON_API_BASE_DIRECTORY + ENUM_DIRECTORY_SUFFIX;
 
     public static final String BIG_DECIMAL = "BigDecimal";
     public static final String JAVA_BIG_DECIMAL = "java.math." + BIG_DECIMAL;
@@ -86,12 +83,6 @@ public class UtilStrings {
     public static final String REQUEST_SPECIFICATION_JSON = "request-specification.json";
     public static final String API = "api";
     public static final String GET = "GET";
-
-    public static final String VIEW = "view";
-    public static final String COMPONENT = "component";
-    public static final String RESPONSE = "response";
-    public static final String ENUMERATION = "enumeration";
-    public static final String ENUM = "Type";
 
     public static final String NEW_NAME = "newName";
     public static final String HAS_NEW_NAME = "hasNewName";
