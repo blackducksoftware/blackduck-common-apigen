@@ -65,8 +65,9 @@ public class FieldDataProcessor {
         typeWasOverrided = false;
 
         String processedType;
+        // TODO - do we NEED to give certain values to multiple steps of the processing (eg. mediaVersion)?
         processedType = processFirstPassType(rawFieldDefinition, processedPath, nonVersionedParentDefinitionName, mediaVersion);
-        processedType = overrideErrantType(nonVersionedParentDefinitionName, rawFieldDefinition.getPath(), rawFieldDefinition.getType(), processedType, mediaVersion);
+        processedType = overrideErrantType(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), nonVersionedParentDefinitionName, processedType, mediaVersion);
         processedType = filterDuplicateType(rawFieldDefinition, processedType);
 
         return processedType;
@@ -121,7 +122,7 @@ public class FieldDataProcessor {
         return processedType;
     }
 
-    private String overrideErrantType(String nonVersionedParentDefinitionName, String rawPath, String rawType, String processedType, String mediaVersion) {
+    private String overrideErrantType(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType, String mediaVersion) {
         // Override type of certain fields
         String overrideType = typeTranslator.getTrueFieldName(nonVersionedParentDefinitionName, rawPath, rawType);
         if (overrideType != null) {
@@ -144,6 +145,7 @@ public class FieldDataProcessor {
         return processedType;
     }
 
+    // TODO - can we append media version once?  also we might just never need versions anymore...
     private String appendVersionToType(String unversionedType, String mediaVersion) {
         return String.format("%sV%s", unversionedType, mediaVersion);
     }

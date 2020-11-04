@@ -26,7 +26,7 @@ public class DuplicateTypeIdentifier {
             if (trueType != null) {
                 return trueType;
             } else if (rawField.getSubFields() != null) {
-                uniqueRawFieldsToNames.put(rawField.getSubFields(), NameParser.stripListNotation(originalType));
+                uniqueRawFieldsToNames.put(rawField.getSubFields(), NameParser.stripListNotation(originalType)); //TODO - we can probably just pass stripped type
             }
         } else {
             return screenForDuplicateEnum(originalType, enumValues);
