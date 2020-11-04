@@ -47,9 +47,9 @@ public class ApiPathDataPopulatorTest {
         responses.add(new ResponseDefinition("vulnerabilities/path/path/", "VulnerabilityView", "", false));
         responses.add(new ResponseDefinition("projects/path", "ProjectView", "", true));
         ResponseDefinition arrayResponse = new ResponseDefinition("arrays/path", "ArrayView", "", true);
-        arrayResponse.addField(new FieldDefinition(UtilStrings.ITEMS, UtilStrings.ARRAY, false));
-        arrayResponse.addField(new FieldDefinition(UtilStrings.META, UtilStrings.OBJECT, false));
-        arrayResponse.addField(new FieldDefinition(UtilStrings.TOTAL_COUNT, UtilStrings.NUMBER, false));
+        arrayResponse.addField(new FieldDefinition(UtilStrings.ITEMS, UtilStrings.ARRAY, false, false));
+        arrayResponse.addField(new FieldDefinition(UtilStrings.META, UtilStrings.OBJECT, false, false));
+        arrayResponse.addField(new FieldDefinition(UtilStrings.TOTAL_COUNT, UtilStrings.NUMBER, false, false));
 
         return responses;
     }

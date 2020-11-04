@@ -24,31 +24,30 @@ import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 
-public class DirectoryWalkerTest {
+public class DirectoryPathParserTest {
     private static final String API_SPEC_PATH = "api-specification/2020.8.0";
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private final URL rootDirectory = DirectoryWalkerTest.class.getClassLoader().getResource(API_SPEC_PATH);
-    private final com.synopsys.integration.create.apigen.parser.DirectoryWalker directoryWalker;
+    private final URL rootDirectory = DirectoryPathParserTest.class.getClassLoader().getResource(API_SPEC_PATH);
+    private DirectoryPathParser directoryPathParser;
 
-    public DirectoryWalkerTest() throws URISyntaxException {
+    public DirectoryPathParserTest() throws URISyntaxException {
         MediaTypes mediaTypes = new MediaTypes();
         TypeTranslator typeTranslator = new TypeTranslator();
         NameAndPathManager nameAndPathManager = new NameAndPathManager();
         MissingFieldsAndLinks missingFieldsAndLinks = new MissingFieldsAndLinks();
         FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(typeTranslator, new DuplicateTypeIdentifier());
         final FieldDefinitionProcessor processor = new FieldDefinitionProcessor(fieldDataProcessor, missingFieldsAndLinks);
-        final DirectoryPathParser apiParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
-        this.directoryWalker = new DirectoryWalker(gson, apiParser);
+        directoryPathParser = new DirectoryPathParser(mediaTypes, gson, typeTranslator, nameAndPathManager, missingFieldsAndLinks, processor);
     }
 
     @Disabled
     // Test fails on different ordering of fields.  Worth running to make sure there are no significant alterations, but it is disabled so it does not cause builds to fail.
     @Test
     public void test() throws IOException, URISyntaxException {
-        final File testFile = new File("./build/FieldsParserTestTestingData.txt");
-        List<ResponseDefinition> apiData = directoryWalker.parseDirectoryForResponses(false, false, new File(rootDirectory.toURI()));
+        final File testFile = new File("./build/DirectoryPathParserTestTestingData.txt");
+        List<ResponseDefinition> apiData = directoryPathParser.parseApi(new File(rootDirectory.toURI()));
         FieldsParserTestDataCollector.writeTestData(gson, apiData, testFile);
-        final File controlFile = new File(DirectoryWalkerTest.class.getClassLoader().getResource("FieldsParserTestControlData.txt").toURI());
+        final File controlFile = new File(DirectoryPathParserTest.class.getClassLoader().getResource("DirectoryPathParserTestControlData.txt").toURI());
 
         String controlData = null;
         String testData = null;

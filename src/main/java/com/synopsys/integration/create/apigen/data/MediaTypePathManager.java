@@ -109,17 +109,13 @@ public class MediaTypePathManager {
 
     private void addMissingPaths() {
         //TODO May need to update that for each version of the API.  These are not currently in the API spec that we traverse.
-        String pathRegex = "/api/projects/%s/project-mappings";
-        addMapping(pathRegex, "application/vnd.blackducksoftware.project-detail-4+json");
+        String pathRegex;
 
         pathRegex = "/api/projects/%s/versions/%s/code-locations";
         addMapping(pathRegex, "application/vnd.blackducksoftware.internal-1+json");
 
         pathRegex = "/api/projects/%s/versions/%s/license-reports";
         addMapping(pathRegex, "application/vnd.blackducksoftware.report-4+json");
-
-        pathRegex = "/api/projects/%s/versions/%s/issues";
-        addMapping(pathRegex, "application/json");
 
         pathRegex = "/api/usergroups/%s/users";
         addMapping(pathRegex, "application/vnd.blackducksoftware.user-4+json");

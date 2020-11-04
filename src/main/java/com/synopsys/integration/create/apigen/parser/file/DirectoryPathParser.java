@@ -84,11 +84,10 @@ public class DirectoryPathParser implements ApiParser {
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
-        List<ResponseDefinition> tempResponseDefinitions = new LinkedList<>();
-        parseApi(apiPath, apiPath.getAbsolutePath().length() + 1, tempResponseDefinitions);
+        List<ResponseDefinition> allResponseDefinitions = parseApiForAllResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
 
         // For each response file, parse the JSON for FieldDefinition objects
-        for (final ResponseDefinition response : tempResponseDefinitions) {
+        for (final ResponseDefinition response : allResponseDefinitions) {
             final String absolutePath = specificationRootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
             final File responseSpecificationFile = new File(absolutePath);
             final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
@@ -110,7 +109,8 @@ public class DirectoryPathParser implements ApiParser {
         return responseDefinitions;
     }
 
-    private void parseApi(final File parent, final int prefixLength, List<ResponseDefinition> responseDefinitions) {
+    private List<ResponseDefinition> parseApiForAllResponses(final File parent, final int prefixLength) {
+        List<ResponseDefinition> responseDefinitions = new LinkedList<>();
         final List<File> children = Arrays.stream(parent.listFiles())
                                         .filter(file -> !file.getName().equals("notifications"))
                                         .sorted()
@@ -119,8 +119,8 @@ public class DirectoryPathParser implements ApiParser {
         // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
         for (final File child : children) {
             String fileName = child.getName();
-            boolean requestOrResponseFile = fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
-            if (requestOrResponseFile && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
+            boolean responseFile = fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
+            if (responseFile && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
                 final String relativePath = child.getAbsolutePath().substring(prefixLength);
                 final String mediaType = mediaTypes.getLongName(child.getParentFile().getName());
                 if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
@@ -129,12 +129,18 @@ public class DirectoryPathParser implements ApiParser {
                     responseDefinitions.add(new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults));
                 }
             } else if (child.isDirectory()) {
-                parseApi(child, prefixLength, responseDefinitions);
+                responseDefinitions.addAll(parseApiForAllResponses(child, prefixLength));
             }
         }
+        return responseDefinitions;
     }
 
     private boolean computeIfHasMultipleResults(final File file) {
+        /*
+            Whether a response has single or multiple results is indicated by the presence of an 'Array' response specification file
+            as a sibling to the parent directory of another response specification file.  If such a file does not exist, then that
+            response does not have multiple results.
+         */
         final File parentOfArrayResponse = getParentOfArrayResponse(file);
         if (parentOfArrayResponse == null) {
             return false;
@@ -143,6 +149,15 @@ public class DirectoryPathParser implements ApiParser {
     }
 
     private File getParentOfArrayResponse(final File file) {
+        /*
+            The location of an indicating 'Array' response in the file structure is such:
+                <endpoint>
+                    <endpointId>
+                        GET.<media type>
+                            <response that has multiple results>
+                    GET.<media type>
+                        <array response>
+         */
         File current = file;
         while (!current.getName().equals(UtilStrings.GET)) {
             current = current.getParentFile();

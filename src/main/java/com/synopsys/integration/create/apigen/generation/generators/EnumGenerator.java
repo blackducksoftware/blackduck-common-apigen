@@ -75,16 +75,16 @@ public class EnumGenerator extends ClassGenerator {
     }
 
     @Override
-    public void generateClass(FieldDefinition field, String responseMediaType, Template template) throws Exception {
+    public void generateClass(FieldDefinition field, String responseMediaType, Template template) {
         String classType = NameParser.stripListAndOptionalNotation(field.getType());
         final Map<String, Object> input = inputDataFinder.getEnumInputData(UtilStrings.GENERATED_ENUM_PACKAGE, classType, field.getAllowedValues(), responseMediaType);
-        String swaggerName = typeTranslator.getClassSwaggerName(classType);
-        if (swaggerName != null && typeTranslator.getClassSwaggerName(swaggerName) == null) {
-            classCategories.addDeprecatedClass(typeTranslator.getClassSwaggerName(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
+        String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(classType);
+        if (deprecatedName != null && typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName) == null) {
+            classCategories.addDeprecatedClass(typeTranslator.getNameOfDeprecatedEquivalent(classType), classType, template, input, filePathUtil.getOutputPathToEnumFiles().replace(UtilStrings.GENERATED, "generated.deprecated"), UtilStrings.DEPRECATED_ENUM_PACKAGE);
         }
-        if (typeTranslator.getApiGenClassName(classType) != null) {
+        if (typeTranslator.getNewName(classType) != null) {
             input.put(UtilStrings.HAS_NEW_NAME, true);
-            input.put(UtilStrings.NEW_NAME, typeTranslator.getApiGenClassName(classType));
+            input.put(UtilStrings.NEW_NAME, typeTranslator.getNewName(classType));
         }
         mediaVersionDataManager.updateLatestMediaVersions(classType, input, responseMediaType);
         generatorDataManager.addFileData(new FileGenerationData(classType, template, input, filePathUtil.getOutputPathToEnumFiles()));

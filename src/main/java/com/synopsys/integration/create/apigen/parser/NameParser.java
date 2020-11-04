@@ -49,6 +49,11 @@ public class NameParser {
     }
 
     public String computeResponseName(final String responsePath) {
+        /*
+            Traverse the response file's path, use the last two 'pieces' of the path to construct a name.
+            If that algorithm creates a duplicate name, then prepend a differentiating prefix.
+            For some response paths, we provide an override for the name assigned to it.
+         */
         String firstPiece = null;
         String lastPiece = null;
         DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder = new DifferentiatingClassnamePrefixBuilder(redundantNamePrefixes);
@@ -66,7 +71,9 @@ public class NameParser {
             }
         }
         if (pathPieces.hasNext()) {
-            firstPiece = !nameAndPathManager.getResponseNamesAndEndpoints().keySet().contains(firstPiece) ? firstPiece : differentiatingPrefixBuilder.getPrefix();
+            if (nameAndPathManager.getResponseNamesAndEndpoints().keySet().contains(firstPiece)) {
+                firstPiece = differentiatingPrefixBuilder.getPrefix();
+            }
             final String mediaType = pathPieces.next();
             String currentEndpoint = responsePath.split("GET")[0];
             return computeResponseNameFromPieces(firstPiece, lastPiece, mediaType, differentiatingPrefixBuilder, currentEndpoint, nameAndPathManager.getResponseNameOverride(responsePath));

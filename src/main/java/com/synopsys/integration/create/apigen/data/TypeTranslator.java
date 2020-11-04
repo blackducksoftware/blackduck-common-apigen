@@ -39,16 +39,16 @@ import com.synopsys.integration.create.apigen.parser.NameParser;
 public class TypeTranslator {
 
     private Map<String, List<FieldTranslation>> fieldTranslations;
-    private Map<String, String> swaggerToApigenTranslations;
-    private Map<String, String> apigenToSwaggerTranslations;
+    private Map<String, String> oldTypesToNewTypes;
+    private Map<String, String> newTypesToOldTypes;
 
     public TypeTranslator() {
         this.fieldTranslations = populateFieldTranslations();
-        this.swaggerToApigenTranslations = populateSwaggerToApigenTranslations();
-        this.apigenToSwaggerTranslations = populateApigenToSwaggerTranslations();
+        this.oldTypesToNewTypes = populateOldTypesToNewTypes();
+        this.newTypesToOldTypes = populateNewTypesToOldTypes();
     }
 
-    private Map<String, String> populateSwaggerToApigenTranslations() {
+    private Map<String, String> populateOldTypesToNewTypes() {
         Map<String, String> translations = new HashMap<>();
 
         // swaggerName, api_SpecsName
@@ -233,9 +233,9 @@ public class TypeTranslator {
         return fieldTranslations;
     }
 
-    private Map<String, String> populateApigenToSwaggerTranslations() {
+    private Map<String, String> populateNewTypesToOldTypes() {
         Map<String, String> translations = new HashMap<>();
-        for (Map.Entry<String, String> entry : populateSwaggerToApigenTranslations().entrySet()) {
+        for (Map.Entry<String, String> entry : populateOldTypesToNewTypes().entrySet()) {
             translations.put(entry.getValue(), entry.getKey());
         }
         return translations;
@@ -255,10 +255,10 @@ public class TypeTranslator {
         return null;
     }
 
-    public String getApiGenClassName(String swaggerName) {
-        return swaggerToApigenTranslations.get(NameParser.getNonVersionedName(swaggerName));
+    public String getNewName(String swaggerName) {
+        return oldTypesToNewTypes.get(NameParser.getNonVersionedName(swaggerName));
     }
 
-    public String getClassSwaggerName(String apigenName) { return apigenToSwaggerTranslations.get(NameParser.getNonVersionedName(apigenName)); }
+    public String getNameOfDeprecatedEquivalent(String apigenName) { return newTypesToOldTypes.get(NameParser.getNonVersionedName(apigenName)); }
 
 }

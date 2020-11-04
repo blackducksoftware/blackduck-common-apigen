@@ -66,7 +66,7 @@ public class MissingDependencyIdentifier {
             final ClassCategoryData classCategoryData = classCategories.computeData(bdCommonDependency);
             final ClassSourceEnum classSource = classCategoryData.getSource();
             final ClassTypeEnum classType = classCategoryData.getType();
-            if (!classSource.isGenerated() && !missingClasses.contains(bdCommonDependency) && typeTranslator.getApiGenClassName(bdCommonDependency) == null && !classSource.isManual()) {
+            if (!classSource.isGenerated() && !missingClasses.contains(bdCommonDependency) && typeTranslator.getNewName(bdCommonDependency) == null && !classSource.isManual()) {
                 if (classType.isView()) {
                     pathToFile = pathToTemporary + "view/";
                 } else if (classType.isResponse()) {
@@ -145,7 +145,7 @@ public class MissingDependencyIdentifier {
                     final ClassCategoryData classCategoryData = classCategories.computeData(importedFile);
                     final ClassSourceEnum classSource = classCategoryData.getSource();
                     final ClassTypeEnum classType = classCategoryData.getType();
-                    if (!classSource.isGenerated() && !missingClasses.contains(importedFile) && typeTranslator.getApiGenClassName(importedFile) == null && !classSource.isManual()) {
+                    if (!classSource.isGenerated() && !missingClasses.contains(importedFile) && typeTranslator.getNewName(importedFile) == null && !classSource.isManual()) {
                         missingClasses.add(importedFile);
                         if (forBDCommon) {
                             bdCommonDependencies.add(importedFile);
