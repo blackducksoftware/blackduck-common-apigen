@@ -29,7 +29,7 @@ public class ImportFinderTest {
         fields.add(new FieldDefinition("", "List<PolicyStatusType>", false, null, false));
         fields.add(new FieldDefinition("", "ComponentsView", false, null, false));
 
-        importFinder.addFieldImports(imports, fields);
+        imports.addAll(importFinder.getFieldImports(fields));
 
         assertFalse(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.COMPONENT_BASE_CLASS));
         assertTrue(imports.contains(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS));

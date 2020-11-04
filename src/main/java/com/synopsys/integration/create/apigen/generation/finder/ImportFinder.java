@@ -68,22 +68,18 @@ public class ImportFinder {
         this.classNameManager = classNameManager;
     }
 
-    public void addFieldImports(final Set<String> imports, final Set<FieldDefinition> fields) {
-        imports.add(CORE_CLASS_PATH_PREFIX + VIEW_BASE_CLASS);
-
+    public Set<String> getFieldImports(final Set<FieldDefinition> fields) {
+        Set<String> fieldImports = new HashSet<>();
         for (final FieldDefinition field : fields) {
             String fieldType = field.getType();
-            /*
-            if (!typeTranslator.getSimplifiedClassName(field.getType()).equals(field.getType())) {
-                fieldType= typeTranslator.getSimplifiedClassName(field.getType());
-            }
-
-             */
-            addFieldImports(imports, fieldType, field.isOptional());
+            fieldImports.addAll(getFieldImports(fieldType, field.isOptional()));
         }
+
+        return fieldImports;
     }
 
-    public void addFieldImports(final Set<String> imports, String fieldType, final boolean isOptional) {
+    public Set<String> getFieldImports(String fieldType, final boolean isOptional) {
+        Set<String> fieldImports = new HashSet<>();
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
         fieldType = NameParser.getNonVersionedName(fieldType);
 
@@ -101,7 +97,7 @@ public class ImportFinder {
         }
 
         if (baseClass != null ) {
-            imports.add(CORE_CLASS_PATH_PREFIX + baseClass);
+            fieldImports.add(CORE_CLASS_PATH_PREFIX + baseClass);
         }
 
         if (isOptional) {
@@ -112,18 +108,20 @@ public class ImportFinder {
         final String importPathPrefix = classSource.isTemporary() ? TEMPORARY_CLASS_PATH_PREFIX : GENERATED_CLASS_PATH_PREFIX;
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {
-            imports.add(UtilStrings.JAVA_BIG_DECIMAL);
+            fieldImports.add(UtilStrings.JAVA_BIG_DECIMAL);
         }
 
         if (classType.isEnum()) {
-            imports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
+            fieldImports.add(importPathPrefix + UtilStrings.ENUMERATION + "." + fieldType);
         } else if (classType.isResponse()) {
-            imports.add(importPathPrefix + UtilStrings.RESPONSE + "." + fieldType);
+            fieldImports.add(importPathPrefix + UtilStrings.RESPONSE + "." + fieldType);
         } else if (classType.isView()) {
-            imports.add(importPathPrefix + UtilStrings.VIEW + "." + fieldType);
+            fieldImports.add(importPathPrefix + UtilStrings.VIEW + "." + fieldType);
         } else if (!classType.isCommon()) {
-            imports.add(importPathPrefix + UtilStrings.COMPONENT + "." + fieldType);
+            fieldImports.add(importPathPrefix + UtilStrings.COMPONENT + "." + fieldType);
         }
+
+        return fieldImports;
     }
 
     public LinksAndImportsData getLinkImports(final Set<String> imports, final ResponseDefinition response) {

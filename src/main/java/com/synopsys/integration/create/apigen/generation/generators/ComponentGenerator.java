@@ -89,7 +89,7 @@ public class ComponentGenerator extends ClassGenerator {
         final Set<String> imports = new HashSet<>();
         final Set<FieldDefinition> subFields = field.getSubFields();
         for (final FieldDefinition subField : subFields) {
-            importFinder.addFieldImports(imports, subField.getType(), subField.isOptional());
+            imports.addAll(importFinder.getFieldImports(subField.getType(), subField.isOptional()));
         }
 
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
