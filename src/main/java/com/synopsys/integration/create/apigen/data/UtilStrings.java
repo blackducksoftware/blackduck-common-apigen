@@ -96,6 +96,8 @@ public class UtilStrings {
         final Set<String> javaKeyWords = new HashSet<>();
 
         javaKeyWords.add("default");
+        javaKeyWords.add("package");
+        javaKeyWords.add("class");
 
         return javaKeyWords;
     }

@@ -91,16 +91,17 @@ public class FieldDataProcessor {
         }
 
         // Handle objects that have subfields
-        if (rawFieldDefinition.getSubFields() != null) {
+        if (rawFieldDefinition.getSubFields() != null && !rawFieldDefinition.getSubFields().isEmpty()) {
             // append path (name) of field to create new type
             processedType = NameParser.reorderViewInName(nonVersionedParentDefinitionName + StringUtils.capitalize(processedPath));
             shouldBeVersioned = true;
         }
 
         // Handle enums (field definitions that have a set of allowed values)
-        if (rawFieldDefinition.getAllowedValues() != null) {
+        Set<String> enumValues = rawFieldDefinition.getAllowedValues();
+        if (enumValues != null && !enumValues.isEmpty()) {
             // If it is an enum with integer values, it is just an integer
-            if (NumberUtils.isCreatable(rawFieldDefinition.getAllowedValues().iterator().next())) {
+            if (NumberUtils.isCreatable(enumValues.iterator().next())) {
                 processedType = UtilStrings.INTEGER;
             } else {
                 processedType = nonVersionedParentDefinitionName.replace("View", "") + StringUtils.capitalize(processedPath) + UtilStrings.ENUM;
