@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
@@ -61,7 +62,7 @@ public class FieldDefinitionProcessor {
             final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(fieldData.getType()));
             fieldDefinition.addSubFields(missingFields);
 
-            if (rawField.getSubFields() != null && !fieldDefinition.typeWasOverrided()) {
+            if (!CollectionUtils.isEmpty(rawField.getSubFields()) && !fieldDefinition.typeWasOverrided()) {
                 // If field has subfields, and its type was not overrided, recursively parse and add its subfields
                 final Set<FieldDefinition> subFields = processFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
                 fieldDefinition.addSubFields(subFields);

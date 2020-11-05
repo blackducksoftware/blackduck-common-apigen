@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
@@ -43,11 +44,11 @@ public class DuplicateTypeIdentifier {
 
     public String screenForDuplicateType(RawFieldDefinition rawField, String originalType) {
         Set<String> enumValues = rawField.getAllowedValues();
-        if (enumValues == null) {
+        if (CollectionUtils.isEmpty(enumValues)) {
             String trueType = uniqueRawFieldsToNames.get(rawField.getSubFields());
             if (trueType != null) {
                 return trueType;
-            } else if (rawField.getSubFields() != null) {
+            } else if (!CollectionUtils.isEmpty(rawField.getSubFields())) {
                 uniqueRawFieldsToNames.put(rawField.getSubFields(), originalType);
             }
         } else {

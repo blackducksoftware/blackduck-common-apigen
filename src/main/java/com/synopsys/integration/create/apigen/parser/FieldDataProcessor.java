@@ -27,6 +27,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
@@ -90,17 +91,16 @@ public class FieldDataProcessor {
         }
 
         // Handle objects that have subfields
-        if (rawFieldDefinition.getSubFields() != null && !rawFieldDefinition.getSubFields().isEmpty()) {
+        if (!CollectionUtils.isEmpty(rawFieldDefinition.getSubFields())) {
             // append path (name) of field to create new type
             processedType = NameParser.reorderViewInName(nonVersionedParentDefinitionName + StringUtils.capitalize(processedPath));
             shouldBeVersioned = true;
         }
 
         // Handle enums (field definitions that have a set of allowed values)
-        Set<String> enumValues = rawFieldDefinition.getAllowedValues();
-        if (enumValues != null && !enumValues.isEmpty()) {
+        if (!CollectionUtils.isEmpty(rawFieldDefinition.getAllowedValues())) {
             // If it is an enum with integer values, it is just an integer
-            if (NumberUtils.isCreatable(enumValues.iterator().next())) {
+            if (NumberUtils.isCreatable(rawFieldDefinition.getAllowedValues().iterator().next())) {
                 processedType = UtilStrings.INTEGER;
             } else {
                 processedType = nonVersionedParentDefinitionName.replace("View", "") + StringUtils.capitalize(processedPath) + UtilStrings.ENUM;
