@@ -64,11 +64,10 @@ public class FieldDataProcessor {
         final String nonVersionedParentDefinitionName = NameParser.getNonVersionedName(parentDefinitionName);
         typeWasOverrided = false;
 
-        String processedType;
         // TODO - do we NEED to give certain values to multiple steps of the processing (eg. mediaVersion)?
-        processedType = processFirstPassType(rawFieldDefinition, processedPath, nonVersionedParentDefinitionName, mediaVersion);
-        processedType = overrideErrantType(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), nonVersionedParentDefinitionName, processedType, mediaVersion);
-        processedType = filterDuplicateType(rawFieldDefinition, processedType);
+        String firstPassType = processFirstPassType(rawFieldDefinition, processedPath, nonVersionedParentDefinitionName, mediaVersion);
+        String potentiallyOverridedType = overrideTypeIfNecessary(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), nonVersionedParentDefinitionName, firstPassType, mediaVersion);
+        String processedType = filterDuplicateTypeIfNecessary(rawFieldDefinition, potentiallyOverridedType);
 
         return processedType;
     }
@@ -123,7 +122,7 @@ public class FieldDataProcessor {
         return processedType;
     }
 
-    private String overrideErrantType(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType, String mediaVersion) {
+    private String overrideTypeIfNecessary(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType, String mediaVersion) {
         // Override type of certain fields
         String overrideType = typeTranslator.getTrueFieldName(nonVersionedParentDefinitionName, rawPath, rawType);
         if (overrideType != null) {
@@ -135,7 +134,7 @@ public class FieldDataProcessor {
         return processedType;
     }
 
-    private String filterDuplicateType(RawFieldDefinition rawFieldDefinition, String processedType) {
+    private String filterDuplicateTypeIfNecessary(RawFieldDefinition rawFieldDefinition, String processedType) {
         // Make sure this is not a duplicate type
         String trueType = duplicateTypeIdentifier.screenForDuplicateType(rawFieldDefinition, NameParser.stripListNotation(processedType));
         trueType = restoreListNotation(processedType, trueType);
