@@ -59,7 +59,7 @@ public class FieldDefinitionProcessor {
 
             final FieldData fieldData = fieldDataProcessor.process(rawField, parentDefinitionName);
             final FieldDefinition fieldDefinition = new FieldDefinition(fieldData.getPath(), fieldData.getType(), rawField.isOptional(), rawField.getAllowedValues(), fieldData.typeWasOverrided());
-            final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(NameParser.getNonVersionedName(fieldData.getType()));
+            final Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(fieldData.getType());
             fieldDefinition.addSubFields(missingFields);
 
             if (!CollectionUtils.isEmpty(rawField.getSubFields()) && !fieldDefinition.typeWasOverrided()) {

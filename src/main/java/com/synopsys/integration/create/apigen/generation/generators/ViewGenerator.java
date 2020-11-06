@@ -34,7 +34,6 @@ import org.springframework.stereotype.Component;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
-import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
@@ -46,7 +45,6 @@ import com.synopsys.integration.create.apigen.generation.finder.InputDataFinder;
 import com.synopsys.integration.create.apigen.model.ClassTypeData;
 import com.synopsys.integration.create.apigen.model.LinksAndImportsData;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
-import com.synopsys.integration.create.apigen.parser.NameParser;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -57,7 +55,6 @@ public class ViewGenerator {
     private final ImportFinder importFinder;
     private final InputDataFinder inputDataFinder;
     private final NameAndPathManager nameAndPathManager;
-    private final MediaVersionDataManager mediaVersionDataManager;
     private final TypeTranslator typeTranslator;
     private final ClassCategories classCategories;
     private final FilePathUtil filePathUtil;
@@ -65,14 +62,13 @@ public class ViewGenerator {
     private final DeprecatedClassGenerator deprecatedClassGenerator;
 
     @Autowired
-    public ViewGenerator(MediaTypes mediaTypes, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator,
+    public ViewGenerator(MediaTypes mediaTypes, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator,
         ClassCategories classCategories, FilePathUtil filePathUtil,
         GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
         this.mediaTypes = mediaTypes;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
         this.nameAndPathManager = nameAndPathManager;
-        this.mediaVersionDataManager = mediaVersionDataManager;
         this.typeTranslator = typeTranslator;
         this.classCategories = classCategories;
         this.filePathUtil = filePathUtil;
@@ -98,7 +94,6 @@ public class ViewGenerator {
         ClassTypeData classTypeData = new ClassTypeData(classType, filePathUtil);
         final Map<String, Object> input = inputDataFinder.getInputData(classTypeData, imports, viewName, response.getFields(), linkAndImportsData.getLinks(), responseMediaType);
 
-        mediaVersionDataManager.updateLatestMediaVersions(viewName, input, responseMediaType);
         String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(viewName);
         if (StringUtils.isNotBlank(deprecatedName)) {
             if (StringUtils.isBlank(typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName))) {
@@ -115,7 +110,6 @@ public class ViewGenerator {
         generatorDataManager.addFileData(new FileGenerationData(viewName, template, input, classTypeData.getPathToOutputDirectory()));
 
         nameAndPathManager.addNonLinkClassName(viewName);
-        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(viewName));
     }
 
     public Template getTemplate(final Configuration config) throws IOException {

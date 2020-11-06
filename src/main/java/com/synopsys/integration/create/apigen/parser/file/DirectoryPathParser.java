@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -111,28 +112,52 @@ public class DirectoryPathParser implements ApiParser {
 
     private List<ResponseDefinition> parseApiForAllResponses(final File parent, final int prefixLength) {
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
-        final List<File> children = Arrays.stream(parent.listFiles())
-                                        .filter(file -> !file.getName().equals("notifications"))
+        final List<File> files = Arrays.stream(parent.listFiles())
+                                        .filter(file -> !file.getName().equals("notifications") && !file.getName().equals("scan"))
                                         .sorted()
                                         .collect(Collectors.toList());
-
-        // If child file of parent is response specification data, parse the file, otherwise recurse and parse the child's children
-        for (final File child : children) {
-            String fileName = child.getName();
-            boolean responseFile = fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON);
-            if (responseFile && parent.getAbsolutePath().contains(Application.RESPONSE_TOKEN)) {
-                final String relativePath = child.getAbsolutePath().substring(prefixLength);
-                final String mediaType = mediaTypes.getLongName(child.getParentFile().getName());
-                if (fileName.equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
-                    final String responseName = nameParser.computeResponseName(relativePath);
-                    final boolean doesHaveMultipleResults = computeIfHasMultipleResults(child);
-                    responseDefinitions.add(new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults));
+        for (File file : files) {
+            if (file.getName().equals(Application.RESPONSE_ENDPOINT_TOKEN)) {
+                Optional<File> responseSpecificationWithLatestMediaVersion = getResponseSpecificationWithLatestMediaVersion(file);
+                if (responseSpecificationWithLatestMediaVersion.isPresent()) {
+                    responseDefinitions.add(createResponseDefinitionFromSpecification(responseSpecificationWithLatestMediaVersion.get(), prefixLength));
                 }
-            } else if (child.isDirectory()) {
-                responseDefinitions.addAll(parseApiForAllResponses(child, prefixLength));
+            } else if (file.isDirectory()) {
+                responseDefinitions.addAll(parseApiForAllResponses(file, prefixLength));
             }
         }
+
         return responseDefinitions;
+    }
+
+    private Optional<File> getResponseSpecificationWithLatestMediaVersion(File responseEndpoint) {
+        int latestMediaVersion = 0;
+        File responseSpecificationWithLatestMediaVersion = null;
+        for (File mediaTypeDirectory : responseEndpoint.listFiles()) {
+            try {
+                int mediaVersion = Integer.valueOf(NameParser.getMediaVersionFromMediaType(mediaTypeDirectory.getName()));
+
+            if (mediaVersion > latestMediaVersion) {
+                latestMediaVersion = mediaVersion;
+                for (File specificationFile : mediaTypeDirectory.listFiles()) {
+                    if (specificationFile.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
+                        responseSpecificationWithLatestMediaVersion = specificationFile;
+                    }
+                }
+            }
+            } catch (NumberFormatException e) {
+                System.out.println();
+            }
+        }
+        return Optional.ofNullable(responseSpecificationWithLatestMediaVersion);
+    }
+
+    private ResponseDefinition createResponseDefinitionFromSpecification(File responseSpecification, int prefixLength) {
+        final String relativePath = responseSpecification.getAbsolutePath().substring(prefixLength);
+        final String mediaType = mediaTypes.getLongName(responseSpecification.getParentFile().getName());
+        final String responseName = nameParser.computeResponseName(relativePath);
+        final boolean doesHaveMultipleResults = computeIfHasMultipleResults(responseSpecification);
+        return new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults);
     }
 
     private boolean computeIfHasMultipleResults(final File file) {

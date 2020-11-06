@@ -58,7 +58,7 @@ public class InputDataFinder {
         return inputData;
     }
 
-    public HashMap<String, Object> getInputData(final ClassTypeData classTypeData, final Set<String> imports, final String className, final Set<FieldDefinition> originalClassFields, final String mediaType) {
+    public HashMap<String, Object> getInputData(final ClassTypeData classTypeData, final Set<String> imports, final String className, final Set<FieldDefinition> classFields, final String mediaType) {
         final HashMap<String, Object> inputData = new HashMap<>();
 
         inputData.put(UtilStrings.PACKAGE_NAME, classTypeData.getPackageName());
@@ -67,11 +67,7 @@ public class InputDataFinder {
 
         final Set<FieldDefinition> nonOptionalClassFields = new HashSet<>();
         final Set<FieldDefinition> optionalClassFields = new HashSet<>();
-        Set<FieldDefinition> classFields = originalClassFields.stream().map(FieldDefinition::new).collect(Collectors.toSet());
         for (final FieldDefinition classField : classFields) {
-            final String oldType = classField.getType();
-            final String newType = NameParser.getNonVersionedName(oldType);
-            classField.setType(newType);
             // For optional fields
             if (classField.isOptional()) {
                 optionalClassFields.add(classField);

@@ -34,7 +34,6 @@ import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassCategoryData;
 import com.synopsys.integration.create.apigen.data.ClassSourceEnum;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.data.MediaVersionDataManager;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
@@ -56,21 +55,18 @@ public class ComponentGenerator extends ClassGenerator {
     private final ImportFinder importFinder;
     private final InputDataFinder inputDataFinder;
     private final NameAndPathManager nameAndPathManager;
-    private final MediaVersionDataManager mediaVersionDataManager;
     private final TypeTranslator typeTranslator;
     private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
     private final DeprecatedClassGenerator deprecatedClassGenerator;
 
     @Autowired
-    public ComponentGenerator(ClassCategories classCategories, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager,
-        MediaVersionDataManager mediaVersionDataManager, TypeTranslator typeTranslator, FilePathUtil filePathUtil,
+    public ComponentGenerator(ClassCategories classCategories, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator, FilePathUtil filePathUtil,
         GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
         this.classCategories = classCategories;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
         this.nameAndPathManager = nameAndPathManager;
-        this.mediaVersionDataManager = mediaVersionDataManager;
         this.typeTranslator = typeTranslator;
         this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
@@ -98,7 +94,6 @@ public class ComponentGenerator extends ClassGenerator {
         final ClassTypeEnum classType = classCategories.computeData(fieldType).getType();
         ClassTypeData classTypeData = new ClassTypeData(classType, filePathUtil);
         final Map<String, Object> input = inputDataFinder.getInputData(classTypeData, imports, fieldType, subFields, responseMediaType);
-        mediaVersionDataManager.updateLatestMediaVersions(fieldType, input, responseMediaType);
 
         if (isApplicable(field)) {
             String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(fieldType);
@@ -117,7 +112,6 @@ public class ComponentGenerator extends ClassGenerator {
             generatorDataManager.addFileData(new FileGenerationData(fieldType, template, input, classTypeData.getPathToOutputDirectory()));
         }
         nameAndPathManager.addNonLinkClassName(fieldType);
-        nameAndPathManager.addNonLinkClassName(NameParser.getNonVersionedName(fieldType));
     }
 
     @Override

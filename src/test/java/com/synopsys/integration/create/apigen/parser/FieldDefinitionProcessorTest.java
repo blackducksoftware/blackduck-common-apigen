@@ -23,16 +23,16 @@ public class FieldDefinitionProcessorTest {
         licenseLicenses.addSubField(new RawFieldDefinition("license", "String", false));
         license.addSubField(licenseLicenses);
 
-        Set<FieldDefinition> fields = processor.processFieldDefinitions("ComponentVersionViewV4", new HashSet<>(Arrays.asList(license)));
+        Set<FieldDefinition> fields = processor.processFieldDefinitions("ComponentVersionView", new HashSet<>(Arrays.asList(license)));
         try {
             FieldDefinition licenseView = fields.iterator().next();
-            Assertions.assertEquals("ComponentVersionLicenseViewV4", licenseView.getType());
+            Assertions.assertEquals("ComponentVersionLicenseView", licenseView.getType());
 
             FieldDefinition licenseLicensesView = licenseView.getSubFields().iterator().next();
-            Assertions.assertEquals("java.util.List<ComponentVersionLicenseLicensesViewV4>", licenseLicensesView.getType());
+            Assertions.assertEquals("java.util.List<ComponentVersionLicenseLicensesView>", licenseLicensesView.getType());
 
             FieldDefinition licenseLicensesLicenseView = licenseLicensesView.getSubFields().iterator().next();
-            Assertions.assertEquals("ComponentVersionLicenseLicensesLicenseViewV4", licenseLicensesLicenseView.getType());
+            Assertions.assertEquals("ComponentVersionLicenseLicensesLicenseView", licenseLicensesLicenseView.getType());
         } catch (NullPointerException e) {
             Assertions.fail();
         }
@@ -43,9 +43,9 @@ public class FieldDefinitionProcessorTest {
         RawFieldDefinition license = new RawFieldDefinition("license", "Object", false);
         license.addSubField(new RawFieldDefinition("path", "type", false));
         try {
-            FieldDefinition licenseView = processor.processFieldDefinitions("ProjectVersionViewV4", new HashSet<>(Arrays.asList(license))).iterator().next();
+            FieldDefinition licenseView = processor.processFieldDefinitions("ProjectVersionView", new HashSet<>(Arrays.asList(license))).iterator().next();
             // Depends on an override from TypeTranslator
-            Assertions.assertEquals("ComponentVersionLicenseViewV4", licenseView.getType());
+            Assertions.assertEquals("ComponentVersionLicenseView", licenseView.getType());
             // Since this definition's type was overrided, we should not have processed its subfield
             Assertions.assertTrue(licenseView.getSubFields().isEmpty());
         } catch (NullPointerException e) {

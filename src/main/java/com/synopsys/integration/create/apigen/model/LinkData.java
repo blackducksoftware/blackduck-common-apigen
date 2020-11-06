@@ -42,8 +42,8 @@ public class LinkData extends Stringable {
         this.label = label;
         this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
         try {
-            final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());
-            final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = linkResponseDefinitionsList.get(nonVersionedResponseName);
+            final String responseName = response.getName();
+            final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = linkResponseDefinitionsList.get(responseName);
             final LinkResponseDefinitions.LinkResponseDefinitionItem linkResponseDefinitionItem = linkResponseDefinitionsMap.get(this.label);
 
             this.hasMultipleResults = linkResponseDefinitionItem.hasMultipleResults();

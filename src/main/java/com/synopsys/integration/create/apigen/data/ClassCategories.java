@@ -379,8 +379,6 @@ public class ClassCategories {
     }
 
     public ClassCategoryData computeData(String className) {
-        className = NameParser.getNonVersionedName(className);
-
         ClassCategoryData classCategoryData = classNameData.get(className);
         if (null == classCategoryData) {
             // default unknown case to a generated component

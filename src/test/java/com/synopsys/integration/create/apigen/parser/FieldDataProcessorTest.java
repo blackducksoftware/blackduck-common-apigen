@@ -40,11 +40,11 @@ public class FieldDataProcessorTest {
         RawFieldDefinition object7 = new RawFieldDefinition("securityRiskProfile", "Object", false);
         object7.addSubField(new RawFieldDefinition("path", "type", false));
         // This depends on an override from TypeTranslator
-        Assertions.assertTrue(processor.process(object7, "ProjectVersionComponentViewV4").getType().equals("ComponentVersionRiskProfileRiskDataViewV4"));
+        Assertions.assertTrue(processor.process(object7, "ProjectVersionComponentView").getType().equals("ComponentVersionRiskProfileRiskDataView"));
 
         RawFieldDefinition object8 = new RawFieldDefinition("riskProfile", "Object", false);
         object8.addSubField(new RawFieldDefinition("path", "type", false));
-        Assertions.assertTrue(processor.process(object8, "").getType().equals("ComponentVersionRiskProfileRiskDataViewV4"));
+        Assertions.assertTrue(processor.process(object8, "").getType().equals("ComponentVersionRiskProfileRiskDataView"));
     }
 
     @Test

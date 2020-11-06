@@ -57,7 +57,7 @@ public class DeprecatedClassGenerator {
         }
         newInput.put(UtilStrings.CLASS_NAME, swaggerName);
         newInput.put("hasNewName", true);
-        newInput.put("newName", NameParser.getNonVersionedName(apigenName));
+        newInput.put("newName", apigenName);
         newInput.put("isDeprecated", true);
         newInput.put(UtilStrings.PACKAGE_NAME, packageOverride);
         for (DeprecatedClassData deprecatedClass : deprecatedClasses) {

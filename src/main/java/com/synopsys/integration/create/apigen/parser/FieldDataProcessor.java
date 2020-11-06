@@ -61,21 +61,18 @@ public class FieldDataProcessor {
     }
 
     private String getProcessedType(RawFieldDefinition rawFieldDefinition, String parentDefinitionName, String processedPath) {
-        final String mediaVersion = NameParser.getMediaVersionFromResponseName(parentDefinitionName);
-        final String nonVersionedParentDefinitionName = NameParser.getNonVersionedName(parentDefinitionName);
         typeWasOverrided = false;
 
         // TODO - do we NEED to give certain values to multiple steps of the processing (eg. mediaVersion)?
-        String firstPassType = processFirstPassType(rawFieldDefinition, processedPath, nonVersionedParentDefinitionName, mediaVersion);
-        String potentiallyOverridedType = overrideTypeIfNecessary(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), nonVersionedParentDefinitionName, firstPassType, mediaVersion);
+        String firstPassType = processFirstPassType(rawFieldDefinition, processedPath, parentDefinitionName);
+        String potentiallyOverridedType = overrideTypeIfNecessary(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), parentDefinitionName, firstPassType);
         String processedType = filterDuplicateTypeIfNecessary(rawFieldDefinition, potentiallyOverridedType);
 
         return processedType;
     }
 
-    private String processFirstPassType(RawFieldDefinition rawFieldDefinition, String processedPath, String nonVersionedParentDefinitionName, String mediaVersion) {
+    private String processFirstPassType(RawFieldDefinition rawFieldDefinition, String processedPath, String nonVersionedParentDefinitionName) {
         // shouldBeVersioned will be true for generated types (aside from duplicate overrides), and false for common/non-generated types (ex. String)
-        boolean shouldBeVersioned = false;
         String processedType = rawFieldDefinition.getType();
 
         // Handle fields of type 'Number'
@@ -94,7 +91,6 @@ public class FieldDataProcessor {
         if (!CollectionUtils.isEmpty(rawFieldDefinition.getSubFields())) {
             // append path (name) of field to create new type
             processedType = NameParser.reorderViewInName(nonVersionedParentDefinitionName + StringUtils.capitalize(processedPath));
-            shouldBeVersioned = true;
         }
 
         // Handle enums (field definitions that have a set of allowed values)
@@ -104,13 +100,7 @@ public class FieldDataProcessor {
                 processedType = UtilStrings.INTEGER;
             } else {
                 processedType = nonVersionedParentDefinitionName.replace("View", "") + StringUtils.capitalize(processedPath) + UtilStrings.ENUM;
-                shouldBeVersioned = true;
             }
-        }
-
-        // Append media version
-        if (mediaVersion != null && shouldBeVersioned) {
-            processedType = appendVersionToType(processedType, mediaVersion);
         }
 
         // Appropriately wrap list types
@@ -122,11 +112,10 @@ public class FieldDataProcessor {
         return processedType;
     }
 
-    private String overrideTypeIfNecessary(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType, String mediaVersion) {
+    private String overrideTypeIfNecessary(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType) {
         // Override type of certain fields
         String overrideType = typeTranslator.getTrueFieldName(nonVersionedParentDefinitionName, rawPath, rawType);
         if (overrideType != null) {
-            overrideType = appendVersionToType(overrideType, mediaVersion);
             overrideType = restoreListNotation(processedType, overrideType);
             typeWasOverrided = true;
             return overrideType;
@@ -143,11 +132,6 @@ public class FieldDataProcessor {
             return trueType;
         }
         return processedType;
-    }
-
-    // TODO - can we append media version once?  also we might just never need versions anymore...
-    private String appendVersionToType(String unversionedType, String mediaVersion) {
-        return String.format("%sV%s", unversionedType, mediaVersion);
     }
 
     private String restoreListNotation(String originalType, String trueType) {

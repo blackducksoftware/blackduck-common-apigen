@@ -56,11 +56,9 @@ public class GeneratorRunner {
     private final ViewGenerator viewGenerator;
     private final DiscoveryGenerator discoveryGenerator;
     private final MediaTypeMapGenerator mediaTypeMapGenerator;
-    private final MediaVersionGenerator mediaVersionGenerator;
     private final DeprecatedClassGenerator deprecatedClassGenerator;
     private final List<ClassGenerator> generators;
     private final Configuration config;
-    private final MediaVersionDataManager mediaVersionDataManager;
     private final GeneratorConfig generatorConfig;
     private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
@@ -69,8 +67,8 @@ public class GeneratorRunner {
 
     @Autowired
     public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, DiscoveryGenerator discoveryGenerator,
-                           MediaTypeMapGenerator mediaTypeMapGenerator, MediaVersionGenerator mediaVersionGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
-                           Configuration config, MediaVersionDataManager mediaVersionDataManager, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
+                           MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
+                           Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
                            ObjectFactory<ApiGeneratorParser> parserFactory) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
@@ -79,10 +77,8 @@ public class GeneratorRunner {
         this.discoveryGenerator = discoveryGenerator;
         this.mediaTypeMapGenerator = mediaTypeMapGenerator;
         this.deprecatedClassGenerator = deprecatedClassGenerator;
-        this.mediaVersionGenerator = mediaVersionGenerator;
         this.generators = generators;
         this.config = config;
-        this.mediaVersionDataManager = mediaVersionDataManager;
         this.generatorConfig = generatorConfig;
         this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
@@ -103,7 +99,7 @@ public class GeneratorRunner {
         DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
         List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
         for (ResponseDefinition response : responses) {
-            String responseName = NameParser.getNonVersionedName(response.getName());
+            String responseName = response.getName();
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
             response.addFields(missingFields);
 
@@ -126,7 +122,6 @@ public class GeneratorRunner {
         accumulateGeneratedResponseClassData(responses);
         accumulateApiDiscoveryClassData(responses);
         accumulateMediaTypeDiscoveryClassData();
-        accumulateLatestViewAndComponentClassData();
         deprecatedClassGenerator.generateDeprecatedClasses();
         generatorDataManager.writeFiles();
     }
@@ -160,12 +155,6 @@ public class GeneratorRunner {
         File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
         Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
         discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
-    }
-
-    private void accumulateLatestViewAndComponentClassData() throws Exception {
-        Template viewTemplate = config.getTemplate("viewTemplate.ftl");
-        Template enumTemplate = config.getTemplate("enumTemplate.ftl");
-        mediaVersionGenerator.generateMostRecentViewAndComponentMediaVersions(viewTemplate, enumTemplate, filePathUtil.getOutputPathToViewFiles(), filePathUtil.getOutputPathToResponseFiles(), filePathUtil.getOutputPathToComponentFiles(), filePathUtil.getOutputPathToEnumFiles());
     }
 
     private void generateClasses(FieldDefinition field, List<ClassGenerator> generators, String responseMediaType) throws Exception {

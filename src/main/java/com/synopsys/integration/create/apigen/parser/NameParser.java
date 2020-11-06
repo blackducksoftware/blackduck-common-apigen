@@ -37,7 +37,6 @@ import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 
 public class NameParser {
-    private static String VIEWV = "ViewV";
     private static String VIEW = "View";
 
     private NameAndPathManager nameAndPathManager;
@@ -71,23 +70,20 @@ public class NameParser {
             }
         }
         if (pathPieces.hasNext()) {
-            final String mediaType = pathPieces.next();
             // TODO - if we remove versioning, this is no longer necessary
             String currentEndpoint = responsePath.split("GET")[0];
-            return computeResponseNameFromPieces(firstPiece, lastPiece, mediaType, differentiatingPrefixBuilder, currentEndpoint, nameAndPathManager.getResponseNameOverride(responsePath));
+            return computeResponseNameFromPieces(firstPiece, lastPiece, differentiatingPrefixBuilder, currentEndpoint, nameAndPathManager.getResponseNameOverride(responsePath));
         } else {
             return "";
         }
     }
 
-    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType, DifferentiatingResponseNamePrefixBuilder differentiatingPrefixBuilder, String currentEndpoint, String responseNameOverride) {
-        // media types come in the form <PREFIX>_<version>_<MEDIA_TYPE_SUFFIX>
-        final String mediaVersion = getMediaVersionFromMediaType(mediaType);
+    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, DifferentiatingResponseNamePrefixBuilder differentiatingPrefixBuilder, String currentEndpoint, String responseNameOverride) {
         final String responseName;
         if (responseNameOverride != null) {
-            responseName = getJoinedResponseNamePieces(null, responseNameOverride, mediaVersion);
+            responseName = getJoinedResponseNamePieces(null, responseNameOverride);
         } else {
-            responseName = getJoinedResponseNamePieces(firstPiece, lastPiece, mediaVersion);
+            responseName = getJoinedResponseNamePieces(firstPiece, lastPiece);
         }
         final String finalResponseName;
         if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix(), currentEndpoint)) {
@@ -95,13 +91,13 @@ public class NameParser {
         } else {
             finalResponseName = responseName;
         }
-        nameAndPathManager.addResponseNameAndEndpoint(getNonVersionedName(finalResponseName), currentEndpoint);
+        nameAndPathManager.addResponseNameAndEndpoint(finalResponseName, currentEndpoint);
 
         return finalResponseName;
     }
 
     private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix, String currentEndpoint) {
-        String incumbentEndpoint = nameAndPathManager.getResponseNamesAndEndpoints().get(getNonVersionedName(responseName));
+        String incumbentEndpoint = nameAndPathManager.getResponseNamesAndEndpoints().get(responseName);
         return incumbentEndpoint != null && !incumbentEndpoint.equals(currentEndpoint)
                    && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
     }
@@ -110,20 +106,16 @@ public class NameParser {
         return StringUtils.capitalize(concatHyphenatedString(piece.replace("Id", "")));
     }
 
-    private String getJoinedResponseNamePieces(final String firstPiece, final String lastPiece, final String mediaVersion) {
+    private String getJoinedResponseNamePieces(final String firstPiece, final String lastPiece) {
         String responseName;
         if (lastPiece == null) {
             return "";
         } else if (firstPiece == null) {
-            responseName = lastPiece + VIEWV + mediaVersion;
+            responseName = lastPiece + VIEW;
         } else {
-            responseName = firstPiece + lastPiece + VIEWV + mediaVersion;
+            responseName = firstPiece + lastPiece + VIEW;
         }
-
-        if (responseName.endsWith(VIEWV)) {
-            responseName = responseName.replace(VIEWV, VIEW);
-        }
-        return stripRedundantNamePrefix(responseName, mediaVersion);
+        return stripRedundantNamePrefix(responseName);
     }
 
     private Set<String> getRedundantNamePrefixes() {
@@ -156,10 +148,10 @@ public class NameParser {
         return redundantNamePrefixes;
     }
 
-    private String stripRedundantNamePrefix(final String responseName, final String mediaType) {
+    private String stripRedundantNamePrefix(final String responseName) {
         for (final String prefix : redundantNamePrefixes) {
             final String responseNameStrippedOfRedundantPrefix = responseName.replaceFirst(prefix, "");
-            if (responseName.startsWith(prefix) && !responseNameStrippedOfRedundantPrefix.equals(VIEWV + mediaType)) {
+            if (responseName.startsWith(prefix) && !responseNameStrippedOfRedundantPrefix.equals(VIEW)) {
                 return responseNameStrippedOfRedundantPrefix;
             }
         }
@@ -168,27 +160,12 @@ public class NameParser {
 
     /* Util Methods */
 
-    public static String getNonVersionedName(final String responseName) {
-        // relies on assumption that there will be < 10 numbered responses
-        final String mediaVersion = getMediaVersionFromResponseName(responseName);
-        if (mediaVersion != null) {
-            return responseName.replace("V" + mediaVersion, "");
-        } else {
-            return responseName.replace(VIEWV, VIEW);
-        }
-    }
-
     public static String getMediaVersionFromMediaType(final String mediaType) {
-        return mediaType.substring(mediaType.length() - (UtilStrings.MEDIA_TYPE_SUFFIX.length() + 1), mediaType.length() - UtilStrings.MEDIA_TYPE_SUFFIX.length());
-    }
-
-    public static String getMediaVersionFromResponseName(final String responseName) {
-        for (final String digit : UtilStrings.DIGIT_STRINGS) {
-            if (stripListNotation(responseName).endsWith(digit)) {
-                return digit;
-            }
-        }
-        return null;
+        // Media types are of the form <MediaType>_<MediaVersion>_<Format>
+        // We can extract media version by locating the last underscore of the media type, and extracting the character behind it
+        // *** This method operates under the assumption that there will be no more than 9 media versons for a given type.
+        int indexOfLastUnderscore = mediaType.lastIndexOf("_");
+        return mediaType.substring(indexOfLastUnderscore - 1, indexOfLastUnderscore);
     }
 
     public static String reorderViewInName(final String name) {

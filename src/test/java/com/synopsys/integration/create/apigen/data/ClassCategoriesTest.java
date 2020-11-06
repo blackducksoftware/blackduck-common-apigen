@@ -14,12 +14,10 @@ public class ClassCategoriesTest {
     @Test
     public void computeTypeTest() {
         assertTrue(classCategories.computeData("ProjectVersionView").getType().isView());
-        assertTrue(classCategories.computeData("ProjectVersionViewV4").getType().isView());
         assertTrue(classCategories.computeData("PolicyStatusType").getType().isEnum());
         assertFalse(classCategories.computeData("TypesView").getType().isEnum());
         assertTrue(classCategories.computeData("CustomFieldTypeView").getType().isResponse());
         assertTrue(classCategories.computeData("ProjectVersionLicenseView").getType().isView());
-        assertTrue(classCategories.computeData("ProjectVersionLicenseViewV5").getType().isView());
         assertTrue(classCategories.computeData("BigDecimal").getType().isCommon());
     }
 

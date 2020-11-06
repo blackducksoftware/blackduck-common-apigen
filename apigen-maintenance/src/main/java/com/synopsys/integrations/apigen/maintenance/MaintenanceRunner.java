@@ -71,6 +71,6 @@ public class MaintenanceRunner {
 
         MissingClassFinder missingClassFinder = new MissingClassFinder(logger);
         File controlDirectory = new File(integrationsPortfolio, "blackduck-common-api");
-        //missingClassFinder.findMissingClassesInOutput(apiDirectory, controlDirectory);
+        missingClassFinder.findMissingClassesInOutput(apiDirectory, controlDirectory);
     }
 }

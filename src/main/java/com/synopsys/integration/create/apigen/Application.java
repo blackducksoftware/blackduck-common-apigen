@@ -42,7 +42,7 @@ import freemarker.template.Version;
 @SpringBootApplication
 @Configuration
 public class Application {
-    public static final String RESPONSE_TOKEN = "GET" + File.separator;
+    public static final String RESPONSE_ENDPOINT_TOKEN = "GET";
     public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
 
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";

@@ -53,14 +53,14 @@ public class ApiPathDataPopulator {
             if (!ResponseTypeIdentifier.getResponseType(response).equals(ResponseType.ARRAY)) {
                 final String apiPath = getApiDiscoveryPath(response.getResponseSpecificationPath());
                 if (!nameAndPathManager.isRepeatApiDiscoveryPath(apiPath) && !apiPathsToIgnore.contains(apiPath)) {
-                    final String nonVersionedResponseName = NameParser.getNonVersionedName(response.getName());
+                    final String responseName = response.getName();
                     final ApiPathData apiDiscoveryData;
                     final String resultClass;
                     final boolean hasMultipleResults;
 
                     final String resultClassOverride = apiPathResultClassOverrides.get(apiPath);
-                    resultClass = resultClassOverride == null ? nonVersionedResponseName : resultClassOverride;
-                    final Boolean hasMultipleResultsOverride = apiPathHasMultipleResultsOverrides.get(nonVersionedResponseName);
+                    resultClass = resultClassOverride == null ? responseName : resultClassOverride;
+                    final Boolean hasMultipleResultsOverride = apiPathHasMultipleResultsOverrides.get(responseName);
                     hasMultipleResults = hasMultipleResultsOverride == null ? response.hasMultipleResults() : hasMultipleResultsOverride;
 
                     apiDiscoveryData = new ApiPathData(apiPath, resultClass, hasMultipleResults);

@@ -256,9 +256,9 @@ public class TypeTranslator {
     }
 
     public String getNewName(String swaggerName) {
-        return oldTypesToNewTypes.get(NameParser.getNonVersionedName(swaggerName));
+        return oldTypesToNewTypes.get(swaggerName);
     }
 
-    public String getNameOfDeprecatedEquivalent(String apigenName) { return newTypesToOldTypes.get(NameParser.getNonVersionedName(apigenName)); }
+    public String getNameOfDeprecatedEquivalent(String apigenName) { return newTypesToOldTypes.get(apigenName); }
 
 }

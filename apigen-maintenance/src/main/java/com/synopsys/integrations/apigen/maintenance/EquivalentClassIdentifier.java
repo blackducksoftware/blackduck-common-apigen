@@ -22,7 +22,6 @@
  */
 package com.synopsys.integrations.apigen.maintenance;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +47,7 @@ public class EquivalentClassIdentifier {
         if (!clazz1.getClassName().equals(clazz2.getClassName())) {
             return false;
         }
+
         for (Field field1 : clazz1.getFields()) {
             boolean foundEqualField = false;
             for (Field field2 : clazz2.getFields()) {

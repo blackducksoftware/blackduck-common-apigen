@@ -19,20 +19,20 @@ public class NameParserTest {
         String projectVersionViewPath = "projects/projectId/versions/projectVersionId/GET/bds_project_detail_5_json/response-specification.json";
         String componentsViewPath = "components/GET/bds_component_detail_4_json/response-specification.json";
 
-        assertTrue(nameParser.computeResponseName(componentViewPath).equals("ComponentViewV4"));
-        assertTrue(NameParser.getNonVersionedName(nameParser.computeResponseName(projectVersionViewPath)).equals("ProjectVersionView"));
-        assertTrue(nameParser.computeResponseName(componentsViewPath).equals("ComponentsViewV4"));
+        assertTrue(nameParser.computeResponseName(componentViewPath).equals("ComponentView"));
+        assertTrue(nameParser.computeResponseName(projectVersionViewPath).equals("ProjectVersionView"));
+        assertTrue(nameParser.computeResponseName(componentsViewPath).equals("ComponentsView"));
     }
 
     @Test
     public void verifyDifferentiatingPrefixesAreAddedTest() {
         String componentVersionPath = "components/componentId/versions/componentVersionId/GET/bds_component_detail_4_json/response-specification.json";
         String result1 = nameParser.computeResponseName(componentVersionPath);
-        assertEquals("ComponentVersionViewV4", result1);
+        assertEquals("ComponentVersionView", result1);
 
         String projectVersionComponentVersionPath = "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/GET/bds_bill_of_materials_4_json/response-specification.json";
         String result2 = nameParser.computeResponseName(projectVersionComponentVersionPath);
-        assertEquals("ProjectVersionComponentVersionViewV4", result2);
+        assertEquals("ProjectVersionComponentVersionView", result2);
     }
 
 }

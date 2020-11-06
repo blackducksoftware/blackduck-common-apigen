@@ -71,10 +71,9 @@ public class DifferentiatingResponseNamePrefixBuilder {
     public String getNameWithPrefix(String responseName) {
         String prefix = getPrefix();
         // If prefix is redundant with the response's current name, just return the prefix
-        String mediaVersion = NameParser.getMediaVersionFromResponseName(responseName);
-        String name = NameParser.getNonVersionedName(responseName.replace("View", ""));
+        String name = responseName.replace("View", "");
         if (prefix.endsWith(name)) {
-            return String.format("%sView%s", prefix, mediaVersion != null ? "V" + mediaVersion : "");
+            return String.format("%sView", prefix);
         } else {
             return prefix + responseName;
         }

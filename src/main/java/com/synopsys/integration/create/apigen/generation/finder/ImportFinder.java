@@ -78,7 +78,6 @@ public class ImportFinder {
     public Set<String> findFieldImports(String fieldType, final boolean isOptional) {
         Set<String> fieldImports = new HashSet<>();
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
-        fieldType = NameParser.getNonVersionedName(fieldType);
 
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();

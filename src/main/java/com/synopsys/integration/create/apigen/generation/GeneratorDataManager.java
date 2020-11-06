@@ -79,8 +79,6 @@ public class GeneratorDataManager {
         for (FileGenerationData fileData : fileDataList.values()) {
             String oldName = fileData.getClassName();
             String editedName = modifyName(oldName);
-            String nonVersionedOldName = NameParser.getNonVersionedName(oldName);
-            String nonVersionedEditedName = NameParser.getNonVersionedName(editedName);
             if (!fileDataList.keySet().contains(editedName)) {
                 fileData.setClassName(editedName);
                 fileData.getInput().put(UtilStrings.CLASS_NAME, editedName);
@@ -90,11 +88,11 @@ public class GeneratorDataManager {
                     List<String> imports = (List<String>) fileGenerationData.getInput().get("imports");
                     if (fields == null || imports == null) continue;
                     for (FieldDefinition field : fields) {
-                        if (field.getType().equals(nonVersionedOldName)) {
-                            field.setType(nonVersionedEditedName);
+                        if (field.getType().equals(oldName)) {
+                            field.setType(editedName);
                         }
                     }
-                    imports.replaceAll(importString -> importString.replace(nonVersionedOldName, nonVersionedEditedName));
+                    imports.replaceAll(importString -> importString.replace(oldName, editedName));
                 }
             }
         }
