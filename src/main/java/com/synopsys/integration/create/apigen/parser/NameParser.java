@@ -56,7 +56,7 @@ public class NameParser {
          */
         String firstPiece = null;
         String lastPiece = null;
-        DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder = new DifferentiatingClassnamePrefixBuilder(redundantNamePrefixes);
+        DifferentiatingResponseNamePrefixBuilder differentiatingPrefixBuilder = new DifferentiatingResponseNamePrefixBuilder(redundantNamePrefixes);
         final ListIterator<String> pathPieces = Arrays.asList(responsePath.split("/")).listIterator();
         String nextPiece = getGroomedPiece(pathPieces.next());
         while (pathPieces.hasNext()) {
@@ -80,7 +80,7 @@ public class NameParser {
         }
     }
 
-    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType, DifferentiatingClassnamePrefixBuilder differentiatingPrefixBuilder, String currentEndpoint, String responseNameOverride) {
+    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, final String mediaType, DifferentiatingResponseNamePrefixBuilder differentiatingPrefixBuilder, String currentEndpoint, String responseNameOverride) {
         // media types come in the form <PREFIX>_<version>_<MEDIA_TYPE_SUFFIX>
         final String mediaVersion = getMediaVersionFromMediaType(mediaType);
         final String responseName;

@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DifferentiatingClassnamePrefixBuilder {
+public class DifferentiatingResponseNamePrefixBuilder {
     private List<String> prefixPieces = new ArrayList<>();
     private Set<String> redundantNamePrefixes;
 
-    public DifferentiatingClassnamePrefixBuilder(Set<String> redundantNamePrefixes) {
+    public DifferentiatingResponseNamePrefixBuilder(Set<String> redundantNamePrefixes) {
         this.redundantNamePrefixes = redundantNamePrefixes;
     }
 
@@ -55,18 +55,25 @@ public class DifferentiatingClassnamePrefixBuilder {
         String currentPiece = iterator.next();
         while (iterator.hasNext()) {
             String nextPiece = iterator.next();
+            // Only add piece if it's not redundant with the current piece
             if (!nextPiece.startsWith(currentPiece)) {
                 prefixBuilder.append(currentPiece);
             }
             currentPiece = nextPiece;
         }
+        if (!prefixBuilder.toString().endsWith(currentPiece)) {
+            prefixBuilder.append(currentPiece);
+        }
+
         return prefixBuilder.toString();
     }
 
     public String getNameWithPrefix(String responseName) {
         String prefix = getPrefix();
-        if (prefix.endsWith(NameParser.getNonVersionedName(responseName))) {
-            return prefix;
+        // If prefix is redundant with the response's current name, just return the prefix
+        String name = NameParser.getNonVersionedName(responseName.replace("View", ""));
+        if (prefix.endsWith(name)) {
+            return String.format("%sView", prefix);
         } else {
             return prefix + responseName;
         }

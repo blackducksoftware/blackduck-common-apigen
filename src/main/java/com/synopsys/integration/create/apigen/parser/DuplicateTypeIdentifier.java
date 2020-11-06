@@ -47,6 +47,7 @@ public class DuplicateTypeIdentifier {
         if (CollectionUtils.isEmpty(enumValues)) {
             String trueType = uniqueRawFieldsToNames.get(rawField.getSubFields());
             if (trueType != null) {
+                // TODO - try putting to map if originalType is shorter than trueType
                 return trueType;
             } else if (!CollectionUtils.isEmpty(rawField.getSubFields())) {
                 uniqueRawFieldsToNames.put(rawField.getSubFields(), originalType);
