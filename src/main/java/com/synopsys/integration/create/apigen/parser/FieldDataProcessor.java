@@ -62,8 +62,6 @@ public class FieldDataProcessor {
 
     private String getProcessedType(RawFieldDefinition rawFieldDefinition, String parentDefinitionName, String processedPath) {
         typeWasOverrided = false;
-
-        // TODO - do we NEED to give certain values to multiple steps of the processing (eg. mediaVersion)?
         String firstPassType = processFirstPassType(rawFieldDefinition, processedPath, parentDefinitionName);
         String potentiallyOverridedType = overrideTypeIfNecessary(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), parentDefinitionName, firstPassType);
         String processedType = filterDuplicateTypeIfNecessary(rawFieldDefinition, potentiallyOverridedType);

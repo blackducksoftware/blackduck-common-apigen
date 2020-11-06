@@ -29,7 +29,7 @@ import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
-import com.synopsys.integration.create.apigen.model.MediaVersionData;
+
 import freemarker.template.Configuration;
 import org.springframework.stereotype.Component;
 

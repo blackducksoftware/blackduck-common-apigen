@@ -70,15 +70,13 @@ public class NameParser {
             }
         }
         if (pathPieces.hasNext()) {
-            // TODO - if we remove versioning, this is no longer necessary
-            String currentEndpoint = responsePath.split("GET")[0];
-            return computeResponseNameFromPieces(firstPiece, lastPiece, differentiatingPrefixBuilder, currentEndpoint, nameAndPathManager.getResponseNameOverride(responsePath));
+            return computeResponseNameFromPieces(firstPiece, lastPiece, differentiatingPrefixBuilder, nameAndPathManager.getResponseNameOverride(responsePath));
         } else {
             return "";
         }
     }
 
-    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, DifferentiatingResponseNamePrefixBuilder differentiatingPrefixBuilder, String currentEndpoint, String responseNameOverride) {
+    private String computeResponseNameFromPieces(final String firstPiece, final String lastPiece, DifferentiatingResponseNamePrefixBuilder differentiatingPrefixBuilder, String responseNameOverride) {
         final String responseName;
         if (responseNameOverride != null) {
             responseName = getJoinedResponseNamePieces(null, responseNameOverride);
@@ -86,20 +84,16 @@ public class NameParser {
             responseName = getJoinedResponseNamePieces(firstPiece, lastPiece);
         }
         final String finalResponseName;
-        if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix(), currentEndpoint)) {
+        if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix())) {
             finalResponseName = differentiatingPrefixBuilder.getNameWithPrefix(responseName);
         } else {
             finalResponseName = responseName;
         }
-        nameAndPathManager.addResponseNameAndEndpoint(finalResponseName, currentEndpoint);
-
         return finalResponseName;
     }
 
-    private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix, String currentEndpoint) {
-        String incumbentEndpoint = nameAndPathManager.getResponseNamesAndEndpoints().get(responseName);
-        return incumbentEndpoint != null && !incumbentEndpoint.equals(currentEndpoint)
-                   && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
+    private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix) {
+        return differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
     }
 
     private String getGroomedPiece(final String piece) {

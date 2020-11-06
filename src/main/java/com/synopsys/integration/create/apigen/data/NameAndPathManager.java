@@ -36,7 +36,6 @@ public class NameAndPathManager {
 
     private final Set<ApiPathData> apiDiscoveryData;
     private final Set<String> apiDiscoveryDataPaths;
-    private final Map<String, String> responseNamesAndEndpoints; // should this be in NameParser?
     private final Map<String, String> responseNameOverrides; // should this be in NameParser?  is there a better way to handle this?
     private final Set<String> nonLinkClassNames;
     private final Set<String> linkClassNames;
@@ -45,7 +44,6 @@ public class NameAndPathManager {
     public NameAndPathManager() {
         apiDiscoveryData = new HashSet<>();
         apiDiscoveryDataPaths = new HashSet<>();
-        responseNamesAndEndpoints = new HashMap<>();
         responseNameOverrides = populateResponseNameOverrides();
         nonLinkClassNames = new HashSet<>();
         linkClassNames = new HashSet<>();
@@ -64,14 +62,6 @@ public class NameAndPathManager {
 
     public void addApiDiscoveryPath(final String path) {
         apiDiscoveryDataPaths.add(path);
-    }
-
-    public Map<String, String> getResponseNamesAndEndpoints() {
-        return responseNamesAndEndpoints;
-    }
-
-    public void addResponseNameAndEndpoint(String name, String path) {
-        responseNamesAndEndpoints.put(name, path);
     }
 
     public Set<String> getNonLinkClassNames() {
