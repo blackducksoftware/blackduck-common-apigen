@@ -1,5 +1,6 @@
 package com.synopsys.integration.create.apigen.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,10 +26,13 @@ public class NameParserTest {
 
     @Test
     public void verifyDifferentiatingPrefixesAreAddedTest() {
-        String projectVersionComponentVersionPath = "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/GET/bds_bill_of_materials_4_json/response-specification.json";
         String componentVersionPath = "components/componentId/versions/componentVersionId/GET/bds_component_detail_4_json/response-specification.json";
         String result1 = nameParser.computeResponseName(componentVersionPath);
+        assertEquals("ComponentVersionViewV4", result1);
+
+        String projectVersionComponentVersionPath = "projects/projectId/versions/projectVersionId/components/componentId/versions/componentVersionId/GET/bds_bill_of_materials_4_json/response-specification.json";
         String result2 = nameParser.computeResponseName(projectVersionComponentVersionPath);
-        assertNotEquals(result1, result2);
+        assertEquals("ProjectVersionComponentVersionViewV4", result2);
     }
+
 }

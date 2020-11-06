@@ -71,10 +71,8 @@ public class NameParser {
             }
         }
         if (pathPieces.hasNext()) {
-            if (nameAndPathManager.getResponseNamesAndEndpoints().keySet().contains(firstPiece)) {
-                firstPiece = differentiatingPrefixBuilder.getPrefix();
-            }
             final String mediaType = pathPieces.next();
+            // TODO - if we remove versioning, this is no longer necessary
             String currentEndpoint = responsePath.split("GET")[0];
             return computeResponseNameFromPieces(firstPiece, lastPiece, mediaType, differentiatingPrefixBuilder, currentEndpoint, nameAndPathManager.getResponseNameOverride(responsePath));
         } else {
