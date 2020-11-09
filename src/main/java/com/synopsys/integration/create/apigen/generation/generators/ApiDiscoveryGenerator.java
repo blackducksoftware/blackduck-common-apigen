@@ -30,22 +30,19 @@ import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
-import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
 import com.synopsys.integration.create.apigen.model.ApiPathData;
 import com.synopsys.integration.create.apigen.model.ResultClassData;
 import freemarker.template.Template;
-import net.minidev.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class DiscoveryGenerator {
+public class ApiDiscoveryGenerator {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
     private final ClassCategories classCategories;
     private final NameAndPathManager nameAndPathManager;
@@ -53,14 +50,14 @@ public class DiscoveryGenerator {
     private final ClassNameManager classNameManager;
 
     @Autowired
-    public DiscoveryGenerator(ClassCategories classCategories, NameAndPathManager nameAndPathManager, GeneratorDataManager generatorDataManager, ClassNameManager classNameManager) {
+    public ApiDiscoveryGenerator(ClassCategories classCategories, NameAndPathManager nameAndPathManager, GeneratorDataManager generatorDataManager, ClassNameManager classNameManager) {
         this.classCategories = classCategories;
         this.nameAndPathManager = nameAndPathManager;
         this.generatorDataManager = generatorDataManager;
         this.classNameManager = classNameManager;
     }
 
-    public void createDiscoveryFile(File baseDirectory, Template template) {
+    public void createDiscoveryFile(String discoveryDirectoryPath, Template template) {
         Map<String, Object> model = new HashMap<>();
         model.put("discoveryPackage", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
 
@@ -91,7 +88,7 @@ public class DiscoveryGenerator {
                 .collect(Collectors.toList());
         model.put("imports", sortedImports);
 
-        generatorDataManager.addFileData(new FileGenerationData("ApiDiscovery", template, model, baseDirectory.getAbsolutePath()));
+        generatorDataManager.addFileData(new FileGenerationData("ApiDiscovery", template, model, discoveryDirectoryPath));
     }
 
 }

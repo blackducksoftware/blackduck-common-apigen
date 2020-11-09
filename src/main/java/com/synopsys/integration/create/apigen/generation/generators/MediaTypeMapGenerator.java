@@ -22,60 +22,32 @@
  */
 package com.synopsys.integration.create.apigen.generation.generators;
 
-import com.synopsys.integration.create.apigen.GeneratorConfig;
-import com.synopsys.integration.create.apigen.data.ImportComparator;
 import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
-import com.synopsys.integration.create.apigen.generation.finder.ImportFinder;
+import freemarker.template.Template;
 
-import freemarker.template.Configuration;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class MediaTypeMapGenerator {
-
-    private final ImportFinder importFinder;
-    private final Configuration config;
-    private final GeneratorConfig generatorConfig;
     private final GeneratorDataManager generatorDataManager;
     private final MediaTypePathManager mediaTypePathManager;
 
-    public MediaTypeMapGenerator(ImportFinder importFinder, Configuration config, GeneratorConfig generatorConfig, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager) {
-        this.importFinder = importFinder;
-        this.config = config;
-        this.generatorConfig = generatorConfig;
+    public MediaTypeMapGenerator(GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager) {
         this.generatorDataManager = generatorDataManager;
         this.mediaTypePathManager = mediaTypePathManager;
     }
 
-    public void generateMediaTypeMap(Set<MediaVersionData> latestMediaVersions) throws Exception {
+    public void generateMediaTypeMap(String discoveryDirectoryPath, Template template) {
         Map<String, Object> input = new HashMap<>();
 
         input.put("package", UtilStrings.GENERATED_DISCOVERY_PACKAGE);
-        List<MediaVersionData> sortedLatestMediaVersions = latestMediaVersions.stream().collect(Collectors.toList());
-
-        Set<String> imports = new HashSet<>();
-        Set<String> classNames = new HashSet<>();
-        for (MediaVersionData helper : sortedLatestMediaVersions) {
-            classNames.add(helper.getNonVersionedClassName());
-        }
-        for (String className : classNames) {
-            imports.addAll(importFinder.findFieldImports(className, false));
-        }
-        List sortedImports = imports.stream()
-                .sorted(ImportComparator.of())
-                .collect(Collectors.toList());
-        input.put("imports", sortedImports);
-
         input.put("mediaTypeExpressions", mediaTypePathManager.getMediaTypeMappings());
         input.put("mediaTypeData", mediaTypePathManager.getMediaTypeData());
-        File mediaTypeMapBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
-        generatorDataManager.addFileData(new FileGenerationData("BlackDuckMediaTypeDiscovery", config.getTemplate("blackDuckMediaTypeDiscovery.ftl"), input, mediaTypeMapBaseDirectory.getAbsolutePath()));
+        generatorDataManager.addFileData(new FileGenerationData("BlackDuckMediaTypeDiscovery", template, input, discoveryDirectoryPath));
     }
 }

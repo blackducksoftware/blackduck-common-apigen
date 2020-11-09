@@ -83,17 +83,20 @@ public class NameParser {
         } else {
             responseName = getJoinedResponseNamePieces(firstPiece, lastPiece);
         }
+
         final String finalResponseName;
         if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix())) {
             finalResponseName = differentiatingPrefixBuilder.getNameWithPrefix(responseName);
         } else {
             finalResponseName = responseName;
         }
+
+        nameAndPathManager.addNonLinkClassName(finalResponseName);
         return finalResponseName;
     }
 
     private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix) {
-        return differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
+        return nameAndPathManager.getNonLinkClassNames().contains(responseName) && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
     }
 
     private String getGroomedPiece(final String piece) {

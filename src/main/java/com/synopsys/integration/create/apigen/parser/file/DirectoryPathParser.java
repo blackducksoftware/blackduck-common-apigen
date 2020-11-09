@@ -62,7 +62,6 @@ public class DirectoryPathParser implements ApiParser {
     private final MediaTypes mediaTypes;
     private final Gson gson;
     private final TypeTranslator typeTranslator;
-    private final NameAndPathManager nameAndPathManager;
     private final NameParser nameParser;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
     private final FieldDefinitionProcessor processor;
@@ -113,12 +112,12 @@ public class DirectoryPathParser implements ApiParser {
     private List<ResponseDefinition> parseApiForAllResponses(final File parent, final int prefixLength) {
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
         final List<File> files = Arrays.stream(parent.listFiles())
-                                        .filter(file -> !file.getName().equals("notifications") && !file.getName().equals("scan"))
+                                        .filter(file -> !file.getName().equals("notifications"))
                                         .sorted()
                                         .collect(Collectors.toList());
         for (File file : files) {
             if (file.getName().equals(Application.RESPONSE_ENDPOINT_TOKEN)) {
-                Optional<File> responseSpecificationWithLatestMediaVersion = getResponseSpecificationWithLatestMediaVersion(file);
+                Optional<File> responseSpecificationWithLatestMediaVersion = findResponseSpecificationWithLatestMediaVersion(file);
                 if (responseSpecificationWithLatestMediaVersion.isPresent()) {
                     responseDefinitions.add(createResponseDefinitionFromSpecification(responseSpecificationWithLatestMediaVersion.get(), prefixLength));
                 }
@@ -130,12 +129,17 @@ public class DirectoryPathParser implements ApiParser {
         return responseDefinitions;
     }
 
-    private Optional<File> getResponseSpecificationWithLatestMediaVersion(File responseEndpoint) {
+    private Optional<File> findResponseSpecificationWithLatestMediaVersion(File responseEndpoint) {
         int latestMediaVersion = 0;
         File responseSpecificationWithLatestMediaVersion = null;
         for (File mediaTypeDirectory : responseEndpoint.listFiles()) {
+            int mediaVersion;
             try {
-                int mediaVersion = Integer.valueOf(NameParser.getMediaVersionFromMediaType(mediaTypeDirectory.getName()));
+                mediaVersion = Integer.valueOf(NameParser.getMediaVersionFromMediaType(mediaTypeDirectory.getName()));
+            } catch (NumberFormatException e) {
+                // If directory does not have a versioned media type, then we will not process it.
+                continue;
+            }
 
             if (mediaVersion > latestMediaVersion) {
                 latestMediaVersion = mediaVersion;
@@ -144,9 +148,6 @@ public class DirectoryPathParser implements ApiParser {
                         responseSpecificationWithLatestMediaVersion = specificationFile;
                     }
                 }
-            }
-            } catch (NumberFormatException e) {
-                System.out.println();
             }
         }
         return Optional.ofNullable(responseSpecificationWithLatestMediaVersion);
@@ -215,7 +216,7 @@ public class DirectoryPathParser implements ApiParser {
         return false;
     }
 
-    public ResponseDefinition extractResponseFromSubfieldsOfItems(ResponseDefinition response) {
+    private ResponseDefinition extractResponseFromSubfieldsOfItems(ResponseDefinition response) {
         FieldDefinition items = null;
         for (FieldDefinition field : response.getFields()) {
             if (field.getPath().equals(UtilStrings.ITEMS)) {

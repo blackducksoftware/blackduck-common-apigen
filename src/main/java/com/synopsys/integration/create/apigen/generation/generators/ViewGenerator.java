@@ -108,8 +108,6 @@ public class ViewGenerator {
             input.put(UtilStrings.NEW_NAME, apiGenClassName);
         }
         generatorDataManager.addFileData(new FileGenerationData(viewName, template, input, classTypeData.getPathToOutputDirectory()));
-
-        nameAndPathManager.addNonLinkClassName(viewName);
     }
 
     public Template getTemplate(final Configuration config) throws IOException {

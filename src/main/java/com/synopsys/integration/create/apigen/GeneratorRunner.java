@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,7 +54,7 @@ public class GeneratorRunner {
     private final Gson gson;
     private final NameAndPathManager nameAndPathManager;
     private final ViewGenerator viewGenerator;
-    private final DiscoveryGenerator discoveryGenerator;
+    private final ApiDiscoveryGenerator apiDiscoveryGenerator;
     private final MediaTypeMapGenerator mediaTypeMapGenerator;
     private final DeprecatedClassGenerator deprecatedClassGenerator;
     private final List<ClassGenerator> generators;
@@ -66,7 +66,7 @@ public class GeneratorRunner {
     private final ObjectFactory<ApiGeneratorParser> parserFactory;
 
     @Autowired
-    public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, DiscoveryGenerator discoveryGenerator,
+    public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, ApiDiscoveryGenerator apiDiscoveryGenerator,
                            MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
                            Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
                            ObjectFactory<ApiGeneratorParser> parserFactory) {
@@ -74,7 +74,7 @@ public class GeneratorRunner {
         this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
         this.viewGenerator = viewGenerator;
-        this.discoveryGenerator = discoveryGenerator;
+        this.apiDiscoveryGenerator = apiDiscoveryGenerator;
         this.mediaTypeMapGenerator = mediaTypeMapGenerator;
         this.deprecatedClassGenerator = deprecatedClassGenerator;
         this.generators = generators;
@@ -89,15 +89,39 @@ public class GeneratorRunner {
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
         generatorConfig.logConfig();
+
         String inputPath = generatorConfig.getInputPath();
         File inputDirectory = new File(inputPath);
         if (!inputDirectory.exists()) {
             logger.info(generatorConfig.getInputPath() + " not found");
             System.exit(0);
         }
+
+        generateFiles(inputDirectory);
+
+        //TODO - is this valuable?
+        logger.info(
+                "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
+                        + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
+        for (Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
+            logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
+        }
+    }
+
+    private void generateFiles(File apiSpecification) throws Exception {
+        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecification);
+        accumulateMediaTypes(responses);
+        accumulateGeneratedResponseClassData(responses);
+        accumulateApiDiscoveryClassData(responses);
+        generateDiscoveryClasses();
+        deprecatedClassGenerator.generateDeprecatedClasses();
+        generatorDataManager.writeFiles();
+    }
+
+    private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification) throws IOException {
         ApiParser apiParser = parserFactory.getObject();
         DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
-        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), inputDirectory);
+        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), apiSpecification);
         for (ResponseDefinition response : responses) {
             String responseName = response.getName();
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
@@ -107,23 +131,7 @@ public class GeneratorRunner {
             response.addLinks(missingLinks);
         }
 
-        generateFiles(responses);
-
-        logger.info(
-                "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
-                        + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
-        for (Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
-            logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
-        }
-    }
-
-    private void generateFiles(List<ResponseDefinition> responses) throws Exception {
-        accumulateMediaTypes(responses);
-        accumulateGeneratedResponseClassData(responses);
-        accumulateApiDiscoveryClassData(responses);
-        accumulateMediaTypeDiscoveryClassData();
-        deprecatedClassGenerator.generateDeprecatedClasses();
-        generatorDataManager.writeFiles();
+        return responses;
     }
 
     private void accumulateMediaTypes(List<ResponseDefinition> responses) throws NullMediaTypeException {
@@ -151,10 +159,14 @@ public class GeneratorRunner {
         apiPathDataPopulator.populateApiPathData(responses);
     }
 
-    private void accumulateMediaTypeDiscoveryClassData() throws Exception {
-        File discoveryBaseDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+    private void generateDiscoveryClasses() throws IOException {
+        File discoveryDirectory = new File(generatorConfig.getOutputDirectory(), UtilStrings.DISCOVERY_DIRECTORY_SUFFIX);
+
         Template discoveryTemplate = config.getTemplate("discoveryTemplate.ftl");
-        discoveryGenerator.createDiscoveryFile(discoveryBaseDirectory, discoveryTemplate);
+        apiDiscoveryGenerator.createDiscoveryFile(discoveryDirectory.getAbsolutePath(), discoveryTemplate);
+
+        Template blackDuckMediaTypeDiscoveryTemplate = config.getTemplate("blackDuckMediaTypeDiscovery.ftl");
+        mediaTypeMapGenerator.generateMediaTypeMap(discoveryDirectory.getAbsolutePath(), blackDuckMediaTypeDiscoveryTemplate);
     }
 
     private void generateClasses(FieldDefinition field, List<ClassGenerator> generators, String responseMediaType) throws Exception {

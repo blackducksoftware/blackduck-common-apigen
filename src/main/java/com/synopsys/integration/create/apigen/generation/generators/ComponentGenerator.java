@@ -111,7 +111,6 @@ public class ComponentGenerator extends ClassGenerator {
             }
             generatorDataManager.addFileData(new FileGenerationData(fieldType, template, input, classTypeData.getPathToOutputDirectory()));
         }
-        nameAndPathManager.addNonLinkClassName(fieldType);
     }
 
     @Override
