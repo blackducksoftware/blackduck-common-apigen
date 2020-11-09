@@ -37,24 +37,12 @@ public class FieldTranslation {
         return path;
     }
 
-    public void setPath(final String path) {
-        this.path = path;
-    }
-
-    public String getSwaggerName() {
+    public String getTrueType() {
         return trueType;
     }
 
-    public void setSwaggerName(final String swaggerType) {
-        this.trueType = swaggerType;
-    }
-
-    public String getApiSpecsName() {
+    public String getApiSpecsType() {
         return apiSpecsType;
-    }
-
-    public void setApiSpecsName(final String api_genType) {
-        this.apiSpecsType = api_genType;
     }
 
 }

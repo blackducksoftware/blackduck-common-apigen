@@ -33,8 +33,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.synopsys.integration.create.apigen.parser.NameParser;
-
 @Component
 public class TypeTranslator {
 
@@ -241,22 +239,20 @@ public class TypeTranslator {
         return translations;
     }
 
-    public String getTrueFieldName(String className, String api_SpecsPath, String api_SpecsName) {
+    public String getTrueFieldType(String className, String path, String type) {
         List<FieldTranslation> typeTranslations = fieldTranslations.get(className);
         if (typeTranslations != null) {
             for (FieldTranslation typeTranslation : typeTranslations) {
-                String apiSpecsName = typeTranslation.getApiSpecsName();
-                String apiSpecsPath = typeTranslation.getPath();
-                if (apiSpecsName.equals(api_SpecsName) && apiSpecsPath.equals(api_SpecsPath.replace("[]", ""))) {
-                    return typeTranslation.getSwaggerName();
+                if (typeTranslation.getApiSpecsType().equals(type) && typeTranslation.getPath().equals(path.replace("[]", ""))) {
+                    return typeTranslation.getTrueType();
                 }
             }
         }
         return null;
     }
 
-    public String getNewName(String swaggerName) {
-        return oldTypesToNewTypes.get(swaggerName);
+    public String getNewName(String oldName) {
+        return oldTypesToNewTypes.get(oldName);
     }
 
     public String getNameOfDeprecatedEquivalent(String apigenName) { return newTypesToOldTypes.get(apigenName); }

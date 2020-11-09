@@ -67,13 +67,12 @@ public class DirectoryPathParser implements ApiParser {
     private final FieldDefinitionProcessor processor;
 
     @Autowired
-    public DirectoryPathParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameAndPathManager nameAndPathManager, final MissingFieldsAndLinks missingFieldsAndLinks,
+    public DirectoryPathParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameParser nameParser, final MissingFieldsAndLinks missingFieldsAndLinks,
         FieldDefinitionProcessor processor) {
         this.mediaTypes = mediaTypes;
         this.gson = gson;
         this.typeTranslator = typeTranslator;
-        this.nameAndPathManager = nameAndPathManager;
-        this.nameParser = new NameParser(nameAndPathManager);
+        this.nameParser = nameParser;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.processor = processor;
     }

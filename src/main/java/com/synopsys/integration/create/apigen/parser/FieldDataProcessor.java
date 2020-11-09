@@ -112,7 +112,7 @@ public class FieldDataProcessor {
 
     private String overrideTypeIfNecessary(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType) {
         // Override type of certain fields
-        String overrideType = typeTranslator.getTrueFieldName(nonVersionedParentDefinitionName, rawPath, rawType);
+        String overrideType = typeTranslator.getTrueFieldType(nonVersionedParentDefinitionName, rawPath, rawType);
         if (overrideType != null) {
             overrideType = restoreListNotation(processedType, overrideType);
             typeWasOverrided = true;
