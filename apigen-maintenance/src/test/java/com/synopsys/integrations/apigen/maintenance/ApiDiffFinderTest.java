@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 import com.synopsys.integrations.apigen.maintenance.parser.ClassDirectoryToJavaClassesConverter;
 
-public class MissingClassFinderTest {
+public class ApiDiffFinderTest {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,8 +33,8 @@ public class MissingClassFinderTest {
         List<JavaClass> controlClasses = converter.convertClassDirectoryToJavaClassObjects(controlDirectory, new File[0]);
         List<JavaClass> testClasses = converter.convertClassDirectoryToJavaClassObjects(testDirectory, new File[0]);
 
-        MissingClassFinder missingClassFinder = new MissingClassFinder(logger);
-        Set<String> missingFromTest = missingClassFinder.checkForMissingClasses(controlClasses, testClasses);
+        ApiDiffFinder apiDiffFinder = new ApiDiffFinder(logger);
+        Set<String> missingFromTest = apiDiffFinder.checkForMissingClasses(controlClasses, testClasses);
 
         Assertions.assertEquals(2, missingFromTest.size());
         String classNamePrefix = "com.synopsys.integration.blackduck.api.generated.view.";

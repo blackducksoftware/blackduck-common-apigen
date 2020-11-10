@@ -27,7 +27,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -35,24 +34,25 @@ import org.slf4j.Logger;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 import com.synopsys.integrations.apigen.maintenance.parser.ClassDirectoryToJavaClassesConverter;
 
-public class MissingClassFinder {
+public class ApiDiffFinder {
 
-    protected static final String MISSING_CLASSES_PATH = "MISSING_CLASSES_PATH";
+    protected static final String API_DIFF_PATH = "API_DIFF_PATH";
     private Logger logger;
     private EquivalentClassIdentifier equivalentClassIdentifier;
 
-    public MissingClassFinder(final Logger logger) {
+    public ApiDiffFinder(final Logger logger) {
         this.logger = logger;
         this.equivalentClassIdentifier = new EquivalentClassIdentifier();
     }
 
-    public void findMissingClassesInOutput(File testApiDirectory, File controlApiDirectory) throws IOException {
+    public void findDiffInApi(File testApiDirectory, File controlApiDirectory) throws IOException {
         ClassDirectoryToJavaClassesConverter converter = new ClassDirectoryToJavaClassesConverter();
-        List<JavaClass> controlClasses = converter.convertBdCommonApiGeneratedToJavaClassObjects(controlApiDirectory);
-        List<JavaClass> testClasses = converter.convertBdCommonApiGeneratedToJavaClassObjects(testApiDirectory);
+        List<JavaClass> controlApi = converter.convertBdCommonApiGeneratedToJavaClassObjects(controlApiDirectory);
+        List<JavaClass> newlyGeneratedApi = converter.convertBdCommonApiGeneratedToJavaClassObjects(testApiDirectory);
 
-        Set<String> missingFromTest = checkForMissingClasses(controlClasses, testClasses);
-        writeMissingClassesToFile(missingFromTest);
+        Set<String> missingClasses = checkForMissingClasses(controlApi, newlyGeneratedApi);
+        Set<String> newClasses = checkForMissingClasses(newlyGeneratedApi, controlApi);
+        writeDiffToFile(missingClasses, newClasses);
     }
 
     public Set<String> checkForMissingClasses(List<JavaClass> classes1, List<JavaClass> classes2) {
@@ -65,21 +65,27 @@ public class MissingClassFinder {
         return missingClasses;
     }
 
-    private void writeMissingClassesToFile(Set<String> missingClasses) throws IOException {
-        String missingClassesOutputPath = System.getenv(MISSING_CLASSES_PATH);
-        if (missingClassesOutputPath == null) {
-            logger.info(String.format("You must set the environment variable %s to specify where information on missing classes should be written.", MISSING_CLASSES_PATH));
+    private void writeDiffToFile(Set<String> missingClasses, Set<String> newClasses) throws IOException {
+        String apiDiffOutputPath = System.getenv(API_DIFF_PATH);
+        if (apiDiffOutputPath == null) {
+            logger.info(String.format("You must set the environment variable %s to specify where information on missing classes should be written.", API_DIFF_PATH));
             return;
         }
 
-        File outputDirectory = new File(missingClassesOutputPath);
+        File outputDirectory = new File(apiDiffOutputPath);
         outputDirectory.mkdirs();
-        File outputFile = new File(outputDirectory, "missing-classes.txt");
+        File outputFile = new File(outputDirectory, "api-diff.txt");
         FileWriter writer = new FileWriter(outputFile);
 
         writer.write(String.format("************* CLASSES MISSING FROM GENERATED API: %d *************\n\n", missingClasses.size()));
         for (String missingClass : missingClasses) {
             writer.write(String.format("%s\n", missingClass));
+            writer.write("\n");
+        }
+
+        writer.write(String.format("************* NEW CLASSES IN GENERATED API: %d *************\n\n", newClasses.size()));
+        for (String newClass : newClasses) {
+            writer.write(String.format("%s\n", newClass));
             writer.write("\n");
         }
         writer.close();

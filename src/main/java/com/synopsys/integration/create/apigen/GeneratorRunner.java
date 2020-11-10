@@ -26,12 +26,15 @@ import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.*;
 import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
+import com.synopsys.integration.create.apigen.generation.MaintenanceReportGenerator;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.generators.*;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.*;
+import com.synopsys.integrations.apigen.maintenance.ApiDiffFinder;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.slf4j.Logger;
@@ -98,14 +101,6 @@ public class GeneratorRunner {
         }
 
         generateFiles(inputDirectory);
-
-        //TODO - is this valuable?
-        logger.info(
-                "\n******************************\nThere are " + nameAndPathManager.getNullLinkResultClasses().size()
-                        + " classes that are referenced as link results in API specs but we have no information about what Object they correspond to: \n");
-        for (Map.Entry nullLinkResultClass : nameAndPathManager.getNullLinkResultClasses().entrySet()) {
-            logger.info(nullLinkResultClass.getKey() + " - " + nullLinkResultClass.getValue());
-        }
     }
 
     private void generateFiles(File apiSpecification) throws Exception {
@@ -121,7 +116,7 @@ public class GeneratorRunner {
     private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification) throws IOException {
         ApiParser apiParser = parserFactory.getObject();
         DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
-        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(generatorConfig.getShowOutput(), generatorConfig.getControlRun(), apiSpecification);
+        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(apiSpecification);
         for (ResponseDefinition response : responses) {
             String responseName = response.getName();
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);
@@ -181,6 +176,13 @@ public class GeneratorRunner {
                 generateClasses(subField, generators, responseMediaType);
             }
         }
+    }
+
+    public void writeMaintenanceReport() {
+        //TODO - make this a member of GeneratorRunner
+        MaintenanceReportGenerator maintenanceReportGenerator = new MaintenanceReportGenerator();
+        maintenanceReportGenerator.generateMaintenanceReport();
+
     }
 
 }

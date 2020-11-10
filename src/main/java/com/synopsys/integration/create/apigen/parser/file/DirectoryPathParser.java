@@ -59,6 +59,8 @@ import com.synopsys.integration.create.apigen.parser.ResponseTypeIdentifier;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class DirectoryPathParser implements ApiParser {
+    private static final String RESPONSE_ENDPOINT_TOKEN = "GET";
+
     private final MediaTypes mediaTypes;
     private final Gson gson;
     private final TypeTranslator typeTranslator;
@@ -115,7 +117,7 @@ public class DirectoryPathParser implements ApiParser {
                                         .sorted()
                                         .collect(Collectors.toList());
         for (File file : files) {
-            if (file.getName().equals(Application.RESPONSE_ENDPOINT_TOKEN)) {
+            if (file.getName().equals(RESPONSE_ENDPOINT_TOKEN)) {
                 Optional<File> responseSpecificationWithLatestMediaVersion = findResponseSpecificationWithLatestMediaVersion(file);
                 if (responseSpecificationWithLatestMediaVersion.isPresent()) {
                     responseDefinitions.add(createResponseDefinitionFromSpecification(responseSpecificationWithLatestMediaVersion.get(), prefixLength));

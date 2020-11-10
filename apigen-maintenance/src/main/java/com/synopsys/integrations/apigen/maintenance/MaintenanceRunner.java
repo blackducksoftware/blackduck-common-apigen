@@ -69,8 +69,8 @@ public class MaintenanceRunner {
         File swaggerApi = new File("/Users/crowley/Documents/source/swagger-api");
         //redundantClassFinder.identifyRedundantClasses(apiDirectory, swaggerApi, new File[0], null);
 
-        MissingClassFinder missingClassFinder = new MissingClassFinder(logger);
+        ApiDiffFinder apiDiffFinder = new ApiDiffFinder(logger);
         File controlDirectory = new File(integrationsPortfolio, "blackduck-common-api");
-        //missingClassFinder.findMissingClassesInOutput(apiDirectory, controlDirectory);
+        apiDiffFinder.findDiffInApi(apiDirectory, controlDirectory);
     }
 }

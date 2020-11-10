@@ -39,12 +39,18 @@ import com.google.gson.GsonBuilder;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
+/**
+ To Use: Specify path to API specification source, path to where API output should be generated.
+ Find API specification source at https://artifactory.internal.synopsys.com/ui/repos/tree/General/bds-hub-snapshot%2Fcom%2Fblackducksoftware%2Fhub%2Fapi-specification
+ */
+
 @SpringBootApplication
 @Configuration
 public class Application {
-    public static final String RESPONSE_ENDPOINT_TOKEN = "GET";
-    public static final String PATH_TO_TEST_RESOURCES = "src/test/resources/";
-
+    public static final String PATH_TO_API_SPECIFICATION = "./src/main/resources/api-specification/2020.8.0";
+    public static final String PATH_TO_API_OUTPUT = "/Users/crowley/Documents/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/api/generated";
+    //TODO - allow user to specify version of api specs that will then be automatically pulled from Artifactory
+    public static final String API_SPECIFICATION_VERSION = "2020.8.0";
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
     public static void main(final String[] args) {
@@ -58,7 +64,7 @@ public class Application {
     }
 
     @Bean
-    public freemarker.template.Configuration configuration() throws URISyntaxException, IOException {
+    public freemarker.template.Configuration configuration() throws IOException {
         final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File templateDirectory = pathMatchingResourcePatternResolver().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getFile();
         cfg.setDirectoryForTemplateLoading(templateDirectory);

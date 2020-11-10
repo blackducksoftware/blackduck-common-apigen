@@ -44,18 +44,9 @@ public class DirectoryWalker {
         this.apiParser = apiParser;
     }
 
-    public List<ResponseDefinition> parseDirectoryForResponses(boolean showOutput, boolean controlRun, File target) throws IOException {
+    public List<ResponseDefinition> parseDirectoryForResponses(File target) throws IOException {
         // Get response-specification.json files from directory
         List<ResponseDefinition> responses = apiParser.parseApi(target);
-
-        // log output
-        if (showOutput) {
-            logResponses(responses);
-        }
-        // Write output of FieldsParser to test data file
-        if (controlRun) {
-            DirectoryPathParserTestDataCollector.writeControlData(gson, responses);
-        }
         return responses;
     }
 

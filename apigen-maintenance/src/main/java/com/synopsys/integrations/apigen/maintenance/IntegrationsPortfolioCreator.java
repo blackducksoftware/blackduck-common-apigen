@@ -38,51 +38,29 @@ public class IntegrationsPortfolioCreator {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public String createOrUpdateIntegrationsPortfolio() throws IOException {
-        String gitPath = System.getenv(GIT_PATH);
-        if (gitPath == null) {
-            logger.info("You must set the environment variable " + GIT_PATH);
-        }
-
         String portfolioPath = System.getenv(INTEGRATIONS_PORTFOLIO_PATH);
         if (portfolioPath == null) {
             logger.info("You must set the environment variable " + INTEGRATIONS_PORTFOLIO_PATH);
+            return "";
         }
         File portfolioDirectory = new File(portfolioPath);
         portfolioDirectory.mkdirs();
 
-        Runtime runtime = Runtime.getRuntime();
-
-        BlackDuckGitHubRepo[] projectRepos = {
-            new BlackDuckGitHubRepo("synopsys-detect"),
-            new BlackDuckGitHubRepo("blackduck-alert"),
-            new BlackDuckGitHubRepo("blackduck-docker-inspector"),
-            new BlackDuckGitHubRepo("blackduck-artifactory"),
-            new BlackDuckGitHubRepo("blackduck-common"),
-            new BlackDuckGitHubRepo("blackduck-common-api")
+        String[] projects = {
+            "synopsys-detect",
+            "blackduck-alert",
+            "blackduck-docker-inspector",
+            "blackduck-artifactory",
+            "blackduck-common",
+            "blackduck-common-api"
         };
 
-        for (BlackDuckGitHubRepo projectRepo : projectRepos) {
-            String projectName = projectRepo.getProjectName();
-            File clonedProjectFolder = new File(portfolioDirectory, projectName);
-            clonedProjectFolder.mkdirs();
-            if (new File(projectName).exists()) {
-                updateProject(runtime, projectName, gitPath);
-            } else {
-                cloneProject(runtime, gitPath, projectRepo.getProjectUrl(), clonedProjectFolder.getAbsolutePath());
-            }
+        GithubProjectCloner githubProjectCloner = new GithubProjectCloner(logger);
+        for (String project : projects) {
+            githubProjectCloner.cloneOrUpdateProject(project);
         }
 
         return portfolioDirectory.getAbsolutePath();
-    }
-
-    private void updateProject(Runtime runtime, String gitPath, String projectDestination) throws IOException {
-        String gitPullCommand = String.format("%s pull origin master %s", gitPath, projectDestination);
-        runtime.exec(gitPullCommand);
-    }
-
-    private void cloneProject(Runtime runtime, String gitPath, String url, String projectDestination) throws IOException {
-        String cloneCommand = String.format("%s clone %s %s", gitPath, url + ".git", projectDestination);
-        runtime.exec(cloneCommand);
     }
 
 }

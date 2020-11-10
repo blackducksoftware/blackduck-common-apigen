@@ -48,6 +48,7 @@ public class DuplicateTypeIdentifier {
             String trueType = uniqueRawFieldsToNames.get(rawField.getSubFields());
             if (trueType != null) {
                 // TODO - try putting to map if originalType is shorter than trueType
+                // TODO - store what is being overrided, and by what
                 return trueType;
             } else if (!CollectionUtils.isEmpty(rawField.getSubFields())) {
                 uniqueRawFieldsToNames.put(rawField.getSubFields(), originalType);
