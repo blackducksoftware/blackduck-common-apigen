@@ -22,28 +22,29 @@
  */
 package com.synopsys.integrations.apigen.maintenance;
 
-import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.GIT_PATH;
-import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.INTEGRATIONS_PORTFOLIO_PATH;
-
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.synopsys.integrations.apigen.maintenance.model.BlackDuckGitHubRepo;
+import com.synopsys.integrations.apigen.maintenance.utility.DirectoryFinder;
+import com.synopsys.integrations.apigen.maintenance.utility.GithubProjectCloner;
+
+/**
+ * This class can be used to create a local portfolio of Integrations projects.
+ * To Use:
+ * Provide the path to the location where you would like the portfolio of projects to be generated.
+ */
 
 public class IntegrationsPortfolioCreator {
-
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static Logger logger = LoggerFactory.getLogger(IntegrationsPortfolioCreator.class);
+    private static final String INTEGRATIONS_PORTFOLIO_PATH = "";
+    private static final String MISSING_PATH_MESSAGE = "You must specify where to create the Integrations portfolio " + INTEGRATIONS_PORTFOLIO_PATH;
 
     public String createOrUpdateIntegrationsPortfolio() throws IOException {
-        String portfolioPath = System.getenv(INTEGRATIONS_PORTFOLIO_PATH);
-        if (portfolioPath == null) {
-            logger.info("You must set the environment variable " + INTEGRATIONS_PORTFOLIO_PATH);
-            return "";
-        }
-        File portfolioDirectory = new File(portfolioPath);
+        File portfolioDirectory = DirectoryFinder.getDirectoryFromPath(INTEGRATIONS_PORTFOLIO_PATH, MISSING_PATH_MESSAGE);
         portfolioDirectory.mkdirs();
 
         String[] projects = {
@@ -57,10 +58,15 @@ public class IntegrationsPortfolioCreator {
 
         GithubProjectCloner githubProjectCloner = new GithubProjectCloner(logger);
         for (String project : projects) {
-            githubProjectCloner.cloneOrUpdateProject(project);
+            githubProjectCloner.cloneOrUpdateProject(project, new File(portfolioDirectory, project));
         }
 
         return portfolioDirectory.getAbsolutePath();
+    }
+
+    public static void main(String[] args) throws IOException {
+        IntegrationsPortfolioCreator integrationsPortfolioCreator = new IntegrationsPortfolioCreator();
+        integrationsPortfolioCreator.createOrUpdateIntegrationsPortfolio();
     }
 
 }

@@ -3,6 +3,7 @@ package com.synopsys.integrations.apigen.maintenance;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
-import com.synopsys.integrations.apigen.maintenance.parser.ClassDirectoryToJavaClassesConverter;
+import com.synopsys.integrations.apigen.maintenance.utility.ApiDiffFinder;
+import com.synopsys.integrations.apigen.maintenance.utility.ClassDirectoryToJavaClassesConverter;
 
 public class ApiDiffFinderTest {
 
@@ -30,8 +32,8 @@ public class ApiDiffFinderTest {
         File controlDirectory = new File(this.getClass().getClassLoader().getResource("classFiles/control").toURI());
 
         ClassDirectoryToJavaClassesConverter converter = new ClassDirectoryToJavaClassesConverter();
-        List<JavaClass> controlClasses = converter.convertClassDirectoryToJavaClassObjects(controlDirectory, new File[0]);
-        List<JavaClass> testClasses = converter.convertClassDirectoryToJavaClassObjects(testDirectory, new File[0]);
+        List<JavaClass> controlClasses = converter.convertClassDirectoryToJavaClassObjects(controlDirectory, new ArrayList<>());
+        List<JavaClass> testClasses = converter.convertClassDirectoryToJavaClassObjects(testDirectory, new ArrayList<>());
 
         ApiDiffFinder apiDiffFinder = new ApiDiffFinder(logger);
         Set<String> missingFromTest = apiDiffFinder.checkForMissingClasses(controlClasses, testClasses);

@@ -33,10 +33,11 @@ import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.*;
-import com.synopsys.integrations.apigen.maintenance.ApiDiffFinder;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
@@ -46,8 +47,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -67,12 +68,14 @@ public class GeneratorRunner {
     private final GeneratorDataManager generatorDataManager;
     private final MediaTypePathManager mediaTypePathManager;
     private final ObjectFactory<ApiGeneratorParser> parserFactory;
+    private final DuplicateOverrides duplicateOverrides;
+    private final MaintenanceReportGenerator maintenanceReportGenerator;
 
     @Autowired
     public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, ApiDiscoveryGenerator apiDiscoveryGenerator,
                            MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
                            Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
-                           ObjectFactory<ApiGeneratorParser> parserFactory) {
+                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, MaintenanceReportGenerator maintenanceReportGenerator) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
@@ -87,20 +90,39 @@ public class GeneratorRunner {
         this.generatorDataManager = generatorDataManager;
         this.mediaTypePathManager = mediaTypePathManager;
         this.parserFactory = parserFactory;
+        this.duplicateOverrides = duplicateOverrides;
+        this.maintenanceReportGenerator = maintenanceReportGenerator;
     }
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
         generatorConfig.logConfig();
+        File inputDirectory = getInputDirectory();
+        generateFiles(inputDirectory);
+        maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_OUTPUT, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
+    }
 
-        String inputPath = generatorConfig.getInputPath();
-        File inputDirectory = new File(inputPath);
-        if (!inputDirectory.exists()) {
-            logger.info(generatorConfig.getInputPath() + " not found");
+    private File getInputDirectory() throws URISyntaxException {
+        File inputDirectory = null;
+        if (StringUtils.isNotBlank(Application.PATH_TO_API_SPECIFICATION)) {
+            inputDirectory = new File(Application.PATH_TO_API_SPECIFICATION);
+        } else if (StringUtils.isNotBlank(Application.API_SPECIFICATION_VERSION)) {
+            File inputFromResources = new File(GeneratorRunner.class.getClassLoader().getResource("api-specification/" + Application.API_SPECIFICATION_VERSION).toURI());
+            if (inputFromResources.exists()) {
+                inputDirectory = inputFromResources;
+            } else {
+                //TODO - pull API specification from artifactory
+            }
+        }
+        validateDirectory(inputDirectory);
+        return inputDirectory;
+    }
+
+    private void validateDirectory(File directory) {
+        if (directory == null || !directory.exists()) {
+            logger.info(directory.getAbsolutePath() + " not found");
             System.exit(0);
         }
-
-        generateFiles(inputDirectory);
     }
 
     private void generateFiles(File apiSpecification) throws Exception {
@@ -176,13 +198,6 @@ public class GeneratorRunner {
                 generateClasses(subField, generators, responseMediaType);
             }
         }
-    }
-
-    public void writeMaintenanceReport() {
-        //TODO - make this a member of GeneratorRunner
-        MaintenanceReportGenerator maintenanceReportGenerator = new MaintenanceReportGenerator();
-        maintenanceReportGenerator.generateMaintenanceReport();
-
     }
 
 }

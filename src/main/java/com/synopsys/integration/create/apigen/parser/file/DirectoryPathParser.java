@@ -37,6 +37,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.Application;
+import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
 import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.NameAndPathManager;
@@ -233,7 +234,7 @@ public class DirectoryPathParser implements ApiParser {
     private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
         final DefinitionParser definitionParser = new DefinitionParser(gson, file);
         final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-        FieldDefinitionProcessor processor = new FieldDefinitionProcessor(new FieldDataProcessor(typeTranslator, new DuplicateTypeIdentifier()), missingFieldsAndLinks);
+        FieldDefinitionProcessor processor = new FieldDefinitionProcessor(new FieldDataProcessor(typeTranslator, new DuplicateTypeIdentifier(new DuplicateOverrides())), missingFieldsAndLinks);
         final Set<FieldDefinition> fieldDefinitions = processor.processFieldDefinitions("", rawFieldDefinitions);
         final ResponseDefinition response = new ResponseDefinition("", "", "", false);
         response.addFields(fieldDefinitions);

@@ -42,6 +42,7 @@ import freemarker.template.Version;
 /**
  To Use: Specify path to API specification source, path to where API output should be generated.
  Find API specification source at https://artifactory.internal.synopsys.com/ui/repos/tree/General/bds-hub-snapshot%2Fcom%2Fblackducksoftware%2Fhub%2Fapi-specification
+ If you wish to see a maintenance report, specify where you'd like the report to be generated.
  */
 
 @SpringBootApplication
@@ -49,6 +50,7 @@ import freemarker.template.Version;
 public class Application {
     public static final String PATH_TO_API_SPECIFICATION = "./src/main/resources/api-specification/2020.8.0";
     public static final String PATH_TO_API_OUTPUT = "/Users/crowley/Documents/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/api/generated";
+    public static final String PATH_TO_MAINTENANCE_REPORT = "/Users/crowley/Desktop/bd-api-maintenance-data/";
     //TODO - allow user to specify version of api specs that will then be automatically pulled from Artifactory
     public static final String API_SPECIFICATION_VERSION = "2020.8.0";
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";

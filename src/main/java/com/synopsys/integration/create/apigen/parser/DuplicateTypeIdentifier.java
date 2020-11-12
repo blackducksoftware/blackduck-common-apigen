@@ -29,15 +29,17 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
 @Component
 public class DuplicateTypeIdentifier {
-
+    private final DuplicateOverrides duplicateOverrides;
     private final Map<Set<RawFieldDefinition>, String> uniqueRawFieldsToNames;
     private final Map<Set<String>, String> uniqueEnumValuesToNames;
 
-    public DuplicateTypeIdentifier() {
+    public DuplicateTypeIdentifier(DuplicateOverrides duplicateOverrides) {
+        this.duplicateOverrides = duplicateOverrides;
         this.uniqueRawFieldsToNames = new HashMap<>();
         this.uniqueEnumValuesToNames = new HashMap<>();
     }
@@ -47,8 +49,8 @@ public class DuplicateTypeIdentifier {
         if (CollectionUtils.isEmpty(enumValues)) {
             String trueType = uniqueRawFieldsToNames.get(rawField.getSubFields());
             if (trueType != null) {
-                // TODO - try putting to map if originalType is shorter than trueType
-                // TODO - store what is being overrided, and by what
+                // TODO - should we be overriding/screening this strictly?
+                duplicateOverrides.addOverride(trueType, originalType);
                 return trueType;
             } else if (!CollectionUtils.isEmpty(rawField.getSubFields())) {
                 uniqueRawFieldsToNames.put(rawField.getSubFields(), originalType);
@@ -62,6 +64,7 @@ public class DuplicateTypeIdentifier {
     private String screenForDuplicateEnum(String originalType, Set<String> enumValues) {
         String trueEnumType = uniqueEnumValuesToNames.get(enumValues);
         if (trueEnumType != null) {
+            duplicateOverrides.addOverride(trueEnumType, originalType);
             return trueEnumType;
         } else {
             uniqueEnumValuesToNames.put(enumValues, originalType);

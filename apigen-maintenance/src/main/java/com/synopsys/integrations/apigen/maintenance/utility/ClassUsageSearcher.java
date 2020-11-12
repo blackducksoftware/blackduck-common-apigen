@@ -20,9 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integrations.apigen.maintenance;
-
-import static com.synopsys.integrations.apigen.maintenance.MaintenanceRunner.CLASS_USAGE_OUTPUT_PATH;
+package com.synopsys.integrations.apigen.maintenance.utility;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,31 +36,31 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IntegrationsPortfolioSearcher {
+public class ClassUsageSearcher {
 
     private static final String THROWAWAY_CLASS_USAGE_TOKEN = "import .*throwaway.*";
     private static final String TEMPORARY_CLASS_USAGE_TOKEN = "import .*temporary.*";
     private static final String DEPRECATED_CLASS_USAGE_TOKEN = "import .*deprecated.*";
+    private static final String MISSING_USAGE_OUTPUT_FILE_PATH = "You must provide a path to the directory where information files on class usage should be written.";
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public void findUsersOfThrowawayClasses(String pathToSource) throws IOException {
-        Process findings = searchForTokenGrep(THROWAWAY_CLASS_USAGE_TOKEN, pathToSource);
-        writeUsageToOutputFile(findings, "throwaway-usage.txt");
+    public void findUsersOfThrowawayClasses(String pathToSource, String pathToUsageOutputFile) throws IOException {
+        findUsersOfSpecificClass(THROWAWAY_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile);
     }
 
-    public void findUsersOfTemporaryClasses(String pathToSource) throws IOException {
-        Process findings = searchForTokenGrep(TEMPORARY_CLASS_USAGE_TOKEN, pathToSource);
-        writeUsageToOutputFile(findings, "temporary-usage.txt");
+    public void findUsersOfTemporaryClasses(String pathToSource, String pathToUsageOutputFile) throws IOException {
+        findUsersOfSpecificClass(TEMPORARY_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile);
     }
 
-    public void findUsersOfDeprecatedClasses(String pathToSource) throws IOException {
-        Process findings = searchForTokenGrep(DEPRECATED_CLASS_USAGE_TOKEN, pathToSource);
-        writeUsageToOutputFile(findings, "deprecated-usage.txt");
+    public void findUsersOfDeprecatedClasses(String pathToSource, String pathToUsageOutputFile) throws IOException {
+        findUsersOfSpecificClass(DEPRECATED_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile);
     }
 
-    public void findUsersOfSpecificClass(String className, String pathToSource) throws IOException {
-        searchForTokenGrep(className, pathToSource);
+    public void findUsersOfSpecificClass(String className, String pathToSource, String pathToUsageOutputFile) throws IOException {
+        // Can adjust method to use Java or grep search implementation
+        Process findings = searchForTokenGrep(className, pathToSource);
+        writeUsageToOutputFile(findings, pathToUsageOutputFile);
     }
 
     private Process searchForTokenGrep(String token, String pathToSource) throws IOException {
@@ -93,9 +91,9 @@ public class IntegrationsPortfolioSearcher {
         return filesContainingToken;
     }
 
-    private void writeUsageToOutputFile(Process process, String usageFileName) throws IOException {
+    private void writeUsageToOutputFile(Process process, String pathToUsageOutputFile) throws IOException {
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        File outputFile = getUsageOutputFile(usageFileName);
+        File outputFile = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
         FileWriter writer = new FileWriter(outputFile);
         String line;
         while ((line = stdInput.readLine()) != null) {
@@ -105,24 +103,13 @@ public class IntegrationsPortfolioSearcher {
         writer.close();
     }
 
-    private void writeUsageToOutputFile(Set<String> usage, String usageFileName) throws IOException {
-        File outputFile = getUsageOutputFile(usageFileName);
+    private void writeUsageToOutputFile(Set<String> usage, String pathToUsageOutputFile) throws IOException {
+        File outputFile = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
         FileWriter writer = new FileWriter(outputFile);
         for (String line : usage) {
             writer.write(line);
             writer.write("\n");
         }
         writer.close();
-    }
-
-    private File getUsageOutputFile(String usageFileName) {
-        String classUsageOutputPath = System.getenv(CLASS_USAGE_OUTPUT_PATH);
-        if (classUsageOutputPath == null) {
-            logger.info(String.format("You must set the environment variable %s to specify where information on class usage should be written.", CLASS_USAGE_OUTPUT_PATH));
-        }
-
-        File outputDirectory = new File(classUsageOutputPath);
-        outputDirectory.mkdirs();
-        return new File(outputDirectory, usageFileName);
     }
 }

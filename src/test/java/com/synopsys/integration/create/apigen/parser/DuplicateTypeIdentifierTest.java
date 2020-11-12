@@ -9,6 +9,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
 public class DuplicateTypeIdentifierTest {
@@ -33,7 +34,7 @@ public class DuplicateTypeIdentifierTest {
         RawFieldDefinition object2 = new RawFieldDefinition("user2", "Object2", false);
         object2.addSubFields(set2);
 
-        DuplicateTypeIdentifier duplicateTypeIdentifier = new DuplicateTypeIdentifier();
+        DuplicateTypeIdentifier duplicateTypeIdentifier = new DuplicateTypeIdentifier(new DuplicateOverrides());
         String object1TypeAfterScreening = duplicateTypeIdentifier.screenForDuplicateType(object1, object1.getType());
         String object2TypeAfterScreening = duplicateTypeIdentifier.screenForDuplicateType(object2, object2.getType());
 
@@ -55,7 +56,7 @@ public class DuplicateTypeIdentifierTest {
         RawFieldDefinition complexField2 = new RawFieldDefinition("pathComplex", "typeComplex", false);
         complexField2.addSubField(subField2);
 
-        DuplicateTypeIdentifier duplicateTypeIdentifier = new DuplicateTypeIdentifier();
+        DuplicateTypeIdentifier duplicateTypeIdentifier = new DuplicateTypeIdentifier(new DuplicateOverrides());
         String complexObject1TypeAfterScreening = duplicateTypeIdentifier.screenForDuplicateType(complexField1, complexField1.getType());
         String complexObject2TypeAfterScreening = duplicateTypeIdentifier.screenForDuplicateType(complexField2, complexField2.getType());
 
@@ -68,7 +69,7 @@ public class DuplicateTypeIdentifierTest {
         RawFieldDefinition enum1 = new RawFieldDefinition("enum1", "Enum1", false, new HashSet<>(Arrays.asList("val1", "val2", "val3")));
         RawFieldDefinition enum2 = new RawFieldDefinition("enum2", "Enum2", false, new HashSet<>(Arrays.asList("val3", "val2", "val1")));
 
-        DuplicateTypeIdentifier duplicateTypeIdentifier = new DuplicateTypeIdentifier();
+        DuplicateTypeIdentifier duplicateTypeIdentifier = new DuplicateTypeIdentifier(new DuplicateOverrides());
         String enum1TypeAfterScreening = duplicateTypeIdentifier.screenForDuplicateType(enum1, enum1.getType());
         String enum2TypeAfterScreening = duplicateTypeIdentifier.screenForDuplicateType(enum2, enum2.getType());
 

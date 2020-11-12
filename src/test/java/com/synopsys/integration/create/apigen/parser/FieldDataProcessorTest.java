@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
@@ -36,7 +37,7 @@ public class FieldDataProcessorTest {
 
 
         // Testing duplication screening which requires state of FieldDataProcessor
-        FieldDataProcessor processor =  new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier());
+        FieldDataProcessor processor =  new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides()));
         RawFieldDefinition object7 = new RawFieldDefinition("securityRiskProfile", "Object", false);
         object7.addSubField(new RawFieldDefinition("path", "type", false));
         // This depends on an override from TypeTranslator
@@ -57,12 +58,12 @@ public class FieldDataProcessorTest {
     }
 
     private void assertHasExpectedType(RawFieldDefinition object, String parentName, String expectedType) {
-        FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier());
+        FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides()));
         Assertions.assertTrue(fieldDataProcessor.process(object, parentName).getType().equals(expectedType));
     }
 
     private void assertHasExpectedPath(RawFieldDefinition object, String parentName, String expectedPath) {
-        FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier());
+        FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides()));
         Assertions.assertTrue(fieldDataProcessor.process(object, parentName).getPath().equals(expectedPath));
     }
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -14,7 +15,7 @@ import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
 public class FieldDefinitionProcessorTest {
 
-    private FieldDefinitionProcessor processor = new FieldDefinitionProcessor(new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier()), new MissingFieldsAndLinks());
+    private FieldDefinitionProcessor processor = new FieldDefinitionProcessor(new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides())), new MissingFieldsAndLinks());
 
     @Test
     public void testProcessesNestedFieldDefinitions() {
