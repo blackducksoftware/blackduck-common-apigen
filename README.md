@@ -1,5 +1,5 @@
 # Overview
-This produces a command line utility to generate Java code from the API documentation of Black Duck to be used in [blackduck-common-api](https://github.com/blackducksoftware/blackduck-common-api)
+This program produces Java code from the API documentation of Black Duck to be used in [blackduck-common-api](https://github.com/blackducksoftware/blackduck-common-api)
 
 # Build
 
@@ -8,11 +8,6 @@ This produces a command line utility to generate Java code from the API document
 ## Compile 
 ```
 ./gradlew clean build
-```
-
-## Running on the Command Line
-```
-./gradlew bootRun -Pargs=--api.gen.input.path=<DIRECTORY_WITH_API_FILES>,--api.gen.output.path=<OUTPUT_DIRECTORY>
 ```
 
 # Where can I get the latest release?
