@@ -43,29 +43,10 @@ public class DifferentiatingResponseNamePrefixBuilder {
     }
 
     public String getPrefix() {
-        StringBuilder prefixBuilder = new StringBuilder();
-        Iterator<String> iterator = prefixPieces.stream()
+        List<String> pieces = prefixPieces.stream()
                                         .filter(it -> !redundantNamePrefixes.contains(it))
-                                        .collect(Collectors.toList())
-                                        .listIterator();
-        if (!iterator.hasNext()) {
-            return "";
-        }
-
-        String currentPiece = iterator.next();
-        while (iterator.hasNext()) {
-            String nextPiece = iterator.next();
-            // Only add piece if it's not redundant with the current piece
-            if (!nextPiece.startsWith(currentPiece)) {
-                prefixBuilder.append(currentPiece);
-            }
-            currentPiece = nextPiece;
-        }
-        if (!prefixBuilder.toString().endsWith(currentPiece)) {
-            prefixBuilder.append(currentPiece);
-        }
-
-        return prefixBuilder.toString();
+                                        .collect(Collectors.toList());
+        return NameParser.buildNonRedundantStringFromPieces(pieces);
     }
 
     public String getNameWithPrefix(String responseName) {

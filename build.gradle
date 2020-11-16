@@ -26,9 +26,3 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
-
-bootRun {
-    if (project.hasProperty('args')) {
-        args project.args.split(',')
-    }
-}

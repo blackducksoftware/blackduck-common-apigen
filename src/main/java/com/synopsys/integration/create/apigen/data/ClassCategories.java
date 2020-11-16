@@ -81,6 +81,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "JobView");
         populate(VIEW, GENERATED, "LicenseFamilyView");
         populate(VIEW, GENERATED, "LicenseReportsReportView");
+        populate(VIEW, GENERATED, "LicenseTermAssociationView");
         populate(VIEW, GENERATED, "LicenseTermCategoryView");
         populate(VIEW, GENERATED, "LicenseTermView");
         populate(VIEW, GENERATED, "LicenseTextView");
@@ -186,6 +187,7 @@ public class ClassCategories {
 
         populate(COMPONENT, GENERATED, "ComponentVersionRiskProfileView");
         populate(COMPONENT, GENERATED, "CweCommonConsequencesView");
+        populate(COMPONENT, GENERATED, "LicenseTermCategorySummaryView");
         populate(COMPONENT, GENERATED, "NotificationSubscriptionsSubscriptionView");
         populate(COMPONENT, GENERATED, "PolicyRuleExpressionExpressionsParametersView");
         populate(COMPONENT, GENERATED, "PolicyRuleExpressionExpressionsView");
@@ -234,7 +236,6 @@ public class ClassCategories {
         populate(COMPONENT, TEMPORARY, "LegacyAppliedFilterView");
         populate(COMPONENT, TEMPORARY, "LegacyFilterValueView");
         populate(COMPONENT, TEMPORARY, "LicenseDefinition");
-        populate(COMPONENT, TEMPORARY, "LicenseTermCategorySummaryView");
         populate(COMPONENT, TEMPORARY, "NameValuePairView");
         populate(COMPONENT, TEMPORARY, "PolicyStatusSummary");
         populate(COMPONENT, TEMPORARY, "ProjectData");
@@ -368,7 +369,6 @@ public class ClassCategories {
         populate(ClassTypeEnum.NULL, MANUAL, "VulnerabilitySourceQualifiedId");
 
         populate(ClassTypeEnum.NULL, TEMPORARY, "CweCommonConsequenceView");
-        populate(ClassTypeEnum.NULL, TEMPORARY, "LicenseTermAssociationView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationAttributeView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationFeatureView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationMessageView");

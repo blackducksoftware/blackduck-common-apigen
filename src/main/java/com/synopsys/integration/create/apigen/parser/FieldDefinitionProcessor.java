@@ -63,7 +63,7 @@ public class FieldDefinitionProcessor {
             fieldDefinition.addSubFields(missingFields);
 
             if (!CollectionUtils.isEmpty(rawField.getSubFields()) && !fieldDefinition.typeWasOverrided()) {
-                // If field has subfields, and its type was not overrided, recursively parse and add its subfields
+                // If field has subfields, and its type was not overrided, recursively parse and add its subfields.
                 final Set<FieldDefinition> subFields = processFieldDefinitions(NameParser.stripListNotation(fieldDefinition.getType()), rawField.getSubFields());
                 fieldDefinition.addSubFields(subFields);
             }

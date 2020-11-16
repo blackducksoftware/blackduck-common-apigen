@@ -26,6 +26,7 @@ import static java.lang.String.join;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
@@ -87,7 +88,7 @@ public class NameParser {
         }
 
         final String finalResponseName;
-        if (nameNeedsDifferentiatingPrefix(responseName, differentiatingPrefixBuilder.getPrefix())) {
+        if (nameNeedsDifferentiatingPrefix(responseName)) {
             finalResponseName = differentiatingPrefixBuilder.getNameWithPrefix(responseName);
         } else {
             finalResponseName = responseName;
@@ -97,8 +98,8 @@ public class NameParser {
         return finalResponseName;
     }
 
-    private boolean nameNeedsDifferentiatingPrefix(final String responseName, final String differentiatingPrefix) {
-        return nameAndPathManager.getNonLinkClassNames().contains(responseName) && differentiatingPrefix != null && !responseName.startsWith(differentiatingPrefix);
+    private boolean nameNeedsDifferentiatingPrefix(final String responseName) {
+        return nameAndPathManager.getNonLinkClassNames().contains(responseName);
     }
 
     private String getGroomedPiece(final String piece) {
@@ -179,12 +180,52 @@ public class NameParser {
         return string.replace(UtilStrings.JAVA_LIST, "").replace(UtilStrings.LIST, "").replace(">", "");
     }
 
+    public static String restoreListNotation(String originalType, String trueType) {
+        if (trueType != null && !trueType.contains(UtilStrings.JAVA_LIST) && originalType.contains(UtilStrings.JAVA_LIST)) {
+            trueType = UtilStrings.JAVA_LIST + trueType + ">";
+        }
+        return trueType;
+    }
+
     public static String concatHyphenatedString(final String string) {
         final String[] pieces = string.split("-");
         final List<String> formattedPieces = Arrays.stream(pieces)
                                                  .map(StringUtils::capitalize)
                                                  .collect(Collectors.toList());
         return join("", formattedPieces);
+    }
+
+    public static String buildNonRedundantStringFromPieces(List<String> pieces) {
+        Iterator<String> iterator = pieces.listIterator();
+        StringBuilder newString = new StringBuilder();
+        if (!iterator.hasNext()) {
+            return "";
+        }
+
+        String currentPiece = iterator.next();
+        while (iterator.hasNext()) {
+            String nextPiece = iterator.next();
+            // Only add piece if it's not redundant with the current piece
+            if (!nextPiece.startsWith(currentPiece)) {
+                newString.append(currentPiece);
+            }
+            currentPiece = nextPiece;
+        }
+        if (!newString.toString().endsWith(currentPiece)) {
+            newString.append(currentPiece);
+        }
+        return newString.toString();
+    }
+
+    public static List<String> extractPiecesFromCamelCase(String s) {
+        return Arrays.asList(s.replaceAll(
+            String.format("%s|%s|%s",
+                "(?<=[A-Z])(?=[A-Z][a-z])",
+                "(?<=[^A-Z])(?=[A-Z])",
+                "(?<=[A-Za-z])(?=[^A-Za-z])"
+            ),
+            " "
+        ).split(" "));
     }
 
     public static String wrapInOptionalNotation(final String string) {

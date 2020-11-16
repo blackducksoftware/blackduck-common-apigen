@@ -26,12 +26,16 @@ import static com.synopsys.integration.create.apigen.data.UtilStrings.ARRAY;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.OBJECT;
 import static com.synopsys.integration.create.apigen.data.UtilStrings.STRING;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+
+import com.synopsys.integration.create.apigen.model.FieldDefinition;
 
 @Component
 public class TypeTranslator {
@@ -50,13 +54,13 @@ public class TypeTranslator {
         Map<String, String> translations = new HashMap<>();
 
         // swaggerName, api_SpecsName
-        translations.put("ActivityDataTrendingType", "ComponentVersionRiskProfileActivityDataTrendingType");
+        translations.put("ActivityDataTrendingType", "ProjectVersionComponentActivityDataTrendingType");
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
         translations.put("AssignableProjectView", "ProjectTagView");
         translations.put("BomComponentIssueView", "ProjectVersionIssuesView");
         translations.put("CommentUserData", "CommentUserView");
         translations.put("ComplexLicenseView", "ComponentVersionLicenseView");
-        translations.put("ComplexLicenseType", "ProjectVersionLicenseTypeType"); // * its name is ProjectVersionLicenseType
+        translations.put("ComplexLicenseType", "ProjectVersionLicenseType"); // * its name is ProjectVersionLicenseType
         translations.put("ComponentSearchResultView", "ComponentsView");
         translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
         translations.put("ComponentVersionRiskView", "ComponentVersionComponentVersionRiskDataView");
@@ -79,48 +83,42 @@ public class TypeTranslator {
         translations.put("JournalObjectView", "ProjectItemsObjectDataView");
         translations.put("JournalTriggerType", "ProjectItemsTriggerDataType");
         translations.put("JournalTriggerView", "ProjectItemsTriggerDataView");
-        translations.put("LicenseFamilyRiskRuleView", "LicenseFamilyLicenseFamilyRiskRulesView");
+        translations.put("LicenseFamilyRiskRuleView", "LicenseFamilyRiskRulesView");
         translations.put("LicenseFamilySummaryView", "ComponentVersionLicenseLicensesLicenseFamilySummaryView");
         translations.put("LicenseTermCategorySummaryView", "ProjectVersionLicenseLicensesLicenseFamilySummaryView");
-        translations.put("LicenseOwnershipType", "ComponentVersionLicenseLicensesOwnershipType");
-        translations.put("LicenseSourceType", "ComponentSourceType");
         translations.put("MatchedFileView", "ComponentMatchedFilesView");
-        translations.put("MatchedFileUsagesType", "LicenseFamilyLicenseFamilyRiskRulesUsageType");
+        translations.put("MatchedFileUsagesType", "UsageType");
         translations.put("NotificationSubscriptionView", "NotificationSubscriptionsSubscriptionView");
         translations.put("OriginFileLevelCopyrightDataView", "OriginFileCopyrightsView");
         translations.put("OriginFuzzyFileLevelDataView", "OriginFileLicensesFuzzyView");
         translations.put("OriginLicenseFileLevelDataView", "FileLicensesLicenseView");
-        translations.put("OriginSourceType", "ComponentSourceType");
         translations.put("PolicyRuleExpressionSetOperatorType", "PolicyRuleExpressionOperatorType");
         translations.put("PolicyRuleExpressionParameter", "PolicyRuleExpressionExpressionsParametersView");
         translations.put("PolicyRuleExpressionSetView", "PolicyRuleExpressionView");
         translations.put("PolicyRuleExpressionView", "PolicyRuleExpressionExpressionsView");
         translations.put("PolicySummaryStatusType", "ProjectVersionComponentPolicyStatusType");
         translations.put("PolicyStatusView", "ComponentPolicyStatusView");
-        translations.put("ProjectVersionDistributionType", "LicenseFamilyLicenseFamilyRiskRulesReleaseDistributionType");
         translations.put("RegistrationAttributeType", "RegistrationAttributesAttributeType");
         translations.put("RegistrationAttributeView", "RegistrationAttributesView");
         translations.put("RegistrationFeatureView", "RegistrationFeaturesView");
         translations.put("RegistrationFeatureType", "RegistrationFeaturesFeatureType");
         translations.put("RegistrationMessageCodeType", "RegistrationMessagesMessageCodeType");
         translations.put("RegistrationMessageView", "RegistrationMessagesView");
-        translations.put("ReportFormatType", "LicenseReportsReportReportFormatType");
         translations.put("RemediationOptionsView", "ComponentVersionRemediatingView");
         translations.put("RemediatingVersionView", "ComponentVersionRemediatingFixesPreviousVulnerabilitiesView");
         translations.put("ReportType", "LicenseReportsReportReportType");
         translations.put("ReportContent", "ReportContentsView");
         translations.put("ReportFileContent", "ReportContentsReportContentView");
         translations.put("ReviewedDetails", "ProjectVersionComponentReviewedDetailsView");
-        translations.put("RiskCountView", "ComponentVersionRiskProfileRiskDataCountsView");
-        translations.put("RiskCountType", "ComponentVersionRiskProfileRiskDataCountsCountTypeType");
-        translations.put("RiskProfileView", "ComponentVersionRiskProfileRiskDataView");
+        translations.put("RiskCountView", "RiskProfileCountsView");
+        translations.put("RiskCountType", "RiskPriorityType");
         translations.put("TextByteOffsetView", "FileLicensesLicenseItemsOffsetsView");
         translations.put("UserCommentView", "CommentView");
         translations.put("UserSummaryView", "LicenseFamilyUpdatedByView");
         translations.put("VersionBomLicenseView", "ProjectVersionComponentLicensesView");
-        translations.put("VersionBomComponentDiffComponentStateType", "ProjectVersionComparisonItemsComponentVersionStateType");
+        translations.put("VersionBomComponentDiffComponentStateType", "ProjectVersionComparisonItemsComponentStateType");
         translations.put("VersionBomComponentDiffView", "ProjectVersionComparisonView");
-        translations.put("VersionBomComponentMatchType", "ProjectVersionComponentMatchTypesType");
+        translations.put("VersionBomComponentMatchType", "MatchType");
         translations.put("VersionBomComponentReviewStatusType", "ProjectVersionComponentReviewStatusType");
         translations.put("VersionBomComponentView", "ProjectVersionComponentView");
         translations.put("VersionBomPolicyRuleView", "ComponentPolicyRulesView");
@@ -135,97 +133,135 @@ public class TypeTranslator {
     }
 
     private Map<String, List<FieldTranslation>> populateFieldTranslations() {
-        // FIXME - this Map is a patch-job– although only way, given format of specs data (as of 1/13/20)
+        // If a translation is created to override a field's type to the type of another generated class, set FieldTranslation.typeWasOverrided = true (true is the default)
+        // If a translation is created to modify a field's verbose or unexpressive name, set typeWasOverrided = false
         Map<String, List<FieldTranslation>> fieldTranslations = new HashMap<>();
 
         // ComponentActivityComponentVersionRiskDataView
-        List<FieldTranslation> carpvTranslations = new ArrayList<>();
-        FieldTranslation carpvCountsTranslation = new FieldTranslation("counts", "ComponentVersionRiskProfileRiskDataCountsView", ARRAY);
-        carpvTranslations.add(carpvCountsTranslation);
+        List<FieldTranslation> carpvTranslations = Arrays.asList(
+            new FieldTranslation("counts", "ComponentVersionRiskProfileRiskDataCountsView", ARRAY)
+        );
         fieldTranslations.put("ComponentActivityComponentVersionRiskDataView", carpvTranslations);
-    
+
+        // ComponentPolicyRulesView
+        List<FieldTranslation> cprvTranslations = Arrays.asList(
+            new FieldTranslation("expression", "PolicyRuleExpressionView", OBJECT)
+        );
+        fieldTranslations.put("ComponentPolicyRulesItemsView", cprvTranslations); // At the time of parsing, the parent definition name is ComponentPolicyRulesItemsView
+
         // ComponentVersionLicenseLicensesView
-        List<FieldTranslation> cvllvTranslations = new ArrayList<>();
-        FieldTranslation cvllvLicenseTranslation = new FieldTranslation("license", "ComponentVersionLicenseLicensesLicenseView", STRING);
-        cvllvTranslations.add(cvllvLicenseTranslation);
-        FieldTranslation cvllvLicensesTranslation = new FieldTranslation("licenses", "ComponentVersionLicenseLicensesLicenseView", ARRAY);
-        cvllvTranslations.add(cvllvLicensesTranslation);
+        List<FieldTranslation> cvllvTranslations = Arrays.asList(
+            new FieldTranslation("license", "ComponentVersionLicenseLicensesLicenseView", STRING),
+            new FieldTranslation("licenses", "ComponentVersionLicenseLicensesLicenseView", ARRAY)
+        );
         fieldTranslations.put("ComponentVersionLicenseLicensesView", cvllvTranslations);
-        
-        // ComponentVersionRemediatingNoVulnerabilitiesView
-        List<FieldTranslation> cvrnvvTranslations = new ArrayList<>();
-        fieldTranslations.put("ComponentVersionRemediatingNoVulnerabilitiesView", cvrnvvTranslations);
-        
+
+        // ComponentVersionRemediatingView
+        List<FieldTranslation> cvrvTranslations = Arrays.asList(
+            new FieldTranslation("latestAfterCurrent", "RemediatingVersionView", OBJECT, false),
+            new FieldTranslation("noVulnerabilities", "RemediatingVersionView", OBJECT),
+            new FieldTranslation("fixesPreviousVulnerabilities", "RemediatingVersionView", OBJECT)
+        );
+        fieldTranslations.put("ComponentVersionRemediatingView", cvrvTranslations);
+
+        // ComponentVersionRiskProfileView
+        List<FieldTranslation> cvrpvTranslations = Arrays.asList(
+            new FieldTranslation("riskData", "RiskProfileView", OBJECT, false)
+        );
+        fieldTranslations.put("ComponentVersionRiskProfileView", cvrpvTranslations);
+
+        // LicenseFamilyRiskRulesView
+        List<FieldTranslation> lfrrvTranslations = Arrays.asList(
+            new FieldTranslation("usage", "UsageType", STRING),
+            new FieldTranslation("riskPriority", "RiskPriorityType", STRING, false)
+        );
+        fieldTranslations.put("LicenseFamilyRiskRulesView", lfrrvTranslations);
+
+        // LicenseFamilyView
+        List<FieldTranslation> lfvTranslations = Arrays.asList(
+            new FieldTranslation("licenseFamilyRiskRules", "LicenseFamilyRiskRulesView", ARRAY, false)
+        );
+        fieldTranslations.put("LicenseFamilyView", lfvTranslations);
+
         // LicenseTermCategoryView
-        List<FieldTranslation> ltcvTranslations = new ArrayList<>();
-        FieldTranslation ltcvUpdatedByTranslation = new FieldTranslation("updatedBy", "LicenseFamilyUpdatedByView", OBJECT);
-        ltcvTranslations.add(ltcvUpdatedByTranslation);
-        FieldTranslation ltcvCreatedByTranslation = new FieldTranslation("createdBy", "LicenseFamilyUpdatedByView", OBJECT);
-        ltcvTranslations.add(ltcvCreatedByTranslation);
+        List<FieldTranslation> ltcvTranslations = Arrays.asList(
+            new FieldTranslation("updatedBy", "LicenseFamilyUpdatedByView", OBJECT),
+            new FieldTranslation("createdBy", "LicenseFamilyUpdatedByView", OBJECT)
+        );
         fieldTranslations.put("LicenseTermCategoryView", ltcvTranslations);
 
+        // LicenseTermView
+        List<FieldTranslation> ltvTranslations = Arrays.asList(
+            new FieldTranslation("category", "LicenseTermCategorySummaryView", OBJECT, false)
+        );
+        fieldTranslations.put("LicenseTermView", ltvTranslations);
+
+        // OriginLicenseView
+        List<FieldTranslation> olvTranslations = Arrays.asList(
+            new FieldTranslation("type", "LicenseType", STRING, false)
+        );
+        fieldTranslations.put("OriginLicenseView", olvTranslations);
+
+        // ProjectVersionComparisonItemsComponentView
+        List<FieldTranslation> pvcicvTranslations = Arrays.asList(
+            new FieldTranslation("matchTypes", "ComparisonMatchType", ARRAY, false)
+        );
+        fieldTranslations.put("ProjectVersionComparisonItemsComponentView", pvcicvTranslations);
+
         // ProjectVersionComponentLicensesView
-        List<FieldTranslation> pvclvTranslations = new ArrayList<>();
-        FieldTranslation pvclvLicensesTranslation = new FieldTranslation("licenses", "ProjectVersionComponentLicensesView", ARRAY);
-        pvclvTranslations.add(pvclvLicensesTranslation);
+        List<FieldTranslation> pvclvTranslations = Arrays.asList(
+            new FieldTranslation("licenses", "ProjectVersionComponentLicensesView", ARRAY)
+        );
         fieldTranslations.put("ProjectVersionComponentLicensesView", pvclvTranslations);
 
         // ProjectVersionComponentVersionView
-        List<FieldTranslation> pvcvvTranslations = new ArrayList<>();
-        FieldTranslation pvcvvSecurityRiskProfileTranslation = new FieldTranslation("securityRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvvTranslations.add(pvcvvSecurityRiskProfileTranslation);
-        FieldTranslation pvcvvVersionRiskProfileTranslation = new FieldTranslation("versionRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvvTranslations.add(pvcvvVersionRiskProfileTranslation);
-        FieldTranslation pvcvvLicenseRiskProfileTranslation = new FieldTranslation("licenseRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvvTranslations.add(pvcvvLicenseRiskProfileTranslation);
-        FieldTranslation pvcvvActivityRiskProfileTranslation = new FieldTranslation("activityRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvvTranslations.add(pvcvvActivityRiskProfileTranslation);
+        List<FieldTranslation> pvcvvTranslations = Arrays.asList(
+            new FieldTranslation("securityRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("versionRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("licenseRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("activityRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("operationalRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("matchTypes", "MatchType", ARRAY)
+        );
         fieldTranslations.put("ProjectVersionComponentVersionView", pvcvvTranslations);
 
         // ProjectVersionComponentView
-        List<FieldTranslation> pvcvTranslations = new ArrayList<>();
-        FieldTranslation pvcvOriginsTranslation = new FieldTranslation("origins", "VersionBomOriginView", ARRAY);
-        pvcvTranslations.add(pvcvOriginsTranslation);
-        FieldTranslation pvcvUsagesTranslation = new FieldTranslation("usages", "LicenseFamilyLicenseFamilyRiskRulesUsageType", ARRAY);
-        pvcvTranslations.add(pvcvUsagesTranslation);
-        FieldTranslation pvcvApprovalStatusTranslation = new FieldTranslation("approvalStatus", "ProjectVersionComponentPolicyStatusType", STRING);
-        pvcvTranslations.add(pvcvApprovalStatusTranslation);
-        FieldTranslation pvcvSecurityRiskProfileTranslation = new FieldTranslation("securityRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvTranslations.add(pvcvSecurityRiskProfileTranslation);
-        FieldTranslation pvcvVersionRiskProfileTranslation = new FieldTranslation("versionRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvTranslations.add(pvcvVersionRiskProfileTranslation);
-        FieldTranslation pvcvLicenseRiskProfileTranslation = new FieldTranslation("licenseRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvTranslations.add(pvcvLicenseRiskProfileTranslation);
-        FieldTranslation pvcvActivityRiskProfileTranslation = new FieldTranslation("activityRiskProfile", "ComponentVersionRiskProfileRiskDataView", OBJECT);
-        pvcvTranslations.add(pvcvActivityRiskProfileTranslation);
+        List<FieldTranslation> pvcvTranslations = Arrays.asList(
+            new FieldTranslation("origins", "VersionBomOriginView", ARRAY),
+            new FieldTranslation("usages", "UsageType", ARRAY, false),
+            new FieldTranslation("approvalStatus", "ProjectVersionComponentPolicyStatusType", STRING),
+            new FieldTranslation("operationalRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("securityRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("versionRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("licenseRiskProfile", "RiskProfileView", OBJECT),
+            new FieldTranslation("activityRiskProfile", "RiskProfileView", OBJECT)
+        );
         fieldTranslations.put("ProjectVersionComponentView", pvcvTranslations);
 
         // ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView
-        List<FieldTranslation> pvpscvpvdvTranslations = new ArrayList<>();
-        FieldTranslation pvpscvpvdvSeverityLevelsTranslation = new FieldTranslation("severityLevels", "NameValuePairView", ARRAY);
-        pvpscvpvdvTranslations.add(pvpscvpvdvSeverityLevelsTranslation);
+        List<FieldTranslation> pvpscvpvdvTranslations = Arrays.asList(
+            new FieldTranslation("severityLevels", "NameValuePairView", ARRAY)
+        );
         fieldTranslations.put("ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView", pvpscvpvdvTranslations);
 
         // ProjectVersionPolicyStatusView
-        List<FieldTranslation> pvpsvTranslations = new ArrayList<>();
-        FieldTranslation pvpsvComponentVersionStatusCountsTranslation = new FieldTranslation("componentVersionStatusCounts", "NameValuePairView", ARRAY);
-        pvpsvTranslations.add(pvpsvComponentVersionStatusCountsTranslation);
-        FieldTranslation pvpsvOverallStatusTranslation = new FieldTranslation("overallStatus", "ProjectVersionComponentPolicyStatusType", STRING);
-        pvpsvTranslations.add(pvpsvOverallStatusTranslation);
+        List<FieldTranslation> pvpsvTranslations = Arrays.asList(
+            new FieldTranslation("componentVersionStatusCounts", "NameValuePairView", ARRAY),
+            new FieldTranslation("overallStatus", "ProjectVersionComponentPolicyStatusType", STRING)
+        );
         fieldTranslations.put("ProjectVersionPolicyStatusView", pvpsvTranslations);
 
         // ProjectVersionView
-        List<FieldTranslation> pvvTranslations = new ArrayList<>();
-        FieldTranslation pvvPhaseTranslation = new FieldTranslation("phase", "ProjectVersionPhaseType", STRING);
-        pvvTranslations.add(pvvPhaseTranslation);
-        FieldTranslation pvvLicenseTranslation = new FieldTranslation("license", "ComponentVersionLicenseView", OBJECT);
-        pvvTranslations.add(pvvLicenseTranslation);
+        List<FieldTranslation> pvvTranslations = Arrays.asList(
+            new FieldTranslation("phase", "ProjectVersionPhaseType", STRING),
+            new FieldTranslation("license", "ComponentVersionLicenseView", OBJECT)
+        );
         fieldTranslations.put("ProjectVersionView", pvvTranslations);
 
         // ProjectVersionVulnerableBomComponentsView
-        List<FieldTranslation> pvvbcvTranslations = new ArrayList<>();
-        FieldTranslation pvvbcvLicenseTranslation = new FieldTranslation("license", "ComponentVersionLicenseView", OBJECT);
-        pvvbcvTranslations.add(pvvbcvLicenseTranslation);
+        List<FieldTranslation> pvvbcvTranslations = Arrays.asList(
+            new FieldTranslation("license", "ComponentVersionLicenseView", OBJECT)
+        );
         fieldTranslations.put("ProjectVersionVulnerableBomComponentsItemsView", pvvbcvTranslations);
 
         return fieldTranslations;
@@ -239,12 +275,12 @@ public class TypeTranslator {
         return translations;
     }
 
-    public String getTrueFieldType(String className, String path, String type) {
+    public FieldTranslation getTrueFieldType(String className, String path, String type) {
         List<FieldTranslation> typeTranslations = fieldTranslations.get(className);
         if (typeTranslations != null) {
             for (FieldTranslation typeTranslation : typeTranslations) {
                 if (typeTranslation.getApiSpecsType().equals(type) && typeTranslation.getPath().equals(path.replace("[]", ""))) {
-                    return typeTranslation.getTrueType();
+                    return typeTranslation;
                 }
             }
         }

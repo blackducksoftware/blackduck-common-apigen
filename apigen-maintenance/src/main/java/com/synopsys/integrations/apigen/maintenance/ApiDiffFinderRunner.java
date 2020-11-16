@@ -34,16 +34,16 @@ import com.synopsys.integrations.apigen.maintenance.utility.ApiDiffFinder;
 import com.synopsys.integrations.apigen.maintenance.utility.DirectoryFinder;
 
 /**
- * This class can be used to compare two blackduck-common-api directories, a "test" and a "control", via ApiDiffFinder.
+ * This class can be used to compare two blackduck-common-api directories (a "test" and a "control") via ApiDiffFinder.
  * To Use: Provide the paths to both a "test" and a "control" blackduck-common-api directory.
  * Typically, one would be your local generated blackduck-common-api, while the other (your "control" to compare against) might be the blackduck-common-api located
  * in the Integrations portfolio you create with IntegrationsPortfolioCreator.
  */
 public class ApiDiffFinderRunner {
-    private static final String TEST_API__PATH = "/Users/crowley/Documents/source/blackduck-common-api";
-    private static final String CONTROL_API_PATH = "/Users/crowley/Desktop/test-projects/integrations-portfolio/blackduck-common-api";
-    private static final String MISSSING_API_PATH_MESSAGE = "You have not provided a path to an API directory you wish to compare.";
-    private static final String API_DIFF_OUTPUT_PATH = "/Users/crowley/Desktop/bd-api-maintenance-data/api-diffs.txt";
+    private static final String TEST_API__PATH = "";
+    private static final String CONTROL_API_PATH = "";
+    private static final String API_DIFF_OUTPUT_PATH = "";
+    private static final String MISSSING_API_PATH_MESSAGE = "Could not find file at provided path.";
     private static Logger logger = LoggerFactory.getLogger(ApiDiffFinderRunner.class);
 
     public static void main(String[] args) throws IOException {

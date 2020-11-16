@@ -22,7 +22,6 @@
  */
 package com.synopsys.integration.create.apigen.data;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,22 +30,47 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 /**
- * Mechanism for evaluating impact of duplicate type screening.
+ * Mechanism for storing data collected by DuplicateTypeIdentifier.
  */
 @Component
 public class DuplicateOverrides {
-
-    private Map<String, Set<String>> overrides;
+    private Map<String, Set<String>> firstPassOverrides;
 
     public DuplicateOverrides() {
-        this.overrides = new HashMap<>();
+        this.firstPassOverrides = new HashMap<>();
     }
 
-    public void addOverride(String newType, String oldType) {
-        overrides.computeIfAbsent(newType, type -> new HashSet<>()).add(oldType);
+    public void addFirstPassOverride(String newType, String oldType) {
+        firstPassOverrides.computeIfAbsent(newType, type -> new HashSet<>()).add(oldType);
     }
 
-    public Map<String, Set<String>> getOverrides() {
-        return overrides;
+    public String getOverride(String type) {
+        return getFinalOverrides().get(type);
+    }
+
+    public Map<String, String> getFinalOverrides() {
+        Map<String, String> finalOverrides = new HashMap<>();
+        for (Map.Entry<String, Set<String>> firstPassOverride : firstPassOverrides.entrySet()) {
+            Set<String> allTypes = firstPassOverride.getValue();
+            String firstPassOverrideType = firstPassOverride.getKey();
+            allTypes.add(firstPassOverrideType);
+            String finalOverrideType = getShortest(allTypes);
+            for (String type : allTypes) {
+                if (!type.equals(finalOverrideType)) {
+                    finalOverrides.put(type, finalOverrideType);
+                }
+            }
+        }
+        return finalOverrides;
+    }
+
+    private String getShortest(Set<String> strings) {
+        String shortest = strings.iterator().next();
+        for (String string : strings) {
+            if (string.length() < shortest.length()) {
+                shortest = string;
+            }
+        }
+        return shortest;
     }
 }

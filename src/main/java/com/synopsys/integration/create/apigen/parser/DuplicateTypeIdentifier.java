@@ -44,31 +44,26 @@ public class DuplicateTypeIdentifier {
         this.uniqueEnumValuesToNames = new HashMap<>();
     }
 
-    public String screenForDuplicateType(RawFieldDefinition rawField, String originalType) {
+    public void screenForDuplicateType(RawFieldDefinition rawField, String originalType) {
         Set<String> enumValues = rawField.getAllowedValues();
         if (CollectionUtils.isEmpty(enumValues)) {
-            String trueType = uniqueRawFieldsToNames.get(rawField.getSubFields());
-            if (trueType != null) {
-                // TODO - should we be overriding/screening this strictly?
-                duplicateOverrides.addOverride(trueType, originalType);
-                return trueType;
-            } else if (!CollectionUtils.isEmpty(rawField.getSubFields())) {
-                uniqueRawFieldsToNames.put(rawField.getSubFields(), originalType);
-            }
+            // Until we can determine a more accurate method of determining equivalence between non-enum types, we will exclusively screen enums.
         } else {
-            return screenForDuplicateEnum(originalType, enumValues);
+            screenForDuplicateEnum(originalType, enumValues);
         }
-        return originalType;
     }
 
-    private String screenForDuplicateEnum(String originalType, Set<String> enumValues) {
+    private void screenForDuplicateEnum(String originalType, Set<String> enumValues) {
         String trueEnumType = uniqueEnumValuesToNames.get(enumValues);
         if (trueEnumType != null) {
-            duplicateOverrides.addOverride(trueEnumType, originalType);
-            return trueEnumType;
-        } else {
+            duplicateOverrides.addFirstPassOverride(trueEnumType, originalType);
+        } else if (!shouldNotFilterDuplicateEnum(originalType)){
             uniqueEnumValuesToNames.put(enumValues, originalType);
         }
-        return originalType;
+    }
+
+    private boolean shouldNotFilterDuplicateEnum(String enumType) {
+        // Check for special cases where duplicates should not be filtered
+        return enumType.contains("Cvss");
     }
 }

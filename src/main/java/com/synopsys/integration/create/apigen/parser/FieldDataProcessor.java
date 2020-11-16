@@ -22,6 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.parser;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import com.synopsys.integration.create.apigen.data.FieldTranslation;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.FieldData;
@@ -63,13 +65,13 @@ public class FieldDataProcessor {
     private String getProcessedType(RawFieldDefinition rawFieldDefinition, String parentDefinitionName, String processedPath) {
         typeWasOverrided = false;
         String firstPassType = processFirstPassType(rawFieldDefinition, processedPath, parentDefinitionName);
-        String potentiallyOverridedType = overrideTypeIfNecessary(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), parentDefinitionName, firstPassType);
-        String processedType = filterDuplicateTypeIfNecessary(rawFieldDefinition, potentiallyOverridedType);
-
+        String processedType = overrideTypeIfNecessary(rawFieldDefinition.getPath(), rawFieldDefinition.getType(), parentDefinitionName, firstPassType);
+        // We will screen the type to see if it may be a duplicate, but not actually override the type until we've screened all other fields/types
+        duplicateTypeIdentifier.screenForDuplicateType(rawFieldDefinition, processedType);
         return processedType;
     }
 
-    private String processFirstPassType(RawFieldDefinition rawFieldDefinition, String processedPath, String nonVersionedParentDefinitionName) {
+    private String processFirstPassType(RawFieldDefinition rawFieldDefinition, String processedPath, String parentDefinitionName) {
         // shouldBeVersioned will be true for generated types (aside from duplicate overrides), and false for common/non-generated types (ex. String)
         String processedType = rawFieldDefinition.getType();
 
@@ -88,7 +90,7 @@ public class FieldDataProcessor {
         // Handle objects that have subfields
         if (!CollectionUtils.isEmpty(rawFieldDefinition.getSubFields())) {
             // append path (name) of field to create new type
-            processedType = NameParser.reorderViewInName(nonVersionedParentDefinitionName + StringUtils.capitalize(processedPath));
+            processedType = NameParser.reorderViewInName(String.format("%s%s", parentDefinitionName, StringUtils.capitalize(processedPath)));
         }
 
         // Handle enums (field definitions that have a set of allowed values)
@@ -97,7 +99,8 @@ public class FieldDataProcessor {
             if (NumberUtils.isCreatable(rawFieldDefinition.getAllowedValues().iterator().next())) {
                 processedType = UtilStrings.INTEGER;
             } else {
-                processedType = nonVersionedParentDefinitionName.replace("View", "") + StringUtils.capitalize(processedPath) + UtilStrings.ENUM;
+                List<String> enumNamePieces = NameParser.extractPiecesFromCamelCase(String.format("%s%s%s", parentDefinitionName.replace("View", ""), StringUtils.capitalize(processedPath), UtilStrings.ENUM));
+                processedType = NameParser.buildNonRedundantStringFromPieces(enumNamePieces);
             }
         }
 
@@ -110,33 +113,16 @@ public class FieldDataProcessor {
         return processedType;
     }
 
-    private String overrideTypeIfNecessary(String rawPath, String rawType, String nonVersionedParentDefinitionName, String processedType) {
+    private String overrideTypeIfNecessary(String rawPath, String rawType, String parentDefinitionName, String processedType) {
         // Override type of certain fields
-        String overrideType = typeTranslator.getTrueFieldType(nonVersionedParentDefinitionName, rawPath, rawType);
-        if (overrideType != null) {
-            overrideType = restoreListNotation(processedType, overrideType);
-            typeWasOverrided = true;
+        FieldTranslation translation = typeTranslator.getTrueFieldType(parentDefinitionName, rawPath, rawType);
+        if (translation != null) {
+            String overrideType = translation.getTrueType();
+            overrideType = NameParser.restoreListNotation(processedType, overrideType);
+            typeWasOverrided = translation.typeWasOverrided();
             return overrideType;
         }
         return processedType;
-    }
-
-    private String filterDuplicateTypeIfNecessary(RawFieldDefinition rawFieldDefinition, String processedType) {
-        // Make sure this is not a duplicate type
-        String trueType = duplicateTypeIdentifier.screenForDuplicateType(rawFieldDefinition, NameParser.stripListNotation(processedType));
-        trueType = restoreListNotation(processedType, trueType);
-        if (!trueType.equals(processedType)) {
-            typeWasOverrided = true;
-            return trueType;
-        }
-        return processedType;
-    }
-
-    private String restoreListNotation(String originalType, String trueType) {
-        if (trueType != null && !trueType.contains(UtilStrings.JAVA_LIST) && originalType.contains(UtilStrings.JAVA_LIST)) {
-            trueType = UtilStrings.JAVA_LIST + trueType + ">";
-        }
-        return trueType;
     }
 
 }

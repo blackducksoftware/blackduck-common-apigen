@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,12 +75,9 @@ public class MaintenanceReportGenerator {
     }
 
     private void writeDuplicateOverrides(DuplicateOverrides duplicateOverrides, FileWriter writer) throws IOException {
-        for (Map.Entry<String, Set<String>> duplicateOverride : duplicateOverrides.getOverrides().entrySet()) {
-            writer.write(String.format("%s\n", duplicateOverride.getKey()));
-            for (String overridedType : duplicateOverride.getValue()) {
-                writer.write(String.format("\t%s\n", overridedType));
-            }
-            writer.write("\n");
+        Map<String, String> sortedDuplicateData = new TreeMap<>(duplicateOverrides.getFinalOverrides());
+        for (Map.Entry<String, String> duplicateOverride : sortedDuplicateData.entrySet()) {
+            writer.write(String.format("%s -> %s\n", duplicateOverride.getKey(), duplicateOverride.getValue()));
         }
     }
 

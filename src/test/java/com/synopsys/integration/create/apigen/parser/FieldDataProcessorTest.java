@@ -35,17 +35,6 @@ public class FieldDataProcessorTest {
         object6.addSubField(new RawFieldDefinition("", "", false));
         assertHasExpectedType(object6, "ProjectView", "java.util.List<ProjectCountsView>");
 
-
-        // Testing duplication screening which requires state of FieldDataProcessor
-        FieldDataProcessor processor =  new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides()));
-        RawFieldDefinition object7 = new RawFieldDefinition("securityRiskProfile", "Object", false);
-        object7.addSubField(new RawFieldDefinition("path", "type", false));
-        // This depends on an override from TypeTranslator
-        Assertions.assertTrue(processor.process(object7, "ProjectVersionComponentView").getType().equals("ComponentVersionRiskProfileRiskDataView"));
-
-        RawFieldDefinition object8 = new RawFieldDefinition("riskProfile", "Object", false);
-        object8.addSubField(new RawFieldDefinition("path", "type", false));
-        Assertions.assertTrue(processor.process(object8, "").getType().equals("ComponentVersionRiskProfileRiskDataView"));
     }
 
     @Test

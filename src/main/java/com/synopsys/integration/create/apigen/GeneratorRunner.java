@@ -69,13 +69,14 @@ public class GeneratorRunner {
     private final MediaTypePathManager mediaTypePathManager;
     private final ObjectFactory<ApiGeneratorParser> parserFactory;
     private final DuplicateOverrides duplicateOverrides;
+    private final DuplicateTypeOverrider duplicateTypeOverrider;
     private final MaintenanceReportGenerator maintenanceReportGenerator;
 
     @Autowired
     public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, ApiDiscoveryGenerator apiDiscoveryGenerator,
                            MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
                            Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
-                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, MaintenanceReportGenerator maintenanceReportGenerator) {
+                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider, MaintenanceReportGenerator maintenanceReportGenerator) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
@@ -91,38 +92,16 @@ public class GeneratorRunner {
         this.mediaTypePathManager = mediaTypePathManager;
         this.parserFactory = parserFactory;
         this.duplicateOverrides = duplicateOverrides;
+        this.duplicateTypeOverrider = duplicateTypeOverrider;
         this.maintenanceReportGenerator = maintenanceReportGenerator;
     }
 
     @PostConstruct
     public void createGeneratedClasses() throws Exception {
         generatorConfig.logConfig();
-        File inputDirectory = getInputDirectory();
+        File inputDirectory = generatorConfig.getInputDirectory();
         generateFiles(inputDirectory);
         maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_OUTPUT, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
-    }
-
-    private File getInputDirectory() throws URISyntaxException {
-        File inputDirectory = null;
-        if (StringUtils.isNotBlank(Application.PATH_TO_API_SPECIFICATION)) {
-            inputDirectory = new File(Application.PATH_TO_API_SPECIFICATION);
-        } else if (StringUtils.isNotBlank(Application.API_SPECIFICATION_VERSION)) {
-            File inputFromResources = new File(GeneratorRunner.class.getClassLoader().getResource("api-specification/" + Application.API_SPECIFICATION_VERSION).toURI());
-            if (inputFromResources.exists()) {
-                inputDirectory = inputFromResources;
-            } else {
-                //TODO - pull API specification from artifactory
-            }
-        }
-        validateDirectory(inputDirectory);
-        return inputDirectory;
-    }
-
-    private void validateDirectory(File directory) {
-        if (directory == null || !directory.exists()) {
-            logger.info(directory.getAbsolutePath() + " not found");
-            System.exit(0);
-        }
     }
 
     private void generateFiles(File apiSpecification) throws Exception {
@@ -137,8 +116,8 @@ public class GeneratorRunner {
 
     private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification) throws IOException {
         ApiParser apiParser = parserFactory.getObject();
-        DirectoryWalker directoryWalker = new DirectoryWalker(gson, apiParser);
-        List<ResponseDefinition> responses = directoryWalker.parseDirectoryForResponses(apiSpecification);
+        List<ResponseDefinition> responses = apiParser.parseApi(apiSpecification);
+        duplicateTypeOverrider.overrideDuplicateTypes(responses);
         for (ResponseDefinition response : responses) {
             String responseName = response.getName();
             Set<FieldDefinition> missingFields = missingFieldsAndLinks.getMissingFields(responseName);

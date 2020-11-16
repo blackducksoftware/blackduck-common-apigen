@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.GeneratorConfig;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
-import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.model.ClassTypeData;

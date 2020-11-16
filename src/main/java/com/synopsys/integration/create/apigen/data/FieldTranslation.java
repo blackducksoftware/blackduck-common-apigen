@@ -26,11 +26,20 @@ public class FieldTranslation {
     private String path;
     private String trueType;
     private String apiSpecsType;
+    private boolean typeWasOverrided; // This will be true if the override is set to eplace the original type with another generated type, false if just to modify a verbose or unexpressive name.
+
+    public FieldTranslation(final String path, final String trueType, final String apiSpecsType, final boolean typeWasOverrided) {
+        this.path = path;
+        this.trueType = trueType;
+        this.apiSpecsType = apiSpecsType;
+        this.typeWasOverrided = typeWasOverrided;
+    }
 
     public FieldTranslation(final String path, final String trueType, final String apiSpecsType) {
         this.path = path;
         this.trueType = trueType;
         this.apiSpecsType = apiSpecsType;
+        this.typeWasOverrided = true;
     }
 
     public String getPath() {
@@ -45,4 +54,7 @@ public class FieldTranslation {
         return apiSpecsType;
     }
 
+    public boolean typeWasOverrided() {
+        return typeWasOverrided;
+    }
 }

@@ -91,9 +91,8 @@ public class NameAndPathManager {
     private Map<String, String> populateResponseNameOverrides() {
         Map<String, String> overrides = new HashMap<>();
         overrides.put("components/componentId/versions/componentVersionId/licenses/licenseId", "ComponentVersionLicenseLicensesLicense");
-        // Because the responses from the endpoints at users/userId/projects and usergroups/userGroupId/projects are identical, only usergroups/...
-        // will be generated. The context of where this object is used in the rest of the API makes more sense for it to be called AssignedProjectView
-        overrides.put("usergroups/userGroupId/projects", "AssignedProject");
+        overrides.put("licenses/licenseId/license-terms/licenseTermId", "LicenseTermAssociation");
+        overrides.put("users/userId/projects", "AssignedProject");
         return overrides;
     }
 

@@ -23,7 +23,9 @@
 package com.synopsys.integration.create.apigen;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,40 +35,51 @@ import org.springframework.stereotype.Component;
 public class GeneratorConfig {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorConfig.class);
 
-    @Value("${api.gen.input.path:}")
-    private String inputPath;
-    @Value("${api.gen.output.path}")
-    private String outputPath;
-
-    @Value("${api.gen.control.run:false}")
-    private Boolean controlRun;
-
-    @Value("${api.gen.show.output:false}")
-    private Boolean showOutput;
-
     public String getInputPath() {
-        return inputPath;
+        return Application.PATH_TO_API_SPECIFICATION;
     }
 
     public String getOutputPath() {
-        return outputPath;
+        return Application.PATH_TO_API_OUTPUT;
     }
 
-    public Boolean getControlRun() {
-        return controlRun;
+    public String getApiSpecificationVersion() {
+        return Application.API_SPECIFICATION_VERSION;
     }
 
-    public Boolean getShowOutput() {
-        return showOutput;
+    public File getInputDirectory() throws URISyntaxException {
+        File inputDirectory = null;
+        String inputPath = getInputPath();
+        if (StringUtils.isNotBlank(inputPath)) {
+            inputDirectory = new File(inputPath);
+        } else if (StringUtils.isNotBlank(getApiSpecificationVersion())) {
+            File inputFromResources = new File(GeneratorRunner.class.getClassLoader().getResource("api-specification/" + getApiSpecificationVersion()).toURI());
+            if (inputFromResources.exists()) {
+                inputDirectory = inputFromResources;
+            } else {
+                //TODO - pull API specification from artifactory
+            }
+        }
+        validateDirectory(inputDirectory, String.format("Could not find input directory at %s", getInputPath()));
+        return inputDirectory;
     }
 
     public File getOutputDirectory() {
-        final String baseDirectory = getOutputPath();
-        if (baseDirectory == null) {
-            logger.error("Please set Environment variable API_GEN_OUTPUT_PATH or the application property api.gen.output.path to directory in which generated files will live");
+        File outputDirectory = null;
+        final String outputPath = getOutputPath();
+        if (StringUtils.isNotBlank(outputPath)) {
+            outputDirectory = new File(outputPath);
+            outputDirectory.mkdirs();
+        }
+        validateDirectory(outputDirectory, String.format("Could not find output directory at %s", getOutputPath()));
+        return outputDirectory;
+    }
+
+    private void validateDirectory(File directory, String errorMessage) {
+        if (directory == null || !directory.exists()) {
+            logger.info(errorMessage);
             System.exit(0);
         }
-        return new File(baseDirectory);
     }
 
     public void logConfig() {
@@ -74,8 +87,6 @@ public class GeneratorConfig {
         logger.info("--------------");
         logger.info("Input Path  = {}", getInputPath());
         logger.info("Output Path = {}", getOutputPath());
-        logger.info("Control Run = {}", getControlRun());
-        logger.info("Show Output = {}", getShowOutput());
     }
 
 }
