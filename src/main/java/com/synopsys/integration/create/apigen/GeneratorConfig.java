@@ -28,22 +28,28 @@ import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeneratorConfig {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorConfig.class);
 
+    private final GeneratorPropertiesConfig generatorPropertiesConfig;
+
+    public GeneratorConfig(GeneratorPropertiesConfig generatorPropertiesConfig) {
+        this.generatorPropertiesConfig = generatorPropertiesConfig;}
+
     public String getInputPath() {
-        return Application.PATH_TO_API_SPECIFICATION;
+        return generatorPropertiesConfig.apiSpecInputPath;
     }
 
     public String getOutputPath() {
-        return Application.PATH_TO_API_GENERATED_DIRECTORY;
+        return generatorPropertiesConfig.generatorOutputPath;
     }
 
     public String getApiSpecificationVersion() {
-        return Application.API_SPECIFICATION_VERSION;
+        return generatorPropertiesConfig.apiSpecVersion;
     }
 
     public File getInputDirectory() throws URISyntaxException {

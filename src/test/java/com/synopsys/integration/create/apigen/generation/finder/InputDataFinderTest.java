@@ -26,7 +26,7 @@ public class InputDataFinderTest {
         Set<String> imports = new HashSet<>();
         imports.add(UtilStrings.CORE_CLASS_PATH_PREFIX + UtilStrings.VIEW_BASE_CLASS);
         String className = "java.util.List<ProjectViewV4>";
-        ClassTypeData classTypeData = new ClassTypeData(classCategories.computeData(className).getType(), new FilePathUtil(new GeneratorConfig()));
+        ClassTypeData classTypeData = new ClassTypeData(classCategories.computeData(className).getType(), new FilePathUtil(new GeneratorConfig(null)));
         Map<String, Object> inputData1 = inputDataFinder.getInputData(classTypeData, imports, className, new HashSet<>(), "json4");
 
         assertTrue(inputData1.size() == 8);

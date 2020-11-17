@@ -40,18 +40,11 @@ import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
 
 /**
- To Use: Specify path to API specification source, path to where API output should be generated. If source is in src/main/resources, you need only specify the version of the API.
- Download API specification source at https://artifactory.internal.synopsys.com/ui/repos/tree/General/bds-hub-snapshot%2Fcom%2Fblackducksoftware%2Fhub%2Fapi-specification
- If you wish to see a maintenance report, specify where you'd like the report to be generated.
+ See the README for instructions on how to use this application.
  */
-
 @SpringBootApplication
 @Configuration
 public class Application {
-    static final String PATH_TO_API_SPECIFICATION = "";
-    static final String PATH_TO_API_GENERATED_DIRECTORY = "";
-    static final String PATH_TO_MAINTENANCE_REPORT = "";
-    static final String API_SPECIFICATION_VERSION = "";
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
     public static void main(final String[] args) {

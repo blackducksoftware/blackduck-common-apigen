@@ -22,12 +22,10 @@
  */
 package com.synopsys.integration.create.apigen;
 
-import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.*;
 import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.MaintenanceReportGenerator;
-import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.generators.*;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
@@ -52,8 +50,9 @@ import java.util.Set;
 @Component
 public class GeneratorRunner {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorRunner.class);
+
+    private final GeneratorPropertiesConfig generatorPropertiesConfig;
     private final MissingFieldsAndLinks missingFieldsAndLinks;
-    private final Gson gson;
     private final NameAndPathManager nameAndPathManager;
     private final ViewGenerator viewGenerator;
     private final ApiDiscoveryGenerator apiDiscoveryGenerator;
@@ -62,7 +61,6 @@ public class GeneratorRunner {
     private final List<ClassGenerator> generators;
     private final Configuration config;
     private final GeneratorConfig generatorConfig;
-    private final FilePathUtil filePathUtil;
     private final GeneratorDataManager generatorDataManager;
     private final MediaTypePathManager mediaTypePathManager;
     private final ObjectFactory<ApiGeneratorParser> parserFactory;
@@ -71,12 +69,12 @@ public class GeneratorRunner {
     private final MaintenanceReportGenerator maintenanceReportGenerator;
 
     @Autowired
-    public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, ApiDiscoveryGenerator apiDiscoveryGenerator,
-                           MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
-                           Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
-                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider, MaintenanceReportGenerator maintenanceReportGenerator) {
+    public GeneratorRunner(GeneratorPropertiesConfig generatorPropertiesConfig, MissingFieldsAndLinks missingFieldsAndLinks, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator,
+        ApiDiscoveryGenerator apiDiscoveryGenerator, MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
+        Configuration config, GeneratorConfig generatorConfig, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
+        ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider, MaintenanceReportGenerator maintenanceReportGenerator) {
+        this.generatorPropertiesConfig = generatorPropertiesConfig;
         this.missingFieldsAndLinks = missingFieldsAndLinks;
-        this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
         this.viewGenerator = viewGenerator;
         this.apiDiscoveryGenerator = apiDiscoveryGenerator;
@@ -85,7 +83,6 @@ public class GeneratorRunner {
         this.generators = generators;
         this.config = config;
         this.generatorConfig = generatorConfig;
-        this.filePathUtil = filePathUtil;
         this.generatorDataManager = generatorDataManager;
         this.mediaTypePathManager = mediaTypePathManager;
         this.parserFactory = parserFactory;
@@ -99,7 +96,7 @@ public class GeneratorRunner {
         generatorConfig.logConfig();
         File inputDirectory = generatorConfig.getInputDirectory();
         generateFiles(inputDirectory);
-        maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_GENERATED_DIRECTORY, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
+        maintenanceReportGenerator.generateMaintenanceReport(generatorPropertiesConfig.generatorOutputPath, duplicateOverrides, generatorPropertiesConfig.maintenanceReportPath);
     }
 
     private void generateFiles(File apiSpecification) throws Exception {
