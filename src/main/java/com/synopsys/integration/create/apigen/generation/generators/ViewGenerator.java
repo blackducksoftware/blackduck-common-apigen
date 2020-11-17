@@ -97,7 +97,7 @@ public class ViewGenerator {
         String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(viewName);
         if (StringUtils.isNotBlank(deprecatedName)) {
             if (StringUtils.isBlank(typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName))) {
-                String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated.deprecated");
+                String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated/deprecated");
                 String deprecatedPackage = classTypeData.getPackageName().replace(UtilStrings.GENERATED, "generated.deprecated");
                 deprecatedClassGenerator.addDeprecatedClass(deprecatedName, viewName, template, input, pathToDeprecatedFiles, deprecatedPackage);
             }

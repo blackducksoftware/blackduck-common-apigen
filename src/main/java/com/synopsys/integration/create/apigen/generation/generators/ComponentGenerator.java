@@ -99,7 +99,7 @@ public class ComponentGenerator extends ClassGenerator {
             String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(fieldType);
             if (deprecatedName != null) {
                 if (typeTranslator.getNameOfDeprecatedEquivalent(deprecatedName) == null) {
-                    String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated.deprecated");
+                    String pathToDeprecatedFiles = classTypeData.getPathToOutputDirectory().replace(UtilStrings.GENERATED, "generated/deprecated");
                     String deprecatedPackage = classTypeData.getPackageName().replace(UtilStrings.GENERATED, "generated.deprecated");
                     deprecatedClassGenerator.addDeprecatedClass(deprecatedName, fieldType, template, input, pathToDeprecatedFiles, deprecatedPackage);
                 }
