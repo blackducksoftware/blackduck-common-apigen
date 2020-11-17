@@ -49,7 +49,7 @@ import freemarker.template.Version;
 @Configuration
 public class Application {
     static final String PATH_TO_API_SPECIFICATION = "";
-    static final String PATH_TO_API_OUTPUT = "";
+    static final String PATH_TO_API_GENERATED_DIRECTORY = "";
     static final String PATH_TO_MAINTENANCE_REPORT = "";
     static final String API_SPECIFICATION_VERSION = "";
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";

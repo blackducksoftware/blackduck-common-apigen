@@ -28,7 +28,6 @@ import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,7 +39,7 @@ public class GeneratorConfig {
     }
 
     public String getOutputPath() {
-        return Application.PATH_TO_API_OUTPUT;
+        return Application.PATH_TO_API_GENERATED_DIRECTORY;
     }
 
     public String getApiSpecificationVersion() {

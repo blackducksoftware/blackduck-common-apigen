@@ -37,7 +37,6 @@ import com.synopsys.integration.create.apigen.parser.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
@@ -47,7 +46,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
@@ -101,7 +99,7 @@ public class GeneratorRunner {
         generatorConfig.logConfig();
         File inputDirectory = generatorConfig.getInputDirectory();
         generateFiles(inputDirectory);
-        maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_OUTPUT, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
+        maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_GENERATED_DIRECTORY, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
     }
 
     private void generateFiles(File apiSpecification) throws Exception {
