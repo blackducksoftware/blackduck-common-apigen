@@ -45,22 +45,22 @@ public class ClassUsageSearcher {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public void findUsersOfThrowawayClasses(String pathToSource, String pathToUsageOutputFile) throws IOException {
-        findUsersOfSpecificClass(THROWAWAY_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile);
+    public void findUsersOfThrowawayClasses(String pathToSource, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
+        findUsersOfSpecificClass(THROWAWAY_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile, usageOutputFileName);
     }
 
-    public void findUsersOfTemporaryClasses(String pathToSource, String pathToUsageOutputFile) throws IOException {
-        findUsersOfSpecificClass(TEMPORARY_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile);
+    public void findUsersOfTemporaryClasses(String pathToSource, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
+        findUsersOfSpecificClass(TEMPORARY_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile, usageOutputFileName);
     }
 
-    public void findUsersOfDeprecatedClasses(String pathToSource, String pathToUsageOutputFile) throws IOException {
-        findUsersOfSpecificClass(DEPRECATED_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile);
+    public void findUsersOfDeprecatedClasses(String pathToSource, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
+        findUsersOfSpecificClass(DEPRECATED_CLASS_USAGE_TOKEN, pathToSource, pathToUsageOutputFile, usageOutputFileName);
     }
 
-    public void findUsersOfSpecificClass(String className, String pathToSource, String pathToUsageOutputFile) throws IOException {
+    public void findUsersOfSpecificClass(String className, String pathToSource, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
         // Can adjust method to use Java or grep search implementation
         Process findings = searchForTokenGrep(className, pathToSource);
-        writeUsageToOutputFile(findings, pathToUsageOutputFile);
+        writeUsageToOutputFile(findings, pathToUsageOutputFile, usageOutputFileName);
     }
 
     private Process searchForTokenGrep(String token, String pathToSource) throws IOException {
@@ -91,9 +91,10 @@ public class ClassUsageSearcher {
         return filesContainingToken;
     }
 
-    private void writeUsageToOutputFile(Process process, String pathToUsageOutputFile) throws IOException {
+    private void writeUsageToOutputFile(Process process, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        File outputFile = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
+        File outputDirectory = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
+        File outputFile = new File(outputDirectory, usageOutputFileName);
         FileWriter writer = new FileWriter(outputFile);
         String line;
         while ((line = stdInput.readLine()) != null) {
@@ -103,8 +104,9 @@ public class ClassUsageSearcher {
         writer.close();
     }
 
-    private void writeUsageToOutputFile(Set<String> usage, String pathToUsageOutputFile) throws IOException {
-        File outputFile = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
+    private void writeUsageToOutputFile(Set<String> usage, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
+        File outputDirectory = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
+        File outputFile = new File(outputDirectory, usageOutputFileName);
         FileWriter writer = new FileWriter(outputFile);
         for (String line : usage) {
             writer.write(line);
