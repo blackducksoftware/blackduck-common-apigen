@@ -50,9 +50,9 @@ import freemarker.template.Version;
 @Configuration
 public class Application {
     static final String PATH_TO_API_SPECIFICATION = "";
-    static final String PATH_TO_API_GENERATED_DIRECTORY = "/Users/crowley/Documents/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/api/generated";
+    static final String PATH_TO_API_GENERATED_DIRECTORY = "";
     static final String PATH_TO_MAINTENANCE_REPORT = "";
-    static final String API_SPECIFICATION_VERSION = "2020.8.0";
+    static final String API_SPECIFICATION_VERSION = "";
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
     public static void main(final String[] args) {
