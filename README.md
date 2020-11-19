@@ -14,7 +14,7 @@ If source is in src/main/resources, you need only specify the _version_ of the A
 export APIGEN_SPECIFICATION_API_PATH=<spec_src>
 # The directory the generated files will be written to
 export APIGEN_GENERATED_DIRECTORY_PATH=<output_dir>
-# Optional: As an alternative to using the APIGEN_SPEC_INPUT_DIR_PATH variable, 
+# Optional: As an alternative to using the APIGEN_SPECIFICATION_API_PATH variable, 
 # you can specify a version of the API (if specification source is already in src/main/resources).
 export APIGEN_SPECIFICATION_VERSION=<version_string>
 # Optional: The directory in which to generate a maintenance report.
