@@ -24,7 +24,6 @@ package com.synopsys.integration.create.apigen;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,7 +61,7 @@ public class Application {
 
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
 
         PATH_TO_API_SPECIFICATION = StringUtils.defaultIfBlank(System.getenv(API_PATH_SPECIFICATION_KEY), PATH_TO_API_SPECIFICATION);
@@ -73,13 +72,12 @@ public class Application {
 
     @Bean
     public Gson gson() {
-        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson;
+        return new GsonBuilder().setPrettyPrinting().create();
     }
 
     @Bean
     public freemarker.template.Configuration configuration() throws IOException {
-        final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File templateDirectory = pathMatchingResourcePatternResolver().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getFile();
         cfg.setDirectoryForTemplateLoading(templateDirectory);
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
