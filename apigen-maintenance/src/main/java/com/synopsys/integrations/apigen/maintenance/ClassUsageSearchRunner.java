@@ -36,12 +36,13 @@ public class ClassUsageSearchRunner {
     private static final String CLASS_NAME_TO_SEARCH_FOR = "";
     private static final String TARGET_DIRECTORY_PATH = "";
     private static final String USAGE_OUTPUT_FILE_PATH = "";
+    private static final String USAGE_OUTPUT_FILE_NAME = "";
 
     public static void main(String[] args) throws IOException {
         ClassUsageSearcher searcher = new ClassUsageSearcher();
 
         // Examples
-        searcher.findUsersOfDeprecatedClasses(TARGET_DIRECTORY_PATH, USAGE_OUTPUT_FILE_PATH);
-        searcher.findUsersOfSpecificClass(CLASS_NAME_TO_SEARCH_FOR, TARGET_DIRECTORY_PATH, USAGE_OUTPUT_FILE_PATH);
+        searcher.findUsersOfDeprecatedClasses(TARGET_DIRECTORY_PATH, USAGE_OUTPUT_FILE_PATH, USAGE_OUTPUT_FILE_NAME);
+        searcher.findUsersOfSpecificClass(CLASS_NAME_TO_SEARCH_FOR, TARGET_DIRECTORY_PATH, USAGE_OUTPUT_FILE_PATH, USAGE_OUTPUT_FILE_NAME);
     }
 }

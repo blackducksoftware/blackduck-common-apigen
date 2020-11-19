@@ -85,7 +85,6 @@ public class TypeTranslator {
         translations.put("JournalTriggerView", "ProjectItemsTriggerDataView");
         translations.put("LicenseFamilyRiskRuleView", "LicenseFamilyRiskRulesView");
         translations.put("LicenseFamilySummaryView", "ComponentVersionLicenseLicensesLicenseFamilySummaryView");
-        translations.put("LicenseTermCategorySummaryView", "ProjectVersionLicenseLicensesLicenseFamilySummaryView");
         translations.put("MatchedFileView", "ComponentMatchedFilesView");
         translations.put("MatchedFileUsagesType", "UsageType");
         translations.put("NotificationSubscriptionView", "NotificationSubscriptionsSubscriptionView");
@@ -148,13 +147,6 @@ public class TypeTranslator {
             new FieldTranslation("expression", "PolicyRuleExpressionView", OBJECT)
         );
         fieldTranslations.put("ComponentPolicyRulesItemsView", cprvTranslations); // At the time of parsing, the parent definition name is ComponentPolicyRulesItemsView
-
-        // ComponentVersionLicenseLicensesView
-        List<FieldTranslation> cvllvTranslations = Arrays.asList(
-            new FieldTranslation("license", "ComponentVersionLicenseLicensesLicenseView", STRING),
-            new FieldTranslation("licenses", "ComponentVersionLicenseLicensesLicenseView", ARRAY)
-        );
-        fieldTranslations.put("ComponentVersionLicenseLicensesView", cvllvTranslations);
 
         // ComponentVersionRemediatingView
         List<FieldTranslation> cvrvTranslations = Arrays.asList(
@@ -253,16 +245,9 @@ public class TypeTranslator {
 
         // ProjectVersionView
         List<FieldTranslation> pvvTranslations = Arrays.asList(
-            new FieldTranslation("phase", "ProjectVersionPhaseType", STRING),
-            new FieldTranslation("license", "ComponentVersionLicenseView", OBJECT)
+            new FieldTranslation("phase", "ProjectVersionPhaseType", STRING)
         );
         fieldTranslations.put("ProjectVersionView", pvvTranslations);
-
-        // ProjectVersionVulnerableBomComponentsView
-        List<FieldTranslation> pvvbcvTranslations = Arrays.asList(
-            new FieldTranslation("license", "ComponentVersionLicenseView", OBJECT)
-        );
-        fieldTranslations.put("ProjectVersionVulnerableBomComponentsItemsView", pvvbcvTranslations);
 
         return fieldTranslations;
     }
