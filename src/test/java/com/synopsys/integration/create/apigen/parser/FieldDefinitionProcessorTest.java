@@ -21,7 +21,7 @@ public class FieldDefinitionProcessorTest {
     public void testProcessesNestedFieldDefinitions() {
         RawFieldDefinition license = new RawFieldDefinition("license", "Object", false);
         RawFieldDefinition licenseLicenses = new RawFieldDefinition("licenses", "Array", false);
-        licenseLicenses.addSubField(new RawFieldDefinition("license", "String", false));
+        licenseLicenses.addSubField(new RawFieldDefinition("name", "String", false));
         license.addSubField(licenseLicenses);
 
         Set<FieldDefinition> fields = processor.processFieldDefinitions("ComponentVersionView", new HashSet<>(Arrays.asList(license)));
@@ -31,9 +31,6 @@ public class FieldDefinitionProcessorTest {
 
             FieldDefinition licenseLicensesView = licenseView.getSubFields().iterator().next();
             Assertions.assertEquals("java.util.List<ComponentVersionLicenseLicensesView>", licenseLicensesView.getType());
-
-            FieldDefinition licenseLicensesLicenseView = licenseLicensesView.getSubFields().iterator().next();
-            Assertions.assertEquals("ComponentVersionLicenseLicensesLicenseView", licenseLicensesLicenseView.getType());
         } catch (NullPointerException e) {
             Assertions.fail();
         }
@@ -41,12 +38,12 @@ public class FieldDefinitionProcessorTest {
 
     @Test
     public void testDoesNotProcessDefinitionsWithOverridedTypes() {
-        RawFieldDefinition license = new RawFieldDefinition("license", "Object", false);
+        RawFieldDefinition license = new RawFieldDefinition("expression", "Object", false);
         license.addSubField(new RawFieldDefinition("path", "type", false));
         try {
-            FieldDefinition licenseView = processor.processFieldDefinitions("ProjectVersionView", new HashSet<>(Arrays.asList(license))).iterator().next();
+            FieldDefinition licenseView = processor.processFieldDefinitions("ComponentPolicyRulesItemsView", new HashSet<>(Arrays.asList(license))).iterator().next();
             // Depends on an override from TypeTranslator
-            Assertions.assertEquals("ComponentVersionLicenseView", licenseView.getType());
+            Assertions.assertEquals("PolicyRuleExpressionView", licenseView.getType());
             // Since this definition's type was overrided, we should not have processed its subfield
             Assertions.assertTrue(licenseView.getSubFields().isEmpty());
         } catch (NullPointerException e) {
