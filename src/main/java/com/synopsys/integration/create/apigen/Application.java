@@ -49,14 +49,25 @@ import freemarker.template.Version;
 @SpringBootApplication
 @Configuration
 public class Application {
-    static final String PATH_TO_API_SPECIFICATION = "";
-    static final String PATH_TO_API_GENERATED_DIRECTORY = "";
-    static final String PATH_TO_MAINTENANCE_REPORT = "";
-    static final String API_SPECIFICATION_VERSION = "";
+    static String PATH_TO_API_SPECIFICATION = "";
+    static String PATH_TO_API_GENERATED_DIRECTORY = "";
+    static String PATH_TO_MAINTENANCE_REPORT = "";
+    static String API_SPECIFICATION_VERSION = "";
+
+    public static final String API_PATH_SPECIFICATION_KEY = "API_PATH_SPECIFICATION_KEY";
+    public static final String API_GENERATED_DIRECTORY_PATH_KEY = "API_GENERATED_DIRECTORY_PATH_KEY";
+    public static final String MAINTENANCE_REPORT_PATH_KEY = "MAINTENANCE_REPORT_PATH_KEY";
+    public static final String API_SPECIFICATION_VERSION_KEY = "API_SPECIFICATION_VERSION_KEY";
+
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
     public static void main(final String[] args) {
         SpringApplication.run(Application.class, args);
+
+        PATH_TO_API_SPECIFICATION = StringUtils.defaultIfBlank(System.getenv(API_PATH_SPECIFICATION_KEY), PATH_TO_API_SPECIFICATION);
+        PATH_TO_API_GENERATED_DIRECTORY = StringUtils.defaultIfBlank(System.getenv(API_GENERATED_DIRECTORY_PATH_KEY), PATH_TO_API_GENERATED_DIRECTORY);
+        PATH_TO_MAINTENANCE_REPORT = StringUtils.defaultIfBlank(System.getenv(MAINTENANCE_REPORT_PATH_KEY), PATH_TO_MAINTENANCE_REPORT);
+        API_SPECIFICATION_VERSION = StringUtils.defaultIfBlank(System.getenv(API_SPECIFICATION_VERSION_KEY), API_SPECIFICATION_VERSION);
     }
 
     @Bean
