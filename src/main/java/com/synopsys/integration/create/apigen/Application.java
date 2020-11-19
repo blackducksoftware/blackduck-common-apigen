@@ -54,10 +54,10 @@ public class Application {
     static String PATH_TO_MAINTENANCE_REPORT = "";
     static String API_SPECIFICATION_VERSION = "";
 
-    public static final String API_PATH_SPECIFICATION_KEY = "API_PATH_SPECIFICATION_KEY";
-    public static final String API_GENERATED_DIRECTORY_PATH_KEY = "API_GENERATED_DIRECTORY_PATH_KEY";
-    public static final String MAINTENANCE_REPORT_PATH_KEY = "MAINTENANCE_REPORT_PATH_KEY";
-    public static final String API_SPECIFICATION_VERSION_KEY = "API_SPECIFICATION_VERSION_KEY";
+    public static final String API_PATH_SPECIFICATION_KEY = "API_PATH_SPECIFICATION";
+    public static final String API_GENERATED_DIRECTORY_PATH_KEY = "API_GENERATED_DIRECTORY_PATH";
+    public static final String MAINTENANCE_REPORT_PATH_KEY = "MAINTENANCE_REPORT_PATH";
+    public static final String API_SPECIFICATION_VERSION_KEY = "API_SPECIFICATION_VERSION";
 
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
