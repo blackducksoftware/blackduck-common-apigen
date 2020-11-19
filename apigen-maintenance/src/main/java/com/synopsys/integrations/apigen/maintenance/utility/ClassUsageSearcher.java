@@ -65,7 +65,7 @@ public class ClassUsageSearcher {
 
     private Process searchForTokenGrep(String token, String pathToSource) throws IOException {
         Runtime runtime = Runtime.getRuntime();
-        String grepCommand = String.format("grep -r -l \"%s %s\"", token, pathToSource);
+        String grepCommand = String.format("grep -r -l \"%s\" %s", token, pathToSource);
         return runtime.exec(grepCommand);
     }
 
