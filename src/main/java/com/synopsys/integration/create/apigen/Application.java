@@ -62,12 +62,12 @@ public class Application {
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-
         PATH_TO_API_SPECIFICATION = StringUtils.defaultIfBlank(System.getenv(API_PATH_SPECIFICATION_KEY), PATH_TO_API_SPECIFICATION);
         PATH_TO_API_GENERATED_DIRECTORY = StringUtils.defaultIfBlank(System.getenv(API_GENERATED_DIRECTORY_PATH_KEY), PATH_TO_API_GENERATED_DIRECTORY);
         PATH_TO_MAINTENANCE_REPORT = StringUtils.defaultIfBlank(System.getenv(MAINTENANCE_REPORT_PATH_KEY), PATH_TO_MAINTENANCE_REPORT);
         API_SPECIFICATION_VERSION = StringUtils.defaultIfBlank(System.getenv(API_SPECIFICATION_VERSION_KEY), API_SPECIFICATION_VERSION);
+
+        SpringApplication.run(Application.class, args);
     }
 
     @Bean
