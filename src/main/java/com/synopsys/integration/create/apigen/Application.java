@@ -24,9 +24,9 @@ package com.synopsys.integration.create.apigen;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -49,25 +49,35 @@ import freemarker.template.Version;
 @SpringBootApplication
 @Configuration
 public class Application {
-    static final String PATH_TO_API_SPECIFICATION = "";
-    static final String PATH_TO_API_GENERATED_DIRECTORY = "";
-    static final String PATH_TO_MAINTENANCE_REPORT = "";
-    static final String API_SPECIFICATION_VERSION = "";
+    static String PATH_TO_API_SPECIFICATION = "";
+    static String PATH_TO_API_GENERATED_DIRECTORY = "";
+    static String PATH_TO_MAINTENANCE_REPORT = "";
+    static String API_SPECIFICATION_VERSION = "";
+
+    public static final String API_PATH_SPECIFICATION_KEY = "APIGEN_SPECIFICATION_API_PATH";
+    public static final String API_GENERATED_DIRECTORY_PATH_KEY = "APIGEN_GENERATED_DIRECTORY_PATH";
+    public static final String MAINTENANCE_REPORT_PATH_KEY = "APIGEN_MAINTENANCE_REPORT_PATH";
+    public static final String API_SPECIFICATION_VERSION_KEY = "APIGEN_SPECIFICATION_VERSION";
+
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+
+        PATH_TO_API_SPECIFICATION = StringUtils.defaultIfBlank(System.getenv(API_PATH_SPECIFICATION_KEY), PATH_TO_API_SPECIFICATION);
+        PATH_TO_API_GENERATED_DIRECTORY = StringUtils.defaultIfBlank(System.getenv(API_GENERATED_DIRECTORY_PATH_KEY), PATH_TO_API_GENERATED_DIRECTORY);
+        PATH_TO_MAINTENANCE_REPORT = StringUtils.defaultIfBlank(System.getenv(MAINTENANCE_REPORT_PATH_KEY), PATH_TO_MAINTENANCE_REPORT);
+        API_SPECIFICATION_VERSION = StringUtils.defaultIfBlank(System.getenv(API_SPECIFICATION_VERSION_KEY), API_SPECIFICATION_VERSION);
     }
 
     @Bean
     public Gson gson() {
-        final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        return gson;
+        return new GsonBuilder().setPrettyPrinting().create();
     }
 
     @Bean
     public freemarker.template.Configuration configuration() throws IOException {
-        final freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File templateDirectory = pathMatchingResourcePatternResolver().getResource(FREEMARKER_TEMPLATE_DIRECTORY_NAME).getFile();
         cfg.setDirectoryForTemplateLoading(templateDirectory);
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
