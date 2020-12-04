@@ -51,6 +51,7 @@ public class MissingFieldsAndLinks {
         missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
 
         // ComponentVersionView
+        //TODO remove for 2020.10+, this link was removed in 2020.10+
         final MissingFieldAndLinkHelper cvvFieldsAndLinks = new MissingFieldAndLinkHelper();
         cvvFieldsAndLinks.addLink(new LinkDefinition("remediating", false));
         missingFieldAndLinkMap.put("ComponentVersionView", cvvFieldsAndLinks);
