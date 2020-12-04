@@ -177,6 +177,7 @@ public class ClassCategories {
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignedUserRequest");
         populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionRemediatingView");
+        populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HierarchicalVersionBomComponentView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HomepageView");
         populate(RESPONSE, ClassSourceEnum.NULL, "LegacyFilterView");
