@@ -50,6 +50,12 @@ public class MissingFieldsAndLinks {
         cpsvFieldsAndLinks.addLink(new LinkDefinition("comment", false));
         missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
 
+        // ComponentVersionView
+        //TODO remove for 2020.10+, this link was removed in 2020.10+
+        final MissingFieldAndLinkHelper cvvFieldsAndLinks = new MissingFieldAndLinkHelper();
+        cvvFieldsAndLinks.addLink(new LinkDefinition("remediating", false));
+        missingFieldAndLinkMap.put("ComponentVersionView", cvvFieldsAndLinks);
+
         // LicenseView
         final MissingFieldAndLinkHelper lvFieldsAndLinks = new MissingFieldAndLinkHelper();
         lvFieldsAndLinks.addLink(new LinkDefinition("text", false));
