@@ -152,6 +152,7 @@ public class ClassCategories {
         populate(RESPONSE, GENERATED, "AssignedProjectView");
         populate(RESPONSE, GENERATED, "CommentView");
         populate(RESPONSE, GENERATED, "ComponentsView");
+        populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
         populate(RESPONSE, GENERATED, "CweView");
         populate(RESPONSE, GENERATED, "HealthChecksLivenessView");
@@ -177,7 +178,6 @@ public class ClassCategories {
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignedUserRequest");
         populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionRemediatingView");
-        populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HierarchicalVersionBomComponentView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HomepageView");
         populate(RESPONSE, ClassSourceEnum.NULL, "LegacyFilterView");
