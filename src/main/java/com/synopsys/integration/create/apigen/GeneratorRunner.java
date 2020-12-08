@@ -143,12 +143,6 @@ public class GeneratorRunner {
                 logger.info("Non-applicable response!");
             }
             for (FieldDefinition field : response.getFields()) {
-
-                //debug
-                if (field.getType().equals("LicenseTermCategorySummaryView")) {
-                    System.out.println();
-                }
-
                 generateClasses(field, generators, response.getMediaType());
             }
         }

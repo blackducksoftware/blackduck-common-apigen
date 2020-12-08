@@ -54,12 +54,11 @@ public class ResultClassData {
     public String getResultImportType() {
         String resultImportType = null;
         if (resultClass != null) {
+            // result classes must extend BlackDuckResponse
             if (classType.isView()) {
                 resultImportType = UtilStrings.VIEW;
             } else if (classType.isResponse()) {
                 resultImportType = UtilStrings.RESPONSE;
-            } else if (classType.isComponent()) {
-                resultImportType = UtilStrings.COMPONENT;
             }
         }
         return resultImportType;
@@ -72,7 +71,7 @@ public class ResultClassData {
                 resultImportPath = MANUAL_CLASS_PATH_PREFIX;
             } else if (classSource.isTemporary()) {
                 resultImportPath = TEMPORARY_CLASS_PATH_PREFIX;
-            } else if (classSource.isGenerated()) {
+            } else {
                 resultImportPath = GENERATED_CLASS_PATH_PREFIX;
             }
         }
