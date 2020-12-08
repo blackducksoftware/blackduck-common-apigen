@@ -1,24 +1,23 @@
+<#include "licenseHeader.ftl">
 package ${packageName};
 
 import com.synopsys.integration.util.EnumUtils;
 
+<#if hasNewName??>
+// ${className} is now called ${newName}
+</#if>
+<#if isLatestMediaVersionEnum??>
+// ${className} is equivalent to ${className}V${latestEnumMediaVersion}
+</#if>
+<#include "doNotEdit.ftl">
 <#if isDeprecated??>
 @Deprecated
 </#if>
-/**
-<#if hasNewName??>
-* ${className} is now called ${newName}
-</#if>
-<#if isLatestMediaVersionEnum??>
-* ${className} is equivalent to ${className}V${latestEnumMediaVersion}
-</#if>
-* this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
-* **/
 public enum ${className} {
-	${enumValues?join(",\n\t")};
+    ${enumValues?join(",\n\t")};
 
-	public String prettyPrint() {
-	    return EnumUtils.prettyPrint(this);
-	}
+    public String prettyPrint() {
+        return EnumUtils.prettyPrint(this);
+    }
 
 }

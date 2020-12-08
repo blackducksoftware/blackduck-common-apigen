@@ -49,10 +49,10 @@ import freemarker.template.Version;
 @SpringBootApplication
 @Configuration
 public class Application {
-    static String PATH_TO_API_SPECIFICATION = "";
-    static String PATH_TO_API_GENERATED_DIRECTORY = "";
+    static String PATH_TO_API_SPECIFICATION = "/Users/ekerwin/Downloads/api-specification-2020.8.0";
+    static String PATH_TO_API_GENERATED_DIRECTORY = "/Users/ekerwin/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/api/generated";
     static String PATH_TO_MAINTENANCE_REPORT = "";
-    static String API_SPECIFICATION_VERSION = "";
+    static String API_SPECIFICATION_VERSION = "2020.8.0";
 
     public static final String API_PATH_SPECIFICATION_KEY = "APIGEN_SPECIFICATION_API_PATH";
     public static final String API_GENERATED_DIRECTORY_PATH_KEY = "APIGEN_GENERATED_DIRECTORY_PATH";

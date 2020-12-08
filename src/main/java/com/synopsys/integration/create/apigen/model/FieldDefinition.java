@@ -89,17 +89,15 @@ public class FieldDefinition extends Definition {
     // assigned distinct types to distinct definitions.
     @Override
     public int hashCode() {
-        return this.path.length()/11 * this.type.length();
+        return this.path.length() / 11 * this.type.length();
     }
 
     @Override
     public boolean equals(final Object obj) {
-        // null check
         if (obj == null) {
             return false;
         }
 
-        // this instance check
         if (this == obj) {
             return true;
         }
@@ -111,4 +109,5 @@ public class FieldDefinition extends Definition {
         }
         return false;
     }
+
 }

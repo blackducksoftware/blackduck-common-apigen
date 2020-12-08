@@ -22,23 +22,26 @@
  */
 package com.synopsys.integration.create.apigen.data;
 
-import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
-import com.synopsys.integration.create.apigen.parser.NameParser;
-import freemarker.template.Template;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.DEPRECATED;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.GENERATED;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.MANUAL;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.TEMPORARY;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.COMMON;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.COMPONENT;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.RESPONSE;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.VIEW;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.*;
-import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.*;
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
 
 @Component
 public class ClassCategories {
-    private ClassNameManager classNameManager;
+    private final ClassNameManager classNameManager;
     private final Map<String, ClassCategoryData> classNameData = new HashMap<>();
 
     @Autowired
@@ -49,7 +52,7 @@ public class ClassCategories {
 
     private void populateData() {
         classNameManager.getClassNames()
-                .forEach(className -> populate(ClassTypeEnum.NULL, MANUAL, className));
+            .forEach(className -> populate(ClassTypeEnum.NULL, MANUAL, className));
 
         populate(COMMON, ClassSourceEnum.NULL, "Array");
         populate(COMMON, ClassSourceEnum.NULL, "String");
@@ -151,6 +154,8 @@ public class ClassCategories {
 
         populate(RESPONSE, GENERATED, "AssignedProjectView");
         populate(RESPONSE, GENERATED, "CommentView");
+        populate(RESPONSE, GENERATED, "ComponentVersionRemediatingView");
+        populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "ComponentsView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
         populate(RESPONSE, GENERATED, "CweView");
@@ -176,8 +181,6 @@ public class ClassCategories {
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserGroupView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignedUserRequest");
-        populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionRemediatingView");
-        populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HierarchicalVersionBomComponentView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HomepageView");
         populate(RESPONSE, ClassSourceEnum.NULL, "LegacyFilterView");

@@ -22,18 +22,12 @@
  */
 package com.synopsys.integration.create.apigen.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 public class RawFieldDefinition extends ThirdPartyDefinition {
-
     private final String path;
     private final String type;
     private final boolean optional;
@@ -89,7 +83,7 @@ public class RawFieldDefinition extends ThirdPartyDefinition {
 
     @Override
     public int hashCode() {
-        int hash = this.path.length()/11
+        int hash = this.path.length() / 11
                        * this.type.length();
         if (this.allowedValues != null) {
             for (String value : this.allowedValues) {
@@ -106,12 +100,10 @@ public class RawFieldDefinition extends ThirdPartyDefinition {
 
     @Override
     public boolean equals(final Object field) {
-        // null check
         if (field == null) {
             return false;
         }
 
-        // this instance check
         if (this == field) {
             return true;
         }

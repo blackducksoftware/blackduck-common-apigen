@@ -17,7 +17,7 @@ apply plugin: 'com.synopsys.integration.solution'
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
 
-    implementation 'com.synopsys.integration:integration-common:22.2.0'
+    implementation 'com.synopsys.integration:integration-common:24.1.0'
     implementation 'com.opencsv:opencsv:4.6'
 
     implementation 'org.freemarker:freemarker:2.3.25-incubating'

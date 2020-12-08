@@ -1,21 +1,20 @@
+<#include "licenseHeader.ftl">
 package ${packageName};
 
 <#list imports as import>
 import ${import};
 </#list>
 
+<#if hasNewName??>
+// ${className} from the previous API is now called ${newName}
+</#if>
+<#include "doNotEdit.ftl">
 <#if isDeprecated??>
 @Deprecated
 </#if>
-/**
-<#if hasNewName??>
-* ${className} from the previous API is now called ${newName}
-</#if>
-* this file should not be edited - if changes are necessary, the generator should be updated, then this file should be re-created
-* **/
 public class ${className} extends ${baseClass} <#if buildable??>implements Buildable </#if>{
 <#if hasLinksWithResults??>
-	public static final Map<String, LinkResponse> links = new HashMap<>();
+    public static final Map<String, LinkResponse> links = new HashMap<>();
 
 </#if>
 <#if hasLinks??>
@@ -25,7 +24,7 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 
     <#list links as link>
         <#if link.resultClass??>
-	public static final ${link.linkType()} ${link.javaConstant()}_RESPONSE = new ${link.linkType()}(${link.javaConstant()}, ${link.resultClass()}.class);
+    public static final ${link.linkType()} ${link.javaConstant()}_RESPONSE = new ${link.linkType()}(${link.javaConstant()}, ${link.resultClass()}.class);
         </#if>
     </#list>
 
@@ -34,7 +33,7 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
     static {
     <#list links as link>
         <#if link.resultClass??>
-	    links.put(${link.javaConstant()}, ${link.javaConstant()}_RESPONSE);
+        links.put(${link.javaConstant()}, ${link.javaConstant()}_RESPONSE);
         </#if>
     </#list>
     }
@@ -46,17 +45,17 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
 
 <#if buildable??>
     public static ${className}Builder newBuilder() {
-	    return new ${className}Builder();
+        return new ${className}Builder();
     }
 
 </#if>
 <#list classFields as field>
     public ${field.type} get${field.path?cap_first}() {
-	    return ${field.path};
+        return ${field.path};
     }
 
     public void set${field.path?cap_first}(${field.type} ${field.path}) {
-	    this.${field.path} = ${field.path};
+        this.${field.path} = ${field.path};
     }
 
 </#list>
