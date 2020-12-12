@@ -1,7 +1,7 @@
 /**
  * blackduck-common-api
  *
- * Copyright (c) 2020 Synopsys, Inc.
+ * Copyright (c) ${.now?string('yyyy')} Synopsys, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file

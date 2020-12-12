@@ -55,17 +55,18 @@ public class LinkResponseDefinitions {
         final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
         //final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
         //componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
+
+        populateThing(componentVersionViewDefinitions, "component", false, "ComponentView");
+
         final LinkResponseDefinitionItem cvvComponentDefinition = new LinkResponseDefinitionItem(false, "ComponentView");
         componentVersionViewDefinitions.put("component", cvvComponentDefinition);
+
         final LinkResponseDefinitionItem cvvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         componentVersionViewDefinitions.put("origins", cvvOriginsDefinition);
         final LinkResponseDefinitionItem cvvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
         componentVersionViewDefinitions.put("vulnerabilities", cvvVulnerabilitiesDefinition);
         final LinkResponseDefinitionItem cvvUpgradeGuidanceDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionUpgradeGuidanceView");
         componentVersionViewDefinitions.put("upgrade-guidance", cvvUpgradeGuidanceDefinition);
-        //TODO remove for 2020.10+, the remediating link was removed in 2020.10+
-        final LinkResponseDefinitionItem cvvRemediationDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionRemediatingView");
-        componentVersionViewDefinitions.put("remediating", cvvRemediationDefinition);
         //final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
         //componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
@@ -122,7 +123,7 @@ public class LinkResponseDefinitions {
         //projectVersionViewDefinitions.put("versionReport", pvvVersionReportDefinition);
         final LinkResponseDefinitionItem pvvLicenseReportsDefinition = new LinkResponseDefinitionItem(true, "ReportView"); // *
         projectVersionViewDefinitions.put("licenseReports", pvvLicenseReportsDefinition);
-        final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionIssuesView");
         projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
         definitions.put("ProjectVersionView", projectVersionViewDefinitions);
 
@@ -175,6 +176,10 @@ public class LinkResponseDefinitions {
         definitions.put("ProjectVersionVulnerableBomComponentsView", projectVersionVulnerableBomComponentsViewDefinitions);
 
         return definitions;
+    }
+
+    private void populateThing(Map<String, LinkResponseDefinitionItem> map, String key, boolean hasMultiple, String resultClass) {
+        map.put(key, new LinkResponseDefinitionItem(hasMultiple, resultClass));
     }
 
     public Map<String, Map<String, LinkResponseDefinitionItem>> getDefinitions() {
