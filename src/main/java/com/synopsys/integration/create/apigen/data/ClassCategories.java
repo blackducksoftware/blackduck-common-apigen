@@ -96,6 +96,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectVersionComponentCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentVersionCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentView");
+        populate(VIEW, GENERATED, "ProjectVersionComponentVersionView");
         populate(VIEW, GENERATED, "ProjectVersionCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionIssuesView");
         populate(VIEW, GENERATED, "ProjectVersionLicenseLicensesView");

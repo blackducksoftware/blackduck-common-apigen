@@ -129,6 +129,8 @@ public class LinkResponseDefinitions {
 
         // ProjectVersionComponentView
         final Map<String, LinkResponseDefinitionItem> projectVersionComponentViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem pvcvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        projectVersionComponentViewDefinitions.put("component-issues", pvcvIssuesDefinition);
         final LinkResponseDefinitionItem pvcvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
         final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "ComponentMatchedFilesView");
@@ -136,6 +138,12 @@ public class LinkResponseDefinitions {
         final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "ComponentPolicyRulesView");
         projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
         definitions.put("ProjectVersionComponentView", projectVersionComponentViewDefinitions);
+
+        // ProjectVersionComponentVersionView
+        final Map<String, LinkResponseDefinitionItem> projectVersionComponentVersionViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem pvcvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        projectVersionComponentVersionViewDefinitions.put("component-issues", pvcvvIssuesDefinition);
+        definitions.put("ProjectVersionComponentVersionView", projectVersionComponentVersionViewDefinitions);
 
         // ReportView
         final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
