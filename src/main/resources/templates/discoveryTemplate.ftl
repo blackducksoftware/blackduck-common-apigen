@@ -10,7 +10,7 @@ import ${import};
 
 <#include "doNotEdit.ftl">
 public class ApiDiscovery {
-    public static final Map<BlackDuckPath, BlackDuckPathResponse> links = new HashMap<>();
+    public static final Map<BlackDuckPath, BlackDuckPathResponse> paths = new HashMap<>();
 
 <#list apiPathData as data>
     public static final BlackDuckPath ${data.getJavaConstant()} = new BlackDuckPath("${data.getPath()}");
@@ -22,7 +22,7 @@ public class ApiDiscovery {
 
     static {
 <#list apiPathData as data>
-        links.put(${data.getJavaConstant()}, ${data.getJavaConstant()}_RESPONSE);
+        paths.put(${data.getJavaConstant()}, ${data.getJavaConstant()}_RESPONSE);
 </#list>
     }
 

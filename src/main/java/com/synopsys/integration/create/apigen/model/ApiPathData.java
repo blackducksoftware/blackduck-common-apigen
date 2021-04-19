@@ -31,7 +31,7 @@ public class ApiPathData {
 
     public ApiPathData(final String path, final String resultClass, final boolean hasMultipleResults) {
         this.path = "/api/" + path;
-        this.javaConstant = path.toUpperCase().replace('-', '_') + "_LINK";
+        this.javaConstant = path.toUpperCase().replace('-', '_') + "_PATH";
         this.resultClass = resultClass;
         this.hasMultipleResults = hasMultipleResults;
         this.linkType = hasMultipleResults ? "BlackDuckPathMultipleResponses<" + resultClass + ">" : "BlackDuckPathSingleResponse<" + resultClass + ">";
