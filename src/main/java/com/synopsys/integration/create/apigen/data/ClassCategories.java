@@ -159,6 +159,7 @@ public class ClassCategories {
         populate(RESPONSE, GENERATED, "ComponentVersionRemediatingView");
         populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "ComponentsView");
+        populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
         populate(RESPONSE, GENERATED, "CweView");
         populate(RESPONSE, GENERATED, "HealthChecksLivenessView");
@@ -183,6 +184,10 @@ public class ClassCategories {
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserGroupView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignedUserRequest");
+<<<<<<< HEAD
+=======
+        populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionRemediatingView");
+>>>>>>> f65d2d2ca27a6d2ad983b1f2fc3e0f6baa1186ed
         populate(RESPONSE, ClassSourceEnum.NULL, "HierarchicalVersionBomComponentView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HomepageView");
         populate(RESPONSE, ClassSourceEnum.NULL, "LegacyFilterView");

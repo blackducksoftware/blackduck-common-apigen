@@ -22,11 +22,9 @@
  */
 package com.synopsys.integrations.apigen.maintenance.utility;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,49 +57,31 @@ public class ClassUsageSearcher {
 
     public void findUsersOfSpecificClass(String className, String pathToSource, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
         // Can adjust method to use Java or grep search implementation
-        Process findings = searchForTokenGrep(className, pathToSource);
+        Set<String> findings = searchForToken(className, pathToSource);
         writeUsageToOutputFile(findings, pathToUsageOutputFile, usageOutputFileName);
     }
 
-    private Process searchForTokenGrep(String token, String pathToSource) throws IOException {
-        Runtime runtime = Runtime.getRuntime();
-        String grepCommand = String.format("grep -r -l \"%s %s\"", token, pathToSource);
-        return runtime.exec(grepCommand);
-    }
-
-    private Set<String> searchForTokenJava(String token, String pathToSource) throws IOException {
+    private Set<String> searchForToken(String token, String pathToSource) throws IOException {
         File source = new File(pathToSource);
-        Pattern pattern = Pattern.compile(token);
-        return searchForTokenJava(pattern, source);
+        String regex = String.format(".*%s.*", token);
+        Pattern pattern = Pattern.compile(regex);
+        return searchForToken(pattern, source);
     }
 
-    private Set<String> searchForTokenJava(Pattern pattern, File file) throws IOException {
+    private Set<String> searchForToken(Pattern pattern, File file) throws IOException {
         Set<String> filesContainingToken = new HashSet<>();
         if (file.isDirectory() && file.listFiles() != null) {
             for (File child : file.listFiles()) {
-                filesContainingToken.addAll(searchForTokenJava(pattern, child));
+                filesContainingToken.addAll(searchForToken(pattern, child));
             }
         } else {
             for (String line : FileUtils.readLines(file, StandardCharsets.UTF_8)) {
                 if (pattern.matcher(line).matches()) {
-                    filesContainingToken.add(file.getName());
+                    filesContainingToken.add(file.getCanonicalPath());
                 }
             }
         }
         return filesContainingToken;
-    }
-
-    private void writeUsageToOutputFile(Process process, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        File outputDirectory = DirectoryFinder.getDirectoryFromPath(pathToUsageOutputFile, MISSING_USAGE_OUTPUT_FILE_PATH);
-        File outputFile = new File(outputDirectory, usageOutputFileName);
-        FileWriter writer = new FileWriter(outputFile);
-        String line;
-        while ((line = stdInput.readLine()) != null) {
-            writer.write(line);
-            writer.write("\n");
-        }
-        writer.close();
     }
 
     private void writeUsageToOutputFile(Set<String> usage, String pathToUsageOutputFile, String usageOutputFileName) throws IOException {
