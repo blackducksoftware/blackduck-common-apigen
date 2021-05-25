@@ -46,26 +46,28 @@ public class LinkResponseDefinitions {
         final Map<String, Map<String, LinkResponseDefinitionItem>> definitions = new HashMap<>();
 
         // CodeLocationView
+        //scans is not represented by a string, it is a json object
         final Map<String, LinkResponseDefinitionItem> codeLocationViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem clvScanDefinition = new LinkResponseDefinitionItem(false, "String");
-        codeLocationViewDefinitions.put("scans", clvScanDefinition);
+//        final LinkResponseDefinitionItem clvScanDefinition = new LinkResponseDefinitionItem(false, "String");
+//        codeLocationViewDefinitions.put("scans", clvScanDefinition);
         definitions.put("CodeLocationView", codeLocationViewDefinitions);
 
         // ComponentVersionView
         final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
         //final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
         //componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
+
+        populateThing(componentVersionViewDefinitions, "component", false, "ComponentView");
+
         final LinkResponseDefinitionItem cvvComponentDefinition = new LinkResponseDefinitionItem(false, "ComponentView");
         componentVersionViewDefinitions.put("component", cvvComponentDefinition);
+
         final LinkResponseDefinitionItem cvvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         componentVersionViewDefinitions.put("origins", cvvOriginsDefinition);
         final LinkResponseDefinitionItem cvvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
         componentVersionViewDefinitions.put("vulnerabilities", cvvVulnerabilitiesDefinition);
         final LinkResponseDefinitionItem cvvUpgradeGuidanceDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionUpgradeGuidanceView");
         componentVersionViewDefinitions.put("upgrade-guidance", cvvUpgradeGuidanceDefinition);
-        //TODO remove for 2020.10+, the remediating link was removed in 2020.10+
-        final LinkResponseDefinitionItem cvvRemediationDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionRemediatingView");
-        componentVersionViewDefinitions.put("remediating", cvvRemediationDefinition);
         //final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
         //componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
@@ -84,7 +86,7 @@ public class LinkResponseDefinitions {
 
         // LicenseView
         final Map<String, LinkResponseDefinitionItem> licenseViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem lvTextDefinition = new LinkResponseDefinitionItem(false, "String");
+        final LinkResponseDefinitionItem lvTextDefinition = new LinkResponseDefinitionItem(false, "BlackDuckStringResponse");
         licenseViewDefinitions.put("text", lvTextDefinition);
         definitions.put("LicenseView", licenseViewDefinitions);
 
@@ -122,12 +124,14 @@ public class LinkResponseDefinitions {
         //projectVersionViewDefinitions.put("versionReport", pvvVersionReportDefinition);
         final LinkResponseDefinitionItem pvvLicenseReportsDefinition = new LinkResponseDefinitionItem(true, "ReportView"); // *
         projectVersionViewDefinitions.put("licenseReports", pvvLicenseReportsDefinition);
-        final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionIssuesView");
         projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
         definitions.put("ProjectVersionView", projectVersionViewDefinitions);
 
         // ProjectVersionComponentView
         final Map<String, LinkResponseDefinitionItem> projectVersionComponentViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem pvcvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        projectVersionComponentViewDefinitions.put("component-issues", pvcvIssuesDefinition);
         final LinkResponseDefinitionItem pvcvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
         projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
         final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "ComponentMatchedFilesView");
@@ -136,11 +140,18 @@ public class LinkResponseDefinitions {
         projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
         definitions.put("ProjectVersionComponentView", projectVersionComponentViewDefinitions);
 
+        // ProjectVersionComponentVersionView
+        final Map<String, LinkResponseDefinitionItem> projectVersionComponentVersionViewDefinitions = new HashMap<>();
+        final LinkResponseDefinitionItem pvcvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
+        projectVersionComponentVersionViewDefinitions.put("component-issues", pvcvvIssuesDefinition);
+        definitions.put("ProjectVersionComponentVersionView", projectVersionComponentVersionViewDefinitions);
+
         // ReportView
-        final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem rvContentDefinition = new LinkResponseDefinitionItem(false, "String");
-        reportViewDefinitions.put("content", rvContentDefinition);
-        definitions.put("ReportView", reportViewDefinitions);
+        // content is not a string, it is a json object
+//        final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
+//        final LinkResponseDefinitionItem rvContentDefinition = new LinkResponseDefinitionItem(false, "String");
+//        reportViewDefinitions.put("content", rvContentDefinition);
+//        definitions.put("ReportView", reportViewDefinitions);
 
         // RoleAssignmentView
         final Map<String, LinkResponseDefinitionItem> roleAssignmentViewDefinitions = new HashMap<>();
@@ -175,6 +186,10 @@ public class LinkResponseDefinitions {
         definitions.put("ProjectVersionVulnerableBomComponentsView", projectVersionVulnerableBomComponentsViewDefinitions);
 
         return definitions;
+    }
+
+    private void populateThing(Map<String, LinkResponseDefinitionItem> map, String key, boolean hasMultiple, String resultClass) {
+        map.put(key, new LinkResponseDefinitionItem(hasMultiple, resultClass));
     }
 
     public Map<String, Map<String, LinkResponseDefinitionItem>> getDefinitions() {

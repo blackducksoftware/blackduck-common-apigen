@@ -25,8 +25,8 @@ package com.synopsys.integration.create.apigen.model;
 import com.synopsys.integration.util.Stringable;
 
 public class MediaTypeDefinition extends Stringable {
-    private final String pathRegex;
-    private final String mediaType;
+    public final String pathRegex;
+    public final String mediaType;
 
     public MediaTypeDefinition(final String pathRegex, final String mediaType) {
         this.pathRegex = pathRegex;

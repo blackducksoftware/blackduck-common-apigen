@@ -77,9 +77,10 @@ public class ApiDiscoveryGenerator {
                 logger.info("couldn't find package for: " + resultClass);
             } else {
                 imports.add(importPackage);
-                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH_RESPONSE));
-                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH_SINGLE_RESPONSE));
-                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH_MULTIPLE_RESPONSE));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.HTTP_URL));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_RESPONSE));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.URL_SINGLE_RESPONSE));
+                imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.URL_MULTIPLE_RESPONSES));
                 imports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.BLACKDUCK_PATH));
             }
         }

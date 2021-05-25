@@ -5,4 +5,3 @@ pluginManagement {
 }
 rootProject.name = 'blackduck-common-apigen'
 include 'apigen-maintenance'
-

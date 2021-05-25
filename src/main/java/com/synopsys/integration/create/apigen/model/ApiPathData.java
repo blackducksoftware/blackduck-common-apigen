@@ -25,16 +25,26 @@ package com.synopsys.integration.create.apigen.model;
 public class ApiPathData {
     public final String path;
     public final String javaConstant;
+    public final String javaLabel;
+    public final String urlResponseClass;
+    public final String urlResponseMethod;
     public final String resultClass;
     public final boolean hasMultipleResults;
-    public final String linkType;
 
     public ApiPathData(final String path, final String resultClass, final boolean hasMultipleResults) {
         this.path = "/api/" + path;
-        this.javaConstant = path.toUpperCase().replace('-', '_') + "_LINK";
+        JavaStrings javaStrings = new JavaStrings(path, "PATH");
+        this.javaConstant = javaStrings.getConstant();
+        this.javaLabel = javaStrings.getLabel();
         this.resultClass = resultClass;
         this.hasMultipleResults = hasMultipleResults;
-        this.linkType = hasMultipleResults ? "BlackDuckPathMultipleResponses<" + resultClass + ">" : "BlackDuckPathSingleResponse<" + resultClass + ">";
+        if (this.hasMultipleResults) {
+            this.urlResponseClass = "UrlMultipleResponses";
+            this.urlResponseMethod = "metaMultipleResponses";
+        } else {
+            this.urlResponseClass = "UrlSingleResponse";
+            this.urlResponseMethod = "metaSingleResponse";
+        }
     }
 
     public String getPath() {
@@ -45,6 +55,18 @@ public class ApiPathData {
         return javaConstant;
     }
 
+    public String getJavaLabel() {
+        return javaLabel;
+    }
+
+    public String getUrlResponseClass() {
+        return urlResponseClass;
+    }
+
+    public String getUrlResponseMethod() {
+        return urlResponseMethod;
+    }
+
     public String getResultClass() {
         return resultClass;
     }
@@ -53,7 +75,4 @@ public class ApiPathData {
         return hasMultipleResults;
     }
 
-    public String getLinkType() {
-        return linkType;
-    }
 }

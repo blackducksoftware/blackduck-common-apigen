@@ -38,20 +38,23 @@ public class ClassNameManager {
     public static final String BLACKDUCK_PATH = addClass("BlackDuckPath", CORE_PACKAGE);
     public static final String BLACKDUCK_COMPONENT = addClass("BlackDuckComponent", CORE_PACKAGE);
     public static final String BLACKDUCK_RESPONSE = addClass("BlackDuckResponse", CORE_PACKAGE);
+    public static final String BLACKDUCK_STRING_RESPONSE = addClass("BlackDuckStringResponse", CORE_PACKAGE);
     public static final String BLACKDUCK_VIEW = addClass("BlackDuckView", CORE_PACKAGE);
 
     public static final String API_RESPONSE = addClass("ApiResponse", RESPONSES_PACKAGE);
-    public static final String LINK_RESPONSE = addClass("LinkResponse", RESPONSES_PACKAGE);
 
     public static final String LINK_BLACKDUCK_RESPONSE = addClass("LinkBlackDuckResponse", RESPONSES_PACKAGE);
     public static final String LINK_SINGLE_RESPONSE = addClass("LinkSingleResponse", RESPONSES_PACKAGE);
     public static final String LINK_MULTIPLE_RESPONSES = addClass("LinkMultipleResponses", RESPONSES_PACKAGE);
 
+    public static final String URL_SINGLE_RESPONSE = addClass("UrlSingleResponse", RESPONSES_PACKAGE);
+    public static final String URL_MULTIPLE_RESPONSES = addClass("UrlMultipleResponses", RESPONSES_PACKAGE);
+
+    public static final String HTTP_URL = addClass("HttpUrl", "com.synopsys.integration.rest");
+    public static final String INTEGRATION_EXCEPTION = addClass("IntegrationException", "com.synopsys.integration.exception");
     public static final String BLACKDUCK_PATH_RESPONSE = addClass("BlackDuckPathResponse", RESPONSES_PACKAGE);
     public static final String BLACKDUCK_PATH_SINGLE_RESPONSE = addClass("BlackDuckPathSingleResponse", RESPONSES_PACKAGE);
     public static final String BLACKDUCK_PATH_MULTIPLE_RESPONSE = addClass("BlackDuckPathMultipleResponses", RESPONSES_PACKAGE);
-
-    public static final String LINK_STRING_RESPONSE = addClass("LinkStringResponse", RESPONSES_PACKAGE);
 
     private static String addClass(String className, String packageName) {
         classToPackage.put(className, packageName);

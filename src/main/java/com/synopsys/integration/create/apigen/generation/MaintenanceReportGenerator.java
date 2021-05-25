@@ -26,7 +26,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import org.slf4j.Logger;
@@ -34,14 +33,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
-import com.synopsys.integrations.apigen.maintenance.utility.ApiDiffFinder;
-import com.synopsys.integrations.apigen.maintenance.utility.GithubProjectCloner;
 import com.synopsys.integrations.apigen.maintenance.model.ApiDiff;
+import com.synopsys.integrations.apigen.maintenance.utility.ApiDiffFinder;
 import com.synopsys.integrations.apigen.maintenance.utility.DirectoryFinder;
+import com.synopsys.integrations.apigen.maintenance.utility.GithubProjectCloner;
 
 @Component
 public class MaintenanceReportGenerator {
-
     private Logger logger = LoggerFactory.getLogger(MaintenanceReportGenerator.class);
     private GithubProjectCloner githubProjectCloner = new GithubProjectCloner(logger);
     private ApiDiffFinder apiDiffFinder = new ApiDiffFinder(logger);

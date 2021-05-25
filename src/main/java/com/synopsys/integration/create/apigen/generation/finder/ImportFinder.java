@@ -133,7 +133,8 @@ public class ImportFinder {
         final String responseName = response.getName();
 
         if (!rawLinks.isEmpty()) {
-            linkImports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.LINK_RESPONSE));
+            linkImports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.LINK_BLACKDUCK_RESPONSE));
+            linkImports.add("java.util.Optional");
         }
 
         for (final LinkDefinition rawLink : rawLinks) {
@@ -146,6 +147,8 @@ public class ImportFinder {
                 }
                 final String linkImport = classNameManager.getFullyQualifiedClassName(linkType);
                 linkImports.add(linkImport);
+                final String urlResponseImport = classNameManager.getFullyQualifiedClassName(link.urlResponseType);
+                linkImports.add(urlResponseImport);
 
                 final String resultClass = link.resultClass();
                 if (resultClass != null) {

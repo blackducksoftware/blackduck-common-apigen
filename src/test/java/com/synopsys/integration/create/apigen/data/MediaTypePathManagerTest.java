@@ -15,13 +15,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypePathManager;
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypePathUtility;
 import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.model.MediaTypeData;
 import com.synopsys.integration.create.apigen.model.MediaTypeDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public class MediaTypePathManagerTest {
-
     @Test
     public void mediaTypesTest() throws NullMediaTypeException {
         MediaTypePathManager pathManager = new MediaTypePathManager();
@@ -127,9 +128,9 @@ public class MediaTypePathManagerTest {
     }
 
     private void assertMediaType(String expectedPath, String expectedMediaType, MediaTypeData mediaTypeData) {
-        String pathVariable = MediaTypePathManager.generatePathStatic(expectedPath);
-        String mediaTypeVariable = MediaTypePathManager.generateMediaTypeStatic(expectedMediaType);
-        MediaTypeDefinition expectedDefinition = new MediaTypeDefinition(MediaTypePathManager.generatePathConstant(expectedPath), MediaTypePathManager.generateMediaTypeConstant(expectedMediaType));
+        String pathVariable = MediaTypePathUtility.generatePathStatic(expectedPath);
+        String mediaTypeVariable = MediaTypePathUtility.generateMediaTypeStatic(expectedMediaType);
+        MediaTypeDefinition expectedDefinition = new MediaTypeDefinition(MediaTypePathUtility.generatePathConstant(expectedPath), MediaTypePathUtility.generateMediaTypeConstant(expectedMediaType));
 
         boolean containsPathVar = mediaTypeData.getMediaTypePaths().stream()
                                       .anyMatch(variable -> variable.contains(pathVariable));

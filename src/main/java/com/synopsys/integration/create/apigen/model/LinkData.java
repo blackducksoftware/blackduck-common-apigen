@@ -22,25 +22,35 @@
  */
 package com.synopsys.integration.create.apigen.model;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
-import com.synopsys.integration.create.apigen.data.UtilStrings;
-import com.synopsys.integration.create.apigen.parser.NameParser;
 import com.synopsys.integration.util.Stringable;
 
 public class LinkData extends Stringable {
-    public final String javaConstant;
     public final String label;
-    private boolean hasMultipleResults;
+    public String javaLabel;
+    public final String javaConstant;
     public String resultClass;
     public String linkType;
+    public String urlResponseType;
+    public String metaResponseMethod;
+
+    private boolean hasMultipleResults;
+
     private final Map<String, Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem>> linkResponseDefinitionsList;
 
     public LinkData(final String label, final ResponseDefinition response, final LinkResponseDefinitions linkResponseDefinitions) {
         this.linkResponseDefinitionsList = linkResponseDefinitions.getDefinitions();
         this.label = label;
-        this.javaConstant = label.toUpperCase().replace('-', '_') + "_LINK";
+        JavaStrings javaStrings = new JavaStrings(label, "LINK");
+        javaLabel = javaStrings.getLabel();
+        javaConstant = javaStrings.getConstant();
+
         try {
             final String responseName = response.getName();
             final Map<String, LinkResponseDefinitions.LinkResponseDefinitionItem> linkResponseDefinitionsMap = linkResponseDefinitionsList.get(responseName);
@@ -51,11 +61,9 @@ public class LinkData extends Stringable {
             final String result_class = linkResponseDefinitionItem.getResultClass();
             this.resultClass = result_class;
 
-            if (result_class.equals(UtilStrings.STRING)) {
-                this.linkType = "LinkStringResponse";
-            } else {
-                this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";
-            }
+            this.linkType = this.hasMultipleResults ? "LinkMultipleResponses<" + this.resultClass + ">" : "LinkSingleResponse<" + this.resultClass + ">";
+            this.urlResponseType = this.hasMultipleResults ? "UrlMultipleResponses<" + this.resultClass + ">" : "UrlSingleResponse<" + this.resultClass + ">";
+            this.metaResponseMethod = this.hasMultipleResults ? "metaMultipleResponses" : "metaSingleResponse";
         } catch (final NullPointerException e) {
             this.hasMultipleResults = false;
             this.resultClass = null;
@@ -63,13 +71,19 @@ public class LinkData extends Stringable {
         }
     }
 
-    public String javaConstant() { return this.javaConstant; }
+    public String javaConstant() { return javaConstant; }
 
-    public String getLabel() { return this.label; }
+    public String javaLabel() { return javaLabel; }
 
-    public String resultClass() { return this.resultClass; }
+    public String getLabel() { return label; }
 
-    public String linkType() { return this.linkType; }
+    public String resultClass() { return resultClass; }
+
+    public String linkType() { return linkType; }
+
+    public String urlResponseType() { return urlResponseType; }
+
+    public String metaResponseMethod() { return metaResponseMethod; }
 
     public boolean hasMultipleResults() { return this.hasMultipleResults; }
 

@@ -24,6 +24,7 @@ package com.synopsys.integration.create.apigen;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.*;
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.MaintenanceReportGenerator;

@@ -96,7 +96,9 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectVersionComponentCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentVersionCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentView");
+        populate(VIEW, GENERATED, "ProjectVersionComponentVersionView");
         populate(VIEW, GENERATED, "ProjectVersionCustomFieldView");
+        populate(VIEW, GENERATED, "ProjectVersionIssuesView");
         populate(VIEW, GENERATED, "ProjectVersionLicenseLicensesView");
         populate(VIEW, GENERATED, "ProjectVersionLicenseView");
         populate(VIEW, GENERATED, "ProjectVersionPolicyStatusView");
@@ -182,6 +184,7 @@ public class ClassCategories {
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserGroupView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignedUserRequest");
+        populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionRemediatingView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HierarchicalVersionBomComponentView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HomepageView");
         populate(RESPONSE, ClassSourceEnum.NULL, "LegacyFilterView");
@@ -377,6 +380,8 @@ public class ClassCategories {
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationAttributeView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationFeatureView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationMessageView");
+
+        populate(RESPONSE, MANUAL, "BlackDuckStringResponse");
     }
 
     private void populate(ClassTypeEnum type, ClassSourceEnum source, String className) {

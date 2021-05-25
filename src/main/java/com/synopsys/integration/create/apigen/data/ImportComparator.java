@@ -27,13 +27,11 @@ import java.util.Comparator;
 import org.apache.commons.lang3.StringUtils;
 
 public class ImportComparator implements Comparator<String> {
-
     private static final String PACKAGE_JAVA = "java.";
     private static final String PACKAGE_JAVAX = "javax.";
     private static final String PACKAGE_ORG = "org.";
 
     private ImportComparator() {
-
     }
 
     public static ImportComparator of() {

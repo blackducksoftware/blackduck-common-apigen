@@ -23,7 +23,6 @@
 package com.synopsys.integration.create.apigen.data;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,50 +46,54 @@ public class MissingFieldsAndLinks {
 
         // ComponentPolicyStatusView
         final MissingFieldAndLinkHelper cpsvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        cpsvFieldsAndLinks.addLink(new LinkDefinition("comment", false));
+        cpsvFieldsAndLinks.addLink(new LinkDefinition("comment"));
         missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
 
         // ComponentVersionView
         //TODO remove for 2020.10+, this link was removed in 2020.10+
         final MissingFieldAndLinkHelper cvvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        cvvFieldsAndLinks.addLink(new LinkDefinition("remediating", false));
+        cvvFieldsAndLinks.addLink(new LinkDefinition("remediating"));
         missingFieldAndLinkMap.put("ComponentVersionView", cvvFieldsAndLinks);
 
         // LicenseView
         final MissingFieldAndLinkHelper lvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        lvFieldsAndLinks.addLink(new LinkDefinition("text", false));
+        lvFieldsAndLinks.addLink(new LinkDefinition("text"));
         missingFieldAndLinkMap.put("LicenseView", lvFieldsAndLinks);
 
         // UserView
         final MissingFieldAndLinkHelper uvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        uvFieldsAndLinks.addLink(new LinkDefinition("notifications", false));
-        uvFieldsAndLinks.addLink(new LinkDefinition("projects", false));
-        uvFieldsAndLinks.addLink(new LinkDefinition("roles", false));
-        uvFieldsAndLinks.addLink(new LinkDefinition("inherited-roles", false));
+        uvFieldsAndLinks.addLink(createRequired("notifications"));
+        uvFieldsAndLinks.addLink(createRequired("projects"));
+        uvFieldsAndLinks.addLink(createRequired("roles"));
+        uvFieldsAndLinks.addLink(createRequired("inherited-roles"));
         missingFieldAndLinkMap.put("UserView", uvFieldsAndLinks);
 
         // UserGroupView
         final MissingFieldAndLinkHelper ugvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        ugvFieldsAndLinks.addLink(new LinkDefinition("users", false));
+        ugvFieldsAndLinks.addLink(new LinkDefinition("users"));
         missingFieldAndLinkMap.put("UserGroupView", ugvFieldsAndLinks);
 
         // ReportView
         final MissingFieldAndLinkHelper rvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        rvFieldsAndLinks.addLink(new LinkDefinition("content", false));
+        rvFieldsAndLinks.addLink(new LinkDefinition("content"));
         missingFieldAndLinkMap.put("ReportView", rvFieldsAndLinks);
 
         // RoleAssignmentView
         final MissingFieldAndLinkHelper ravFieldsAndLinks = new MissingFieldAndLinkHelper();
-        ravFieldsAndLinks.addLink(new LinkDefinition("user", false));
+        ravFieldsAndLinks.addLink(new LinkDefinition("user"));
         missingFieldAndLinkMap.put("RoleAssignmentView", ravFieldsAndLinks);
 
         // ProjectVersionVulnerableBomComponentsView
         final MissingFieldAndLinkHelper pvvbcvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        pvvbcvFieldsAndLinks.addLink(new LinkDefinition("matched-files", false));
-        pvvbcvFieldsAndLinks.addLink(new LinkDefinition("vulnerabilities", false));
+        pvvbcvFieldsAndLinks.addLink(new LinkDefinition("matched-files"));
+        pvvbcvFieldsAndLinks.addLink(new LinkDefinition("vulnerabilities"));
         missingFieldAndLinkMap.put("ProjectVersionVulnerableBomComponentsView", pvvbcvFieldsAndLinks);
 
         return missingFieldAndLinkMap;
+    }
+
+    private LinkDefinition createRequired(String label) {
+        return new LinkDefinition(label);
     }
 
     public Set<FieldDefinition> getMissingFields(final String className) {

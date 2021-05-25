@@ -33,7 +33,6 @@ import com.synopsys.integration.create.apigen.model.ApiPathData;
 
 @Component
 public class NameAndPathManager {
-
     private final Set<ApiPathData> apiDiscoveryData;
     private final Set<String> apiDiscoveryDataPaths;
     private final Map<String, String> responseNameOverrides; // should this be in NameParser?  is there a better way to handle this?
@@ -54,13 +53,13 @@ public class NameAndPathManager {
         return apiDiscoveryData;
     }
 
-    public void addApiDiscoveryData(final ApiPathData data) { apiDiscoveryData.add(data); }
+    public void addApiDiscoveryData(ApiPathData data) { apiDiscoveryData.add(data); }
 
-    public boolean isRepeatApiDiscoveryPath(final String path) {
+    public boolean isRepeatApiDiscoveryPath(String path) {
         return apiDiscoveryDataPaths.contains(path);
     }
 
-    public void addApiDiscoveryPath(final String path) {
+    public void addApiDiscoveryPath(String path) {
         apiDiscoveryDataPaths.add(path);
     }
 
@@ -68,7 +67,7 @@ public class NameAndPathManager {
         return nonLinkClassNames;
     }
 
-    public void addNonLinkClassName(final String className) {
+    public void addNonLinkClassName(String className) {
         nonLinkClassNames.add(className);
     }
 
@@ -76,7 +75,7 @@ public class NameAndPathManager {
         return linkClassNames;
     }
 
-    public void addLinkClassName(final String className) {
+    public void addLinkClassName(String className) {
         linkClassNames.add(className);
     }
 
@@ -84,7 +83,7 @@ public class NameAndPathManager {
         return nullLinkResultClasses;
     }
 
-    public void addNullLinkResultClass(final String key, final String value) {
+    public void addNullLinkResultClass(String key, String value) {
         nullLinkResultClasses.put(key, value);
     }
 
