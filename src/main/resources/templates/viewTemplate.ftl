@@ -14,7 +14,7 @@ import ${import};
 </#if>
 public class ${className} extends ${baseClass} <#if buildable??>implements Buildable </#if>{
 <#if hasLinksWithResults??>
-    public static final Map<String, LinkResponse> links = new HashMap<>();
+    public static final Map<String, LinkBlackDuckResponse> links = new HashMap<>();
 
 </#if>
 <#if hasLinks??>
@@ -59,4 +59,18 @@ public class ${className} extends ${baseClass} <#if buildable??>implements Build
     }
 
 </#list>
+<#if hasLinks??>
+    <#list links as link>
+        <#if link.resultClass??>
+    public ${link.urlResponseType()} meta${link.javaLabel()}Link() {
+        return ${link.metaResponseMethod()}(${link.javaConstant()}_RESPONSE);
+    }
+
+    public Optional<${link.urlResponseType()}> meta${link.javaLabel()}LinkSafely() {
+        return ${link.metaResponseMethod()}Safely(${link.javaConstant()}_RESPONSE);
+    }
+
+        </#if>
+    </#list>
+</#if>
 }

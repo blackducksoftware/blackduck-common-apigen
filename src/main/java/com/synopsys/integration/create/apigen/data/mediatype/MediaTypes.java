@@ -20,7 +20,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.data;
+package com.synopsys.integration.create.apigen.data.mediatype;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +31,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MediaTypes {
-
     private static final Map<String, String> LONG_TO_SHORT = new HashMap<>();
     private static final Map<String, String> SHORT_TO_LONG = new HashMap<>();
 
@@ -106,4 +105,5 @@ public class MediaTypes {
     public static String getLongName(final String shortName) {
         return SHORT_TO_LONG.get(shortName);
     }
+
 }

@@ -22,7 +22,7 @@
  */
 package com.synopsys.integration.create.apigen.generation.generators;
 
-import com.synopsys.integration.create.apigen.data.MediaTypePathManager;
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypePathManager;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;

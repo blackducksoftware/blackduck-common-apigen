@@ -46,9 +46,10 @@ public class LinkResponseDefinitions {
         final Map<String, Map<String, LinkResponseDefinitionItem>> definitions = new HashMap<>();
 
         // CodeLocationView
+        //scans is not represented by a string, it is a json object
         final Map<String, LinkResponseDefinitionItem> codeLocationViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem clvScanDefinition = new LinkResponseDefinitionItem(false, "String");
-        codeLocationViewDefinitions.put("scans", clvScanDefinition);
+//        final LinkResponseDefinitionItem clvScanDefinition = new LinkResponseDefinitionItem(false, "String");
+//        codeLocationViewDefinitions.put("scans", clvScanDefinition);
         definitions.put("CodeLocationView", codeLocationViewDefinitions);
 
         // ComponentVersionView
@@ -85,7 +86,7 @@ public class LinkResponseDefinitions {
 
         // LicenseView
         final Map<String, LinkResponseDefinitionItem> licenseViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem lvTextDefinition = new LinkResponseDefinitionItem(false, "String");
+        final LinkResponseDefinitionItem lvTextDefinition = new LinkResponseDefinitionItem(false, "BlackDuckStringResponse");
         licenseViewDefinitions.put("text", lvTextDefinition);
         definitions.put("LicenseView", licenseViewDefinitions);
 
@@ -146,10 +147,11 @@ public class LinkResponseDefinitions {
         definitions.put("ProjectVersionComponentVersionView", projectVersionComponentVersionViewDefinitions);
 
         // ReportView
-        final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem rvContentDefinition = new LinkResponseDefinitionItem(false, "String");
-        reportViewDefinitions.put("content", rvContentDefinition);
-        definitions.put("ReportView", reportViewDefinitions);
+        // content is not a string, it is a json object
+//        final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
+//        final LinkResponseDefinitionItem rvContentDefinition = new LinkResponseDefinitionItem(false, "String");
+//        reportViewDefinitions.put("content", rvContentDefinition);
+//        definitions.put("ReportView", reportViewDefinitions);
 
         // RoleAssignmentView
         final Map<String, LinkResponseDefinitionItem> roleAssignmentViewDefinitions = new HashMap<>();

@@ -20,8 +20,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.synopsys.integration.create.apigen.data;
+package com.synopsys.integration.create.apigen.data.mediatype;
 
+import static com.synopsys.integration.create.apigen.data.mediatype.ExtraMediaTypeDefinitions.*;
+
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -42,6 +45,10 @@ import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 public class MediaTypePathManager {
     public static final String UUID_REGEX = "\\\\b[a-f0-9]{8}\\\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\\\b[a-f0-9]{12}\\\\b";
     public static final String UUID_TOKEN = "\" + UUID_REGEX + \"";
+
+    public static final Set<MediaTypeDefinition> PATH_OVERRIDES = new HashSet<>(Arrays.asList(COMPONENTS_LICENSE, LICENSE));
+    public static final Set<String> PATH_REGEX_OVERRIDES = PATH_OVERRIDES.stream().map(MediaTypeDefinition::getPathRegex).collect(Collectors.toSet());
+
     private final Map<String, MediaTypeDefinition> mediaTypeMappings;
     private final Set<String> ignoredSegments;
     private final Set<String> uniqueMediaTypes;
@@ -52,77 +59,10 @@ public class MediaTypePathManager {
         uniqueMediaTypes = new HashSet<>();
         uniquePaths = new HashSet<>();
         ignoredSegments = populatePathSegmentsToIgnore();
-        addMissingPaths();
-    }
 
-    public static String generateMediaTypeStatic(String mediaType) {
-        String constantName = generateMediaTypeConstant(mediaType);
-        return generateStaticVariable(constantName, mediaType);
-    }
+        addMissingMappings();
 
-    public static String generateMediaTypeConstant(String mediaType) {
-        String constantName = StringUtils.remove(mediaType, "application/");
-        constantName = StringUtils.replace(constantName, ".", "_");
-        constantName = StringUtils.replace(constantName, "-", "_");
-        constantName = StringUtils.replace(constantName, "+", "_");
-        return constantName.toUpperCase();
-    }
-
-    public static String generatePathStatic(String pathRegex) {
-        String constantName = generatePathConstant(pathRegex);
-        StringBuilder formattedValue = new StringBuilder();
-        formattedValue.append("String.format(\"");
-        formattedValue.append(pathRegex);
-        formattedValue.append("\"");
-        int uuidConstantCount = StringUtils.countMatches(pathRegex, "%s");
-
-        if (uuidConstantCount > 0) {
-            formattedValue.append(", ");
-            for (int index = 0; index < uuidConstantCount; index++) {
-                formattedValue.append("UUID_REGEX");
-                if (index < uuidConstantCount - 1) {
-                    formattedValue.append(", ");
-                }
-            }
-        }
-        formattedValue.append(")");
-
-        return String.format("%s = %s", constantName, formattedValue.toString());
-    }
-
-    public static String generatePathConstant(String pathRegex) {
-        String constantName = StringUtils.replace(pathRegex, "/", "_");
-        constantName = StringUtils.replace(constantName, "%s", "");
-        constantName = StringUtils.replace(constantName, "__", "_");
-        constantName = StringUtils.replace(constantName, "-", "_");
-        constantName = StringUtils.replace(constantName, "_", "", 1);
-        if (pathRegex.endsWith("%s")) {
-            // if path ends with %s then the constant will end with an '_' character so just add W_ID
-            constantName = String.format("%sWITH_ID", constantName);
-        }
-        return constantName.toUpperCase();
-    }
-
-    public static String generateStaticVariable(String constantVariable, String value) {
-        return String.format("%s = \"%s\"", constantVariable, value);
-    }
-
-    private void addMissingPaths() {
-        //TODO May need to update that for each version of the API.  These are not currently in the API spec that we traverse.
-        String pathRegex;
-
-        pathRegex = "/api/projects/%s/versions/%s/code-locations";
-        addMapping(pathRegex, "application/vnd.blackducksoftware.internal-1+json");
-
-        pathRegex = "/api/projects/%s/versions/%s/license-reports";
-        addMapping(pathRegex, "application/vnd.blackducksoftware.report-4+json");
-
-        pathRegex = "/api/usergroups/%s/users";
-        addMapping(pathRegex, "application/vnd.blackducksoftware.user-4+json");
-
-        pathRegex = "/api/users/%s/notifications";
-        addMapping(pathRegex, "application/vnd.blackducksoftware.notification-4+json");
-
+        PATH_OVERRIDES.stream().forEach(this::addMapping);
     }
 
     public void addMapping(ResponseDefinition responseDefinition) throws NullMediaTypeException {
@@ -133,24 +73,15 @@ public class MediaTypePathManager {
                 throw new NullMediaTypeException(pathPattern);
             }
             String pathRegex = "/api/" + pathPattern;
-            addMapping(pathRegex, mediaType);
-        }
-    }
 
-    private void addMapping(String pathRegex, String mediaType) {
-        uniqueMediaTypes.add(mediaType);
-        uniquePaths.add(pathRegex);
-        String pathConstant = generatePathConstant(pathRegex);
-        String mediaTypeConstant = generateMediaTypeConstant(mediaType);
-        if ("JSON".equals(mediaTypeConstant)) {
-            mediaTypeConstant = "DEFAULT_MEDIA_TYPE";
+            MediaTypeDefinition mediaTypeDefinition = new MediaTypeDefinition(pathRegex, mediaType);
+            addMapping(mediaTypeDefinition);
         }
-        mediaTypeMappings.put(pathRegex, new MediaTypeDefinition(pathConstant, mediaTypeConstant));
     }
 
     public List<MediaTypeDefinition> getMediaTypeMappings() {
         List<MediaTypeDefinition> mediaTypes = mediaTypeMappings.values().stream()
-                                                    .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
+                                                   .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
                                                     .collect(Collectors.toList());
         return mediaTypes;
     }
@@ -158,18 +89,40 @@ public class MediaTypePathManager {
     public MediaTypeData getMediaTypeData() {
         List<String> mediaTypeConstants = uniqueMediaTypes.stream()
                                               .sorted()
-                                              .map(MediaTypePathManager::generateMediaTypeStatic)
+                                              .map(MediaTypePathUtility::generateMediaTypeStatic)
                                               .filter(variable -> !variable.startsWith("JSON"))
                                               .collect(Collectors.toList());
         List<String> mediaTypePaths = uniquePaths.stream()
                                           .sorted()
-                                          .map(MediaTypePathManager::generatePathStatic)
+                                          .map(MediaTypePathUtility::generatePathStatic)
                                           .collect(Collectors.toList());
         List<MediaTypeDefinition> sortedDefintions = mediaTypeMappings.values().stream()
                                                          .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
                                                          .collect(Collectors.toList());
 
         return new MediaTypeData(mediaTypeConstants, mediaTypePaths, sortedDefintions);
+    }
+
+    private void addMissingMappings() {
+        //TODO May need to update these for each version of the API.  These are not currently in the API spec that we traverse.
+        addMapping(CODE_LOCATIONS);
+        addMapping(LICENSE_REPORTS);
+        addMapping(USERS);
+        addMapping(NOTIFICATIONS);
+    }
+
+    private void addMapping(MediaTypeDefinition mediaTypeDefinition) {
+        uniqueMediaTypes.add(mediaTypeDefinition.mediaType);
+        uniquePaths.add(mediaTypeDefinition.pathRegex);
+        String pathConstant = MediaTypePathUtility.generatePathConstant(mediaTypeDefinition.pathRegex);
+        String mediaTypeConstant = MediaTypePathUtility.generateMediaTypeConstant(mediaTypeDefinition.mediaType);
+        if ("JSON".equals(mediaTypeConstant)) {
+            mediaTypeConstant = "DEFAULT_MEDIA_TYPE";
+        }
+
+        if (!mediaTypeMappings.containsKey(mediaTypeDefinition.pathRegex) || !PATH_REGEX_OVERRIDES.contains(mediaTypeDefinition.pathRegex)) {
+            mediaTypeMappings.put(mediaTypeDefinition.pathRegex, new MediaTypeDefinition(pathConstant, mediaTypeConstant));
+        }
     }
 
     private String createPathRegex(String apiResponsePath) {
@@ -211,4 +164,5 @@ public class MediaTypePathManager {
 
         return segmentsToIgnore;
     }
+
 }

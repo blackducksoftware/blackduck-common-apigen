@@ -184,10 +184,7 @@ public class ClassCategories {
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserGroupView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignableUserView");
         populate(RESPONSE, ClassSourceEnum.NULL, "AssignedUserRequest");
-<<<<<<< HEAD
-=======
         populate(RESPONSE, ClassSourceEnum.NULL, "ComponentVersionRemediatingView");
->>>>>>> f65d2d2ca27a6d2ad983b1f2fc3e0f6baa1186ed
         populate(RESPONSE, ClassSourceEnum.NULL, "HierarchicalVersionBomComponentView");
         populate(RESPONSE, ClassSourceEnum.NULL, "HomepageView");
         populate(RESPONSE, ClassSourceEnum.NULL, "LegacyFilterView");
@@ -383,6 +380,8 @@ public class ClassCategories {
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationAttributeView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationFeatureView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationMessageView");
+
+        populate(RESPONSE, MANUAL, "BlackDuckStringResponse");
     }
 
     private void populate(ClassTypeEnum type, ClassSourceEnum source, String className) {

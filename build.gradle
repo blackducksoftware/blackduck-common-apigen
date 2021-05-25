@@ -4,18 +4,17 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id 'org.springframework.boot' version '2.4.5'
 }
 
-apply plugin: 'io.spring.dependency-management'
-
 version = '0.0.1-SNAPSHOT'
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.synopsys.integration.solution'
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
 
-    implementation 'com.synopsys.integration:integration-common:24.3.0'
+    implementation 'com.synopsys.integration:integration-common:25.0.0'
     implementation 'com.opencsv:opencsv:4.6'
 
     implementation 'org.freemarker:freemarker:2.3.25-incubating'
