@@ -157,6 +157,7 @@ public class ClassCategories {
         populate(RESPONSE, GENERATED, "ComponentVersionRemediatingView");
         populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "ComponentsView");
+        populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
         populate(RESPONSE, GENERATED, "CweView");
         populate(RESPONSE, GENERATED, "HealthChecksLivenessView");
