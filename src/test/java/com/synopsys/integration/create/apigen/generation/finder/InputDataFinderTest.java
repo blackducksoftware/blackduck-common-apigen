@@ -1,8 +1,7 @@
 package com.synopsys.integration.create.apigen.generation.finder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.synopsys.integration.create.apigen.GeneratorConfig;
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
 import com.synopsys.integration.create.apigen.data.LinkResponseDefinitions;
@@ -44,7 +42,7 @@ public class InputDataFinderTest {
 
         Set<LinkData> links = new HashSet<>();
         links.add(new LinkData("label", new ResponseDefinition("", "", "", false), new LinkResponseDefinitions()));
-        Map<String, Object> inputData2 = inputDataFinder.getInputData(new ClassTypeData(ClassTypeEnum.COMMON, mockFilePathUtil), new HashSet<>(), "", new HashSet<>(),  links, "");
+        Map<String, Object> inputData2 = inputDataFinder.getInputData(new ClassTypeData(ClassTypeEnum.COMMON, mockFilePathUtil), new HashSet<>(), "", new HashSet<>(), links, "");
 
         assertEquals(11, inputData2.size());
     }

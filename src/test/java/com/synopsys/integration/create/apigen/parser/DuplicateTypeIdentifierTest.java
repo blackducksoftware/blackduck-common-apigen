@@ -1,12 +1,10 @@
 package com.synopsys.integration.create.apigen.parser;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Assertions;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
@@ -24,6 +22,6 @@ public class DuplicateTypeIdentifierTest {
         duplicateTypeIdentifier.screenForDuplicateType(enum1, enum1.getType());
         duplicateTypeIdentifier.screenForDuplicateType(enum2, enum2.getType());
 
-        Assertions.assertEquals("Enum1", duplicateOverrides.getOverride("Enum2"));
+        assertEquals("Enum1", duplicateOverrides.getOverride("Enum2"));
     }
 }
