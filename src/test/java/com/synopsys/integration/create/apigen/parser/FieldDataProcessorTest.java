@@ -1,10 +1,10 @@
 package com.synopsys.integration.create.apigen.parser;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
@@ -48,11 +48,11 @@ public class FieldDataProcessorTest {
 
     private void assertHasExpectedType(RawFieldDefinition object, String parentName, String expectedType) {
         FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides()));
-        Assertions.assertTrue(fieldDataProcessor.process(object, parentName).getType().equals(expectedType));
+        assertTrue(fieldDataProcessor.process(object, parentName).getType().equals(expectedType));
     }
 
     private void assertHasExpectedPath(RawFieldDefinition object, String parentName, String expectedPath) {
         FieldDataProcessor fieldDataProcessor = new FieldDataProcessor(new TypeTranslator(), new DuplicateTypeIdentifier(new DuplicateOverrides()));
-        Assertions.assertTrue(fieldDataProcessor.process(object, parentName).getPath().equals(expectedPath));
+        assertTrue(fieldDataProcessor.process(object, parentName).getPath().equals(expectedPath));
     }
 }

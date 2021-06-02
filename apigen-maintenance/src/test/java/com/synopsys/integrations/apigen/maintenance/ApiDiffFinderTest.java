@@ -1,5 +1,8 @@
 package com.synopsys.integrations.apigen.maintenance;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -7,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +40,9 @@ public class ApiDiffFinderTest {
         ApiDiffFinder apiDiffFinder = new ApiDiffFinder(logger);
         Set<String> missingFromTest = apiDiffFinder.checkForMissingClasses(controlClasses, testClasses);
 
-        Assertions.assertEquals(2, missingFromTest.size());
+        assertEquals(2, missingFromTest.size());
         String classNamePrefix = "com.synopsys.integration.blackduck.api.generated.view.";
-        Assertions.assertTrue(missingFromTest.contains(classNamePrefix + "ComponentPolicyStatusViewV4"));
-        Assertions.assertTrue(missingFromTest.contains(classNamePrefix + "ComponentMatchedFilesViewV4"));
+        assertTrue(missingFromTest.contains(classNamePrefix + "ComponentPolicyStatusViewV4"));
+        assertTrue(missingFromTest.contains(classNamePrefix + "ComponentMatchedFilesViewV4"));
     }
 }
