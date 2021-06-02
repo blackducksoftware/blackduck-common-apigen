@@ -13,10 +13,9 @@ import com.synopsys.integration.rest.request.Request;
 
 <#include "doNotEdit.ftl">
 public class BlackDuckMediaTypeDiscovery {
-    public static final Set<String> VALUES_TO_REPLACE = new HashSet<>(Arrays.asList(null, Request.DEFAULT_ACCEPT_MIME_TYPE));
-
     public static final String DEFAULT_MEDIA_TYPE = "application/json";
     public static final String UUID_REGEX = "\\b[a-f0-9]{8}\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\b[a-f0-9]{12}\\b";
+    public static final Set<String> VALUES_TO_REPLACE = new HashSet<>(Arrays.asList(null, DEFAULT_MEDIA_TYPE));
 
     <#list mediaTypeData.getMediaTypeConstants() as mediaTypeConstant>
     public static final String ${mediaTypeConstant};
