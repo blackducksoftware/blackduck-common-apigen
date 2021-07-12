@@ -1,0 +1,61 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of copyrights requested",
+    "fields" : [ {
+      "path" : "kbCopyright",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The copyright string from the Knowledge Base, if this copyright is from that source"
+    }, {
+      "path" : "updatedCopyright",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The user-updated copyright string. If it has not been updated and/or was not locally created, this will match kbCopyright."
+    }, {
+      "path" : "fileSha1s",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "A set of hashes of the files found that contained this copyright string"
+    }, {
+      "path" : "active",
+      "type" : "Boolean",
+      "optional" : false,
+      "description" : "Whether the copyright is active or not"
+    }, {
+      "path" : "source",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The source of the copyright string.",
+      "allowedValues" : [ "KB", "KB_MODIFIED", "CUSTOM" ]
+    }, {
+      "path" : "updatedAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The time at which the copyright was last updated locally, if it has been modified"
+    }, {
+      "path" : "updatedBy",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the user who last updated the copyright string locally, if it has been modified"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

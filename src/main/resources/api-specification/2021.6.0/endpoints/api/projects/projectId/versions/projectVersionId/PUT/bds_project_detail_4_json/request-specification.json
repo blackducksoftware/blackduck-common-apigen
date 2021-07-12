@@ -1,0 +1,63 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "phase",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Current phase of development of the version.",
+    "allowedValues" : [ "PLANNING", "DEVELOPMENT", "RELEASED", "DEPRECATED", "ARCHIVED", "PRERELEASE" ]
+  }, {
+    "path" : "releaseComments",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Pertinent comments or notes associated with the version"
+  }, {
+    "path" : "license",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "The combination of licenses to assign to the component version",
+    "fields" : [ {
+      "path" : "licenses[]",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "Related licenses which follow the same structure as the license field"
+    }, {
+      "path" : "type",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relation of contained licenses.",
+      "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+    }, {
+      "path" : "license",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the representation of the license to assign"
+    } ]
+  }, {
+    "path" : "nickname",
+    "type" : "String",
+    "optional" : true,
+    "description" : "An alternative commonly used name or alias for the project version"
+  }, {
+    "path" : "protectedFromDeletion",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Whether or not this project version is protected from automatic deletion"
+  }, {
+    "path" : "versionName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the version"
+  }, {
+    "path" : "distribution",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The distribution of the version.",
+    "allowedValues" : [ "EXTERNAL", "SAAS", "INTERNAL", "OPENSOURCE" ]
+  }, {
+    "path" : "releasedOn",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The Date/Time the project version was released on"
+  } ]
+}

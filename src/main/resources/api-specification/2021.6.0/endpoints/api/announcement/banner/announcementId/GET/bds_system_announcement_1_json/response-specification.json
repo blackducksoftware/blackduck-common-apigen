@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "title",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Banner Title"
+  }, {
+    "path" : "message",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Banner Message"
+  } ],
+  "links" : [ ]
+}

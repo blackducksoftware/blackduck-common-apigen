@@ -1,0 +1,30 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The list of copyright objects to update",
+    "fields" : [ {
+      "path" : "updatedCopyright",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The updated copyright string"
+    }, {
+      "path" : "active",
+      "type" : "Boolean",
+      "optional" : false,
+      "description" : "Whether the updated copyright should be active or not"
+    }, {
+      "path" : "source",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The source of the copyright"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  } ]
+}

@@ -1,0 +1,20 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "fields",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Updates for BOM component custom fields",
+    "fields" : [ {
+      "path" : "customField",
+      "type" : "String",
+      "optional" : false,
+      "description" : "BOM component custom field URL"
+    }, {
+      "path" : "values",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "New values for the BOM component custom field"
+    } ]
+  } ]
+}

@@ -1,0 +1,59 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "The specific sub-set of file level copyright data representations requested",
+    "fields" : [ {
+      "path" : "downloadSha1",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The sha1 encoding of the file contents"
+    }, {
+      "path" : "matchData",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The copyright data for the file"
+    }, {
+      "path" : "matchDataExtra",
+      "type" : "String",
+      "optional" : true,
+      "description" : "This field always returns an empty string and is only present to maintain backwards compatibility"
+    }, {
+      "path" : "startByte",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The byte where the copryright data begins"
+    }, {
+      "path" : "endByte",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The byte where the copyright data ends"
+    }, {
+      "path" : "path",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relative path to the file"
+    }, {
+      "path" : "archivePath",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relative path to the archive file"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ {
+    "rel" : "next",
+    "optional" : true,
+    "description" : "A link to the next page of the results set, present only if there is another page of results"
+  } ]
+}

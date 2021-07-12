@@ -1,0 +1,10 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "state",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The state to apply to user notifications matching provided filters.",
+    "allowedValues" : [ "NEW", "SEEN", "VISITED", "HIDDEN" ]
+  } ]
+}

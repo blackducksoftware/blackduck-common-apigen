@@ -1,0 +1,14 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "password",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The password to verify"
+  }, {
+    "path" : "userName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "User name for password"
+  } ]
+}

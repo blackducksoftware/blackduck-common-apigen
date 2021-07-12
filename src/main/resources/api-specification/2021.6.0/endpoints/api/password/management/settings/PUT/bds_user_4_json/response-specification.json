@@ -1,0 +1,39 @@
+{
+  "fields" : [ {
+    "path" : "complexity",
+    "type" : "Number",
+    "optional" : false,
+    "description" : " Required number of character classes"
+  }, {
+    "path" : "minimumLength",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "Minimum password length"
+  }, {
+    "path" : "maximumLength",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "Maximum password length"
+  }, {
+    "path" : "validateExisting",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Validate existing passwords"
+  }, {
+    "path" : "checkList",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Check against password dictionary"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "enabled",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Check passwords"
+  } ],
+  "links" : [ ]
+}

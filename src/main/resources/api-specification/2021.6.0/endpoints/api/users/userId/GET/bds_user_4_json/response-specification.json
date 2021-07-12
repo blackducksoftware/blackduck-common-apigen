@@ -1,0 +1,96 @@
+{
+  "fields" : [ {
+    "path" : "firstName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The user's first name"
+  }, {
+    "path" : "lastName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The user's last name"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether or not the user is active"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "userName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the user"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The type (internal, external) of the user"
+  }, {
+    "path" : "externalUserName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The external name of the user"
+  }, {
+    "path" : "email",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The user's email address"
+  } ],
+  "links" : [ {
+    "rel" : "change-password",
+    "optional" : false,
+    "description" : "Resource allowing the user to change their password"
+  }, {
+    "rel" : "reset-password",
+    "optional" : false,
+    "description" : "Resource allowing the user to reset their password"
+  }, {
+    "rel" : "roles",
+    "optional" : false,
+    "description" : "Resource representing the roles assigned to this user"
+  }, {
+    "rel" : "usergroups",
+    "optional" : false,
+    "description" : "Resource representing the user groups assigned to this user"
+  }, {
+    "rel" : "inherited-roles",
+    "optional" : false,
+    "description" : "Resource representing the roles inherited by this user"
+  }, {
+    "rel" : "notifications",
+    "optional" : false,
+    "description" : "Resource representing the notifications for this user"
+  }, {
+    "rel" : "notification-counts",
+    "optional" : false,
+    "description" : "Resource representing the notification countss for this user"
+  }, {
+    "rel" : "notification-states",
+    "optional" : false,
+    "description" : "Resource representing the notification states for this user"
+  }, {
+    "rel" : "notification-subscriptions",
+    "optional" : false,
+    "description" : "Resource representing this user's notification subscriptions"
+  }, {
+    "rel" : "projects",
+    "optional" : false,
+    "description" : "Resource representing the projects assigned to this user"
+  }, {
+    "rel" : "assignable-projects",
+    "optional" : false,
+    "description" : "Resource representing this user's assignable projects"
+  }, {
+    "rel" : "last-login",
+    "optional" : false,
+    "description" : "Resource representing the last date this user successfully logged in"
+  }, {
+    "rel" : "profile-image",
+    "optional" : true,
+    "description" : "If Gravatar is enabled, a link to the Gravatar icon associated with the user's email address"
+  } ]
+}

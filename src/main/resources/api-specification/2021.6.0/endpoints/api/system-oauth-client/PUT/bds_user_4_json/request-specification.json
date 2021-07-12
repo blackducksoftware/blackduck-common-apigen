@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "accessTokenValiditySeconds",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The access token validity period for this client"
+  } ]
+}

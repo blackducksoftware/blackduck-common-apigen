@@ -1,0 +1,172 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of license dashboard requested",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The name of the license"
+    }, {
+      "path" : "licenseFamily",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "A summary of the license family",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The name of the license family"
+      }, {
+        "path" : "href",
+        "type" : "String",
+        "optional" : false,
+        "description" : "URL to the representation of the license family"
+      } ]
+    }, {
+      "path" : "ownership",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The ownership status of the license.",
+      "allowedValues" : [ "OPEN_SOURCE", "PROPRIETARY", "UNKNOWN" ]
+    }, {
+      "path" : "licenseSource",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The source of the license.",
+      "allowedValues" : [ "CUSTOM", "KB", "MODIFIED_KB" ]
+    }, {
+      "path" : "licenseStatus",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The approval status of the license.",
+      "allowedValues" : [ "UNREVIEWED", "IN_REVIEW", "REVIEWED", "APPROVED", "CONDITIONALLY_APPROVED", "REJECTED", "DEPRECATED" ]
+    }, {
+      "path" : "notes",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Comments made about the license"
+    }, {
+      "path" : "inUse",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "Describes if the license is currently being used by at least one BOM component"
+    }, {
+      "path" : "createdAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The timestamp for the creation of the license"
+    }, {
+      "path" : "createdBy",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The user who created the license",
+      "fields" : [ {
+        "path" : "userName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's username"
+      }, {
+        "path" : "firstName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's first name"
+      }, {
+        "path" : "lastName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's last name"
+      }, {
+        "path" : "user",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the user who created the license"
+      } ]
+    }, {
+      "path" : "updatedAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The timestamp for the creation of the license"
+    }, {
+      "path" : "updatedBy",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The user who updated the license",
+      "fields" : [ {
+        "path" : "userName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's username"
+      }, {
+        "path" : "firstName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's first name"
+      }, {
+        "path" : "lastName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's last name"
+      }, {
+        "path" : "user",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the user who created the license"
+      } ]
+    }, {
+      "path" : "bomComponentCount",
+      "type" : "Number",
+      "optional" : true,
+      "description" : "The number of BOM Components using the license"
+    }, {
+      "path" : "expirationDate",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The expiration date of the license"
+    }, {
+      "path" : "statusUpdatedAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The timestamp for the update of the license"
+    }, {
+      "path" : "statusUpdatedBy",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The user who updated the status of the license",
+      "fields" : [ {
+        "path" : "userName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's username"
+      }, {
+        "path" : "firstName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's first name"
+      }, {
+        "path" : "lastName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user's last name"
+      }, {
+        "path" : "user",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the user who created the license"
+      } ]
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

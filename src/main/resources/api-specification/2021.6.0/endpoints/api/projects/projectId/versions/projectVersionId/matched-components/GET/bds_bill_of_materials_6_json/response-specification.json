@@ -1,0 +1,45 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of matched components requested",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The name of the matched component"
+    }, {
+      "path" : "version",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The version of the matched component"
+    }, {
+      "path" : "identifier",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The identifier of matched component"
+    }, {
+      "path" : "namespace",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The namespace of the matched component"
+    }, {
+      "path" : "originatesFrom",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The parent dependency of the matched component"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

@@ -1,0 +1,16 @@
+{
+  "parameters" : [ {
+    "name" : "offset",
+    "description" : "The number of results to skip from the beginning of the available set"
+  }, {
+    "name" : "limit",
+    "description" : "The maximum number of results to read from the available set"
+  }, {
+    "name" : "sort",
+    "description" : "A specification of one or more fields to sort results by. Of format `<field> [asc | desc]`. Sortable Fields: [timestamp]"
+  }, {
+    "name" : "filter",
+    "description" : "A specification of properties to <<filtering,filter>> results by. Of format `<filterKey>:<filterValue>`. Supported Filters: [journalObjectType, journalObjectNames, journalTriggerNames, journalDate, journalAction]"
+  } ],
+  "fields" : [ ]
+}

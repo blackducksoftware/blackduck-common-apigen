@@ -1,0 +1,35 @@
+{
+  "fields" : [ {
+    "path" : "updatedBy",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the user who created the copyright"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the copyright is active or not. For newly created copyrights this will be true"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "source",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The source of the copyright string. For newly created copyrights this will be CUSTOM.",
+    "allowedValues" : [ "KB", "KB_MODIFIED", "CUSTOM" ]
+  }, {
+    "path" : "updatedCopyright",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The newly created copyright string"
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The time at which the copyright was created"
+  } ],
+  "links" : [ ]
+}

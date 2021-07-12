@@ -1,0 +1,75 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of announcements returned"
+  }, {
+    "path" : "items",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Announcements",
+    "fields" : [ {
+      "path" : "title",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Announcement title (title or message required)"
+    }, {
+      "path" : "message",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Announcement message (title or message required)"
+    }, {
+      "path" : "enabled",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "Is the announcement enabled (default false)"
+    }, {
+      "path" : "canSuppress",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "Can the announcement be suppressed (default false)"
+    }, {
+      "path" : "startDate",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Announcement start date/time (dafault before now)"
+    }, {
+      "path" : "endDate",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Announcement end date/time (default no end date)"
+    }, {
+      "path" : "createdAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Announcement creation date/time"
+    }, {
+      "path" : "updatedAt",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Announcement last update date/time"
+    }, {
+      "path" : "createdBy",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL for the user who created the announcement"
+    }, {
+      "path" : "updatedBy",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL for the user who last updated the announcement"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  } ],
+  "links" : [ ]
+}

@@ -1,0 +1,56 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of BOM event requested",
+    "fields" : [ {
+      "path" : "eventType",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The type of the BOM event"
+    }, {
+      "path" : "status",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The current status of the event.",
+      "allowedValues" : [ "SUBMITTED", "PROCESSING", "FAILED" ]
+    }, {
+      "path" : "submittedAt",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The time that the event was submitted for processing"
+    }, {
+      "path" : "submittedBy",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "The user who submitted the request to perform the event, as described in <<userSummary,User Summary>>"
+    }, {
+      "path" : "startTime",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The time that the event began processing. Null if the event is still queued"
+    }, {
+      "path" : "errorMessage",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Message describing the error that occurred, if one has occurred. Null if the status is not ERROR"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

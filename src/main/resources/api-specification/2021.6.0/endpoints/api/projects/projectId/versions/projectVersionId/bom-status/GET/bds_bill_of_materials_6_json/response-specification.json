@@ -1,0 +1,15 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "status",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The overall status of the BOM.",
+    "allowedValues" : [ "UP_TO_DATE", "UP_TO_DATE_WITH_ERRORS", "PROCESSING", "PROCESSING_WITH_ERRORS" ]
+  } ],
+  "links" : [ ]
+}

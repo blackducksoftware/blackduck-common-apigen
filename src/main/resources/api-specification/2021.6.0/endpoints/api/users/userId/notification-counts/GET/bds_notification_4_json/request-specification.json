@@ -1,0 +1,7 @@
+{
+  "parameters" : [ {
+    "name" : "filter",
+    "description" : "A specification of properties to <<filtering,filter>> results by. Of format `<filterKey>:<filterValue>`. Supported Filters: [notificationState, notificationType]"
+  } ],
+  "fields" : [ ]
+}

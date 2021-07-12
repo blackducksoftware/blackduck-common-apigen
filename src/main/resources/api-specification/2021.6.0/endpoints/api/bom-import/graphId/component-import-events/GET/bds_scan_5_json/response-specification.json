@@ -1,0 +1,64 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of scan bom entry representations requested",
+    "fields" : [ {
+      "path" : "event",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The type of import event represented"
+    }, {
+      "path" : "importComponentName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The component name provided by the import report"
+    }, {
+      "path" : "importComponentVersionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The component version name provided by the import report"
+    }, {
+      "path" : "protexLicenseName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The license name imported from Protex, if provided"
+    }, {
+      "path" : "componentName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component matched during import"
+    }, {
+      "path" : "componentVersionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component version matched during import"
+    }, {
+      "path" : "externalId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The external ID used for matching"
+    }, {
+      "path" : "failureReason",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The reason a matching failure occurred, if applicable"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ {
+    "rel" : "component-import-events-count",
+    "optional" : false,
+    "description" : "Resource representing the count of each event type associated with the graph"
+  } ]
+}

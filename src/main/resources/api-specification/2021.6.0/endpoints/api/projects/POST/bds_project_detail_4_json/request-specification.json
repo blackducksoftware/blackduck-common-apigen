@@ -1,0 +1,132 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "projectCloneRequest",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Specification of the project cloning request. Only project name is required if projectCloneRequest is provided",
+    "fields" : [ {
+      "path" : "cloningSettings",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The project settings to clone. Possible values are: PROJECT_SETTINGS, USERS_AND_GROUPS, APPLICATION_ID, CUSTOM_FIELD_DATA. Required if projectCloneRequest is provided"
+    }, {
+      "path" : "projectVersionsToClone",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "The URLs of the versions to clone with the project. Required if projectCloneRequest is provided"
+    }, {
+      "path" : "projectToClone",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL of the project to clone. Required if projectCloneRequest is provided"
+    } ]
+  }, {
+    "path" : "projectTier",
+    "type" : "Number",
+    "optional" : true,
+    "description" : "The level of exposure the project has to potential attackers.",
+    "allowedValues" : [ "1", "2", "3", "4", "5" ]
+  }, {
+    "path" : "projectLevelAdjustments",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether BOM level adjustments applied at the project level are propogated to all project versions"
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the project"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Summary of what the project represents in terms of functionality and use"
+  }, {
+    "path" : "projectOwner",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL to the representation of the user to assign as the project's owner"
+  }, {
+    "path" : "cloneCategories",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "The set of categories of data to clone when creating a new project version.",
+    "allowedValues" : [ "COMPONENT_DATA", "VULN_DATA", "LICENSE_TERM_FULFILLMENT", "CUSTOM_FIELD_DATA", "VERSION_SETTINGS" ]
+  }, {
+    "path" : "customSignatureEnabled",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "If the project should be matched against for future scans"
+  }, {
+    "path" : "deepLicenseDataEnabled",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Whether Deep License Data is computed, only used when feature is enabled"
+  }, {
+    "path" : "versionRequest",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Specification of the initial version to create with the project",
+    "fields" : [ {
+      "path" : "versionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The general identifier of the version. Required if versionRequest is provided"
+    }, {
+      "path" : "nickname",
+      "type" : "String",
+      "optional" : true,
+      "description" : "An alternative commonly used name or alias for the project version"
+    }, {
+      "path" : "license",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The combination of licenses to assign to the project version",
+      "fields" : [ {
+        "path" : "type",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The relation of contained licenses.",
+        "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+      }, {
+        "path" : "license",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the license to assign"
+      }, {
+        "path" : "licenses[]",
+        "type" : "Array",
+        "optional" : true,
+        "description" : "Related licenses which follow the same structure as the license field"
+      } ]
+    }, {
+      "path" : "releaseComments",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Pertinent comments or notes associated with the version"
+    }, {
+      "path" : "releasedOn",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The logical date the version became available for usage"
+    }, {
+      "path" : "phase",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The phase in the development life-cycle of the version. Required if versionRequest is provided.",
+      "allowedValues" : [ "PLANNING", "DEVELOPMENT", "RELEASED", "DEPRECATED", "ARCHIVED", "PRERELEASE" ]
+    }, {
+      "path" : "distribution",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The distribution channel of the version. Required if versionRequest is provided.",
+      "allowedValues" : [ "EXTERNAL", "SAAS", "INTERNAL", "OPENSOURCE" ]
+    }, {
+      "path" : "protectedFromDeletion",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "Whether or not the project version is protected from automatic deletion"
+    } ]
+  } ]
+}

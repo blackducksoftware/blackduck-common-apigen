@@ -1,0 +1,14 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "policyStatus",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the Project Manager role includes policy review permissions"
+  }, {
+    "path" : "securityStatus",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the Project Manager role includes security remediation permissions"
+  } ]
+}

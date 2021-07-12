@@ -1,0 +1,41 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "responsibility",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The type of responsibility obligation defined by the license term.",
+    "allowedValues" : [ "FORBIDDEN", "PERMITTED", "REQUIRED" ]
+  }, {
+    "path" : "deprecated",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Whether the license term is deprecated"
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the license term"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The description of the license term"
+  }, {
+    "path" : "category",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "The representation of the license term category summary",
+    "fields" : [ {
+      "path" : "name",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The name of the license category"
+    }, {
+      "path" : "href",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Resource representing the license category"
+    } ]
+  } ]
+}

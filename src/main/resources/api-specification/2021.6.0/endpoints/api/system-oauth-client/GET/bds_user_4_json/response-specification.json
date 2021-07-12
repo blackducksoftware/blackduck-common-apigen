@@ -1,0 +1,41 @@
+{
+  "fields" : [ {
+    "path" : "grantTypes",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Methods by which the client may authenticate.",
+    "allowedValues" : [ "IMPLICIT", "CLIENT_CREDENTIALS", "AUTHORIZATION_CODE", "PASSWORD", "REFRESH_TOKEN" ]
+  }, {
+    "path" : "clientId",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Identifier of the OAuth client"
+  }, {
+    "path" : "registeredRedirectUris",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The pre-defined redirect URI for this client to use during the \"authorization_code\" access grant"
+  }, {
+    "path" : "accessTokenValiditySeconds",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The access token validity period for this client. Accepted value is between '1800' - '86400' seconds"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "scopes",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The types of operations the client may perform.",
+    "allowedValues" : [ "READ", "WRITE", "CLIENT_MANAGEMENT" ]
+  }, {
+    "path" : "refreshTokenValiditySeconds",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The refresh token validity period for this client"
+  } ],
+  "links" : [ ]
+}

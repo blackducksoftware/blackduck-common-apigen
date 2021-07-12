@@ -1,0 +1,151 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of journal events requested",
+    "fields" : [ {
+      "path" : "eventId",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The ID of the journal event. This field is deprecated and will be removed in the future."
+    }, {
+      "path" : "action",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The action associated with the journal event"
+    }, {
+      "path" : "timestamp",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Time/Date the journal event was triggered"
+    }, {
+      "path" : "triggerData",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "The trigger associated with the journal event",
+      "fields" : [ {
+        "path" : "type",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The type of the trigger.",
+        "allowedValues" : [ "USER", "POLICY", "SCAN" ]
+      }, {
+        "path" : "name",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The name of the trigger"
+      }, {
+        "path" : "link",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The link to the trigger"
+      } ]
+    }, {
+      "path" : "objectData",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "The object data associated with the journal event",
+      "fields" : [ {
+        "path" : "type",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The type of object.",
+        "allowedValues" : [ "COMPONENT", "KB_COMPONENT", "KB_COMPONENT_VERSION", "POLICY", "USER", "USER_GROUP", "PROJECT", "SCAN", "SNIPPET", "SOURCE_FILE", "VERSION", "VULNERABILITY", "LICENSE_TERM" ]
+      }, {
+        "path" : "name",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The name of the object"
+      }, {
+        "path" : "link",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The link to the object"
+      } ]
+    }, {
+      "path" : "originalData",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "The journal event's data from prior to this update",
+      "fields" : [ {
+        "path" : "vulnerabilityId",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The vulnerability's ID"
+      }, {
+        "path" : "componentVersion",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The version of the affected component"
+      }, {
+        "path" : "vulnerabilitySource",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The source of the vulnerability's information"
+      }, {
+        "path" : "comment",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user comment on the vulnerability"
+      }, {
+        "path" : "componentName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The name of the affected component"
+      }, {
+        "path" : "remediationStatus",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The remediation status of the vulnerabilty"
+      } ]
+    }, {
+      "path" : "currentData",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "The journal event's new/current data",
+      "fields" : [ {
+        "path" : "vulnerabilityId",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The vulnerability's ID"
+      }, {
+        "path" : "componentVersion",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The version of the affected component"
+      }, {
+        "path" : "vulnerabilitySource",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The source of the vulnerability's information"
+      }, {
+        "path" : "comment",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The user comment on the vulnerability"
+      }, {
+        "path" : "componentName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The name of the affected component"
+      }, {
+        "path" : "remediationStatus",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The remediation status of the vulnerabilty"
+      } ]
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

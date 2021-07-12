@@ -1,0 +1,111 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license family was created"
+  }, {
+    "path" : "updatedBy",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "The user who updated the license family",
+    "fields" : [ {
+      "path" : "userName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The username of the user who updated the license family"
+    }, {
+      "path" : "firstName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The first name of the user who updated the license family"
+    }, {
+      "path" : "lastName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The last name of the user who updated the license family"
+    }, {
+      "path" : "user",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL to the representation of the user who updated the license family"
+    } ]
+  }, {
+    "path" : "createdBy",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "The user who created the license family",
+    "fields" : [ {
+      "path" : "userName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The username of the user who created the license family"
+    }, {
+      "path" : "firstName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The first name of the user who created the license family"
+    }, {
+      "path" : "lastName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The last name of the user who created the license family"
+    }, {
+      "path" : "user",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL to the representation of the user who created the license family"
+    } ]
+  }, {
+    "path" : "licenseFamilyRiskRules",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "License family rules",
+    "fields" : [ {
+      "path" : "usage",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The usage of the license family.",
+      "allowedValues" : [ "SOURCE_CODE", "STATICALLY_LINKED", "DYNAMICALLY_LINKED", "SEPARATE_WORK", "MERELY_AGGREGATED", "IMPLEMENTATION_OF_STANDARD", "PREREQUISITE", "DEV_TOOL_EXCLUDED", "UNSPECIFIED" ]
+    }, {
+      "path" : "releaseDistribution",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The distribution channel of the license family.",
+      "allowedValues" : [ "EXTERNAL", "SAAS", "INTERNAL", "OPENSOURCE" ]
+    }, {
+      "path" : "riskPriority",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The risk priority of the license family.",
+      "allowedValues" : [ "UNKNOWN", "OK", "LOW", "MEDIUM", "HIGH", "CRITICAL" ]
+    } ]
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Label distinguishing the license family from other license families"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The description of the license family"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "source",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The source of the license family.",
+    "allowedValues" : [ "CUSTOM", "KB", "MODIFIED_KB" ]
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Timestamp of when the license family was updated"
+  } ],
+  "links" : [ ]
+}

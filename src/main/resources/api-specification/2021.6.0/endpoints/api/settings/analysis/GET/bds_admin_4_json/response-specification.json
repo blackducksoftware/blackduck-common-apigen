@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "maximumSnippetFileSize",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The maximum file size to analyze for snippet matches"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "customSignatureMatchDepth",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The depth in the file tree to analyze when creating custom signatures"
+  } ],
+  "links" : [ ]
+}

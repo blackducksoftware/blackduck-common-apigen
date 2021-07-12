@@ -1,0 +1,55 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date/time when the code location was created"
+  }, {
+    "path" : "scanSize",
+    "type" : "Number",
+    "optional" : true,
+    "description" : "The sum of the size(s) of all scans associated with the code location"
+  }, {
+    "path" : "mappedProjectVersion",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL specifying the project version linked to the code location"
+  }, {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general summary/identifier of the code location"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "url",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL describing the location of the source"
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date/time when the code location was updated"
+  } ],
+  "links" : [ {
+    "rel" : "scans",
+    "optional" : false,
+    "description" : "Resource listing scans associated with code location"
+  }, {
+    "rel" : "latest-scan",
+    "optional" : false,
+    "description" : "Resource for the latest scan associated with the code location"
+  }, {
+    "rel" : "components",
+    "optional" : true,
+    "description" : "Resource listing the Bill of Materials for the project version associated with the code location"
+  }, {
+    "rel" : "scan-data",
+    "optional" : false,
+    "description" : "A link to download the file that was scanned to create this code location"
+  } ]
+}

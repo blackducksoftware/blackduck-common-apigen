@@ -1,0 +1,9 @@
+{
+  "fields" : [ {
+    "path" : "healthy",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Returns true if the health status check returned healthy, false if unhealthy"
+  } ],
+  "links" : [ ]
+}

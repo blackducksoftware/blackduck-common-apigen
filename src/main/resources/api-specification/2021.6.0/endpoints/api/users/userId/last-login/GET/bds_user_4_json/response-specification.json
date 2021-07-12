@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "lastLogin",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The last recorded date that the user sucessfully logged into the system, or null if the user has never logged in."
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "username",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The username of the user"
+  } ],
+  "links" : [ ]
+}

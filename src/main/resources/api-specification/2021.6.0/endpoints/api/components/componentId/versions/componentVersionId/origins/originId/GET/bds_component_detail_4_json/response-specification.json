@@ -1,0 +1,94 @@
+{
+  "fields" : [ {
+    "path" : "license",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "The combination of licenses assigned to the component version",
+    "fields" : [ {
+      "path" : "type",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The relation of contained licenses.",
+      "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+    }, {
+      "path" : "license",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the representation of the license for the component version"
+    }, {
+      "path" : "licenses",
+      "type" : "Array",
+      "optional" : true,
+      "description" : "Related licenses which follow the same structure as the license object field",
+      "fields" : [ {
+        "path" : "type",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The relation of contained licenses.",
+        "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+      }, {
+        "path" : "license",
+        "type" : "String",
+        "optional" : true,
+        "description" : "URL to the representation of the related license"
+      }, {
+        "path" : "licenses",
+        "type" : "Array",
+        "optional" : true,
+        "description" : "Related licenses which follow the same structure as the license object field"
+      } ]
+    } ]
+  }, {
+    "path" : "originId",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Application identifier of the component version origin"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "source",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The source of data for the component version.",
+    "allowedValues" : [ "CUSTOM", "KB", "KB_MODIFIED" ]
+  }, {
+    "path" : "versionName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the component version"
+  }, {
+    "path" : "releasedOn",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The date the version became available for use"
+  }, {
+    "path" : "originName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The general identifier of the component version origin"
+  } ],
+  "links" : [ {
+    "rel" : "version",
+    "optional" : true,
+    "description" : "Resource representing the component version"
+  }, {
+    "rel" : "vulnerabilities",
+    "optional" : true,
+    "description" : "Resource representing the known vulnerabilities associated with the component version"
+  }, {
+    "rel" : "file-licenses",
+    "optional" : true,
+    "description" : "Resource representing the file-level licenses associated with the component version origin"
+  }, {
+    "rel" : "file-licenses-fuzzy",
+    "optional" : true,
+    "description" : "Resource representing the file-level licenses associated with the component version origin, including licenses that may not be exact matches but match the associated license family"
+  }, {
+    "rel" : "file-copyrights",
+    "optional" : true,
+    "description" : "Resource representing the file-level copyrights associated with the component version"
+  } ]
+}

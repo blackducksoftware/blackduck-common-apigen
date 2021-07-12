@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "customLogo",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Data representing the custom logo image, or `\\\"false\\\"` if no custom logo is to be used"
+  } ]
+}

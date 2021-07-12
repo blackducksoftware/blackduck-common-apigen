@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "subscriptionTarget",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The URL of the project to subscribe to"
+  } ]
+}

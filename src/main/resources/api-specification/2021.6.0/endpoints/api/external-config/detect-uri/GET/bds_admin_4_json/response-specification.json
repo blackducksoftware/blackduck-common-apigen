@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "category",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The name of the external configuration setting."
+  }, {
+    "path" : "value",
+    "type" : "String",
+    "optional" : true,
+    "description" : "What the setting's value is."
+  } ],
+  "links" : [ ]
+}

@@ -1,0 +1,55 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "list of migration records",
+    "fields" : [ {
+      "path" : "from",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The ID of the old object, the URL is not available because the object was migrated"
+    }, {
+      "path" : "to",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The URL of the objects new location"
+    }, {
+      "path" : "detected",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The time the migration was detected"
+    }, {
+      "path" : "migrationType",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The Type of Migration that occurred, MERGE, SPLIT_PRIMARY, or SPLIT_ALTERNATE"
+    }, {
+      "path" : "migratedObjectType",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The Type of Object that was migrated, COMPONENT or COMPONENT_VERSION"
+    }, {
+      "path" : "supplementalComponentId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The URL of the component that was migrated to, only present for Component Versions"
+    } ]
+  }, {
+    "path" : "appliedFilters",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Filters applied to results"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "Total Number of Migrations Found"
+  } ],
+  "links" : [ ]
+}

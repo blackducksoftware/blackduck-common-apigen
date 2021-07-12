@@ -1,0 +1,70 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  }, {
+    "path" : "items",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of matched file with component representations requested",
+    "fields" : [ {
+      "path" : "issueId",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The application identifier of the issue"
+    }, {
+      "path" : "issueStatus",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The status of the issue"
+    }, {
+      "path" : "issueDescription",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The description of the issue"
+    }, {
+      "path" : "issueAssignee",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The issue assignee"
+    }, {
+      "path" : "issueLink",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The issue link in issue tracker"
+    }, {
+      "path" : "issueCreatedAt",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Date/time the issue was created"
+    }, {
+      "path" : "issueUpdatedAt",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Date/time the issue was updated"
+    }, {
+      "path" : "projectName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component"
+    }, {
+      "path" : "releaseVersion",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component version"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  } ],
+  "links" : [ ]
+}

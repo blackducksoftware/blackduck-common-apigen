@@ -1,0 +1,14 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "role",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to the role's representation"
+  }, {
+    "path" : "scope",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The scope of the role. May be either `server` for a global role, or the URL of a project for a project-scope assignment"
+  } ]
+}

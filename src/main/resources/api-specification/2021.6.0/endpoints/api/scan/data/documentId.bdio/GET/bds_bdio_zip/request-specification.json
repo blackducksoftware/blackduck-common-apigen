@@ -1,0 +1,7 @@
+{
+  "parameters" : [ {
+    "name" : "group",
+    "description" : "Parameter for controlling the grouping of named graphs with the same label. Allowed values: [DOCUMENT, PUBLISHER, LABEL, LABEL_ALL, MERGE]"
+  } ],
+  "fields" : [ ]
+}

@@ -1,0 +1,61 @@
+{
+  "fields" : [ {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "Number of different dependency paths"
+  }, {
+    "path" : "items",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Dependency paths",
+    "fields" : [ {
+      "path" : "count",
+      "type" : "Number",
+      "optional" : false,
+      "description" : "Number of instances of this path"
+    }, {
+      "path" : "type",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Match type, DIRECT or TRANSITIVE"
+    }, {
+      "path" : "path",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "Component dependency path",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Path component name"
+      }, {
+        "path" : "version",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Path component version"
+      }, {
+        "path" : "originId",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Path component origin ID"
+      }, {
+        "path" : "nameSpace",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Path component namespace"
+      }, {
+        "path" : "_meta",
+        "type" : "Object",
+        "optional" : false,
+        "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+      } ]
+    } ]
+  } ],
+  "links" : [ ]
+}

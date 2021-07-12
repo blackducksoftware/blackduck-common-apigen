@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "copyright",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The copyright string to be created"
+  } ]
+}

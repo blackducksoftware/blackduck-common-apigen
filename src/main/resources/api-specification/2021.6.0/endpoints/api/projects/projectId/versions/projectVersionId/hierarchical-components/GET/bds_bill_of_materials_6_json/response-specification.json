@@ -1,0 +1,265 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of hierarchical-components requested",
+    "fields" : [ {
+      "path" : "componentName",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Label distinguishing the component from other components"
+    }, {
+      "path" : "componentVersionName",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Label distinguishing the component version from other versions"
+    }, {
+      "path" : "component",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Reference to the URL representation of the component"
+    }, {
+      "path" : "componentVersion",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Reference to the URL representation of the component version"
+    }, {
+      "path" : "numberOfMatches",
+      "type" : "Number",
+      "optional" : false,
+      "description" : "The number of file matches for this component version"
+    }, {
+      "path" : "licenses",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "Any license(s) associated with the component's use in the project",
+      "fields" : [ {
+        "path" : "licenseDisplay",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Label distinguishing the license from other licenses"
+      }, {
+        "path" : "license",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Reference to the full representation of the license"
+      }, {
+        "path" : "licenses",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "Additional licenses related to this license via the provided type"
+      }, {
+        "path" : "ownership",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The ownership status of the license.",
+        "allowedValues" : [ "OPEN_SOURCE", "PROPRIETARY", "UNKNOWN" ]
+      } ]
+    }, {
+      "path" : "origins",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The distribution origin(s) identified",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "General label for the release within the external system"
+      }, {
+        "path" : "origin",
+        "type" : "String",
+        "optional" : false,
+        "description" : "URL to the origin representation on the system"
+      }, {
+        "path" : "externalNamespace",
+        "type" : "String",
+        "optional" : false,
+        "description" : "Identifier of the external system the release is part of"
+      }, {
+        "path" : "externalId",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The ID of the release in the external system"
+      }, {
+        "path" : "_meta",
+        "type" : "Object",
+        "optional" : false,
+        "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+      } ]
+    }, {
+      "path" : "usages",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The usage(s) of the component within the project.",
+      "allowedValues" : [ "SOURCE_CODE", "STATICALLY_LINKED", "DYNAMICALLY_LINKED", "SEPARATE_WORK", "MERELY_AGGREGATED", "IMPLEMENTATION_OF_STANDARD", "PREREQUISITE", "DEV_TOOL_EXCLUDED", "UNSPECIFIED" ]
+    }, {
+      "path" : "matchTypes",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The types of matches made to the component within the project.",
+      "allowedValues" : [ "FILE_FILES_ADDED_DELETED_AND_MODIFIED", "FILE_DEPENDENCY", "FILE_DEPENDENCY_DIRECT", "FILE_DEPENDENCY_TRANSITIVE", "FILE_EXACT", "FILE_EXACT_FILE_MATCH", "FILE_SOME_FILES_MODIFIED", "MANUAL_BOM_COMPONENT", "MANUAL_BOM_FILE", "PARTIAL_FILE", "SNIPPET", "BINARY", "DIRECT_DEPENDENCY_BINARY", "TRANSITIVE_DEPENDENCY_BINARY" ]
+    }, {
+      "path" : "securityRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with security aspects of the component",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "licenseRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with license aspects of the component",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "operationalRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with operational aspects of the component",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "policyStatus",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Description of policy status of a components.",
+      "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+    }, {
+      "path" : "reviewStatus",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The review status of a component.",
+      "allowedValues" : [ "NOT_REVIEWED", "REVIEWED" ]
+    }, {
+      "path" : "reviewedDetails",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Description of review details on the components",
+      "fields" : [ {
+        "path" : "reviewedAt",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The date/time the version bom component was reviewed at"
+      }, {
+        "path" : "reviewedBy",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The user url of the reviewer"
+      } ]
+    }, {
+      "path" : "aggregateSecurityRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with security aspects of the component and components contained within",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "aggregateLicenseRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with license aspects of the component and components contained within",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "aggregateOperationalRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with operational aspects of the component and components contained within",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "aggregateChildSecurityRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with security aspects of components contained within",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "aggregateChildLicenseRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with license aspects of components contained within",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "aggregateChildOperationalRiskProfile",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Risk levels associated with operational aspects of components contained within",
+      "fields" : [ {
+        "path" : "counts",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The risk at multiple severity levels"
+      } ]
+    }, {
+      "path" : "aggregatePolicyStatus",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Description of policy status of the component and components contained within.",
+      "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+    }, {
+      "path" : "aggregateChildPolicyStatus",
+      "type" : "String",
+      "optional" : false,
+      "description" : "Description of policy status of components contained within.",
+      "allowedValues" : [ "NOT_IN_VIOLATION", "IN_VIOLATION_OVERRIDDEN", "IN_VIOLATION" ]
+    }, {
+      "path" : "componentType",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The type of the component.",
+      "allowedValues" : [ "KB_COMPONENT", "CUSTOM_COMPONENT", "SUB_PROJECT" ]
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

@@ -1,0 +1,15 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Array of user representations to assign",
+    "fields" : [ {
+      "path" : "user",
+      "type" : "String",
+      "optional" : false,
+      "description" : "URL to the user's representation"
+    } ]
+  } ]
+}

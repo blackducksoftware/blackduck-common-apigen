@@ -1,0 +1,29 @@
+{
+  "fields" : [ {
+    "path" : "name",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the token"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : true,
+    "description" : "A detailed description of the key's purpose and use"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "scopes",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The OAuth scopes accessible to the token"
+  }, {
+    "path" : "token",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The token used to access application APIs"
+  } ],
+  "links" : [ ]
+}

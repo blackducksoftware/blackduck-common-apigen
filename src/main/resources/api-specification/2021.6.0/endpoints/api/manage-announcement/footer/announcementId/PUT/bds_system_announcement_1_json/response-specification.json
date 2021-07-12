@@ -1,0 +1,54 @@
+{
+  "fields" : [ {
+    "path" : "createdAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Announcement creation date/time"
+  }, {
+    "path" : "updatedBy",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The URL for the user who last updated the announcement"
+  }, {
+    "path" : "endDate",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Announcement end date/time (default no end date)"
+  }, {
+    "path" : "createdBy",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The URL for the user who created the announcement"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "title",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Announcement title (title or message required)"
+  }, {
+    "path" : "message",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Announcement message (title or message required)"
+  }, {
+    "path" : "enabled",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Is the announcement enabled (default false)"
+  }, {
+    "path" : "startDate",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Announcement start date/time (default before now)"
+  }, {
+    "path" : "updatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Announcement last update date/time"
+  } ],
+  "links" : [ ]
+}

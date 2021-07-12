@@ -1,0 +1,7 @@
+{
+  "parameters" : [ {
+    "name" : "q",
+    "description" : "A specification of search terms to filter results by. Of format `<field1>:<value1>,...`. Searchable Fields: [label]"
+  } ],
+  "fields" : [ ]
+}

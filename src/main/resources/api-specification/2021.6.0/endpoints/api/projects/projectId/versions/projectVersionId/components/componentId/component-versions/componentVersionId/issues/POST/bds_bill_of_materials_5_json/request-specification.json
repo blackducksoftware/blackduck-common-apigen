@@ -1,0 +1,39 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "issueStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The status of the issue"
+  }, {
+    "path" : "issueUpdatedAt",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Date/time the issue was updated"
+  }, {
+    "path" : "issueId",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The application identifier of the issue"
+  }, {
+    "path" : "issueLink",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The issue link in issue tracker"
+  }, {
+    "path" : "issueDescription",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The description of the issue"
+  }, {
+    "path" : "issueAssignee",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The issue assignee"
+  }, {
+    "path" : "issueCreatedAt",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Date/time the issue was created"
+  } ]
+}

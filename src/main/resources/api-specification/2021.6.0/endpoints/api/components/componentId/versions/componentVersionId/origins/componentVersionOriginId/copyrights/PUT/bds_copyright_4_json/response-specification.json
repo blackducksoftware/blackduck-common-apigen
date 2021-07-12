@@ -1,0 +1,14 @@
+{
+  "fields" : [ {
+    "path" : "resourceMetadata",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "numberOfUpdates",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The number of copyrights that were updated"
+  } ],
+  "links" : [ ]
+}

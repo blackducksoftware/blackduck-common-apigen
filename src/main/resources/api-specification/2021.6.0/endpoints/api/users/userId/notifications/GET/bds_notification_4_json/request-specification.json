@@ -1,0 +1,22 @@
+{
+  "parameters" : [ {
+    "name" : "offset",
+    "description" : "The number of results to skip from the beginning of the available set"
+  }, {
+    "name" : "limit",
+    "description" : "The maximum number of results to read from the available set"
+  }, {
+    "name" : "sort",
+    "description" : "A specification of one or more fields to sort results by. Of format `<field> [asc | desc]`. Sortable Fields: [notification.createdOn]"
+  }, {
+    "name" : "filter",
+    "description" : "A specification of properties to <<filtering,filter>> results by. Of format `<filterKey>:<filterValue>`. Supported Filters: [notificationState, notificationType]"
+  }, {
+    "name" : "startDate",
+    "description" : "Reduces returned resources to those created after/at the indicated <<schema,timestamp>>"
+  }, {
+    "name" : "endDate",
+    "description" : "Reduces returned resources to those created before/at the indicated <<schema,timestamp>>"
+  } ],
+  "fields" : [ ]
+}

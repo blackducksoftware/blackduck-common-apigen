@@ -1,0 +1,14 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "maximumSnippetFileSize",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The maximum file size to analyze for snippet matches"
+  }, {
+    "path" : "customSignatureMatchDepth",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The depth in the file tree to analyze when creating custom signatures"
+  } ]
+}

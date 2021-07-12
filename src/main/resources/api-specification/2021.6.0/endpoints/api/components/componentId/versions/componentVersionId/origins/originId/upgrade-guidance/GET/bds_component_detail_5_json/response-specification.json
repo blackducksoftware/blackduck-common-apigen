@@ -1,0 +1,173 @@
+{
+  "fields" : [ {
+    "path" : "component",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to the full representation of the component associated with the versions being operated on"
+  }, {
+    "path" : "longTerm",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Representation of a long-term upgrade to reduce security risk",
+    "fields" : [ {
+      "path" : "version",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the full representation of the version recommended"
+    }, {
+      "path" : "versionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the version recommended"
+    }, {
+      "path" : "origin",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the full represention of the specific origin recommended, if provided"
+    }, {
+      "path" : "originName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the specific origin recommended, if provided"
+    }, {
+      "path" : "originExternalNamespace",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The external namespace of the specific origin recommended, if provided"
+    }, {
+      "path" : "originExternalId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The external ID of the specific origin recommended, if provided"
+    }, {
+      "path" : "vulnerabilityRisk",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "Representation of the scale of risk presented by the recommended version. Takes into account vulnerability priority settings",
+      "fields" : [ {
+        "path" : "critical",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of critical security vulnerabilities in the version"
+      }, {
+        "path" : "high",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of high security vulnerabilities in the version"
+      }, {
+        "path" : "medium",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of medium security vulnerabilities in the version"
+      }, {
+        "path" : "low",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of low security vulnerabilities in the version"
+      } ]
+    } ]
+  }, {
+    "path" : "shortTerm",
+    "type" : "Object",
+    "optional" : true,
+    "description" : "Representation of a short-term upgrade to reduce security risk",
+    "fields" : [ {
+      "path" : "version",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the full representation of the version recommended"
+    }, {
+      "path" : "versionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the version recommended"
+    }, {
+      "path" : "origin",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the full represention of the specific origin recommended, if provided"
+    }, {
+      "path" : "originName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the specific origin recommended, if provided"
+    }, {
+      "path" : "originExternalNamespace",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The external namespace of the specific origin recommended, if provided"
+    }, {
+      "path" : "originExternalId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The external ID of the specific origin recommended, if provided"
+    }, {
+      "path" : "vulnerabilityRisk",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "Representation of the scale of risk presented by the recommended version. Takes into account vulnerability priority settings",
+      "fields" : [ {
+        "path" : "critical",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of critical security vulnerabilities in the version"
+      }, {
+        "path" : "high",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of high security vulnerabilities in the version"
+      }, {
+        "path" : "medium",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of medium security vulnerabilities in the version"
+      }, {
+        "path" : "low",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The number of low security vulnerabilities in the version"
+      } ]
+    } ]
+  }, {
+    "path" : "origin",
+    "type" : "String",
+    "optional" : true,
+    "description" : "URL to the full represention of the specific origin currently used, if provided"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "originExternalId",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The external ID of the specific origin currently used, if provided"
+  }, {
+    "path" : "componentName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the component associated with the versions being operated on"
+  }, {
+    "path" : "versionName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the version currently used"
+  }, {
+    "path" : "originExternalNamespace",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The external namespace of the specific origin currently used, if provided"
+  }, {
+    "path" : "version",
+    "type" : "String",
+    "optional" : false,
+    "description" : "URL to the full representation of the version currently used"
+  }, {
+    "path" : "originName",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The name of the specific origin currently used, if provided"
+  } ],
+  "links" : [ ]
+}

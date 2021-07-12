@@ -1,0 +1,213 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of vulnerable components requested",
+    "fields" : [ {
+      "path" : "componentVersion",
+      "type" : "String",
+      "optional" : true,
+      "description" : "URL to the representation of the component version"
+    }, {
+      "path" : "componentName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component"
+    }, {
+      "path" : "componentVersionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component version"
+    }, {
+      "path" : "componentVersionOriginName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The name of the component origin"
+    }, {
+      "path" : "componentVersionOriginId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The ID of the component origin"
+    }, {
+      "path" : "ignored",
+      "type" : "Boolean",
+      "optional" : true,
+      "description" : "True if the component is ignored from the bill of materials, false otherwise"
+    }, {
+      "path" : "license",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The combination of licenses assigned to the component version",
+      "fields" : [ {
+        "path" : "type",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The relation of contained licenses.",
+        "allowedValues" : [ "CONJUNCTIVE", "DISJUNCTIVE" ]
+      }, {
+        "path" : "licenses[]",
+        "type" : "Array",
+        "optional" : true,
+        "description" : "Related licenses which follow the same structure as the license field",
+        "fields" : [ {
+          "path" : "license",
+          "type" : "String",
+          "optional" : true,
+          "description" : "URL to the representation of the license"
+        }, {
+          "path" : "licenses[]",
+          "type" : "Array",
+          "optional" : true,
+          "description" : "Related licenses which follow the same structure as the license field"
+        }, {
+          "path" : "name",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The name of the license"
+        }, {
+          "path" : "ownership",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The ownership status of the license.",
+          "allowedValues" : [ "OPEN_SOURCE", "PROPRIETARY", "UNKNOWN" ]
+        }, {
+          "path" : "licenseDisplay",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The display status of the collection of licenses"
+        } ]
+      }, {
+        "path" : "licenseDisplay",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The display status of the collection of licenses"
+      } ]
+    }, {
+      "path" : "vulnerabilityWithRemediation",
+      "type" : "Object",
+      "optional" : true,
+      "description" : "The vulnerability associated with the BOM component",
+      "fields" : [ {
+        "path" : "vulnerabilityName",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The general identifier of the vulnerability"
+      }, {
+        "path" : "description",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The descroiption of the vulnerability"
+      }, {
+        "path" : "vulnerabilityPublishedDate",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The date/time the vulnerability was published"
+      }, {
+        "path" : "vulnerabilityUpdatedDate",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The date/time the vulnerability was updated"
+      }, {
+        "path" : "baseScore",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "Score summarizing the overall risk presented by the vulnerability"
+      }, {
+        "path" : "overallScore",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The overall score for the vulnerability, considering base and temporal scores"
+      }, {
+        "path" : "exploitabilitySubscore",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "Sub-score detailing the risk presented by current exploit techniques or exploit availability"
+      }, {
+        "path" : "impactSubscore",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "Sub-score detailing the data exposure that occurs if the vulnerability is successfully exploited"
+      }, {
+        "path" : "source",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The vulnerability database/reporting authority this vulnerability originates from.",
+        "allowedValues" : [ "NVD", "BDSA" ]
+      }, {
+        "path" : "severity",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The general level of risk severity presented by the vulnerability.",
+        "allowedValues" : [ "CRITICAL", "HIGH", "MEDIUM", "LOW" ]
+      }, {
+        "path" : "remediationStatus",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The remediation status of the BOM component.",
+        "allowedValues" : [ "DUPLICATE", "IGNORED", "MITIGATED", "NEEDS_REVIEW", "NEW", "PATCHED", "REMEDIATION_COMPLETE", "REMEDIATION_REQUIRED" ]
+      }, {
+        "path" : "cweId",
+        "type" : "String",
+        "optional" : true,
+        "description" : "Identifier of the common weakness enumeration"
+      }, {
+        "path" : "remediationTargetAt",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The targeted remediation date/time for the vulnerability"
+      }, {
+        "path" : "remediationActualAt",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The date/time the vulnerability was actually remediated"
+      }, {
+        "path" : "remediationCreatedAt",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The date/time the vulnerability remediation was created"
+      }, {
+        "path" : "remediationUpdatedAt",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The date/time the vulnerability remediation was updated"
+      }, {
+        "path" : "remediationCreatedBy",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The username of the user who created the vulnerability remediation "
+      }, {
+        "path" : "remediationUpdatedBy",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The username of the user who updated the vulnerability remediation "
+      }, {
+        "path" : "relatedVulnerability",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The related vulnerability of the vulnerability found"
+      } ]
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  }, {
+    "path" : "items",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of vulnerable component representations requested"
+  } ],
+  "links" : [ ]
+}

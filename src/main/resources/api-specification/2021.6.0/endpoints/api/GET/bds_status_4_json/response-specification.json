@@ -1,0 +1,239 @@
+{
+  "fields" : [ {
+    "path" : "components",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for representations of components"
+  }, {
+    "path" : "customFieldTypes",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of assignable <<custom-field-type-list,custom field types>>"
+  }, {
+    "path" : "projects",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for representations of <<project-list,projects>>"
+  }, {
+    "path" : "userStatusFilters",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for representations of user status filters. Deprecated - use links from associated resources instead"
+  }, {
+    "path" : "ldapConfigTest",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location of ldap config test"
+  }, {
+    "path" : "endUserLicenseAgreement",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location representing the End User License Agreement (EULA)"
+  }, {
+    "path" : "roles",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of roles"
+  }, {
+    "path" : "settingsBranding",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location of application branding settings"
+  }, {
+    "path" : "loginAnnouncement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of login announcement"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "ssoStatus",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location representing the current SSO configuration status on the system"
+  }, {
+    "path" : "welcomeAnnouncementManagement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of welcome announcement management"
+  }, {
+    "path" : "notificationStateFilters",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of notification state filters. Deprecated - use links from associated resources instead"
+  }, {
+    "path" : "passwordSettingsManagement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Password settings management"
+  }, {
+    "path" : "vulnerabilityRemidiationReports",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of vulnerability remidiation reports"
+  }, {
+    "path" : "vulnerabilityStatusReports",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of vulnerability status reports"
+  }, {
+    "path" : "ssoIdpMetadata",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location of sso idp metadata"
+  }, {
+    "path" : "loginAnnouncementManagement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of login announcement management"
+  }, {
+    "path" : "bannerAnnouncementManagement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of banner announcement management"
+  }, {
+    "path" : "dormantUsers",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of dormant users"
+  }, {
+    "path" : "ldapState",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location of ldap state"
+  }, {
+    "path" : "settingsRole",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location of role configuration settings"
+  }, {
+    "path" : "customFieldObjects",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of assignable <<custom-field-object-representation,custom field objects>>"
+  }, {
+    "path" : "healthCheckLiveness",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location representing the health check liveness"
+  }, {
+    "path" : "bomImport",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for uploading BOM import files"
+  }, {
+    "path" : "codeLocations",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of <<codelocation-list,code locations>>"
+  }, {
+    "path" : "passwordSecuritySettings",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The password settings for this installation"
+  }, {
+    "path" : "footerAnnouncement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of footer announcement"
+  }, {
+    "path" : "users",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of users"
+  }, {
+    "path" : "detectUri",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location of the Detect URI external configuration setting."
+  }, {
+    "path" : "passwordSecurityValidate",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Validate a password against the current password settings."
+  }, {
+    "path" : "vulnerabilityUpdateReports",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of vulnerability update reports"
+  }, {
+    "path" : "settingsLicenseReview",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location of application license review visibility settings"
+  }, {
+    "path" : "userGroups",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of user groups"
+  }, {
+    "path" : "notificationTypeFilters",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of notification type filters. Deprecated - use links from associated resources instead"
+  }, {
+    "path" : "welcomeAnnouncement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of welcome announcement"
+  }, {
+    "path" : "reloadSsoConfig",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location to reload sso configuration"
+  }, {
+    "path" : "settingsAnalysis",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location of application analysis settings"
+  }, {
+    "path" : "ssoConfiguration",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location of sso configuration"
+  }, {
+    "path" : "bannerAnnouncement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of banner announcement"
+  }, {
+    "path" : "apiDocumentation",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location for the API documentation"
+  }, {
+    "path" : "registration",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for <<registration,registration>> information"
+  }, {
+    "path" : "policyRules",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of policy rules"
+  }, {
+    "path" : "healthCheckReadiness",
+    "type" : "String",
+    "optional" : false,
+    "description" : "Location representing the health check readiness"
+  }, {
+    "path" : "notifications",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representations of <<notification-list,notifications>>"
+  }, {
+    "path" : "footerAnnouncementManagement",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location for representation of footer announcement management"
+  }, {
+    "path" : "vulnerabilityPriorityStatus",
+    "type" : "String",
+    "optional" : true,
+    "description" : "Location of vulnerability priority status"
+  } ],
+  "links" : [ ]
+}

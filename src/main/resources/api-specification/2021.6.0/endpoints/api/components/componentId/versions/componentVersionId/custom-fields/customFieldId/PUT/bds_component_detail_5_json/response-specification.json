@@ -1,0 +1,45 @@
+{
+  "fields" : [ {
+    "path" : "values",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "The data stored in the custom field for this specific component version. Will be null if there is no data stored"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : true,
+    "description" : "A more detailed description of the custom field"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the custom field is active or not. Inactive custom fields are not displayed in the UI"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "position",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The location of the object within the component version's list of custom fields"
+  }, {
+    "path" : "label",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the custom field"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The datatype of the custom field.",
+    "allowedValues" : [ "TEXT", "TEXTAREA", "DROPDOWN", "RADIO", "MULTISELECT", "BOOLEAN", "DATE" ]
+  }, {
+    "path" : "required",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the custom field is required or not"
+  } ],
+  "links" : [ ]
+}

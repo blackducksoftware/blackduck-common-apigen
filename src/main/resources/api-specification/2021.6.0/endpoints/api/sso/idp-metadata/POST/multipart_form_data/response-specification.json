@@ -1,0 +1,19 @@
+{
+  "fields" : [ {
+    "path" : "fileName",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the IDP metadata configuration file"
+  }, {
+    "path" : "fileSize",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The size, in bytes, of the IDP metadata file"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ ]
+}

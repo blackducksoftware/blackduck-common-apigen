@@ -1,0 +1,9 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "applicationId",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The identifier that will be used to map this project to an external system."
+  } ]
+}

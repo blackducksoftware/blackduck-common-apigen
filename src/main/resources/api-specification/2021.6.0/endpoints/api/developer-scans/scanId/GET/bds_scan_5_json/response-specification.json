@@ -1,0 +1,202 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of component result requested",
+    "fields" : [ {
+      "path" : "componentName",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The component name"
+    }, {
+      "path" : "versionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The component version"
+    }, {
+      "path" : "componentIdentifier",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The component identifier"
+    }, {
+      "path" : "externalId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The component external ID"
+    }, {
+      "path" : "originId",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The component original ID"
+    }, {
+      "path" : "violatingPolicies",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The set of policies that the component causes violations",
+      "fields" : [ {
+        "path" : "policyName",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The violating policy name"
+      }, {
+        "path" : "description",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The policy description"
+      }, {
+        "path" : "policySeverity",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The violating policy severity"
+      } ]
+    }, {
+      "path" : "componentViolatingPolicies",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The set of policies violating at component level",
+      "fields" : [ {
+        "path" : "policyName",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The violating policy name"
+      }, {
+        "path" : "description",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The policy description"
+      }, {
+        "path" : "policySeverity",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The violating policy severity"
+      } ]
+    }, {
+      "path" : "policyViolationVulnerabilities",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "List of vulnerabilities causing policy violations",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The vulnerability name"
+      }, {
+        "path" : "description",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The vulnerability description"
+      }, {
+        "path" : "violatingPolicies",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The set of policies violated by the vulnerability",
+        "fields" : [ {
+          "path" : "policyName",
+          "type" : "String",
+          "optional" : false,
+          "description" : "The policy name"
+        }, {
+          "path" : "description",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The policy description"
+        }, {
+          "path" : "policySeverity",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The policy severity"
+        } ]
+      }, {
+        "path" : "overallScore",
+        "type" : "Number",
+        "optional" : true,
+        "description" : "The overall score for the vulnerability"
+      }, {
+        "path" : "vulnSeverity",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The vulnerability severity"
+      }, {
+        "path" : "_meta",
+        "type" : "Object",
+        "optional" : false,
+        "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+      } ]
+    }, {
+      "path" : "policyViolationLicenses",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "List of licenses causing policy violations",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The license name"
+      }, {
+        "path" : "licenseFamilyName",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The license family name"
+      }, {
+        "path" : "violatingPolicies",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The set of policies violated by the license",
+        "fields" : [ {
+          "path" : "policyName",
+          "type" : "String",
+          "optional" : false,
+          "description" : "The policy name"
+        }, {
+          "path" : "description",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The policy description"
+        }, {
+          "path" : "policySeverity",
+          "type" : "String",
+          "optional" : true,
+          "description" : "The policy severity"
+        } ]
+      }, {
+        "path" : "_meta",
+        "type" : "Object",
+        "optional" : false,
+        "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+      } ]
+    }, {
+      "path" : "failedEvaluationPolicies",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The set of policies that threw errors during the evaluation",
+      "fields" : [ {
+        "path" : "policyName",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The policy name that trigger the error"
+      }, {
+        "path" : "errorMessage",
+        "type" : "String",
+        "optional" : true,
+        "description" : "The error message"
+      } ]
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}

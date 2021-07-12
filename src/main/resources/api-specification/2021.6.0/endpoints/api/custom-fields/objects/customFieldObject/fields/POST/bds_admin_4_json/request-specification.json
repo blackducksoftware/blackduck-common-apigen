@@ -1,0 +1,40 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "initialOptions",
+    "type" : "Array",
+    "optional" : true,
+    "description" : "A set of <<custom-field-option-request,custom field options>> to be created alongside the newly created custom field. Should only be used if the custom field type supports options"
+  }, {
+    "path" : "active",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the newly created custom field will be active or not"
+  }, {
+    "path" : "description",
+    "type" : "String",
+    "optional" : true,
+    "description" : "A more detailed description of the custom field"
+  }, {
+    "path" : "label",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The name of the custom field"
+  }, {
+    "path" : "position",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "What position the newly created custom field should appear in, relative to other custom fields on this object"
+  }, {
+    "path" : "type",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The data type of the custom field.",
+    "allowedValues" : [ "TEXT", "TEXTAREA", "DROPDOWN", "RADIO", "MULTISELECT", "BOOLEAN", "DATE" ]
+  }, {
+    "path" : "required",
+    "type" : "Boolean",
+    "optional" : true,
+    "description" : "Whether the custom field is required or not. Default is false"
+  } ]
+}

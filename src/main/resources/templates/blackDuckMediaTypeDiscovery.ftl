@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import com.synopsys.integration.rest.HttpUrl;
-import com.synopsys.integration.rest.request.Request;
 
 <#include "doNotEdit.ftl">
 public class BlackDuckMediaTypeDiscovery {

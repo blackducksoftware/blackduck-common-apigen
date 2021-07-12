@@ -1,0 +1,14 @@
+{
+  "fields" : [ {
+    "path" : "ssoEnabled",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether SSO/SAML is enabled on the system"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ ]
+}

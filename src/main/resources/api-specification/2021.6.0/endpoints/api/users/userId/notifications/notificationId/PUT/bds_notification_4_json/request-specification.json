@@ -1,0 +1,10 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "notificationState",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The state of the notification represented.",
+    "allowedValues" : [ "NEW", "SEEN", "VISITED", "HIDDEN" ]
+  } ]
+}

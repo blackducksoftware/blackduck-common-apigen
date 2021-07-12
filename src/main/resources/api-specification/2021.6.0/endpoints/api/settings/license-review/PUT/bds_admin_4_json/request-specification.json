@@ -1,0 +1,14 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "licenseConflicts",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether license conflicts are shown on the legal tab for review"
+  }, {
+    "path" : "termFulfillment",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether license term fulfillment is shown on the legal tab for review"
+  } ]
+}

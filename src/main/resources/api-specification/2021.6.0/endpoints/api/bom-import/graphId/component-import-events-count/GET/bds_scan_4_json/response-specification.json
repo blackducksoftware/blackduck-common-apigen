@@ -1,0 +1,25 @@
+{
+  "fields" : [ {
+    "path" : "counts[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "An array relating event types to their aggregated count",
+    "fields" : [ {
+      "path" : "event",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The type of event being counted"
+    }, {
+      "path" : "count",
+      "type" : "Number",
+      "optional" : false,
+      "description" : "The number of events of the indicated type"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  } ],
+  "links" : [ ]
+}

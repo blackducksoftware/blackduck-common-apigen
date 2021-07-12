@@ -1,0 +1,15 @@
+{
+  "parameters" : [ ],
+  "fields" : [ {
+    "path" : "[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "Array of user groups to assign",
+    "fields" : [ {
+      "path" : "userGroupUrl",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The application URL of the user group to assign the user to"
+    } ]
+  } ]
+}

@@ -1,0 +1,58 @@
+{
+  "fields" : [ {
+    "path" : "idpMetadataUrl",
+    "type" : "String",
+    "optional" : true,
+    "description" : "The URL of the identity provider metadata, if not using a file upload"
+  }, {
+    "path" : "samlMetadataUrl",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The URL of the SAML metadata"
+  }, {
+    "path" : "groupSynchronizationEnabled",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether Group Synchronization is enabled"
+  }, {
+    "path" : "localLogoutEnabled",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether logging out of the system is enabled"
+  }, {
+    "path" : "ssoEnabled",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether SSO/SAML is enabled on the system"
+  }, {
+    "path" : "spExternalUrl",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The external URL of the service provider"
+  }, {
+    "path" : "spEntityId",
+    "type" : "String",
+    "optional" : false,
+    "description" : "The entity ID of the SAML Service Provider"
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "idpMetadataFileUploaded",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether the identity provider is configured with an uploaded file"
+  }, {
+    "path" : "userCreationEnabled",
+    "type" : "Boolean",
+    "optional" : false,
+    "description" : "Whether user creation is enabled"
+  } ],
+  "links" : [ {
+    "rel" : "sso-idp-metadata",
+    "optional" : true,
+    "description" : "A link to download the identity provider metadata file, if one is uploaded"
+  } ]
+}

@@ -1,0 +1,122 @@
+{
+  "fields" : [ {
+    "path" : "items[]",
+    "type" : "Array",
+    "optional" : false,
+    "description" : "The specific sub-set of component result requested",
+    "fields" : [ {
+      "path" : "componentName",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The component name"
+    }, {
+      "path" : "versionName",
+      "type" : "String",
+      "optional" : true,
+      "description" : "The component version"
+    }, {
+      "path" : "componentIdentifier",
+      "type" : "String",
+      "optional" : false,
+      "description" : "The component identifier"
+    }, {
+      "path" : "violatingPolicyNames",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "The set of policies that the component causes violations"
+    }, {
+      "path" : "policyViolationVulnerabilities",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "List of vulnerabilities causing policy violations",
+      "fields" : [ {
+        "path" : "name",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The vulnerability name"
+      }, {
+        "path" : "description",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The vulnerability description"
+      }, {
+        "path" : "violatingPolicyNames",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The set of policies violated by the vulnerability"
+      }, {
+        "path" : "errorMessage",
+        "type" : "String",
+        "optional" : true,
+        "description" : "Security level policy violation error message"
+      }, {
+        "path" : "warningMessage",
+        "type" : "String",
+        "optional" : true,
+        "description" : "Security level policy violation warning message"
+      }, {
+        "path" : "_meta",
+        "type" : "Object",
+        "optional" : false,
+        "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+      } ]
+    }, {
+      "path" : "policyViolationLicenses",
+      "type" : "Array",
+      "optional" : false,
+      "description" : "List of licenses causing policy violations",
+      "fields" : [ {
+        "path" : "licenseName",
+        "type" : "String",
+        "optional" : false,
+        "description" : "The license name"
+      }, {
+        "path" : "violatingPolicyNames",
+        "type" : "Array",
+        "optional" : false,
+        "description" : "The set of policies violated by the license"
+      }, {
+        "path" : "errorMessage",
+        "type" : "String",
+        "optional" : true,
+        "description" : "License level policy violation error message"
+      }, {
+        "path" : "warningMessage",
+        "type" : "String",
+        "optional" : true,
+        "description" : "License level policy violation warning message"
+      }, {
+        "path" : "_meta",
+        "type" : "Object",
+        "optional" : false,
+        "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+      } ]
+    }, {
+      "path" : "errorMessage",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Component level policy violation error message"
+    }, {
+      "path" : "warningMessage",
+      "type" : "String",
+      "optional" : true,
+      "description" : "Component level policy violation warning message"
+    }, {
+      "path" : "_meta",
+      "type" : "Object",
+      "optional" : false,
+      "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+    } ]
+  }, {
+    "path" : "_meta",
+    "type" : "Object",
+    "optional" : false,
+    "description" : "Meta data associated with the representation, as described in <<metadata,Meta Data>>"
+  }, {
+    "path" : "totalCount",
+    "type" : "Number",
+    "optional" : false,
+    "description" : "The total number of elements available in the result set"
+  } ],
+  "links" : [ ]
+}
