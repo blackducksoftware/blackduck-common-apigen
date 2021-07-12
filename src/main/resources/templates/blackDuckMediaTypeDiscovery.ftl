@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.http.entity.ContentType;
+
 import com.synopsys.integration.rest.HttpUrl;
 
 <#include "doNotEdit.ftl">
 public class BlackDuckMediaTypeDiscovery {
-    public static final String DEFAULT_MEDIA_TYPE = "application/json";
+    public static final String DEFAULT_MEDIA_TYPE = ContentType.APPLICATION_JSON.getMimeType();
     public static final String UUID_REGEX = "\\b[a-f0-9]{8}\\b-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-\\b[a-f0-9]{12}\\b";
     public static final Set<String> VALUES_TO_REPLACE = new HashSet<>(Arrays.asList(null, DEFAULT_MEDIA_TYPE));
 

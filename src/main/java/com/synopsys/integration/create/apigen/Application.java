@@ -49,7 +49,7 @@ import freemarker.template.Version;
 @SpringBootApplication
 @Configuration
 public class Application {
-    static String PATH_TO_API_SPECIFICATION = "/Users/ekerwin/source/blackduck-common-apigen/src/main/resources/api-specification/2021.6.0";
+    static String PATH_TO_API_SPECIFICATION = "/Users/ekerwin/Downloads/api-specification-2021.6.0-20210628.204520-195";
     static String PATH_TO_API_GENERATED_DIRECTORY = "/Users/ekerwin/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/api/generated";
     static String PATH_TO_MAINTENANCE_REPORT = "";
     static String API_SPECIFICATION_VERSION = "2021.6.0";

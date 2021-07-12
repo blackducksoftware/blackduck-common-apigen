@@ -68,6 +68,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "AnnouncementBannerView");
         populate(VIEW, GENERATED, "CodeLocationView");
         populate(VIEW, GENERATED, "ComponentMatchedFilesView");
+        populate(VIEW, GENERATED, "ComponentMigrationsView");
         populate(VIEW, GENERATED, "ComponentPolicyRulesView");
         populate(VIEW, GENERATED, "ComponentVersionLicenseView");
         populate(VIEW, GENERATED, "ComponentVersionLicenseLicensesView");
@@ -82,6 +83,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "HealthChecksLivenessView");
         populate(VIEW, GENERATED, "IssueView");
         populate(VIEW, GENERATED, "JobView");
+        populate(VIEW, GENERATED, "LicenseDashboardView");
         populate(VIEW, GENERATED, "LicenseFamilyView");
         populate(VIEW, GENERATED, "LicenseReportsReportView");
         populate(VIEW, GENERATED, "LicenseTermAssociationView");
