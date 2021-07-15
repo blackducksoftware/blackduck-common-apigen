@@ -53,11 +53,13 @@ public class Application {
     static String PATH_TO_API_GENERATED_DIRECTORY = "";
     static String PATH_TO_MAINTENANCE_REPORT = "";
     static String API_SPECIFICATION_VERSION = "";
+    static String MEDIA_TYPES_CSV_NAME = "minified-media-types.csv";
 
     public static final String API_PATH_SPECIFICATION_KEY = "APIGEN_SPECIFICATION_API_PATH";
     public static final String API_GENERATED_DIRECTORY_PATH_KEY = "APIGEN_GENERATED_DIRECTORY_PATH";
     public static final String MAINTENANCE_REPORT_PATH_KEY = "APIGEN_MAINTENANCE_REPORT_PATH";
     public static final String API_SPECIFICATION_VERSION_KEY = "APIGEN_SPECIFICATION_VERSION";
+    public static final String MEDIA_TYPES_CSV_NAME_KEY = "MEDIA_TYPES_CSV_NAME";
 
     private static final String FREEMARKER_TEMPLATE_DIRECTORY_NAME = "templates";
 
@@ -66,6 +68,7 @@ public class Application {
         PATH_TO_API_GENERATED_DIRECTORY = StringUtils.defaultIfBlank(System.getenv(API_GENERATED_DIRECTORY_PATH_KEY), PATH_TO_API_GENERATED_DIRECTORY);
         PATH_TO_MAINTENANCE_REPORT = StringUtils.defaultIfBlank(System.getenv(MAINTENANCE_REPORT_PATH_KEY), PATH_TO_MAINTENANCE_REPORT);
         API_SPECIFICATION_VERSION = StringUtils.defaultIfBlank(System.getenv(API_SPECIFICATION_VERSION_KEY), API_SPECIFICATION_VERSION);
+        MEDIA_TYPES_CSV_NAME = StringUtils.defaultIfBlank(System.getenv(MEDIA_TYPES_CSV_NAME_KEY), MEDIA_TYPES_CSV_NAME);
 
         SpringApplication.run(Application.class, args);
     }

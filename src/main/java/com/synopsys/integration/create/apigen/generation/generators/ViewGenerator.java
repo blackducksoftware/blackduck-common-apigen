@@ -33,8 +33,6 @@ import org.springframework.stereotype.Component;
 
 import com.synopsys.integration.create.apigen.data.ClassCategories;
 import com.synopsys.integration.create.apigen.data.ClassTypeEnum;
-import com.synopsys.integration.create.apigen.data.MediaTypes;
-import com.synopsys.integration.create.apigen.data.NameAndPathManager;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
 import com.synopsys.integration.create.apigen.generation.FileGenerationData;
@@ -51,10 +49,8 @@ import freemarker.template.Template;
 
 @Component
 public class ViewGenerator {
-    private final MediaTypes mediaTypes;
     private final ImportFinder importFinder;
     private final InputDataFinder inputDataFinder;
-    private final NameAndPathManager nameAndPathManager;
     private final TypeTranslator typeTranslator;
     private final ClassCategories classCategories;
     private final FilePathUtil filePathUtil;
@@ -62,13 +58,11 @@ public class ViewGenerator {
     private final DeprecatedClassGenerator deprecatedClassGenerator;
 
     @Autowired
-    public ViewGenerator(MediaTypes mediaTypes, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator,
+    public ViewGenerator(ImportFinder importFinder, InputDataFinder inputDataFinder, TypeTranslator typeTranslator,
         ClassCategories classCategories, FilePathUtil filePathUtil,
         GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
-        this.mediaTypes = mediaTypes;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
-        this.nameAndPathManager = nameAndPathManager;
         this.typeTranslator = typeTranslator;
         this.classCategories = classCategories;
         this.filePathUtil = filePathUtil;
@@ -76,9 +70,8 @@ public class ViewGenerator {
         this.deprecatedClassGenerator = deprecatedClassGenerator;
     }
 
-    public boolean isApplicable(final ResponseDefinition response) {
-        final Set<String> longMediaTypes = mediaTypes.getLongNames();
-        return (longMediaTypes.contains(response.getMediaType()));
+    public boolean isApplicable(final ResponseDefinition response, Set<String> longMediaTypeNames) {
+        return longMediaTypeNames.contains(response.getMediaType());
     }
 
     public void generateClasses(final ResponseDefinition response, final Template template) {

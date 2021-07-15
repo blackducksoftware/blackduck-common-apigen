@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -103,18 +104,24 @@ public class GeneratorRunner {
     }
 
     private void generateFiles(File apiSpecification) throws Exception {
-        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecification);
+        MediaTypes mediaTypes = parseMediaTypesFromFile(apiSpecification);
+        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecification, mediaTypes);
         accumulateMediaTypes(responses);
-        accumulateGeneratedResponseClassData(responses);
+        accumulateGeneratedResponseClassData(responses, mediaTypes);
         accumulateApiDiscoveryClassData(responses);
         generateDiscoveryClasses();
         deprecatedClassGenerator.generateDeprecatedClasses();
         generatorDataManager.writeFiles();
     }
 
-    private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification) throws IOException {
+    private MediaTypes parseMediaTypesFromFile(File apiSpecificationRoot) {
+        File mediaTypesCsv = new File(apiSpecificationRoot, Application.MEDIA_TYPES_CSV_NAME);
+        return new MediaTypes(mediaTypesCsv);
+    }
+
+    private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification, MediaTypes mediaTypes) {
         ApiParser apiParser = parserFactory.getObject();
-        List<ResponseDefinition> responses = apiParser.parseApi(apiSpecification);
+        List<ResponseDefinition> responses = apiParser.parseApi(apiSpecification, mediaTypes);
         duplicateTypeOverrider.overrideDuplicateTypes(responses);
         for (ResponseDefinition response : responses) {
             String responseName = response.getName();
@@ -134,10 +141,10 @@ public class GeneratorRunner {
         }
     }
 
-    private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses) throws Exception {
+    private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses, MediaTypes mediaTypes) throws Exception {
         Template template = viewGenerator.getTemplate(config);
         for (ResponseDefinition response : responses) {
-            if (viewGenerator.isApplicable(response)) {
+            if (viewGenerator.isApplicable(response, mediaTypes.getLongNames())) {
                 viewGenerator.generateClasses(response, template);
             } else {
                 logger.info("Non-applicable response!");

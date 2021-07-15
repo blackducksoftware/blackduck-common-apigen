@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.data.MediaTypes;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
 import com.synopsys.integration.create.apigen.parser.zip.ZipFileExpandingParser;
@@ -53,7 +54,7 @@ public class ApiGeneratorParser implements ApiParser {
     }
 
     @Override
-    public List<ResponseDefinition> parseApi(final File target) {
+    public List<ResponseDefinition> parseApi(final File target, MediaTypes mediaTypes) {
         if (target.isFile()) {
             String format;
             // we need to use an InputStream where inputStream.markSupported() == true
@@ -61,13 +62,13 @@ public class ApiGeneratorParser implements ApiParser {
                 format = ArchiveStreamFactory.detect(in);
                 if (ArchiveStreamFactory.ZIP.equals(format)) {
                     logger.info("Parsing ZIP file for definitions: {}", target.getAbsolutePath());
-                    return zipFileExpandingParser.parseApi(target);
+                    return zipFileExpandingParser.parseApi(target, mediaTypes);
                 }
             } catch (IOException | ArchiveException ex) {
                 logger.error("Error processing zip file target.", ex);
             }
         }
         logger.info("Parsing target directory for definitions: {}", target.getAbsolutePath());
-        return directoryPathParser.parseApi(target);
+        return directoryPathParser.parseApi(target, mediaTypes);
     }
 }
