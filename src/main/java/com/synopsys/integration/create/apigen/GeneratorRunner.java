@@ -1,24 +1,9 @@
-/**
+/*
  * blackduck-common-apigen
  *
- * Copyright (c) 2020 Synopsys, Inc.
+ * Copyright (c) 2021 Synopsys, Inc.
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
 package com.synopsys.integration.create.apigen;
 
@@ -29,6 +14,7 @@ import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.MaintenanceReportGenerator;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.generators.*;
+import com.synopsys.integration.create.apigen.model.ApiSpecification;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -103,20 +89,16 @@ public class GeneratorRunner {
         maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_GENERATED_DIRECTORY, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
     }
 
-    private void generateFiles(File apiSpecification) throws Exception {
-        MediaTypes mediaTypes = parseMediaTypesFromFile(apiSpecification);
-        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecification, mediaTypes);
+    private void generateFiles(File apiSpecificationFile) throws Exception {
+        ApiSpecification apiSpecification = new ApiSpecification(apiSpecificationFile);
+        MediaTypes mediaTypes = apiSpecification.getMediaTypesFile();
+        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecificationFile, mediaTypes);
         accumulateMediaTypes(responses);
         accumulateGeneratedResponseClassData(responses, mediaTypes);
         accumulateApiDiscoveryClassData(responses);
         generateDiscoveryClasses();
         deprecatedClassGenerator.generateDeprecatedClasses();
         generatorDataManager.writeFiles();
-    }
-
-    private MediaTypes parseMediaTypesFromFile(File apiSpecificationRoot) {
-        File mediaTypesCsv = new File(apiSpecificationRoot, Application.MEDIA_TYPES_CSV_NAME);
-        return new MediaTypes(mediaTypesCsv);
     }
 
     private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification, MediaTypes mediaTypes) {
@@ -144,7 +126,7 @@ public class GeneratorRunner {
     private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses, MediaTypes mediaTypes) throws Exception {
         Template template = viewGenerator.getTemplate(config);
         for (ResponseDefinition response : responses) {
-            if (viewGenerator.isApplicable(response, mediaTypes.getLongNames())) {
+            if (mediaTypes.getLongNames().contains(response.getMediaType())) {
                 viewGenerator.generateClasses(response, template);
             } else {
                 logger.info("Non-applicable response!");

@@ -1,59 +1,51 @@
-/**
+/*
  * blackduck-common-apigen
  *
- * Copyright (c) 2020 Synopsys, Inc.
+ * Copyright (c) 2021 Synopsys, Inc.
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
 package com.synopsys.integration.create.apigen.data;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.synopsys.integration.create.apigen.parser.MediaTypeFileParser;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 public class MediaTypes {
-    private Map<String, String> LONG_TO_SHORT = new HashMap<>();
+    private Set<String> LONG_FORM_NAMES = new HashSet<>();
     private Map<String, String> SHORT_TO_LONG = new HashMap<>();
 
 
     public MediaTypes(File mediaTypesFile) {
-        MediaTypeFileParser mediaTypeFileParser = new MediaTypeFileParser(mediaTypesFile);
-        LONG_TO_SHORT.putAll(mediaTypeFileParser.getLongToShort());
-        SHORT_TO_LONG.putAll(mediaTypeFileParser.getShortToLong());
-    }
+        try {
+            CSVParser csvParser = CSVParser.parse(mediaTypesFile, Charset.defaultCharset(), CSVFormat.DEFAULT);
+            for (CSVRecord csvRecord : csvParser.getRecords()) {
+                String longMediaType = csvRecord.get(0);
+                String shortMediaType = csvRecord.get(1);
 
-    public Set<String> getShortNames() {
-        return new HashSet<>(LONG_TO_SHORT.values());
+                LONG_FORM_NAMES.add(longMediaType);
+                SHORT_TO_LONG.put(shortMediaType, longMediaType);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(String.format("Could not parse media types from %s", mediaTypesFile.getAbsolutePath()));
+        }
     }
 
     public Set<String> getLongNames() {
-        return new HashSet<>(LONG_TO_SHORT.keySet());
+        return LONG_FORM_NAMES;
     }
 
-    public String getShortName(final String longName) {
-        return LONG_TO_SHORT.get(longName);
-    }
 
     public String getLongName(final String shortName) {
         return SHORT_TO_LONG.get(shortName);
     }
+
 }

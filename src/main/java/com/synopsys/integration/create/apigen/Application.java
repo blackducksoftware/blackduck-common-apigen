@@ -53,7 +53,8 @@ public class Application {
     static String PATH_TO_API_GENERATED_DIRECTORY = "";
     static String PATH_TO_MAINTENANCE_REPORT = "";
     static String API_SPECIFICATION_VERSION = "";
-    static String MEDIA_TYPES_CSV_NAME = "minified-media-types.csv";
+
+    public static String MEDIA_TYPES_CSV_NAME = "minified-media-types.csv";
 
     public static final String API_PATH_SPECIFICATION_KEY = "APIGEN_SPECIFICATION_API_PATH";
     public static final String API_GENERATED_DIRECTORY_PATH_KEY = "APIGEN_GENERATED_DIRECTORY_PATH";
