@@ -63,9 +63,6 @@ public class LinkResponseDefinitions {
         componentVersionViewDefinitions.put("vulnerabilities", cvvVulnerabilitiesDefinition);
         final LinkResponseDefinitionItem cvvUpgradeGuidanceDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionUpgradeGuidanceView");
         componentVersionViewDefinitions.put("upgrade-guidance", cvvUpgradeGuidanceDefinition);
-        //TODO remove for 2020.10+, the remediating link was removed in 2020.10+
-        final LinkResponseDefinitionItem cvvRemediationDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionRemediatingView");
-        componentVersionViewDefinitions.put("remediating", cvvRemediationDefinition);
         //final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
         //componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
