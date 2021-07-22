@@ -34,21 +34,6 @@ public class LinkResponseDefinitions {
             new LinkResponseDefinition("scans", false, "BlackDuckStringResponse")
         ));
 
-        // ComponentVersionView
-        final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
-        //final LinkResponseDefinitionItem cvvReferencesDefinition = new LinkResponseDefinitionItem(true, "VersionReferenceView");
-        //componentVersionViewDefinitions.put("references", cvvReferencesDefinition);
-        final LinkResponseDefinitionItem cvvComponentDefinition = new LinkResponseDefinitionItem(false, "ComponentView");
-        componentVersionViewDefinitions.put("component", cvvComponentDefinition);
-        final LinkResponseDefinitionItem cvvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
-        componentVersionViewDefinitions.put("origins", cvvOriginsDefinition);
-        final LinkResponseDefinitionItem cvvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
-        componentVersionViewDefinitions.put("vulnerabilities", cvvVulnerabilitiesDefinition);
-        final LinkResponseDefinitionItem cvvUpgradeGuidanceDefinition = new LinkResponseDefinitionItem(false, "ComponentVersionUpgradeGuidanceView");
-        componentVersionViewDefinitions.put("upgrade-guidance", cvvUpgradeGuidanceDefinition);
-        //final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
-        //componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
-        definitions.put("ComponentVersionView", componentVersionViewDefinitions);
         addToDefinitions("ComponentView", Arrays.asList(
             new LinkResponseDefinition("versions", true, "ComponentVersionView")
             , new LinkResponseDefinition("vulnerabilities", true, "VulnerabilityView")
