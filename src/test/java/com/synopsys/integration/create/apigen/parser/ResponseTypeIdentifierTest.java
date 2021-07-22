@@ -1,10 +1,9 @@
 package com.synopsys.integration.create.apigen.parser;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Assertions;
+import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
@@ -21,7 +20,7 @@ public class ResponseTypeIdentifierTest {
         responseDefinition.addField(new FieldDefinition("_meta", "", false, false));
         responseDefinition.addField(new FieldDefinition("totalCount", "", false, false));
 
-        Assertions.assertEquals(ResponseType.ARRAY, responseTypeIdentifier.getResponseType(responseDefinition));
+        assertEquals(ResponseType.ARRAY, responseTypeIdentifier.getResponseType(responseDefinition));
     }
 
     @Test
@@ -34,7 +33,7 @@ public class ResponseTypeIdentifierTest {
         responseDefinition.addField(new FieldDefinition("_meta", "", false, false));
         responseDefinition.addField(new FieldDefinition("totalCount", "", false, false));
 
-        Assertions.assertEquals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS, responseTypeIdentifier.getResponseType(responseDefinition));
+        assertEquals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS, responseTypeIdentifier.getResponseType(responseDefinition));
     }
 
     @Test
@@ -48,6 +47,6 @@ public class ResponseTypeIdentifierTest {
         responseDefinition.addField(new FieldDefinition("totalCount", "", false, false));
         responseDefinition.addField(new FieldDefinition("legit", "Object", false, false));
 
-        Assertions.assertEquals(ResponseType.STANDARD, responseTypeIdentifier.getResponseType(responseDefinition));
+        assertEquals(ResponseType.STANDARD, responseTypeIdentifier.getResponseType(responseDefinition));
     }
 }

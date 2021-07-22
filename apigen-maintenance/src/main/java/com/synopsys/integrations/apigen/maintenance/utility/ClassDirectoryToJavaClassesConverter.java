@@ -17,7 +17,6 @@ import com.sun.org.apache.bcel.internal.classfile.ClassParser;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 public class ClassDirectoryToJavaClassesConverter {
-
     public List<JavaClass> convertBdCommonApiGeneratedToJavaClassObjects(File apiDirectory) throws IOException {
         File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/synopsys/integration/blackduck/api");
         File generatedDirectory = new File(apiBuildDirectory, "generated");
@@ -35,7 +34,7 @@ public class ClassDirectoryToJavaClassesConverter {
         for (File file : classFileDirectory.listFiles()) {
             if (file.isDirectory() && !excludedDirectories.contains(file)) {
                 javaClasses.addAll(convertClassDirectoryToJavaClassObjects(file, excludedDirectories));
-            } else if (file.getName().endsWith(".class")){
+            } else if (file.getName().endsWith(".class")) {
                 // TODO - this utility gets confused by classes with links (it recognizes the links as fields, and then not any of the class's other fields-which we are more interested in), so should explore other options
                 ClassParser classParser = new ClassParser(file.getAbsolutePath());
                 javaClasses.add(classParser.parse());
@@ -43,4 +42,5 @@ public class ClassDirectoryToJavaClassesConverter {
         }
         return javaClasses;
     }
+
 }

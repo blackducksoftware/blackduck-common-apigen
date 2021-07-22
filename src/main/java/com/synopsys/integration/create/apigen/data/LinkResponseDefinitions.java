@@ -1,55 +1,38 @@
-/**
+/*
  * blackduck-common-apigen
  *
- * Copyright (c) 2020 Synopsys, Inc.
+ * Copyright (c) 2021 Synopsys, Inc.
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
 package com.synopsys.integration.create.apigen.data;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class LinkResponseDefinitions {
+    private final Map<String, Map<String, LinkResponseDefinitionItem>> definitions = new HashMap<>();
 
-    private final Map<String, Map<String, LinkResponseDefinitionItem>> definitions;
-    private final Set<String> linkLabels;
-
-    @Autowired
     public LinkResponseDefinitions() {
-        this.linkLabels = new HashSet<>();
-        this.definitions = populateDefinitions();
-    }
+        addToDefinitions("CodeLocationView", Arrays.asList(
+            new LinkResponseDefinition("scans", false, "BlackDuckStringResponse")
+        ));
 
-    private Map<String, Map<String, LinkResponseDefinitionItem>> populateDefinitions() {
-        final Map<String, Map<String, LinkResponseDefinitionItem>> definitions = new HashMap<>();
+        addToDefinitions("ComponentVersionView", Arrays.asList(
+            new LinkResponseDefinition("component", false, "ComponentView")
+            , new LinkResponseDefinition("origins", true, "OriginView")
+            , new LinkResponseDefinition("vulnerabilities", true, "VulnerabilityView")
+            , new LinkResponseDefinition("upgrade-guidance", false, "ComponentVersionUpgradeGuidanceView")
+        ));
 
-        // CodeLocationView
-        final Map<String, LinkResponseDefinitionItem> codeLocationViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem clvScanDefinition = new LinkResponseDefinitionItem(false, "String");
-        codeLocationViewDefinitions.put("scans", clvScanDefinition);
-        definitions.put("CodeLocationView", codeLocationViewDefinitions);
+        addToDefinitions("CodeLocationView", Arrays.asList(
+            new LinkResponseDefinition("scans", false, "BlackDuckStringResponse")
+        ));
 
         // ComponentVersionView
         final Map<String, LinkResponseDefinitionItem> componentVersionViewDefinitions = new HashMap<>();
@@ -66,127 +49,104 @@ public class LinkResponseDefinitions {
         //final LinkResponseDefinitionItem cvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskView");
         //componentVersionViewDefinitions.put("risk-profile", cvvRiskProfileDefinition);
         definitions.put("ComponentVersionView", componentVersionViewDefinitions);
+        addToDefinitions("ComponentView", Arrays.asList(
+            new LinkResponseDefinition("versions", true, "ComponentVersionView")
+            , new LinkResponseDefinition("vulnerabilities", true, "VulnerabilityView")
+            , new LinkResponseDefinition("tags", true, "TagView")
+            , new LinkResponseDefinition("custom-fields", true, "CustomFieldView")
+        ));
 
-        // ComponentView
-        final Map<String, LinkResponseDefinitionItem> componentViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem cvVersionsDefinition = new LinkResponseDefinitionItem(true, "ComponentVersionView");
-        componentViewDefinitions.put("versions", cvVersionsDefinition);
-        final LinkResponseDefinitionItem cvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
-        componentViewDefinitions.put("vulnerabilities", cvVulnerabilitiesDefinition);
-        final LinkResponseDefinitionItem cvTagsDefinition = new LinkResponseDefinitionItem(true, "TagView");
-        componentViewDefinitions.put("tags", cvTagsDefinition);
-        final LinkResponseDefinitionItem cvCustomFieldsDefinition = new LinkResponseDefinitionItem(true, "CustomFieldView");
-        componentViewDefinitions.put("custom-fields", cvCustomFieldsDefinition);
-        definitions.put("ComponentView", componentViewDefinitions);
+        addToDefinitions("LicenseView", Arrays.asList(
+            new LinkResponseDefinition("text", false, "BlackDuckStringResponse")
+        ));
 
-        // LicenseView
-        final Map<String, LinkResponseDefinitionItem> licenseViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem lvTextDefinition = new LinkResponseDefinitionItem(false, "String");
-        licenseViewDefinitions.put("text", lvTextDefinition);
-        definitions.put("LicenseView", licenseViewDefinitions);
+        addToDefinitions("ProjectView", Arrays.asList(
+            new LinkResponseDefinition("versions", true, "ProjectVersionView")
+            , new LinkResponseDefinition("canonicalVersion", false, "ProjectVersionView")
+            , new LinkResponseDefinition("project-mappings", true, "ProjectMappingView")
+            , new LinkResponseDefinition("tags", true, "TagView")
+            , new LinkResponseDefinition("users", true, "AssignedUserView")
+            , new LinkResponseDefinition("usergroups", true, "AssignedUserGroupView")
+        ));
 
-        // ProjectView
-        final Map<String, LinkResponseDefinitionItem> projectViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem pvVersionsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionView");
-        projectViewDefinitions.put("versions", pvVersionsDefinition);
-        final LinkResponseDefinitionItem pvCanonicalVersionDefinition = new LinkResponseDefinitionItem(false, "ProjectVersionView");
-        projectViewDefinitions.put("canonicalVersion", pvCanonicalVersionDefinition);
-        final LinkResponseDefinitionItem pvProjectMappingsDefinition = new LinkResponseDefinitionItem(true, "ProjectMappingView"); // *
-        projectViewDefinitions.put("project-mappings", pvProjectMappingsDefinition);
-        final LinkResponseDefinitionItem pvTagsDefinition = new LinkResponseDefinitionItem(true, "TagView"); // *
-        projectViewDefinitions.put("tags", pvTagsDefinition);
-        final LinkResponseDefinitionItem pvUsersDefinition = new LinkResponseDefinitionItem(true, "AssignedUserView");
-        projectViewDefinitions.put("users", pvUsersDefinition);
-        final LinkResponseDefinitionItem pvUserGroupsDefinition = new LinkResponseDefinitionItem(true, "AssignedUserGroupView"); // ****
-        projectViewDefinitions.put("usergroups", pvUserGroupsDefinition);
-        definitions.put("ProjectView", projectViewDefinitions);
+        addToDefinitions("ProjectVersionView", Arrays.asList(
+            new LinkResponseDefinition("riskProfile", false, "VersionRiskProfileView")
+            , new LinkResponseDefinition("components", true, "ProjectVersionComponentView")
+            , new LinkResponseDefinition("vulnerable-components", true, "ProjectVersionVulnerableBomComponentsView")
+            , new LinkResponseDefinition("project", false, "ProjectView")
+            , new LinkResponseDefinition("policy-status", false, "ProjectVersionPolicyStatusView")
+            , new LinkResponseDefinition("codelocations", true, "CodeLocationView")
+            , new LinkResponseDefinition("versionReport", true, "ReportView")
+            , new LinkResponseDefinition("licenseReports", true, "ReportView")
+            , new LinkResponseDefinition("issues", true, "ProjectVersionIssuesView")
+        ));
 
-        // ProjectVersionView
-        final Map<String, LinkResponseDefinitionItem> projectVersionViewDefinitions = new HashMap<>();
-        //final LinkResponseDefinitionItem pvvRiskProfileDefinition = new LinkResponseDefinitionItem(false, "VersionRiskProfileView"); *
-        //projectVersionViewDefinitions.put("riskProfile", pvvRiskProfileDefinition);
-        final LinkResponseDefinitionItem pvvComponentsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionComponentView");
-        projectVersionViewDefinitions.put("components", pvvComponentsDefinition);
-        final LinkResponseDefinitionItem pvvVulnerableComponentsDefinition = new LinkResponseDefinitionItem(true, "ProjectVersionVulnerableBomComponentsView");
-        projectVersionViewDefinitions.put("vulnerable-components", pvvVulnerableComponentsDefinition);
-        final LinkResponseDefinitionItem pvvProjectDefinition = new LinkResponseDefinitionItem(false, "ProjectView");
-        projectVersionViewDefinitions.put("project", pvvProjectDefinition);
-        final LinkResponseDefinitionItem pvvPolicyStatusDefinition = new LinkResponseDefinitionItem(false, "ProjectVersionPolicyStatusView");
-        projectVersionViewDefinitions.put("policy-status", pvvPolicyStatusDefinition);
-        final LinkResponseDefinitionItem pvvCodeLocationsDefinition = new LinkResponseDefinitionItem(true, "CodeLocationView");
-        projectVersionViewDefinitions.put("codelocations", pvvCodeLocationsDefinition);
-        //final LinkResponseDefinitionItem pvvVersionReportDefinition = new LinkResponseDefinitionItem(true, "ReportView"); *
-        //projectVersionViewDefinitions.put("versionReport", pvvVersionReportDefinition);
-        final LinkResponseDefinitionItem pvvLicenseReportsDefinition = new LinkResponseDefinitionItem(true, "ReportView"); // *
-        projectVersionViewDefinitions.put("licenseReports", pvvLicenseReportsDefinition);
-        final LinkResponseDefinitionItem pvvIssuesDefinition = new LinkResponseDefinitionItem(true, "IssueView");
-        projectVersionViewDefinitions.put("issues", pvvIssuesDefinition);
-        definitions.put("ProjectVersionView", projectVersionViewDefinitions);
+        addToDefinitions("ProjectVersionComponentView", Arrays.asList(
+            new LinkResponseDefinition("component-issues", true, "IssueView")
+            , new LinkResponseDefinition("origins", true, "OriginView")
+            , new LinkResponseDefinition("matched-files", true, "ComponentMatchedFilesView")
+            , new LinkResponseDefinition("policy-rules", true, "ComponentPolicyRulesView")
+        ));
 
-        // ProjectVersionComponentView
-        final Map<String, LinkResponseDefinitionItem> projectVersionComponentViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem pvcvOriginsDefinition = new LinkResponseDefinitionItem(true, "OriginView");
-        projectVersionComponentViewDefinitions.put("origins", pvcvOriginsDefinition);
-        final LinkResponseDefinitionItem pvcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "ComponentMatchedFilesView");
-        projectVersionComponentViewDefinitions.put("matched-files", pvcvMatchedFilesDefinition);
-        final LinkResponseDefinitionItem pvcvPolicyRulesDefinition = new LinkResponseDefinitionItem(true, "ComponentPolicyRulesView");
-        projectVersionComponentViewDefinitions.put("policy-rules", pvcvPolicyRulesDefinition);
-        definitions.put("ProjectVersionComponentView", projectVersionComponentViewDefinitions);
+        addToDefinitions("ProjectVersionComponentVersionView", Arrays.asList(
+            new LinkResponseDefinition("component-issues", true, "IssueView")
+        ));
 
-        // ReportView
-        final Map<String, LinkResponseDefinitionItem> reportViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem rvContentDefinition = new LinkResponseDefinitionItem(false, "String");
-        reportViewDefinitions.put("content", rvContentDefinition);
-        definitions.put("ReportView", reportViewDefinitions);
+        addToDefinitions("ReportView", Arrays.asList(
+            new LinkResponseDefinition("content", false, "BlackDuckStringResponse")
+        ));
 
-        // RoleAssignmentView
-        final Map<String, LinkResponseDefinitionItem> roleAssignmentViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem ravUserDefinition = new LinkResponseDefinitionItem(false, "UserView");
-        roleAssignmentViewDefinitions.put("user", ravUserDefinition);
-        definitions.put("RoleAssignmentView", roleAssignmentViewDefinitions);
+        addToDefinitions("RoleAssignmentView", Arrays.asList(
+            new LinkResponseDefinition("user", false, "UserView")
+        ));
 
-        // UserView
-        final Map<String, LinkResponseDefinitionItem> userViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem uvRolesDefinition = new LinkResponseDefinitionItem(true, "RoleAssignmentView");
-        userViewDefinitions.put("roles", uvRolesDefinition);
-        final LinkResponseDefinitionItem uvNotificationsDefinition = new LinkResponseDefinitionItem(true, "NotificationUserView"); // *
-        userViewDefinitions.put("notifications", uvNotificationsDefinition);
-        final LinkResponseDefinitionItem uvProjectsDefinition = new LinkResponseDefinitionItem(true, "AssignedProjectView"); // ****
-        userViewDefinitions.put("projects", uvProjectsDefinition);
-        final LinkResponseDefinitionItem uvInheritedRolesDefinition = new LinkResponseDefinitionItem(true, "RoleAssignmentView"); // ****
-        userViewDefinitions.put("inherited-roles", uvInheritedRolesDefinition);
-        definitions.put("UserView", userViewDefinitions);
+        addToDefinitions("UserView", Arrays.asList(
+            new LinkResponseDefinition("roles", true, "RoleAssignmentView")
+            , new LinkResponseDefinition("notifications", true, "NotificationUserView")
+            , new LinkResponseDefinition("projects", true, "AssignedProjectView")
+            , new LinkResponseDefinition("inherited-roles", true, "RoleAssignmentView")
+            , new LinkResponseDefinition("usergroups", true, "UserGroupView")
+        ));
 
-        // UserGroupView
-        final Map<String, LinkResponseDefinitionItem> userGroupViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem ugvRolesDefinition = new LinkResponseDefinitionItem(true, "UserView");
-        userGroupViewDefinitions.put("users", ugvRolesDefinition);
-        definitions.put("UserGroupView", userGroupViewDefinitions);
+        addToDefinitions("UserGroupView", Arrays.asList(
+            new LinkResponseDefinition("users", true, "UserView")
+        ));
 
-        // ProjectVersionVulnerableBomComponentsView
-        final Map<String, LinkResponseDefinitionItem> projectVersionVulnerableBomComponentsViewDefinitions = new HashMap<>();
-        final LinkResponseDefinitionItem pvvbcvMatchedFilesDefinition = new LinkResponseDefinitionItem(true, "ComponentMatchedFilesView");
-        projectVersionVulnerableBomComponentsViewDefinitions.put("matched-files", pvvbcvMatchedFilesDefinition);
-        final LinkResponseDefinitionItem pvvbcvVulnerabilitiesDefinition = new LinkResponseDefinitionItem(true, "VulnerabilityView");
-        projectVersionVulnerableBomComponentsViewDefinitions.put("vulnerabilities", pvvbcvVulnerabilitiesDefinition);
-        definitions.put("ProjectVersionVulnerableBomComponentsView", projectVersionVulnerableBomComponentsViewDefinitions);
+        addToDefinitions("ProjectVersionVulnerableBomComponentsView", Arrays.asList(
+            new LinkResponseDefinition("matched-files", true, "ComponentMatchedFilesView")
+            , new LinkResponseDefinition("vulnerabilities", true, "VulnerabilityView")
+        ));
+    }
 
-        return definitions;
+    private void addToDefinitions(String viewName, List<LinkResponseDefinition> responseDefinitions) {
+        Map<String, LinkResponseDefinitionItem> viewDefinitions = new HashMap<>();
+        for (LinkResponseDefinition linkResponseDefinition : responseDefinitions) {
+            viewDefinitions.put(linkResponseDefinition.link, new LinkResponseDefinitionItem(linkResponseDefinition.hasMultipleResults, linkResponseDefinition.resultClass));
+        }
+        definitions.put(viewName, viewDefinitions);
     }
 
     public Map<String, Map<String, LinkResponseDefinitionItem>> getDefinitions() {
         return definitions;
     }
 
-    public Set<String> getLinkLabels() { return linkLabels; }
+    private class LinkResponseDefinition {
+        public final String link;
+        public final boolean hasMultipleResults;
+        public final String resultClass;
 
-    public void addLinkLabel(final String label) { linkLabels.add(label); }
+        public LinkResponseDefinition(String link, boolean hasMultipleResults, String resultClass) {
+            this.link = link;
+            this.hasMultipleResults = hasMultipleResults;
+            this.resultClass = resultClass;
+        }
+    }
 
     public class LinkResponseDefinitionItem {
         private final boolean hasMultipleResults;
         private final String resultClass;
 
-        public LinkResponseDefinitionItem(final boolean hasMultipleResults, final String resultClass) {
+        public LinkResponseDefinitionItem(boolean hasMultipleResults, String resultClass) {
             this.hasMultipleResults = hasMultipleResults;
             this.resultClass = resultClass;
         }

@@ -1,10 +1,13 @@
 package com.synopsys.integration.create.apigen.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
@@ -27,12 +30,12 @@ public class FieldDefinitionProcessorTest {
         Set<FieldDefinition> fields = processor.processFieldDefinitions("ComponentVersionView", new HashSet<>(Arrays.asList(license)));
         try {
             FieldDefinition licenseView = fields.iterator().next();
-            Assertions.assertEquals("ComponentVersionLicenseView", licenseView.getType());
+            assertEquals("ComponentVersionLicenseView", licenseView.getType());
 
             FieldDefinition licenseLicensesView = licenseView.getSubFields().iterator().next();
-            Assertions.assertEquals("java.util.List<ComponentVersionLicenseLicensesView>", licenseLicensesView.getType());
+            assertEquals("java.util.List<ComponentVersionLicenseLicensesView>", licenseLicensesView.getType());
         } catch (NullPointerException e) {
-            Assertions.fail();
+            fail();
         }
     }
 
@@ -43,11 +46,11 @@ public class FieldDefinitionProcessorTest {
         try {
             FieldDefinition licenseView = processor.processFieldDefinitions("ComponentPolicyRulesItemsView", new HashSet<>(Arrays.asList(license))).iterator().next();
             // Depends on an override from TypeTranslator
-            Assertions.assertEquals("PolicyRuleExpressionView", licenseView.getType());
+            assertEquals("PolicyRuleExpressionView", licenseView.getType());
             // Since this definition's type was overrided, we should not have processed its subfield
-            Assertions.assertTrue(licenseView.getSubFields().isEmpty());
+            assertTrue(licenseView.getSubFields().isEmpty());
         } catch (NullPointerException e) {
-            Assertions.fail();
+            fail();
         }
     }
 
@@ -59,6 +62,6 @@ public class FieldDefinitionProcessorTest {
             new RawFieldDefinition("path", "type", false)
         ));
 
-        Assertions.assertEquals(1, processor.processFieldDefinitions("", rawFieldDefinitions).size());
+        assertEquals(1, processor.processFieldDefinitions("", rawFieldDefinitions).size());
     }
 }

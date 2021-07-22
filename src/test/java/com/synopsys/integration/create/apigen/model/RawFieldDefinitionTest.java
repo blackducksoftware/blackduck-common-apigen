@@ -1,12 +1,9 @@
 package com.synopsys.integration.create.apigen.model;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class RawFieldDefinitionTest {
@@ -19,22 +16,22 @@ public class RawFieldDefinitionTest {
         RawFieldDefinition a3 = new RawFieldDefinition("a", "a", true);
 
         // reflexive property
-        Assertions.assertEquals(a, a);
+        assertEquals(a, a);
 
         // symmetric property
-        Assertions.assertTrue(a.equals(b) == b.equals(a));
-        Assertions.assertTrue(a.equals(a2) == a2.equals(a));
+        assertTrue(a.equals(b) == b.equals(a));
+        assertTrue(a.equals(a2) == a2.equals(a));
 
         // transitive property
         if (a.equals(a2) && a2.equals(a3)) {
-            Assertions.assertEquals(a3, a);
+            assertEquals(a3, a);
         }
 
         // consistency property
-        Assertions.assertTrue(a.equals(b) == a.equals(b));
-        Assertions.assertTrue(a.equals(a2) == a.equals(a2));
+        assertTrue(a.equals(b) == a.equals(b));
+        assertTrue(a.equals(a2) == a.equals(a2));
 
         // non-null
-        Assertions.assertFalse(a.equals(null));
+        assertFalse(a.equals(null));
     }
 }

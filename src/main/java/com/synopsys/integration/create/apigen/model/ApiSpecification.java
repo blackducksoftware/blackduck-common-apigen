@@ -10,7 +10,7 @@ package com.synopsys.integration.create.apigen.model;
 import java.io.File;
 
 import com.synopsys.integration.create.apigen.Application;
-import com.synopsys.integration.create.apigen.data.MediaTypes;
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 
 public class ApiSpecification {
     private File root;

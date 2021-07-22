@@ -5,7 +5,7 @@
  *
  * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
-package com.synopsys.integration.create.apigen.data;
+package com.synopsys.integration.create.apigen.data.mediatype;
 
 import java.io.File;
 import java.io.IOException;

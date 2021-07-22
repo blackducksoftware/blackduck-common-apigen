@@ -1,9 +1,10 @@
 package com.synopsys.integration.create.apigen.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DifferentiatingResponseNamePrefixBuilderTest {
@@ -18,17 +19,17 @@ public class DifferentiatingResponseNamePrefixBuilderTest {
         prefixBuilder.addPiece("Project");
         prefixBuilder.addPiece("Versions");
         prefixBuilder.addPiece("ProjectVersion");
-        Assertions.assertEquals("ProjectVersionComponentVersionView", prefixBuilder.getNameWithPrefix("ComponentVersionView"));
+        assertEquals("ProjectVersionComponentVersionView", prefixBuilder.getNameWithPrefix("ComponentVersionView"));
 
         prefixBuilder.addPiece("Components");
         prefixBuilder.addPiece("Component");
         prefixBuilder.addPiece("Versions");
         prefixBuilder.addPiece("ComponentVersion");
-        Assertions.assertEquals("ProjectVersionComponentVersionView", prefixBuilder.getNameWithPrefix("ComponentVersionView"));
+        assertEquals("ProjectVersionComponentVersionView", prefixBuilder.getNameWithPrefix("ComponentVersionView"));
     }
 
     private Set<String> getRedundantNamePrefixes() {
-        final Set<String> redundantNamePrefixes = new HashSet<>();
+        Set<String> redundantNamePrefixes = new HashSet<>();
 
         redundantNamePrefixes.add("Components");
         redundantNamePrefixes.add("Projects");

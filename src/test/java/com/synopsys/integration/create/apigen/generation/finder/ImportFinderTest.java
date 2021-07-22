@@ -43,8 +43,8 @@ public class ImportFinderTest {
     @Test
     public void addLinkImportsTest() {
         ResponseDefinition response = new ResponseDefinition("", "UserView", "", false);
-        response.addLink(new LinkDefinition("projects", false));
-        response.addLink(new LinkDefinition("roles", false));
+        response.addLink(new LinkDefinition("projects"));
+        response.addLink(new LinkDefinition("roles"));
 
         LinksAndImportsData linksAndImportsData = importFinder.findLinkAndImportsData(response);
         Set<String> imports = linksAndImportsData.getImports();

@@ -1,31 +1,15 @@
-/**
+/*
  * blackduck-common-apigen
  *
- * Copyright (c) 2020 Synopsys, Inc.
+ * Copyright (c) 2021 Synopsys, Inc.
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
 package com.synopsys.integration.create.apigen.generation.finder;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +29,7 @@ public class InputDataFinder {
     public static final String IMPORT_HASHMAP = "java.util.HashMap";
     public static final String IMPORT_MAP = "java.util.Map";
 
-    private static List<String> MAP_IMPORTS = Arrays.asList(IMPORT_HASHMAP, IMPORT_MAP);
+    private static final List<String> MAP_IMPORTS = Arrays.asList(IMPORT_HASHMAP, IMPORT_MAP);
 
     public Map<String, Object> getEnumInputData(final String packageName, final String className, final Set<String> enumValues, final String mediaType) {
         final Map<String, Object> inputData = new HashMap<>();
@@ -53,7 +37,11 @@ public class InputDataFinder {
         inputData.put(UtilStrings.PACKAGE_NAME, packageName);
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
         inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
-        inputData.put("enumValues", enumValues);
+
+        List<String> sortedEnumValues = enumValues.stream()
+                                            .sorted(Comparator.naturalOrder())
+                                            .collect(Collectors.toList());
+        inputData.put("enumValues", sortedEnumValues);
 
         return inputData;
     }
@@ -65,26 +53,19 @@ public class InputDataFinder {
         inputData.put(UtilStrings.CLASS_NAME, NameParser.stripListAndOptionalNotation(className));
         inputData.put(UtilStrings.MEDIA_TYPE, mediaType);
 
-        final Set<FieldDefinition> nonOptionalClassFields = new HashSet<>();
-        final Set<FieldDefinition> optionalClassFields = new HashSet<>();
-        for (final FieldDefinition classField : classFields) {
-            // For optional fields
-            if (classField.isOptional()) {
-                optionalClassFields.add(classField);
-            } else {
-                nonOptionalClassFields.add(classField);
-            }
-        }
-
         imports.add(classTypeData.getBaseClassImportPath());
-        final List sortedImports = imports.stream()
-                                       .sorted(ImportComparator.of())
-                                       .collect(Collectors.toList());
+
+        List sortedImports = imports.stream()
+                                 .sorted(ImportComparator.of())
+                                 .collect(Collectors.toList());
         inputData.put("imports", sortedImports);
+
         inputData.put(UtilStrings.BASE_CLASS, classTypeData.getBaseClass());
-        inputData.put(UtilStrings.CLASS_FIELDS, classFields);
-        inputData.put("optionalClassFields", optionalClassFields);
-        inputData.put("nonOptionalClassFields", nonOptionalClassFields);
+
+        List sortedClassFields = classFields.stream()
+                                     .sorted(Comparator.comparing(FieldDefinition::getPath))
+                                     .collect(Collectors.toList());
+        inputData.put(UtilStrings.CLASS_FIELDS, sortedClassFields);
 
         return inputData;
     }
@@ -110,12 +91,4 @@ public class InputDataFinder {
         return inputData;
     }
 
-    private void identifyOptionalFields(final List<FieldDefinition> classFields) {
-        for (final FieldDefinition field : classFields) {
-            if (field.isOptional()) {
-                final String typeWrappedInOptional = NameParser.wrapInOptionalNotation(field.getType());
-                field.setType(typeWrappedInOptional);
-            }
-        }
-    }
 }

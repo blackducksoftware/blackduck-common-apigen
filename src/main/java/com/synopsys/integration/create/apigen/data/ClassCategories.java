@@ -1,44 +1,32 @@
-/**
+/*
  * blackduck-common-apigen
  *
- * Copyright (c) 2020 Synopsys, Inc.
+ * Copyright (c) 2021 Synopsys, Inc.
  *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
 package com.synopsys.integration.create.apigen.data;
 
-import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
-import com.synopsys.integration.create.apigen.parser.NameParser;
-import freemarker.template.Template;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.DEPRECATED;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.GENERATED;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.MANUAL;
+import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.TEMPORARY;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.COMMON;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.COMPONENT;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.RESPONSE;
+import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.VIEW;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static com.synopsys.integration.create.apigen.data.ClassSourceEnum.*;
-import static com.synopsys.integration.create.apigen.data.ClassTypeEnum.*;
+import com.synopsys.integration.create.apigen.generation.finder.ClassNameManager;
 
 @Component
 public class ClassCategories {
-    private ClassNameManager classNameManager;
+    private final ClassNameManager classNameManager;
     private final Map<String, ClassCategoryData> classNameData = new HashMap<>();
 
     @Autowired
@@ -49,7 +37,7 @@ public class ClassCategories {
 
     private void populateData() {
         classNameManager.getClassNames()
-                .forEach(className -> populate(ClassTypeEnum.NULL, MANUAL, className));
+            .forEach(className -> populate(ClassTypeEnum.NULL, MANUAL, className));
 
         populate(COMMON, ClassSourceEnum.NULL, "Array");
         populate(COMMON, ClassSourceEnum.NULL, "String");
@@ -93,7 +81,9 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectVersionComponentCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentVersionCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentView");
+        populate(VIEW, GENERATED, "ProjectVersionComponentVersionView");
         populate(VIEW, GENERATED, "ProjectVersionCustomFieldView");
+        populate(VIEW, GENERATED, "ProjectVersionIssuesView");
         populate(VIEW, GENERATED, "ProjectVersionLicenseLicensesView");
         populate(VIEW, GENERATED, "ProjectVersionLicenseView");
         populate(VIEW, GENERATED, "ProjectVersionPolicyStatusView");
@@ -151,6 +141,8 @@ public class ClassCategories {
 
         populate(RESPONSE, GENERATED, "AssignedProjectView");
         populate(RESPONSE, GENERATED, "CommentView");
+        populate(RESPONSE, GENERATED, "ComponentVersionRemediatingView");
+        populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "ComponentsView");
         populate(RESPONSE, GENERATED, "ComponentVersionUpgradeGuidanceView");
         populate(RESPONSE, GENERATED, "CurrentVersionView");
@@ -373,6 +365,8 @@ public class ClassCategories {
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationAttributeView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationFeatureView");
         populate(ClassTypeEnum.NULL, TEMPORARY, "RegistrationMessageView");
+
+        populate(RESPONSE, MANUAL, "BlackDuckStringResponse");
     }
 
     private void populate(ClassTypeEnum type, ClassSourceEnum source, String className) {
