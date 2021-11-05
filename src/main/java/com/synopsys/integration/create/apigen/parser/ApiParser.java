@@ -10,8 +10,9 @@ package com.synopsys.integration.create.apigen.parser;
 import java.io.File;
 import java.util.List;
 
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 
 public interface ApiParser {
-    List<ResponseDefinition> parseApi(File target);
+    List<ResponseDefinition> parseApi(File target, MediaTypes mediaTypes);
 }

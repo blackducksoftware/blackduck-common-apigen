@@ -26,6 +26,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
 import com.synopsys.integration.create.apigen.parser.ApiParser;
 import com.synopsys.integration.create.apigen.parser.file.DirectoryPathParser;
@@ -45,7 +46,7 @@ public class ZipFileExpandingParser implements ApiParser {
     }
 
     @Override
-    public List<ResponseDefinition> parseApi(File targetZipFile) {
+    public List<ResponseDefinition> parseApi(File targetZipFile, MediaTypes mediaTypes) {
         List<ResponseDefinition> responses = Collections.emptyList();
         File expandedZipDirectory = null;
         try {
@@ -58,7 +59,7 @@ public class ZipFileExpandingParser implements ApiParser {
             Slf4jIntLogger intLogger = new Slf4jIntLogger(logger);
             CommonZipExpander expander = new CommonZipExpander(intLogger);
             expander.expand(targetZipFile, expandedZipDirectory);
-            responses = directoryPathParser.parseApi(expandedZipDirectory);
+            responses = directoryPathParser.parseApi(expandedZipDirectory, mediaTypes);
         } catch (IOException | ArchiveException | IntegrationException ex) {
             logger.error("Error expanding archive file.", ex);
         } finally {

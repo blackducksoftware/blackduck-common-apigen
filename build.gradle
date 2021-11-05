@@ -19,6 +19,8 @@ dependencies {
 
     implementation 'org.freemarker:freemarker:2.3.25-incubating'
 
+    implementation 'org.apache.commons:commons-csv:1.8'
+
     implementation project('apigen-maintenance')
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

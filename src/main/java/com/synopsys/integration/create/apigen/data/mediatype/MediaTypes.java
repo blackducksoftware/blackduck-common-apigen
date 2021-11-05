@@ -7,87 +7,44 @@
  */
 package com.synopsys.integration.create.apigen.data.mediatype;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
-@Component
 public class MediaTypes {
-    private static final Map<String, String> LONG_TO_SHORT = new HashMap<>();
-    private static final Map<String, String> SHORT_TO_LONG = new HashMap<>();
+    private Set<String> LONG_FORM_NAMES = new HashSet<>();
+    private Map<String, String> SHORT_TO_LONG = new HashMap<>();
 
-    public MediaTypes() {
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.admin-4+json", "bds_admin_4_json");
-        SHORT_TO_LONG.put("bds_admin_4_json", "application/vnd.blackducksoftware.admin-4+json");
 
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.bill-of-materials-4+json", "bds_bill_of_materials_4_json");
-        SHORT_TO_LONG.put("bds_bill_of_materials_4_json", "application/vnd.blackducksoftware.bill-of-materials-4+json");
+    public MediaTypes(File mediaTypesFile) {
+        try {
+            CSVParser csvParser = CSVParser.parse(mediaTypesFile, Charset.defaultCharset(), CSVFormat.DEFAULT);
+            for (CSVRecord csvRecord : csvParser.getRecords()) {
+                String longMediaType = csvRecord.get(0);
+                String shortMediaType = csvRecord.get(1);
 
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.bill-of-materials-5+json", "bds_bill_of_materials_5_json");
-        SHORT_TO_LONG.put("bds_bill_of_materials_5_json", "application/vnd.blackducksoftware.bill-of-materials-5+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.bill-of-materials-6+json", "bds_bill_of_materials_6_json");
-        SHORT_TO_LONG.put("bds_bill_of_materials_6_json", "application/vnd.blackducksoftware.bill-of-materials-6+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.component-detail-4+json", "bds_component_detail_4_json");
-        SHORT_TO_LONG.put("bds_component_detail_4_json", "application/vnd.blackducksoftware.component-detail-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.component-detail-5+json", "bds_component_detail_5_json");
-        SHORT_TO_LONG.put("bds_component_detail_5_json", "application/vnd.blackducksoftware.component-detail-5+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.journal-4+json", "bds_journal_4_json");
-        SHORT_TO_LONG.put("bds_journal_4_json", "application/vnd.blackducksoftware.journal-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.notification-4+json", "bds_notification_4_json");
-        SHORT_TO_LONG.put("bds_notification_4_json", "application/vnd.blackducksoftware.notification-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.policy-4+json", "bds_policy_4_json");
-        SHORT_TO_LONG.put("bds_policy_4_json", "application/vnd.blackducksoftware.policy-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.policy-5+json", "bds_policy_5_json");
-        SHORT_TO_LONG.put("bds_policy_5_json", "application/vnd.blackducksoftware.policy-5+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.project-detail-4+json", "bds_project_detail_4_json");
-        SHORT_TO_LONG.put("bds_project_detail_4_json", "application/vnd.blackducksoftware.project-detail-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.project-detail-5+json", "bds_project_detail_5_json");
-        SHORT_TO_LONG.put("bds_project_detail_5_json", "application/vnd.blackducksoftware.project-detail-5+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.report-4+json", "bds_report_4_json");
-        SHORT_TO_LONG.put("bds_report_4_json", "application/vnd.blackducksoftware.report-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.scan-4+json", "bds_scan_4_json");
-        SHORT_TO_LONG.put("bds_scan_4_json", "application/vnd.blackducksoftware.scan-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.status-4+json", "bds_status_4_json");
-        SHORT_TO_LONG.put("bds_status_4_json", "application/vnd.blackducksoftware.status-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.user-4+json", "bds_user_4_json");
-        SHORT_TO_LONG.put("bds_user_4_json", "application/vnd.blackducksoftware.user-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.vulnerability-4+json", "bds_vulnerability_4_json");
-        SHORT_TO_LONG.put("bds_vulnerability_4_json", "application/vnd.blackducksoftware.vulnerability-4+json");
-
-        LONG_TO_SHORT.put("application/vnd.blackducksoftware.system-announcement-1+json","bds_system_announcement_1_json");
-        SHORT_TO_LONG.put("bds_system_announcement_1_json","application/vnd.blackducksoftware.system-announcement-1+json");
+                LONG_FORM_NAMES.add(longMediaType);
+                SHORT_TO_LONG.put(shortMediaType, longMediaType);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(String.format("Could not parse media types from %s", mediaTypesFile.getAbsolutePath()));
+        }
     }
 
-    public static Set<String> getShortNames() {
-        return new HashSet<>(LONG_TO_SHORT.values());
+    public Set<String> getLongNames() {
+        return LONG_FORM_NAMES;
     }
 
-    public static Set<String> getLongNames() {
-        return new HashSet<>(LONG_TO_SHORT.keySet());
-    }
 
-    public static String getShortName(final String longName) {
-        return LONG_TO_SHORT.get(longName);
-    }
-
-    public static String getLongName(final String shortName) {
+    public String getLongName(final String shortName) {
         return SHORT_TO_LONG.get(shortName);
     }
 

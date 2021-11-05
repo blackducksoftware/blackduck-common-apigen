@@ -45,7 +45,6 @@ import com.synopsys.integration.create.apigen.parser.ResponseTypeIdentifier;
 public class DirectoryPathParser implements ApiParser {
     private static final String RESPONSE_ENDPOINT_TOKEN = "GET";
 
-    private final MediaTypes mediaTypes;
     private final Gson gson;
     private final TypeTranslator typeTranslator;
     private final NameParser nameParser;
@@ -53,9 +52,8 @@ public class DirectoryPathParser implements ApiParser {
     private final FieldDefinitionProcessor processor;
 
     @Autowired
-    public DirectoryPathParser(final MediaTypes mediaTypes, final Gson gson, final TypeTranslator typeTranslator, final NameParser nameParser, final MissingFieldsAndLinks missingFieldsAndLinks,
+    public DirectoryPathParser(final Gson gson, final TypeTranslator typeTranslator, final NameParser nameParser, final MissingFieldsAndLinks missingFieldsAndLinks,
         FieldDefinitionProcessor processor) {
-        this.mediaTypes = mediaTypes;
         this.gson = gson;
         this.typeTranslator = typeTranslator;
         this.nameParser = nameParser;
@@ -64,12 +62,12 @@ public class DirectoryPathParser implements ApiParser {
     }
 
     @Override
-    public List<ResponseDefinition> parseApi(File specificationRootDirectory) {
+    public List<ResponseDefinition> parseApi(File specificationRootDirectory, MediaTypes mediaTypes) {
         final File endpointsPath = new File(specificationRootDirectory, "endpoints");
         final File apiPath = new File(endpointsPath, UtilStrings.API);
 
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
-        List<ResponseDefinition> allResponseDefinitions = parseApiForAllResponses(apiPath, apiPath.getAbsolutePath().length() + 1);
+        List<ResponseDefinition> allResponseDefinitions = parseApiForAllResponses(apiPath, apiPath.getAbsolutePath().length() + 1, mediaTypes);
 
         // For each response file, parse the JSON for FieldDefinition objects
         for (final ResponseDefinition response : allResponseDefinitions) {
@@ -94,7 +92,7 @@ public class DirectoryPathParser implements ApiParser {
         return responseDefinitions;
     }
 
-    private List<ResponseDefinition> parseApiForAllResponses(final File parent, final int prefixLength) {
+    private List<ResponseDefinition> parseApiForAllResponses(final File parent, final int prefixLength, MediaTypes mediaTypes) {
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
         final List<File> files = Arrays.stream(parent.listFiles())
                                         .filter(file -> !file.getName().equals("notifications"))
@@ -104,10 +102,10 @@ public class DirectoryPathParser implements ApiParser {
             if (file.getName().equals(RESPONSE_ENDPOINT_TOKEN)) {
                 Optional<File> responseSpecificationWithLatestMediaVersion = findResponseSpecificationWithLatestMediaVersion(file);
                 if (responseSpecificationWithLatestMediaVersion.isPresent()) {
-                    responseDefinitions.add(createResponseDefinitionFromSpecification(responseSpecificationWithLatestMediaVersion.get(), prefixLength));
+                    responseDefinitions.add(createResponseDefinitionFromSpecification(responseSpecificationWithLatestMediaVersion.get(), prefixLength, mediaTypes));
                 }
             } else if (file.isDirectory()) {
-                responseDefinitions.addAll(parseApiForAllResponses(file, prefixLength));
+                responseDefinitions.addAll(parseApiForAllResponses(file, prefixLength, mediaTypes));
             }
         }
 
@@ -138,7 +136,7 @@ public class DirectoryPathParser implements ApiParser {
         return Optional.ofNullable(responseSpecificationWithLatestMediaVersion);
     }
 
-    private ResponseDefinition createResponseDefinitionFromSpecification(File responseSpecification, int prefixLength) {
+    private ResponseDefinition createResponseDefinitionFromSpecification(File responseSpecification, int prefixLength, MediaTypes mediaTypes) {
         final String relativePath = responseSpecification.getAbsolutePath().substring(prefixLength);
         final String mediaType = mediaTypes.getLongName(responseSpecification.getParentFile().getName());
         final String responseName = nameParser.computeResponseName(relativePath);

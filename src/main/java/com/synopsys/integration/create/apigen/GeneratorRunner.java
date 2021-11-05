@@ -10,11 +10,13 @@ package com.synopsys.integration.create.apigen;
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.*;
 import com.synopsys.integration.create.apigen.data.mediatype.MediaTypePathManager;
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
 import com.synopsys.integration.create.apigen.generation.MaintenanceReportGenerator;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.generators.*;
+import com.synopsys.integration.create.apigen.model.ApiSpecification;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
 import com.synopsys.integration.create.apigen.model.ResponseDefinition;
@@ -30,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -88,19 +91,21 @@ public class GeneratorRunner {
         maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_GENERATED_DIRECTORY, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
     }
 
-    private void generateFiles(File apiSpecification) throws Exception {
-        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecification);
+    private void generateFiles(File apiSpecificationFile) throws Exception {
+        ApiSpecification apiSpecification = new ApiSpecification(apiSpecificationFile);
+        MediaTypes mediaTypes = apiSpecification.getMediaTypesFile();
+        List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecificationFile, mediaTypes);
         accumulateMediaTypes(responses);
-        accumulateGeneratedResponseClassData(responses);
+        accumulateGeneratedResponseClassData(responses, mediaTypes);
         accumulateApiDiscoveryClassData(responses);
         generateDiscoveryClasses();
         deprecatedClassGenerator.generateDeprecatedClasses();
         generatorDataManager.writeFiles();
     }
 
-    private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification) throws IOException {
+    private List<ResponseDefinition> parseResponseDefinitionsFromApiSpecifications(File apiSpecification, MediaTypes mediaTypes) {
         ApiParser apiParser = parserFactory.getObject();
-        List<ResponseDefinition> responses = apiParser.parseApi(apiSpecification);
+        List<ResponseDefinition> responses = apiParser.parseApi(apiSpecification, mediaTypes);
         duplicateTypeOverrider.overrideDuplicateTypes(responses);
         for (ResponseDefinition response : responses) {
             String responseName = response.getName();
@@ -120,10 +125,10 @@ public class GeneratorRunner {
         }
     }
 
-    private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses) throws Exception {
+    private void accumulateGeneratedResponseClassData(List<ResponseDefinition> responses, MediaTypes mediaTypes) throws Exception {
         Template template = viewGenerator.getTemplate(config);
         for (ResponseDefinition response : responses) {
-            if (viewGenerator.isApplicable(response)) {
+            if (mediaTypes.getLongNames().contains(response.getMediaType())) {
                 viewGenerator.generateClasses(response, template);
             } else {
                 logger.info("Non-applicable response!");
