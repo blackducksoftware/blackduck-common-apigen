@@ -191,6 +191,12 @@ public class TypeTranslator {
         );
         fieldTranslations.put("ProjectVersionComponentLicensesView", pvclvTranslations);
 
+        // ProjectVersionComponentVersionLicensesView
+        List<FieldTranslation> pvcvlvTranslations = Arrays.asList(
+            new FieldTranslation("licenses", "ProjectVersionComponentVersionLicensesView", ARRAY)
+        );
+        fieldTranslations.put("ProjectVersionComponentVersionLicensesView", pvcvlvTranslations);
+
         // ProjectVersionComponentVersionView
         List<FieldTranslation> pvcvvTranslations = Arrays.asList(
             new FieldTranslation("securityRiskProfile", "RiskProfileView", OBJECT),
@@ -198,7 +204,10 @@ public class TypeTranslator {
             new FieldTranslation("licenseRiskProfile", "RiskProfileView", OBJECT),
             new FieldTranslation("activityRiskProfile", "RiskProfileView", OBJECT),
             new FieldTranslation("operationalRiskProfile", "RiskProfileView", OBJECT),
-            new FieldTranslation("matchTypes", "MatchType", ARRAY)
+            new FieldTranslation("matchTypes", "MatchType", ARRAY),
+            new FieldTranslation("approvalStatus", "ProjectVersionComponentPolicyStatusType", STRING),
+            new FieldTranslation("usages", "UsageType", ARRAY),
+            new FieldTranslation("origins", "VersionBomOriginView", ARRAY)
         );
         fieldTranslations.put("ProjectVersionComponentVersionView", pvcvvTranslations);
 

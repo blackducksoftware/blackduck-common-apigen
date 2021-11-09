@@ -56,7 +56,7 @@ public class LinkResponseDefinitions {
 
         addToDefinitions("ProjectVersionView", Arrays.asList(
             new LinkResponseDefinition("riskProfile", false, "VersionRiskProfileView")
-            , new LinkResponseDefinition("components", true, "ProjectVersionComponentView")
+            , new LinkResponseDefinition("components", true, "ProjectVersionComponentVersionView")
             , new LinkResponseDefinition("vulnerable-components", true, "ProjectVersionVulnerableBomComponentsView")
             , new LinkResponseDefinition("project", false, "ProjectView")
             , new LinkResponseDefinition("policy-status", false, "ProjectVersionPolicyStatusView")
@@ -74,7 +74,8 @@ public class LinkResponseDefinitions {
         ));
 
         addToDefinitions("ProjectVersionComponentVersionView", Arrays.asList(
-            new LinkResponseDefinition("component-issues", true, "IssueView")
+            new LinkResponseDefinition("component-issues", true, "IssueView"),
+            new LinkResponseDefinition("matched-files", true, "ComponentMatchedFilesView")
         ));
 
         addToDefinitions("ReportView", Arrays.asList(

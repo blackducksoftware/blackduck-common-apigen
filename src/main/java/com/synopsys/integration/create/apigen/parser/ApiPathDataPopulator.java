@@ -93,7 +93,6 @@ public class ApiPathDataPopulator {
     private Set<ApiPathData> populateAddOnApiPaths() {
         Set<ApiPathData> addOns = new HashSet<>();
 
-        addOns.add(new ApiPathData("developer-scans", "BlackDuckResponse", false));
         addOns.add(new ApiPathData("intelligent-persistence-scans", "BlackDuckResponse", false));
         addOns.add(new ApiPathData("notifications", "NotificationView", true));
         addOns.add(new ApiPathData("uploads", "BlackDuckStringResponse", false));
