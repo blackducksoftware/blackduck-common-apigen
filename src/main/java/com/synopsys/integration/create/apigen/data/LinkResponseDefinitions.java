@@ -75,7 +75,9 @@ public class LinkResponseDefinitions {
 
         addToDefinitions("ProjectVersionComponentVersionView", Arrays.asList(
             new LinkResponseDefinition("component-issues", true, "IssueView"),
-            new LinkResponseDefinition("matched-files", true, "ComponentMatchedFilesView")
+            new LinkResponseDefinition("matched-files", true, "ComponentMatchedFilesView"),
+            new LinkResponseDefinition("origins", true, "OriginView"),
+            new LinkResponseDefinition("policy-rules", true, "ComponentPolicyRulesView")
         ));
 
         addToDefinitions("ReportView", Arrays.asList(
