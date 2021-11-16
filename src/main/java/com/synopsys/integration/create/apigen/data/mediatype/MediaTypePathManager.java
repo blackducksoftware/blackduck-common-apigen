@@ -11,10 +11,12 @@ import static com.synopsys.integration.create.apigen.data.mediatype.ExtraMediaTy
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,12 +40,14 @@ public class MediaTypePathManager {
     private final Set<String> ignoredSegments;
     private final Set<String> uniqueMediaTypes;
     private final Set<String> uniquePaths;
+    private final Map<String, String> mediaTypeOverrides;
 
     public MediaTypePathManager() {
         mediaTypeMappings = new LinkedHashMap<>();
         uniqueMediaTypes = new HashSet<>();
         uniquePaths = new HashSet<>();
         ignoredSegments = populatePathSegmentsToIgnore();
+        mediaTypeOverrides = populateMediaTypeOverrides();
 
         addMissingMappings();
 
@@ -54,6 +58,9 @@ public class MediaTypePathManager {
         String pathPattern = createPathRegex(responseDefinition.getResponseSpecificationPath());
         if (StringUtils.isNotBlank(pathPattern)) {
             String mediaType = responseDefinition.getMediaType();
+
+            mediaType = Optional.ofNullable(mediaTypeOverrides.get(mediaType)).orElse(mediaType);
+
             if (mediaType == null) {
                 throw new NullMediaTypeException(pathPattern);
             }
@@ -148,6 +155,14 @@ public class MediaTypePathManager {
         segmentsToIgnore.add("DELETE");
 
         return segmentsToIgnore;
+    }
+
+    private Map<String, String> populateMediaTypeOverrides() {
+        Map<String, String> mediaTypeOverrides = new HashMap<>();
+
+        mediaTypeOverrides.put("application/vnd.blackducksoftware.scan-5+json", "application/vnd.blackducksoftware.scan-4+json");
+
+        return mediaTypeOverrides;
     }
 
 }
