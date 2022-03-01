@@ -61,6 +61,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ComponentVersionRiskProfileRiskDataView");
         populate(VIEW, GENERATED, "ComponentVersionView");
         populate(VIEW, GENERATED, "ComponentView");
+        populate(VIEW, GENERATED, "CpesView");
         populate(VIEW, GENERATED, "CurrentUserView");
         populate(VIEW, GENERATED, "CustomFieldObjectView");
         populate(VIEW, GENERATED, "CustomFieldView");
@@ -173,6 +174,7 @@ public class ClassCategories {
         populate(RESPONSE, TEMPORARY, "DashboardSummaryView");
         populate(RESPONSE, TEMPORARY, "EndUserLicenseAgreementView");
         populate(RESPONSE, TEMPORARY, "JobStatisticsView");
+        populate(RESPONSE, TEMPORARY, "PolicySummaryView");
         populate(RESPONSE, TEMPORARY, "UserCommentView");
         populate(RESPONSE, TEMPORARY, "VersionRiskProfileView");
 
