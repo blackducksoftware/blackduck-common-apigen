@@ -61,8 +61,9 @@ public class LinkResponseDefinitions {
             , new LinkResponseDefinition("project", false, "ProjectView")
             , new LinkResponseDefinition("policy-status", false, "ProjectVersionPolicyStatusView")
             , new LinkResponseDefinition("codelocations", true, "CodeLocationView")
-            , new LinkResponseDefinition("versionReport", true, "ReportView")
-            , new LinkResponseDefinition("licenseReports", true, "ReportView")
+            , new LinkResponseDefinition("reports", true, "ReportView")
+            , new LinkResponseDefinition("versionReport", true, "ProjectVersionReportView")
+            , new LinkResponseDefinition("licenseReports", true, "ProjectVersionReportView")
             , new LinkResponseDefinition("issues", true, "ProjectVersionIssuesView")
             , new LinkResponseDefinition("active-policy-rules", true, "PolicySummaryView")
         ));
