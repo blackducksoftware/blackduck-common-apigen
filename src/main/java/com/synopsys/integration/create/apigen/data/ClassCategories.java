@@ -107,6 +107,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ScanBomEntriesView");
         populate(VIEW, GENERATED, "SettingsAnalysisView");
         populate(VIEW, GENERATED, "ScanView");
+        populate(VIEW, GENERATED, "ScanReadinessView");
         populate(VIEW, GENERATED, "SsoConfigurationView");
         populate(VIEW, GENERATED, "SystemOauthClientView");
         populate(VIEW, GENERATED, "TagView");
