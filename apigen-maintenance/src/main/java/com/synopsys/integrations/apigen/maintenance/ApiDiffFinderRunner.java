@@ -21,6 +21,7 @@ import com.synopsys.integrations.apigen.maintenance.utility.DirectoryFinder;
 /**
  * This class can be used to compare two blackduck-common-api directories (a "test" and a "control") via ApiDiffFinder.
  * To Use: Provide the paths to both a "test" and a "control" blackduck-common-api directory.
+ * Note: Both directories must be built first (the diff finder parses the .class files in the "build" subdirectory).
  * Typically, one would be your local generated blackduck-common-api, while the other (your "control" to compare against) might be the blackduck-common-api located
  * in the Integrations portfolio you create with IntegrationsPortfolioCreator.
  */
