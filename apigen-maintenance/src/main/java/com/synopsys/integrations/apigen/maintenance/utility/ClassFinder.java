@@ -1,10 +1,12 @@
 package com.synopsys.integrations.apigen.maintenance.utility;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -13,7 +15,7 @@ import com.synopsys.integrations.apigen.maintenance.model.ClassCharacteristics;
 import com.synopsys.integrations.apigen.maintenance.model.Field;
 
 public class ClassFinder {
-    public List<String> findClasses(File apiDirectory, ClassCharacteristics classCharacteristics) throws IOException {
+    public Set<String> findClasses(File apiDirectory, ClassCharacteristics classCharacteristics) throws IOException {
         File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/synopsys/integration/blackduck/api");
         File generatedDirectory = new File(apiBuildDirectory, "generated");
         List<File> excludedDirectories = Arrays.asList(
@@ -26,7 +28,7 @@ public class ClassFinder {
         return generatedClasses.stream()
             .filter(generatedClass -> classHasCharacteristics(generatedClass, classCharacteristics))
             .map(JavaClass::getClassName)
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
     }
 
     private boolean classHasCharacteristics(JavaClass javaClass, ClassCharacteristics classCharacteristics) {
@@ -69,5 +71,18 @@ public class ClassFinder {
             }
         }
         return false;
+    }
+
+    public void writeFoundClassesToFile(Set<String> foundClasses, String outputPath) throws IOException {
+        File outputDirectory = new File(outputPath);
+        outputDirectory.mkdirs();
+        File outputFile = new File(outputDirectory, "found-classes.txt");
+        FileWriter writer = new FileWriter(outputFile);
+
+        writer.write("************* Classes that meet specified characeristics *************\n\n");
+        for (String foundClass: foundClasses) {
+            writer.write(String.format("%s\n", foundClass));
+        }
+        writer.close();
     }
 }
