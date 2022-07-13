@@ -57,7 +57,6 @@ public class FieldDataProcessor {
     }
 
     private String processFirstPassType(RawFieldDefinition rawFieldDefinition, String processedPath, String parentDefinitionName) {
-        // shouldBeVersioned will be true for generated types (aside from duplicate overrides), and false for common/non-generated types (ex. String)
         String processedType = rawFieldDefinition.getType();
 
         // Handle fields of type 'Number'
