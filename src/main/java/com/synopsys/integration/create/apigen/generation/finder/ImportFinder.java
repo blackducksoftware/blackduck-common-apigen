@@ -55,23 +55,18 @@ public class ImportFinder {
         Set<String> fieldImports = new HashSet<>();
         for (final FieldDefinition field : fields) {
             String fieldType = field.getType();
-            fieldImports.addAll(findFieldImports(fieldType, field.isOptional()));
+            fieldImports.addAll(findFieldImports(fieldType));
         }
         return fieldImports;
     }
 
-    public Set<String> findFieldImports(String fieldType, final boolean isOptional) {
+    public Set<String> findFieldImports(String fieldType) {
         Set<String> fieldImports = new HashSet<>();
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
 
         final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
         final ClassSourceEnum classSource = classCategoryData.getSource();
         ClassTypeEnum classType = classCategoryData.getType();
-
-        if (isOptional) {
-            // If fields that have optional=true in the specs are actually optional, we could wrap them in Optionals
-            //imports.add("java.util.Optional");
-        }
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {
             fieldImports.add(UtilStrings.JAVA_BIG_DECIMAL);
