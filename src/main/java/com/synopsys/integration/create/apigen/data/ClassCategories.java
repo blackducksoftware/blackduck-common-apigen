@@ -85,6 +85,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "OriginView");
         populate(VIEW, GENERATED, "OriginDependencyPathsView");
         populate(VIEW, GENERATED, "PolicyRuleView");
+        populate(VIEW, GENERATED, "PolicySummaryView");
         populate(VIEW, GENERATED, "ProjectCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentVersionCustomFieldView");
@@ -100,6 +101,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationView");
         populate(VIEW, GENERATED, "ProjectView");
         populate(VIEW, GENERATED, "ProjectGroupsView");
+        populate(VIEW, GENERATED, "PurgeTokensView");
         populate(VIEW, GENERATED, "RegistrationView");
         populate(VIEW, GENERATED, "ReportContentsView");
         populate(VIEW, GENERATED, "RoleAssignmentView");
@@ -111,6 +113,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "SsoConfigurationView");
         populate(VIEW, GENERATED, "SystemOauthClientView");
         populate(VIEW, GENERATED, "TagView");
+        populate(VIEW, GENERATED, "TokensView");
         populate(VIEW, GENERATED, "UserGroupView");
         populate(VIEW, GENERATED, "UserView");
         populate(VIEW, GENERATED, "VulnerabilityReportsReportView");
@@ -124,6 +127,7 @@ public class ClassCategories {
         populate(VIEW, DEPRECATED, "MatchedFileView");
         populate(VIEW, DEPRECATED, "PolicyStatusView");
         populate(VIEW, DEPRECATED, "RiskProfileView");
+        populate(VIEW, DEPRECATED, "ProjectVersionPolicyRulesView");
         populate(VIEW, DEPRECATED, "VersionBomComponentView");
         populate(VIEW, DEPRECATED, "VersionBomPolicyRuleView");
         populate(VIEW, DEPRECATED, "VersionBomPolicyStatusView");
@@ -175,7 +179,6 @@ public class ClassCategories {
         populate(RESPONSE, TEMPORARY, "DashboardSummaryView");
         populate(RESPONSE, TEMPORARY, "EndUserLicenseAgreementView");
         populate(RESPONSE, TEMPORARY, "JobStatisticsView");
-        populate(RESPONSE, TEMPORARY, "PolicySummaryView");
         populate(RESPONSE, TEMPORARY, "UserCommentView");
         populate(RESPONSE, TEMPORARY, "VersionRiskProfileView");
 

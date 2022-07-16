@@ -13,7 +13,6 @@ import com.synopsys.integration.create.apigen.data.mediatype.MediaTypePathManage
 import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 import com.synopsys.integration.create.apigen.exception.NullMediaTypeException;
 import com.synopsys.integration.create.apigen.generation.GeneratorDataManager;
-import com.synopsys.integration.create.apigen.generation.MaintenanceReportGenerator;
 import com.synopsys.integration.create.apigen.generation.finder.FilePathUtil;
 import com.synopsys.integration.create.apigen.generation.generators.*;
 import com.synopsys.integration.create.apigen.model.ApiSpecification;
@@ -57,13 +56,12 @@ public class GeneratorRunner {
     private final ObjectFactory<ApiGeneratorParser> parserFactory;
     private final DuplicateOverrides duplicateOverrides;
     private final DuplicateTypeOverrider duplicateTypeOverrider;
-    private final MaintenanceReportGenerator maintenanceReportGenerator;
 
     @Autowired
     public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, ApiDiscoveryGenerator apiDiscoveryGenerator,
                            MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
                            Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
-                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider, MaintenanceReportGenerator maintenanceReportGenerator) {
+                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
@@ -80,7 +78,6 @@ public class GeneratorRunner {
         this.parserFactory = parserFactory;
         this.duplicateOverrides = duplicateOverrides;
         this.duplicateTypeOverrider = duplicateTypeOverrider;
-        this.maintenanceReportGenerator = maintenanceReportGenerator;
     }
 
     @PostConstruct
@@ -88,7 +85,6 @@ public class GeneratorRunner {
         generatorConfig.logConfig();
         File inputDirectory = generatorConfig.getInputDirectory();
         generateFiles(inputDirectory);
-        maintenanceReportGenerator.generateMaintenanceReport(Application.PATH_TO_API_GENERATED_DIRECTORY, duplicateOverrides, Application.PATH_TO_MAINTENANCE_REPORT);
     }
 
     private void generateFiles(File apiSpecificationFile) throws Exception {

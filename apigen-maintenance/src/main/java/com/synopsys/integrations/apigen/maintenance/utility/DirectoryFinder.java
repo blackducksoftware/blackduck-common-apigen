@@ -32,7 +32,7 @@ public class DirectoryFinder {
     }
 
     public static File getDirectoryFromPath(String path, String missingPathMessage) {
-        if (!StringUtils.isNotBlank(path)) {
+        if (StringUtils.isBlank(path)) {
             logger.error(missingPathMessage);
             System.exit(-1);
         }

@@ -38,14 +38,14 @@ public class TypeTranslator {
     private Map<String, String> populateOldTypesToNewTypes() {
         Map<String, String> translations = new HashMap<>();
 
-        // swaggerName, api_SpecsName
+        // swagger (old api) name, apigen (new api) name
         translations.put("ActivityDataTrendingType", "ProjectVersionComponentActivityDataTrendingType");
         translations.put("ActivityDataView", "ComponentVersionRiskProfileActivityDataView");
         translations.put("AssignableProjectView", "ProjectTagView");
         translations.put("BomComponentIssueView", "ProjectVersionIssuesView");
         translations.put("CommentUserData", "CommentUserView");
         translations.put("ComplexLicenseView", "ComponentVersionLicenseView");
-        translations.put("ComplexLicenseType", "ProjectVersionLicenseType"); // * its name is ProjectVersionLicenseType
+        translations.put("ComplexLicenseType", "ProjectVersionLicenseType");
         translations.put("ComponentSearchResultView", "ComponentsView");
         translations.put("ComponentVersionPolicyViolationDetails", "ProjectVersionPolicyStatusComponentVersionPolicyViolationDetailsView");
         translations.put("ComponentVersionRiskView", "ComponentVersionComponentVersionRiskDataView");
@@ -116,9 +116,11 @@ public class TypeTranslator {
         return translations;
     }
 
+    /** If a translation is created to override a field's type to the type of another generated class, set FieldTranslation.typeWasOverrided = true (true is the default)
+    *   If a translation is created to modify a field's verbose or unexpressive name, set typeWasOverrided = false
+    *   See FieldTranslation javadoc for more details
+     */
     private Map<String, List<FieldTranslation>> populateFieldTranslations() {
-        // If a translation is created to override a field's type to the type of another generated class, set FieldTranslation.typeWasOverrided = true (true is the default)
-        // If a translation is created to modify a field's verbose or unexpressive name, set typeWasOverrided = false
         Map<String, List<FieldTranslation>> fieldTranslations = new HashMap<>();
 
         // ComponentActivityComponentVersionRiskDataView
@@ -175,7 +177,7 @@ public class TypeTranslator {
 
         // OriginLicenseView
         List<FieldTranslation> olvTranslations = Arrays.asList(
-            new FieldTranslation("type", "LicenseType", STRING, false)
+            new FieldTranslation("type", "LicenseType", STRING)
         );
         fieldTranslations.put("OriginLicenseView", olvTranslations);
 

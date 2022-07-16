@@ -28,22 +28,19 @@ import freemarker.template.Version;
  * To Use: Specify path to API specification source at {@link #PATH_TO_API_SPECIFICATION}, path to where API output should be generated at {@link #PATH_TO_API_GENERATED_DIRECTORY}.
  * If source is in src/main/resources, you need only specify the version of the API at {@link #API_SPECIFICATION_VERSION}.
  * Download API specification source at https://artifactory.internal.synopsys.com/ui/repos/tree/General/bds-hub-snapshot%2Fcom%2Fblackducksoftware%2Fhub%2Fapi-specification
- * If you wish to see a maintenance report, specify where you'd like the report to be generated at {@link #PATH_TO_MAINTENANCE_REPORT}.
  */
 
 @SpringBootApplication
 @Configuration
 public class Application {
-    static String PATH_TO_API_SPECIFICATION = "/Users/ekerwin/Downloads/api-specification-2020.8.0";
-    static String PATH_TO_API_GENERATED_DIRECTORY = "/Users/ekerwin/source/blackduck-common-api/src/main/java/com/synopsys/integration/blackduck/api/generated";
-    static String PATH_TO_MAINTENANCE_REPORT = "";
-    static String API_SPECIFICATION_VERSION = "2020.8.0";
+    static String PATH_TO_API_SPECIFICATION = "";
+    static String PATH_TO_API_GENERATED_DIRECTORY = "";
+    static String API_SPECIFICATION_VERSION = "";
 
     public static String MEDIA_TYPES_CSV_NAME = "minified-media-types.csv";
 
     public static final String API_PATH_SPECIFICATION_KEY = "APIGEN_SPECIFICATION_API_PATH";
     public static final String API_GENERATED_DIRECTORY_PATH_KEY = "APIGEN_GENERATED_DIRECTORY_PATH";
-    public static final String MAINTENANCE_REPORT_PATH_KEY = "APIGEN_MAINTENANCE_REPORT_PATH";
     public static final String API_SPECIFICATION_VERSION_KEY = "APIGEN_SPECIFICATION_VERSION";
     public static final String MEDIA_TYPES_CSV_NAME_KEY = "MEDIA_TYPES_CSV_NAME";
 
@@ -52,7 +49,6 @@ public class Application {
     public static void main(String[] args) {
         PATH_TO_API_SPECIFICATION = StringUtils.defaultIfBlank(System.getenv(API_PATH_SPECIFICATION_KEY), PATH_TO_API_SPECIFICATION);
         PATH_TO_API_GENERATED_DIRECTORY = StringUtils.defaultIfBlank(System.getenv(API_GENERATED_DIRECTORY_PATH_KEY), PATH_TO_API_GENERATED_DIRECTORY);
-        PATH_TO_MAINTENANCE_REPORT = StringUtils.defaultIfBlank(System.getenv(MAINTENANCE_REPORT_PATH_KEY), PATH_TO_MAINTENANCE_REPORT);
         API_SPECIFICATION_VERSION = StringUtils.defaultIfBlank(System.getenv(API_SPECIFICATION_VERSION_KEY), API_SPECIFICATION_VERSION);
         MEDIA_TYPES_CSV_NAME = StringUtils.defaultIfBlank(System.getenv(MEDIA_TYPES_CSV_NAME_KEY), MEDIA_TYPES_CSV_NAME);
 

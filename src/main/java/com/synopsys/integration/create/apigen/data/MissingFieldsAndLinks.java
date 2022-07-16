@@ -18,7 +18,7 @@ import com.synopsys.integration.create.apigen.model.LinkDefinition;
 
 @Component
 public class MissingFieldsAndLinks {
-    // FIXME - this whole file is a patch-job
+    // FIXME - this whole file is a patch-job.  Requests should be made to the Black Duck API team to add these fields and links to the spec
 
     private final Map<String, MissingFieldAndLinkHelper> missingFieldAndLinkMap;
 
@@ -33,12 +33,6 @@ public class MissingFieldsAndLinks {
         final MissingFieldAndLinkHelper cpsvFieldsAndLinks = new MissingFieldAndLinkHelper();
         cpsvFieldsAndLinks.addLink(new LinkDefinition("comment"));
         missingFieldAndLinkMap.put("ComponentPolicyStatusView", cpsvFieldsAndLinks);
-
-        // ComponentVersionView
-        //TODO remove for 2020.10+, this link was removed in 2020.10+
-        final MissingFieldAndLinkHelper cvvFieldsAndLinks = new MissingFieldAndLinkHelper();
-        cvvFieldsAndLinks.addLink(new LinkDefinition("remediating"));
-        missingFieldAndLinkMap.put("ComponentVersionView", cvvFieldsAndLinks);
 
         // LicenseView
         final MissingFieldAndLinkHelper lvFieldsAndLinks = new MissingFieldAndLinkHelper();
