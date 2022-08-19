@@ -88,11 +88,11 @@ public class MediaTypePathManager {
                                           .sorted()
                                           .map(MediaTypePathUtility::generatePathStatic)
                                           .collect(Collectors.toList());
-        List<MediaTypeDefinition> sortedDefintions = mediaTypeMappings.values().stream()
+        List<MediaTypeDefinition> sortedDefinitions = mediaTypeMappings.values().stream()
                                                          .sorted(Comparator.comparing(MediaTypeDefinition::getPathRegex))
                                                          .collect(Collectors.toList());
 
-        return new MediaTypeData(mediaTypeConstants, mediaTypePaths, sortedDefintions);
+        return new MediaTypeData(mediaTypeConstants, mediaTypePaths, sortedDefinitions);
     }
 
     private void addMissingMappings() {
