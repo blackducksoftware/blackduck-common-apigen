@@ -9,14 +9,19 @@ package com.synopsys.integration.create.apigen.model;
 
 import java.io.File;
 
-import com.synopsys.integration.create.apigen.Application;
+import org.apache.commons.lang3.StringUtils;
+
 import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 
-public class ApiSpecification {
-    private File root;
 
-    public ApiSpecification(final File root) {
+public class ApiSpecification {
+    private final String MEDIA_TYPES_CSV_NAME_KEY = "MEDIA_TYPES_CSV_NAME";
+    private File root;
+    private String mediaTypesCsvName;
+
+    public ApiSpecification(final File root, String mediaTypesCsvName) {
         this.root = root;
+        this.mediaTypesCsvName = mediaTypesCsvName;
     }
 
     public File getRoot() {
@@ -24,7 +29,8 @@ public class ApiSpecification {
     }
 
     public MediaTypes getMediaTypesFile() {
-        File mediaTypesCsv = new File(root, Application.MEDIA_TYPES_CSV_NAME);
+        mediaTypesCsvName = StringUtils.defaultIfBlank(System.getenv(MEDIA_TYPES_CSV_NAME_KEY), mediaTypesCsvName);
+        File mediaTypesCsv = new File(root, mediaTypesCsvName);
         return new MediaTypes(mediaTypesCsv);
     }
 }

@@ -13,22 +13,39 @@ import java.net.URISyntaxException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GeneratorConfig {
     private static final Logger logger = LoggerFactory.getLogger(GeneratorConfig.class);
 
-    public String getInputPath() {
-        return Application.PATH_TO_API_SPECIFICATION;
+    private final String API_PATH_SPECIFICATION_KEY = "APIGEN_SPECIFICATION_API_PATH";
+    private final String API_GENERATED_DIRECTORY_PATH_KEY = "APIGEN_GENERATED_DIRECTORY_PATH";
+    private final String API_SPECIFICATION_VERSION_KEY = "APIGEN_SPECIFICATION_VERSION";
+
+    private final CommonApiGenProperties properties;
+
+    @Autowired
+    public GeneratorConfig(CommonApiGenProperties properties){
+        this.properties = properties;
     }
+
+    public String getInputPath() {
+        String pathToApiSpec = properties.getPathToApiSpecification().orElse("");
+        return StringUtils.defaultIfBlank(System.getenv(API_PATH_SPECIFICATION_KEY), pathToApiSpec);
+    }
+
 
     public String getOutputPath() {
-        return Application.PATH_TO_API_GENERATED_DIRECTORY;
+        String pathToApiGeneratedDirectory = properties.getPathToApiDirectory().orElse("");
+        return StringUtils.defaultIfBlank(System.getenv(API_GENERATED_DIRECTORY_PATH_KEY), pathToApiGeneratedDirectory);
     }
 
+
     public String getApiSpecificationVersion() {
-        return Application.API_SPECIFICATION_VERSION;
+        String apiSpecVersion = properties.getApiVersion().orElse("");
+        return StringUtils.defaultIfBlank(System.getenv(API_SPECIFICATION_VERSION_KEY), apiSpecVersion);
     }
 
     public File getInputDirectory() throws URISyntaxException {
@@ -72,5 +89,4 @@ public class GeneratorConfig {
         logger.info("Input Path  = {}", getInputPath());
         logger.info("Output Path = {}", getOutputPath());
     }
-
 }
