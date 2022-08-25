@@ -24,6 +24,7 @@ import com.synopsys.integration.create.apigen.parser.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectFactory;
@@ -56,12 +57,14 @@ public class GeneratorRunner {
     private final ObjectFactory<ApiGeneratorParser> parserFactory;
     private final DuplicateOverrides duplicateOverrides;
     private final DuplicateTypeOverrider duplicateTypeOverrider;
+    private final CommonApiGenProperties properties;
+
 
     @Autowired
     public GeneratorRunner(MissingFieldsAndLinks missingFieldsAndLinks, Gson gson, NameAndPathManager nameAndPathManager, ViewGenerator viewGenerator, ApiDiscoveryGenerator apiDiscoveryGenerator,
                            MediaTypeMapGenerator mediaTypeMapGenerator, DeprecatedClassGenerator deprecatedClassGenerator, List<ClassGenerator> generators,
                            Configuration config, GeneratorConfig generatorConfig, FilePathUtil filePathUtil, GeneratorDataManager generatorDataManager, MediaTypePathManager mediaTypePathManager,
-                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider) {
+                           ObjectFactory<ApiGeneratorParser> parserFactory, DuplicateOverrides duplicateOverrides, DuplicateTypeOverrider duplicateTypeOverrider, CommonApiGenProperties properties) {
         this.missingFieldsAndLinks = missingFieldsAndLinks;
         this.gson = gson;
         this.nameAndPathManager = nameAndPathManager;
@@ -78,6 +81,7 @@ public class GeneratorRunner {
         this.parserFactory = parserFactory;
         this.duplicateOverrides = duplicateOverrides;
         this.duplicateTypeOverrider = duplicateTypeOverrider;
+        this.properties = properties;
     }
 
     @PostConstruct
@@ -88,7 +92,7 @@ public class GeneratorRunner {
     }
 
     private void generateFiles(File apiSpecificationFile) throws Exception {
-        ApiSpecification apiSpecification = new ApiSpecification(apiSpecificationFile);
+        ApiSpecification apiSpecification = new ApiSpecification(apiSpecificationFile, properties.getMediaTypesName().orElse(""));
         MediaTypes mediaTypes = apiSpecification.getMediaTypesFile();
         List<ResponseDefinition> responses = parseResponseDefinitionsFromApiSpecifications(apiSpecificationFile, mediaTypes);
         accumulateMediaTypes(responses);

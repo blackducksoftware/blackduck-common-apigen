@@ -15,3 +15,6 @@ out/
 build/
 
 missing_stuff1.txt
+
+# api spec resources
+src/main/resources/api-specification/2022.7.1
