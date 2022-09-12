@@ -29,7 +29,7 @@ public class FieldDataProcessor {
     private static final Set<String> dateSuffixes = UtilStrings.getDateSuffixes();
     private boolean typeWasOverrided;
 
-    public FieldDataProcessor(final TypeTranslator typeTranslator, DuplicateTypeIdentifier duplicateTypeIdentifier) {
+    public FieldDataProcessor(TypeTranslator typeTranslator, DuplicateTypeIdentifier duplicateTypeIdentifier) {
         this.typeTranslator = typeTranslator;
         this.duplicateTypeIdentifier = duplicateTypeIdentifier;
     }
@@ -90,8 +90,18 @@ public class FieldDataProcessor {
 
         // Appropriately wrap list types
         if (rawFieldDefinition.getType().equals(UtilStrings.ARRAY)) {
-            final String coreType = processedType.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : processedType;
-            processedType = "java.util.List<" + coreType + ">";
+            // Determine if List<T> should use String or be replaced by the new calculated processedType
+            String coreType = processedType.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : processedType;
+            // For multi-dimensional arrays, we must count the array dimensions from the path as the api-spec does not provide
+            //  information related to the contents or dimensions of the array.
+            int arrayDimensions = StringUtils.countMatches(rawFieldDefinition.getPath(), "[]");
+            if (arrayDimensions > 1) {
+                processedType = StringUtils.repeat(UtilStrings.JAVA_LIST, arrayDimensions)
+                                    + coreType
+                                    + StringUtils.repeat(">", arrayDimensions);
+            } else {
+                processedType = UtilStrings.JAVA_LIST + coreType + ">";
+            }
         }
 
         return processedType;

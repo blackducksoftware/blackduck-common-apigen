@@ -11,10 +11,10 @@ import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.model.RawFieldDefinition;
 
-public class FieldDataProcessorTest {
+class FieldDataProcessorTest {
 
     @Test
-    public void testCorrectProcessedType() {
+    void testCorrectProcessedType() {
         RawFieldDefinition object1 = new RawFieldDefinition("createdAt", "type", false);
         assertHasExpectedType(object1, "", "java.util.Date");
 
@@ -35,10 +35,19 @@ public class FieldDataProcessorTest {
         object6.addSubField(new RawFieldDefinition("", "", false));
         assertHasExpectedType(object6, "ProjectView", "java.util.List<ProjectCountsView>");
 
+        RawFieldDefinition object7 = new RawFieldDefinition("counts[]", "Array", false);
+        object7.addSubField(new RawFieldDefinition("", "", false));
+        assertHasExpectedType(object7, "ProjectView", "java.util.List<ProjectCountsView>");
+
+        // 2 dimensional array test
+        RawFieldDefinition object8 = new RawFieldDefinition("dependencyTrees[][]", "Array", false);
+        object8.addSubField(new RawFieldDefinition("", "", false));
+        assertHasExpectedType(object8, "ProjectView", "java.util.List<java.util.List<ProjectDependencyTreesView>>");
+
     }
 
     @Test
-    public void testCorrectProcessedPath() {
+    void testCorrectProcessedPath() {
         RawFieldDefinition object1 = new RawFieldDefinition("default", "type", false);
         assertHasExpectedPath(object1, "", "default_");
 
