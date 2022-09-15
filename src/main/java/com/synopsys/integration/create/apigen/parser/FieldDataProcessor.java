@@ -44,6 +44,12 @@ public class FieldDataProcessor {
         if (javaKeyWords.contains(path)) {
             path = path + "_";
         }
+
+        // Some endpoints support a raw json body. We should rename the field to reflect a wildcard
+        if (path.equals("*")) {
+            path = "jsonObject";
+        }
+
         return path.replace("[]", "");
     }
 
@@ -102,6 +108,11 @@ public class FieldDataProcessor {
             } else {
                 processedType = UtilStrings.JAVA_LIST + coreType + ">";
             }
+        }
+
+        // Fields marked with a wildcard indicate that the accepted type is raw json
+        if (rawFieldDefinition.getPath().equals("*")) {
+            processedType = UtilStrings.JSON_OBJECT;
         }
 
         return processedType;

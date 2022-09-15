@@ -59,6 +59,7 @@ public class UtilStrings {
     public static final String OBJECT = "Object";
     public static final String INTEGER = "Integer";
     public static final String JAVA_DATE = "java.util.Date";
+    public static final String JSON_OBJECT = "com.google.gson.JsonObject";
 
     public static final String LINKS = "links";
     public static final String FIELDS = "fields";
@@ -78,7 +79,7 @@ public class UtilStrings {
     public static final String[] DIGIT_STRINGS = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
     public static Set<String> getJavaKeyWords() {
-        final Set<String> javaKeyWords = new HashSet<>();
+        Set<String> javaKeyWords = new HashSet<>();
 
         javaKeyWords.add("default");
         javaKeyWords.add("package");
@@ -88,7 +89,7 @@ public class UtilStrings {
     }
 
     public static Set<String> getDateSuffixes() {
-        final Set<String> dateSuffixes = new HashSet<>();
+        Set<String> dateSuffixes = new HashSet<>();
 
         dateSuffixes.add("edOn");
         dateSuffixes.add("edAt");

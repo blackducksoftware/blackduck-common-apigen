@@ -49,6 +49,7 @@ public class ClassCategories {
         populate(COMMON, ClassSourceEnum.NULL, "Number");
         populate(COMMON, ClassSourceEnum.NULL, "null");
         populate(COMMON, ClassSourceEnum.NULL, "");
+        populate(COMMON, ClassSourceEnum.NULL, "com.google.gson.JsonObject");
 
         populate(VIEW, GENERATED, "AnnouncementBannerView");
         populate(VIEW, GENERATED, "CodeLocationView");
