@@ -47,7 +47,7 @@ public class ComponentGenerator extends ClassGenerator {
 
     @Autowired
     public ComponentGenerator(ClassCategories classCategories, ImportFinder importFinder, InputDataFinder inputDataFinder, NameAndPathManager nameAndPathManager, TypeTranslator typeTranslator, FilePathUtil filePathUtil,
-        GeneratorDataManager generatorDataManager, final DeprecatedClassGenerator deprecatedClassGenerator) {
+        GeneratorDataManager generatorDataManager, DeprecatedClassGenerator deprecatedClassGenerator) {
         this.classCategories = classCategories;
         this.importFinder = importFinder;
         this.inputDataFinder = inputDataFinder;
@@ -60,25 +60,25 @@ public class ComponentGenerator extends ClassGenerator {
 
     @Override
     public boolean isApplicable(FieldDefinition field) {
-        final String fieldType = NameParser.stripListNotation(field.getType());
-        final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
-        final ClassTypeEnum classType = classCategoryData.getType();
-        final ClassSourceEnum classSource = classCategoryData.getSource();
+        String fieldType = NameParser.stripListNotation(field.getType());
+        ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
+        ClassTypeEnum classType = classCategoryData.getType();
+        ClassSourceEnum classSource = classCategoryData.getSource();
         return classType.isNotCommonTypeOrEnum() && !classSource.isTemporary() && !classSource.isManual() && !field.typeWasOverrided();
     }
 
     @Override
     public void generateClass(FieldDefinition field, String responseMediaType, Template template) {
-        final Set<String> imports = new HashSet<>();
-        final Set<FieldDefinition> subFields = field.getSubFields();
-        for (final FieldDefinition subField : subFields) {
+        Set<String> imports = new HashSet<>();
+        Set<FieldDefinition> subFields = field.getSubFields();
+        for (FieldDefinition subField : subFields) {
             imports.addAll(importFinder.findFieldImports(subField.getType()));
         }
 
         String fieldType = NameParser.stripListAndOptionalNotation(field.getType());
-        final ClassTypeEnum classType = classCategories.computeData(fieldType).getType();
+        ClassTypeEnum classType = classCategories.computeData(fieldType).getType();
         ClassTypeData classTypeData = new ClassTypeData(classType, filePathUtil);
-        final Map<String, Object> input = inputDataFinder.getInputData(classTypeData, imports, fieldType, subFields, responseMediaType);
+        Map<String, Object> input = inputDataFinder.getInputData(classTypeData, imports, fieldType, subFields, responseMediaType);
 
         if (isApplicable(field)) {
             String deprecatedName = typeTranslator.getNameOfDeprecatedEquivalent(fieldType);

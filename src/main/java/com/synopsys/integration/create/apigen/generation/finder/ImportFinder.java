@@ -44,16 +44,16 @@ public class ImportFinder {
     private final ClassNameManager classNameManager;
 
     @Autowired
-    public ImportFinder(final ClassCategories classCategories, final LinkResponseDefinitions linkResponseDefinitions, final NameAndPathManager nameAndPathManager, ClassNameManager classNameManager) {
+    public ImportFinder(ClassCategories classCategories, LinkResponseDefinitions linkResponseDefinitions, NameAndPathManager nameAndPathManager, ClassNameManager classNameManager) {
         this.classCategories = classCategories;
         this.linkResponseDefinitions = linkResponseDefinitions;
         this.nameAndPathManager = nameAndPathManager;
         this.classNameManager = classNameManager;
     }
 
-    public Set<String> findFieldImports(final Set<FieldDefinition> fields) {
+    public Set<String> findFieldImports(Set<FieldDefinition> fields) {
         Set<String> fieldImports = new HashSet<>();
-        for (final FieldDefinition field : fields) {
+        for (FieldDefinition field : fields) {
             String fieldType = field.getType();
             fieldImports.addAll(findFieldImports(fieldType));
         }
@@ -64,8 +64,12 @@ public class ImportFinder {
         Set<String> fieldImports = new HashSet<>();
         fieldType = NameParser.stripListAndOptionalNotation(fieldType);
 
-        final ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
-        final ClassSourceEnum classSource = classCategoryData.getSource();
+        if (fieldType.equals(UtilStrings.JSON_OBJECT)) {
+            return fieldImports;
+        }
+
+        ClassCategoryData classCategoryData = classCategories.computeData(fieldType);
+        ClassSourceEnum classSource = classCategoryData.getSource();
         ClassTypeEnum classType = classCategoryData.getType();
 
         if (fieldType.equals(UtilStrings.BIG_DECIMAL)) {
@@ -99,44 +103,44 @@ public class ImportFinder {
         if (classCategory != null) {
             fieldImports.add(String.format("%s%s.%s", importPathPrefix, classCategory, fieldType));
         }
-        if (baseClass != null ) {
+        if (baseClass != null) {
             fieldImports.add(CORE_CLASS_PATH_PREFIX + baseClass);
         }
 
         return fieldImports;
     }
 
-    public LinksAndImportsData findLinkAndImportsData(final ResponseDefinition response) {
-        final Set<LinkDefinition> rawLinks = response.getLinks();
-        final Set<LinkData> links = new HashSet<>();
-        final Set<String> linkImports = new HashSet<>();
-        final String responseName = response.getName();
+    public LinksAndImportsData findLinkAndImportsData(ResponseDefinition response) {
+        Set<LinkDefinition> rawLinks = response.getLinks();
+        Set<LinkData> links = new HashSet<>();
+        Set<String> linkImports = new HashSet<>();
+        String responseName = response.getName();
 
         if (!rawLinks.isEmpty()) {
             linkImports.add(classNameManager.getFullyQualifiedClassName(ClassNameManager.LINK_BLACKDUCK_RESPONSE));
             linkImports.add("java.util.Optional");
         }
 
-        for (final LinkDefinition rawLink : rawLinks) {
-            final LinkData link = new LinkData(rawLink.getRel(), response, linkResponseDefinitions);
+        for (LinkDefinition rawLink : rawLinks) {
+            LinkData link = new LinkData(rawLink.getRel(), response, linkResponseDefinitions);
             try {
-                final String linkType = link.linkType();
+                String linkType = link.linkType();
                 if (null == linkType) {
                     nameAndPathManager.addNullLinkResultClass(responseName, rawLink.getRel());
                     continue;
                 }
-                final String linkImport = classNameManager.getFullyQualifiedClassName(linkType);
+                String linkImport = classNameManager.getFullyQualifiedClassName(linkType);
                 linkImports.add(linkImport);
-                final String urlResponseImport = classNameManager.getFullyQualifiedClassName(link.urlResponseType);
+                String urlResponseImport = classNameManager.getFullyQualifiedClassName(link.urlResponseType);
                 linkImports.add(urlResponseImport);
 
-                final String resultClass = link.resultClass();
+                String resultClass = link.resultClass();
                 if (resultClass != null) {
                     nameAndPathManager.addLinkClassName(resultClass);
-                    final ResultClassData resultClassData = new ResultClassData(resultClass, classCategories);
-                    final String resultImportPath = resultClassData.getResultImportPath();
-                    final String resultImportType = resultClassData.getResultImportType();
-                    final boolean shouldAddImport = resultClassData.shouldAddImport();
+                    ResultClassData resultClassData = new ResultClassData(resultClass, classCategories);
+                    String resultImportPath = resultClassData.getResultImportPath();
+                    String resultImportType = resultClassData.getResultImportType();
+                    boolean shouldAddImport = resultClassData.shouldAddImport();
 
                     if (shouldAddImport) {
                         linkImports.add(resultImportPath + resultImportType + "." + resultClass);
@@ -145,7 +149,7 @@ public class ImportFinder {
                 } else {
                     nameAndPathManager.addNullLinkResultClass(responseName, linkType);
                 }
-            } catch (final NullPointerException e) {
+            } catch (NullPointerException e) {
                 nameAndPathManager.addNullLinkResultClass(responseName, rawLink.getRel());
             }
         }

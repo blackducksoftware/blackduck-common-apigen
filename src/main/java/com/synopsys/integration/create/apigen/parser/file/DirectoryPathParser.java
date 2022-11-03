@@ -22,10 +22,10 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.synopsys.integration.create.apigen.data.DuplicateOverrides;
-import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 import com.synopsys.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.synopsys.integration.create.apigen.data.TypeTranslator;
 import com.synopsys.integration.create.apigen.data.UtilStrings;
+import com.synopsys.integration.create.apigen.data.mediatype.MediaTypes;
 import com.synopsys.integration.create.apigen.model.DefinitionParseParameters;
 import com.synopsys.integration.create.apigen.model.FieldDefinition;
 import com.synopsys.integration.create.apigen.model.LinkDefinition;
@@ -52,7 +52,7 @@ public class DirectoryPathParser implements ApiParser {
     private final FieldDefinitionProcessor processor;
 
     @Autowired
-    public DirectoryPathParser(final Gson gson, final TypeTranslator typeTranslator, final NameParser nameParser, final MissingFieldsAndLinks missingFieldsAndLinks,
+    public DirectoryPathParser(Gson gson, TypeTranslator typeTranslator, NameParser nameParser, MissingFieldsAndLinks missingFieldsAndLinks,
         FieldDefinitionProcessor processor) {
         this.gson = gson;
         this.typeTranslator = typeTranslator;
@@ -63,19 +63,19 @@ public class DirectoryPathParser implements ApiParser {
 
     @Override
     public List<ResponseDefinition> parseApi(File specificationRootDirectory, MediaTypes mediaTypes) {
-        final File endpointsPath = new File(specificationRootDirectory, "endpoints");
-        final File apiPath = new File(endpointsPath, UtilStrings.API);
+        File endpointsPath = new File(specificationRootDirectory, "endpoints");
+        File apiPath = new File(endpointsPath, UtilStrings.API);
 
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
         List<ResponseDefinition> allResponseDefinitions = parseApiForAllResponses(apiPath, apiPath.getAbsolutePath().length() + 1, mediaTypes);
 
         // For each response file, parse the JSON for FieldDefinition objects
-        for (final ResponseDefinition response : allResponseDefinitions) {
-            final String absolutePath = specificationRootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
-            final File responseSpecificationFile = new File(absolutePath);
-            final DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
-            final Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
-            final Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
+        for (ResponseDefinition response : allResponseDefinitions) {
+            String absolutePath = specificationRootDirectory.getAbsolutePath() + "/endpoints/api/" + response.getResponseSpecificationPath();
+            File responseSpecificationFile = new File(absolutePath);
+            DefinitionParser definitionParser = new DefinitionParser(gson, responseSpecificationFile);
+            Set<RawFieldDefinition> fields = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+            Set<LinkDefinition> links = definitionParser.getDefinitions(DefinitionParseParameters.LINK_PARAMETERS);
 
             response.addFields(processor.processFieldDefinitions(response.getName(), fields));
             response.addLinks(links);
@@ -84,7 +84,7 @@ public class DirectoryPathParser implements ApiParser {
             ResponseType responseType = ResponseTypeIdentifier.getResponseType(response);
             if (responseType.equals(ResponseType.DATA_IS_SUBFIELD_OF_ITEMS)) {
                 responseDefinitions.add(extractResponseFromSubfieldsOfItems(response));
-            } else if (!responseType.equals(ResponseType.ARRAY)){
+            } else if (!responseType.equals(ResponseType.ARRAY)) {
                 responseDefinitions.add(response);
             }
         }
@@ -92,12 +92,12 @@ public class DirectoryPathParser implements ApiParser {
         return responseDefinitions;
     }
 
-    private List<ResponseDefinition> parseApiForAllResponses(final File parent, final int prefixLength, MediaTypes mediaTypes) {
+    private List<ResponseDefinition> parseApiForAllResponses(File parent, int prefixLength, MediaTypes mediaTypes) {
         List<ResponseDefinition> responseDefinitions = new LinkedList<>();
-        final List<File> files = Arrays.stream(parent.listFiles())
-                                        .filter(file -> !file.getName().equals("notifications"))
-                                        .sorted()
-                                        .collect(Collectors.toList());
+        List<File> files = Arrays.stream(parent.listFiles())
+                               .filter(file -> !file.getName().equals("notifications"))
+                               .sorted()
+                               .collect(Collectors.toList());
         for (File file : files) {
             if (file.getName().equals(RESPONSE_ENDPOINT_TOKEN)) {
                 Optional<File> responseSpecificationWithLatestMediaVersion = findResponseSpecificationWithLatestMediaVersion(file);
@@ -137,27 +137,27 @@ public class DirectoryPathParser implements ApiParser {
     }
 
     private ResponseDefinition createResponseDefinitionFromSpecification(File responseSpecification, int prefixLength, MediaTypes mediaTypes) {
-        final String relativePath = responseSpecification.getAbsolutePath().substring(prefixLength);
-        final String mediaType = mediaTypes.getLongName(responseSpecification.getParentFile().getName());
-        final String responseName = nameParser.computeResponseName(relativePath);
-        final boolean doesHaveMultipleResults = computeIfHasMultipleResults(responseSpecification);
+        String relativePath = responseSpecification.getAbsolutePath().substring(prefixLength);
+        String mediaType = mediaTypes.getLongName(responseSpecification.getParentFile().getName());
+        String responseName = nameParser.computeResponseName(relativePath);
+        boolean doesHaveMultipleResults = computeIfHasMultipleResults(responseSpecification);
         return new ResponseDefinition(relativePath, responseName, mediaType, doesHaveMultipleResults);
     }
 
-    private boolean computeIfHasMultipleResults(final File file) {
+    private boolean computeIfHasMultipleResults(File file) {
         /*
             Whether a response has single or multiple results is indicated by the presence of an 'Array' response specification file
             as a sibling to the parent directory of another response specification file.  If such a file does not exist, then that
             response does not have multiple results.
          */
-        final File parentOfArrayResponse = getParentOfArrayResponse(file);
+        File parentOfArrayResponse = getParentOfArrayResponse(file);
         if (parentOfArrayResponse == null) {
             return false;
         }
         return containsArrayResponse(parentOfArrayResponse, false);
     }
 
-    private File getParentOfArrayResponse(final File file) {
+    private File getParentOfArrayResponse(File file) {
         /*
             The location of an indicating 'Array' response in the file structure is such:
                 <endpoint>
@@ -171,7 +171,7 @@ public class DirectoryPathParser implements ApiParser {
         while (!current.getName().equals(UtilStrings.GET)) {
             current = current.getParentFile();
         }
-        final File getFile = current;
+        File getFile = current;
         current = getFile.getParentFile();
         if (current.getParentFile() != null && !current.getParentFile().getName().equals(UtilStrings.API)) {
             return current.getParentFile();
@@ -180,20 +180,24 @@ public class DirectoryPathParser implements ApiParser {
         }
     }
 
-    private boolean containsArrayResponse(final File file, final boolean isGetFileSubDirectory) {
-        final File[] children = file.listFiles();
+    private boolean containsArrayResponse(File file, boolean isGetFileSubDirectory) {
+        File[] children = file.listFiles();
         if (children == null) {
             return false;
         }
-        for (final File child : children) {
+        boolean foundArrayResponse = false;
+        for (File child : children) {
             if (child.getName().equals(UtilStrings.RESPONSE_SPECIFICATION_JSON)) {
-                final ResponseDefinition potentialArrayResponse = buildDummyResponseDefinitionFromFile(child);
+                ResponseDefinition potentialArrayResponse = buildDummyResponseDefinitionFromFile(child);
                 if (!ResponseTypeIdentifier.getResponseType(potentialArrayResponse).equals(ResponseType.STANDARD)) {
                     return true;
                 }
             }
             if (child.getName().equals(UtilStrings.GET) || (isGetFileSubDirectory && !child.getName().equals(UtilStrings.REQUEST_SPECIFICATION_JSON))) {
-                return containsArrayResponse(child, true);
+                foundArrayResponse = containsArrayResponse(child, true);
+            }
+            if (foundArrayResponse) {
+                return true;
             }
         }
         return false;
@@ -212,12 +216,12 @@ public class DirectoryPathParser implements ApiParser {
         return newResponse;
     }
 
-    private ResponseDefinition buildDummyResponseDefinitionFromFile(final File file) {
-        final DefinitionParser definitionParser = new DefinitionParser(gson, file);
-        final Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
+    private ResponseDefinition buildDummyResponseDefinitionFromFile(File file) {
+        DefinitionParser definitionParser = new DefinitionParser(gson, file);
+        Set<RawFieldDefinition> rawFieldDefinitions = definitionParser.getDefinitions(DefinitionParseParameters.RAW_FIELD_PARAMETERS);
         FieldDefinitionProcessor processor = new FieldDefinitionProcessor(new FieldDataProcessor(typeTranslator, new DuplicateTypeIdentifier(new DuplicateOverrides())), missingFieldsAndLinks);
-        final Set<FieldDefinition> fieldDefinitions = processor.processFieldDefinitions("", rawFieldDefinitions);
-        final ResponseDefinition response = new ResponseDefinition("", "", "", false);
+        Set<FieldDefinition> fieldDefinitions = processor.processFieldDefinitions("", rawFieldDefinitions);
+        ResponseDefinition response = new ResponseDefinition("", "", "", false);
         response.addFields(fieldDefinitions);
         return response;
     }

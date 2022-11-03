@@ -29,7 +29,7 @@ public class FieldDataProcessor {
     private static final Set<String> dateSuffixes = UtilStrings.getDateSuffixes();
     private boolean typeWasOverrided;
 
-    public FieldDataProcessor(final TypeTranslator typeTranslator, DuplicateTypeIdentifier duplicateTypeIdentifier) {
+    public FieldDataProcessor(TypeTranslator typeTranslator, DuplicateTypeIdentifier duplicateTypeIdentifier) {
         this.typeTranslator = typeTranslator;
         this.duplicateTypeIdentifier = duplicateTypeIdentifier;
     }
@@ -44,6 +44,12 @@ public class FieldDataProcessor {
         if (javaKeyWords.contains(path)) {
             path = path + "_";
         }
+
+        // Some endpoints support a raw json body. We should rename the field to reflect a wildcard
+        if (path.equals("*")) {
+            path = "jsonObject";
+        }
+
         return path.replace("[]", "");
     }
 
@@ -90,8 +96,23 @@ public class FieldDataProcessor {
 
         // Appropriately wrap list types
         if (rawFieldDefinition.getType().equals(UtilStrings.ARRAY)) {
-            final String coreType = processedType.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : processedType;
-            processedType = "java.util.List<" + coreType + ">";
+            // Determine if List<T> should use String or be replaced by the new calculated processedType
+            String coreType = processedType.equals(UtilStrings.ARRAY) ? UtilStrings.STRING : processedType;
+            // For multi-dimensional arrays, we must count the array dimensions from the path as the api-spec does not provide
+            //  information related to the contents or dimensions of the array.
+            int arrayDimensions = StringUtils.countMatches(rawFieldDefinition.getPath(), "[]");
+            if (arrayDimensions > 1) {
+                processedType = StringUtils.repeat(UtilStrings.JAVA_LIST, arrayDimensions)
+                                    + coreType
+                                    + StringUtils.repeat(">", arrayDimensions);
+            } else {
+                processedType = UtilStrings.JAVA_LIST + coreType + ">";
+            }
+        }
+
+        // Fields marked with a wildcard indicate that the accepted type is raw json
+        if (rawFieldDefinition.getPath().equals("*")) {
+            processedType = UtilStrings.JSON_OBJECT;
         }
 
         return processedType;

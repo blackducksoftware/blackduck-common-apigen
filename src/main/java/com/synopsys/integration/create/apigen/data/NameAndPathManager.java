@@ -38,7 +38,9 @@ public class NameAndPathManager {
         return apiDiscoveryData;
     }
 
-    public void addApiDiscoveryData(ApiPathData data) { apiDiscoveryData.add(data); }
+    public void addApiDiscoveryData(ApiPathData data) {
+        apiDiscoveryData.add(data);
+    }
 
     public boolean isRepeatApiDiscoveryPath(String path) {
         return apiDiscoveryDataPaths.contains(path);
