@@ -88,7 +88,6 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "PolicyRuleView");
         populate(VIEW, GENERATED, "PolicySummaryView");
         populate(VIEW, GENERATED, "ProjectCustomFieldView");
-        populate(VIEW, GENERATED, "ProjectVersionBomStatusView");
         populate(VIEW, GENERATED, "ProjectVersionComponentCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentVersionCustomFieldView");
         populate(VIEW, GENERATED, "ProjectVersionComponentView");
