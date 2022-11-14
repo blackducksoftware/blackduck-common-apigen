@@ -64,8 +64,9 @@ public class LinkResponseDefinitions {
             , new LinkResponseDefinition("reports", true, "ReportView")
             , new LinkResponseDefinition("versionReport", true, "ProjectVersionReportView")
             , new LinkResponseDefinition("licenseReports", true, "ProjectVersionReportView")
-            , new LinkResponseDefinition("issues", true, "ProjectVersionIssuesView"),
-            new LinkResponseDefinition("active-policy-rules", true, "ProjectVersionPolicyRulesView")
+            , new LinkResponseDefinition("issues", true, "ProjectVersionIssuesView")
+            , new LinkResponseDefinition("active-policy-rules", true, "ProjectVersionPolicyRulesView")
+            , new LinkResponseDefinition("bom-status", true, "ProjectVersionBomStatusView")
         ));
 
         addToDefinitions("ProjectVersionComponentView", Arrays.asList(
