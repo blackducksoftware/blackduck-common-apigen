@@ -52,6 +52,7 @@ public class ClassCategories {
         populate(COMMON, ClassSourceEnum.NULL, "com.google.gson.JsonObject");
 
         populate(VIEW, GENERATED, "AnnouncementBannerView");
+        populate(VIEW, GENERATED, "BomStatusScanView");
         populate(VIEW, GENERATED, "CodeLocationView");
         populate(VIEW, GENERATED, "ComponentMatchedFilesView");
         populate(VIEW, GENERATED, "ComponentMigrationsView");
