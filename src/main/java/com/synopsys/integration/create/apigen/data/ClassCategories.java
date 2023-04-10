@@ -72,6 +72,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "FileSourceContentsSha1View");
         populate(VIEW, GENERATED, "GraphComponentImportEventsView");
         populate(VIEW, GENERATED, "HealthChecksLivenessView");
+        populate(VIEW, GENERATED, "HistoriesView");
         populate(VIEW, GENERATED, "IssueView");
         populate(VIEW, GENERATED, "JobView");
         populate(VIEW, GENERATED, "LicenseDashboardView");
@@ -109,14 +110,18 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ReportContentsView");
         populate(VIEW, GENERATED, "RoleAssignmentView");
         populate(VIEW, GENERATED, "RoleView");
+        populate(VIEW, GENERATED, "RuntimesView");
+        populate(VIEW, GENERATED, "SbomFieldsScopesView");
         populate(VIEW, GENERATED, "ScanBomEntriesView");
         populate(VIEW, GENERATED, "SettingsAnalysisView");
+        populate(VIEW, GENERATED, "ScanMonitorView");
         populate(VIEW, GENERATED, "ScanView");
         populate(VIEW, GENERATED, "ScanReadinessView");
         populate(VIEW, GENERATED, "SsoConfigurationView");
         populate(VIEW, GENERATED, "SystemOauthClientView");
         populate(VIEW, GENERATED, "TagView");
         populate(VIEW, GENERATED, "TokensView");
+        populate(VIEW, GENERATED, "ToolsView");
         populate(VIEW, GENERATED, "UserGroupView");
         populate(VIEW, GENERATED, "UserView");
         populate(VIEW, GENERATED, "VulnerabilityReportsReportView");
