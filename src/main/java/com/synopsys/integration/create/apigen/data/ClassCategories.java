@@ -103,7 +103,9 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ProjectVersionView");
         populate(VIEW, GENERATED, "ProjectVersionVulnerableBomComponentsView");
         populate(VIEW, GENERATED, "ProjectVersionVulnerableBomComponentsItemsVulnerabilityWithRemediationView");
-        populate(VIEW, GENERATED, "ProjectView");
+        
+        populate(VIEW, MANUAL, "ProjectView");
+        
         populate(VIEW, GENERATED, "ProjectGroupsView");
         populate(VIEW, GENERATED, "PurgeTokensView");
         populate(VIEW, GENERATED, "RegistrationView");

@@ -35,7 +35,7 @@ public class InputDataFinderTest {
         Map<String, Object> inputData1 = inputDataFinder.getInputData(classTypeData, imports, className, new HashSet<>(), "json4");
 
         assertEquals(8, inputData1.size());
-        assertEquals(UtilStrings.GENERATED_VIEW_PACKAGE, inputData1.get(UtilStrings.PACKAGE_NAME));
+        assertEquals("com.synopsys.integration.blackduck.api.manual.view", inputData1.get(UtilStrings.PACKAGE_NAME));
         assertEquals("ProjectView", inputData1.get(UtilStrings.CLASS_NAME));
         assertNotEquals(null, inputData1.get("imports"));
         assertEquals("json4", inputData1.get(UtilStrings.MEDIA_TYPE));
