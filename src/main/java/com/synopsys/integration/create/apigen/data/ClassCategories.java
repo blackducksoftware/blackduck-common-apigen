@@ -62,6 +62,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "ComponentVersionPolicyStatusView");
         populate(VIEW, GENERATED, "ComponentVersionRiskProfileRiskDataView");
         populate(VIEW, GENERATED, "ComponentVersionView");
+        populate(VIEW, GENERATED, "ComponentVulnerabilityBomView");
         populate(VIEW, GENERATED, "ComponentView");
         populate(VIEW, GENERATED, "CpesView");
         populate(VIEW, GENERATED, "CurrentUserView");
@@ -73,6 +74,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "GraphComponentImportEventsView");
         populate(VIEW, GENERATED, "HealthChecksLivenessView");
         populate(VIEW, GENERATED, "HistoriesView");
+        populate(VIEW, GENERATED, "IntegrationGithubView");
         populate(VIEW, GENERATED, "IssueView");
         populate(VIEW, GENERATED, "JobView");
         populate(VIEW, GENERATED, "LicenseDashboardView");
@@ -83,6 +85,12 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "LicenseTermView");
         populate(VIEW, GENERATED, "LicenseTextView");
         populate(VIEW, GENERATED, "LicenseView");
+        populate(VIEW, GENERATED, "LiteDashboardView");
+        populate(VIEW, GENERATED, "LiteProjectsProjectView");
+        populate(VIEW, GENERATED, "LiteVersionsProjectVersionView");
+        populate(VIEW, GENERATED, "LwBomProjectVersionsProjectVersionView");
+        populate(VIEW, GENERATED, "LwBomProjectsView");
+        populate(VIEW, GENERATED, "LwBomsView");
         populate(VIEW, GENERATED, "ManageAnnouncementBannerView");
         populate(VIEW, GENERATED, "ManagementSettingsView");
         populate(VIEW, GENERATED, "OriginView");
@@ -115,6 +123,7 @@ public class ClassCategories {
         populate(VIEW, GENERATED, "RuntimesView");
         populate(VIEW, GENERATED, "SbomFieldsScopesView");
         populate(VIEW, GENERATED, "ScanBomEntriesView");
+        populate(VIEW, GENERATED, "SearchKbPurlComponentView");
         populate(VIEW, GENERATED, "SettingsAnalysisView");
         populate(VIEW, GENERATED, "ScanMonitorView");
         populate(VIEW, GENERATED, "ScanView");
