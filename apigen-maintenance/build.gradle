@@ -5,11 +5,11 @@ buildscript {
 
 version = 'dummy'
 
-apply plugin: 'com.synopsys.integration.simple'
+apply plugin: 'com.blackduck.integration.simple'
 
 dependencies {
     api 'org.apache.bcel:bcel:6.5.0'
 
-    implementation 'com.synopsys.integration:integration-common:24.0.0'
+    implementation 'com.blackduck.integration:integration-common:24.0.0'
     implementation 'org.slf4j:slf4j-api:1.7.30'
 }
