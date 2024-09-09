@@ -17,7 +17,7 @@ import java.util.Set;
 public class ClassNameManager {
     private static final Map<String, String> classToPackage = new HashMap<>();
 
-    public static final String CORE_PACKAGE = "com.synopsys.integration.blackduck.api.core";
+    public static final String CORE_PACKAGE = "com.blackduck.integration.blackduck.api.core";
     public static final String RESPONSES_PACKAGE = CORE_PACKAGE + ".response";
 
     public static final String BLACKDUCK_PATH = addClass("BlackDuckPath", CORE_PACKAGE);
