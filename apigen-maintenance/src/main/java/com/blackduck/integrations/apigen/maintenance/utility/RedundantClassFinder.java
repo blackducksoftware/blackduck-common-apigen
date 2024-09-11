@@ -1,9 +1,9 @@
 /*
  * apigen-maintenance
  *
- * Copyright (c) 2021 Synopsys, Inc.
+ * Copyright (c) 2024 Black Duck Software, Inc.
  *
- * Use subject to the terms and conditions of the Synopsys End User Software License and Maintenance Agreement. All rights reserved worldwide.
+ * Use subject to the terms and conditions of the Black Duck Software End User Software License and Maintenance Agreement. All rights reserved worldwide.
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
@@ -20,7 +20,7 @@ import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 public class RedundantClassFinder {
     public void identifyGeneratedTemporaryClasses(File apiDirectory) throws IOException {
-        File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/synopsys/integration/blackduck/api");
+        File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/blackduck/integration/blackduck/api");
         File generatedDirectory = new File(apiBuildDirectory, "generated");
         File temporaryDirectory = new File(apiBuildDirectory, "manual/temporary");
         List<File> excludedDirectories = Arrays.asList(
