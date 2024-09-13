@@ -1,6 +1,13 @@
 buildscript {
     apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-repositories.gradle', to: buildscript
-    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-dependencies.gradle', to: buildscript
+    apply from: 'https://raw.githubusercontent.com/blackducksoftware/integration-resources/master/gradle_common/buildscript-cgp-version.gradle'
+
+    ext {
+        javaTargetCompatibility = 8
+        javaSourceCompatibility = 8
+    }
+
+    dependencies { classpath "com.blackduck.integration:common-gradle-plugin:${managedCgpVersion}" }
 }
 
 plugins {
@@ -9,12 +16,12 @@ plugins {
 
 version = '0.0.1-SNAPSHOT'
 apply plugin: 'io.spring.dependency-management'
-apply plugin: 'com.synopsys.integration.solution'
+apply plugin: 'com.blackduck.integration.solution'
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
 
-    implementation 'com.synopsys.integration:integration-common:25.0.0'
+    implementation 'com.blackduck.integration:integration-common:27.0.1'
     implementation 'com.opencsv:opencsv:4.6'
 
     implementation 'org.freemarker:freemarker:2.3.25-incubating'
