@@ -7,9 +7,9 @@
  */
 package com.blackduck.integrations.apigen.maintenance.model;
 
-import java.util.Optional;
-
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class Field {
     private final String name;

@@ -7,10 +7,10 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
-import java.util.Map;
-
 import com.blackduck.integration.create.apigen.data.LinkResponseDefinitions;
-import com.synopsys.integration.util.Stringable;
+import com.blackduck.integration.util.Stringable;
+
+import java.util.Map;
 
 public class LinkData extends Stringable {
     public final String label;

@@ -7,16 +7,13 @@
  */
 package com.blackduck.integration.create.apigen.parser.zip;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+import com.blackduck.integration.create.apigen.parser.ApiParser;
+import com.blackduck.integration.create.apigen.parser.file.DirectoryPathParser;
+import com.blackduck.integration.exception.IntegrationException;
+import com.blackduck.integration.log.Slf4jIntLogger;
+import com.blackduck.integration.util.CommonZipExpander;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -26,13 +23,15 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import com.blackduck.integration.create.apigen.parser.ApiParser;
-import com.blackduck.integration.create.apigen.parser.file.DirectoryPathParser;
-import com.synopsys.integration.exception.IntegrationException;
-import com.synopsys.integration.log.Slf4jIntLogger;
-import com.synopsys.integration.util.CommonZipExpander;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

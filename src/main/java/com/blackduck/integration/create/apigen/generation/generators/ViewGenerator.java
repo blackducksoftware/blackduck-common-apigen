@@ -7,15 +7,6 @@
  */
 package com.blackduck.integration.create.apigen.generation.generators;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.blackduck.integration.create.apigen.data.ClassCategories;
 import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
 import com.blackduck.integration.create.apigen.data.TypeTranslator;
@@ -28,9 +19,16 @@ import com.blackduck.integration.create.apigen.generation.finder.InputDataFinder
 import com.blackduck.integration.create.apigen.model.ClassTypeData;
 import com.blackduck.integration.create.apigen.model.LinksAndImportsData;
 import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class ViewGenerator {

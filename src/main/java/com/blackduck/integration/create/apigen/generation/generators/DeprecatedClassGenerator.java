@@ -7,20 +7,18 @@
  */
 package com.blackduck.integration.create.apigen.generation.generators;
 
+import com.blackduck.integration.create.apigen.data.DeprecatedClassData;
+import com.blackduck.integration.create.apigen.data.UtilStrings;
+import com.blackduck.integration.create.apigen.generation.FileGenerationData;
+import com.blackduck.integration.create.apigen.generation.GeneratorDataManager;
+import freemarker.template.Template;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import com.blackduck.integration.create.apigen.generation.FileGenerationData;
-import com.blackduck.integration.create.apigen.generation.GeneratorDataManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.blackduck.integration.create.apigen.data.DeprecatedClassData;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
-
-import freemarker.template.Template;
 
 @Component
 public class DeprecatedClassGenerator {

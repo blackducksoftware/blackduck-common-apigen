@@ -7,13 +7,7 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.List;
-
+import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
 import com.blackduck.integration.create.apigen.model.ResponseDefinition;
 import com.blackduck.integration.create.apigen.parser.file.DirectoryPathParser;
 import com.blackduck.integration.create.apigen.parser.zip.ZipFileExpandingParser;
@@ -24,7 +18,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.List;
 
 @Component
 public class ApiGeneratorParser implements ApiParser {

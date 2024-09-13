@@ -9,8 +9,6 @@ package com.blackduck.integration.create.apigen.data.mediatype;
 
 import org.apache.commons.lang3.StringUtils;
 
-import freemarker.template.utility.StringUtil;
-
 public class MediaTypePathUtility {
     public static String generateMediaTypeStatic(String mediaType) {
         String constantName = generateMediaTypeConstant(mediaType);

@@ -1,19 +1,18 @@
 package com.blackduck.integration.create.apigen.parser;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.blackduck.integration.create.apigen.data.NameAndPathManager;
+import com.blackduck.integration.create.apigen.data.UtilStrings;
+import com.blackduck.integration.create.apigen.model.ApiPathData;
+import com.blackduck.integration.create.apigen.model.FieldDefinition;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import org.junit.jupiter.api.Test;
-
-import com.blackduck.integration.create.apigen.data.NameAndPathManager;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
-import com.blackduck.integration.create.apigen.model.ApiPathData;
-import com.blackduck.integration.create.apigen.model.FieldDefinition;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApiPathDataPopulatorTest {
 

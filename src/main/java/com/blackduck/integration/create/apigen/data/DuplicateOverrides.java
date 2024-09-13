@@ -7,12 +7,12 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.springframework.stereotype.Component;
 
 /**
  * Mechanism for storing data collected by DuplicateTypeIdentifier.

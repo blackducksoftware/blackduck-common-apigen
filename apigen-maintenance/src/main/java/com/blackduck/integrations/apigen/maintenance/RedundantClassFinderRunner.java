@@ -7,14 +7,14 @@
  */
 package com.blackduck.integrations.apigen.maintenance;
 
+import com.blackduck.integrations.apigen.maintenance.utility.DirectoryFinder;
+import com.blackduck.integrations.apigen.maintenance.utility.RedundantClassFinder;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
-
-import com.blackduck.integrations.apigen.maintenance.utility.DirectoryFinder;
-import com.blackduck.integrations.apigen.maintenance.utility.RedundantClassFinder;
 
 /**
  * This class can be used to determine potentially redundant classes within the API via RedundantClassFinder.

@@ -21,7 +21,7 @@ apply plugin: 'com.blackduck.integration.solution'
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
 
-    implementation 'com.blackduck.integration:integration-common:25.0.0'
+    implementation 'com.blackduck.integration:integration-common:27.0.1'
     implementation 'com.opencsv:opencsv:4.6'
 
     implementation 'org.freemarker:freemarker:2.3.25-incubating'

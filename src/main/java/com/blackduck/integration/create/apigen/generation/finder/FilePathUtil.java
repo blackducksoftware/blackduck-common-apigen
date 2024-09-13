@@ -7,10 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.generation.finder;
 
+import com.blackduck.integration.create.apigen.GeneratorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.blackduck.integration.create.apigen.GeneratorConfig;
 
 @Component
 public class FilePathUtil {

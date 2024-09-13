@@ -7,12 +7,12 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
 import com.blackduck.integration.create.apigen.data.UtilStrings;
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResponseTypeIdentifier {
 

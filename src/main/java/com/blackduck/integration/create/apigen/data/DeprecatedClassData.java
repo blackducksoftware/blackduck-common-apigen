@@ -7,9 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
-import java.util.Map;
-
 import freemarker.template.Template;
+
+import java.util.Map;
 
 public class DeprecatedClassData {
 

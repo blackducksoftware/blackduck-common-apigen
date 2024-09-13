@@ -7,11 +7,11 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.jetbrains.annotations.Nullable;
 
 public class FieldDefinition extends Definition {
     private final String path;

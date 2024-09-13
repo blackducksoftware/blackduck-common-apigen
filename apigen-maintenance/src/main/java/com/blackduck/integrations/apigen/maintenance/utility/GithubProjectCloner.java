@@ -7,12 +7,11 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.blackduck.integrations.apigen.maintenance.model.BlackDuckGitHubRepo;
 import org.slf4j.Logger;
 
-import com.blackduck.integrations.apigen.maintenance.model.BlackDuckGitHubRepo;
+import java.io.File;
+import java.io.IOException;
 
 public class GithubProjectCloner {
     private static final String GIT_PATH = "GIT_PATH";

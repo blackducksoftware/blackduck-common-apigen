@@ -7,21 +7,19 @@
  */
 package com.blackduck.integration.create.apigen.generation;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.util.Map;
-
+import com.blackduck.integration.create.apigen.data.ClassCategories;
+import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
+import com.blackduck.integration.create.apigen.parser.NameParser;
+import freemarker.template.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.blackduck.integration.create.apigen.data.ClassCategories;
-import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
-import com.blackduck.integration.create.apigen.parser.NameParser;
-
-import freemarker.template.Template;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.util.Map;
 
 @Component
 public class GeneratedClassWriter {

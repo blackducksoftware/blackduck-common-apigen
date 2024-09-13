@@ -1,13 +1,12 @@
 package com.blackduck.integration.create.apigen.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.blackduck.integration.create.apigen.model.FieldDefinition;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import org.junit.jupiter.api.Test;
-
-import com.blackduck.integration.create.apigen.model.FieldDefinition;
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResponseTypeIdentifierTest {
 

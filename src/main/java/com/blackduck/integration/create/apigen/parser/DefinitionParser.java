@@ -7,19 +7,18 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
+import com.blackduck.integration.create.apigen.model.DefinitionParseParameters;
+import com.blackduck.integration.create.apigen.model.ThirdPartyDefinition;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.io.FileUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.blackduck.integration.create.apigen.model.DefinitionParseParameters;
-import com.blackduck.integration.create.apigen.model.ThirdPartyDefinition;
 
 public class DefinitionParser {
     private final Gson gson;

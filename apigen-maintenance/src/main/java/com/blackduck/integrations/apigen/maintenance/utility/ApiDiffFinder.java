@@ -7,17 +7,16 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
+import com.blackduck.integrations.apigen.maintenance.model.ApiDiff;
+import com.sun.org.apache.bcel.internal.classfile.JavaClass;
+import org.slf4j.Logger;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.blackduck.integrations.apigen.maintenance.model.ApiDiff;
-import org.slf4j.Logger;
-
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 public class ApiDiffFinder {
     private Logger logger;

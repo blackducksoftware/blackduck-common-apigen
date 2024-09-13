@@ -7,15 +7,15 @@
  */
 package com.blackduck.integration.create.apigen.generation.generators;
 
-import com.blackduck.integration.create.apigen.data.mediatype.MediaTypePathManager;
 import com.blackduck.integration.create.apigen.data.UtilStrings;
+import com.blackduck.integration.create.apigen.data.mediatype.MediaTypePathManager;
 import com.blackduck.integration.create.apigen.generation.FileGenerationData;
 import com.blackduck.integration.create.apigen.generation.GeneratorDataManager;
 import freemarker.template.Template;
-
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class MediaTypeMapGenerator {

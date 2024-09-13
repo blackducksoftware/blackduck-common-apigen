@@ -7,9 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
-import java.util.Comparator;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Comparator;
 
 public class ImportComparator implements Comparator<String> {
     private static final String PACKAGE_JAVA = "java.";

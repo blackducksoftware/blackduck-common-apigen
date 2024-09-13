@@ -1,11 +1,11 @@
 package com.blackduck.integration.create.apigen.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DifferentiatingResponseNamePrefixBuilderTest {
 

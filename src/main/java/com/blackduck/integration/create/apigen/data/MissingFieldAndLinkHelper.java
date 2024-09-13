@@ -7,11 +7,11 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
 import com.blackduck.integration.create.apigen.model.LinkDefinition;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MissingFieldAndLinkHelper {
     private final Set<FieldDefinition> missingFields;

@@ -7,13 +7,13 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
+import com.blackduck.integration.create.apigen.model.ApiPathData;
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import com.blackduck.integration.create.apigen.model.ApiPathData;
-import org.springframework.stereotype.Component;
 
 @Component
 public class NameAndPathManager {

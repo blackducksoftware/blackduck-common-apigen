@@ -7,38 +7,22 @@
  */
 package com.blackduck.integration.create.apigen.parser.file;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.google.gson.Gson;
 import com.blackduck.integration.create.apigen.data.DuplicateOverrides;
 import com.blackduck.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.blackduck.integration.create.apigen.data.TypeTranslator;
 import com.blackduck.integration.create.apigen.data.UtilStrings;
 import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
-import com.blackduck.integration.create.apigen.model.DefinitionParseParameters;
-import com.blackduck.integration.create.apigen.model.FieldDefinition;
-import com.blackduck.integration.create.apigen.model.LinkDefinition;
-import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import com.blackduck.integration.create.apigen.parser.ApiParser;
-import com.blackduck.integration.create.apigen.parser.DefinitionParser;
-import com.blackduck.integration.create.apigen.parser.DuplicateTypeIdentifier;
-import com.blackduck.integration.create.apigen.parser.FieldDataProcessor;
-import com.blackduck.integration.create.apigen.parser.FieldDefinitionProcessor;
-import com.blackduck.integration.create.apigen.parser.NameParser;
-import com.blackduck.integration.create.apigen.parser.ResponseType;
-import com.blackduck.integration.create.apigen.parser.ResponseTypeIdentifier;
+import com.blackduck.integration.create.apigen.model.*;
+import com.blackduck.integration.create.apigen.parser.*;
+import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

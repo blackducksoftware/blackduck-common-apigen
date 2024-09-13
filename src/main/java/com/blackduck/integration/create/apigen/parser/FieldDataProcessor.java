@@ -7,19 +7,18 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
 import com.blackduck.integration.create.apigen.data.FieldTranslation;
 import com.blackduck.integration.create.apigen.data.TypeTranslator;
 import com.blackduck.integration.create.apigen.data.UtilStrings;
 import com.blackduck.integration.create.apigen.model.FieldData;
 import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Set;
 
 @Component
 public class FieldDataProcessor {

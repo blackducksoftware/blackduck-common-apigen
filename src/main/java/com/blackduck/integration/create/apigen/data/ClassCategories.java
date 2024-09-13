@@ -7,17 +7,14 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
-import static com.blackduck.integration.create.apigen.data.ClassSourceEnum.DEPRECATED;
-import static com.blackduck.integration.create.apigen.data.ClassSourceEnum.GENERATED;
-import static com.blackduck.integration.create.apigen.data.ClassSourceEnum.MANUAL;
-import static com.blackduck.integration.create.apigen.data.ClassSourceEnum.TEMPORARY;
+import com.blackduck.integration.create.apigen.generation.finder.ClassNameManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.blackduck.integration.create.apigen.generation.finder.ClassNameManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static com.blackduck.integration.create.apigen.data.ClassSourceEnum.*;
 
 @Component
 public class ClassCategories {

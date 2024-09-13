@@ -7,11 +7,11 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
-import java.io.File;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
 
 public class DirectoryFinder {
     private static Logger logger = LoggerFactory.getLogger(DirectoryFinder.class);

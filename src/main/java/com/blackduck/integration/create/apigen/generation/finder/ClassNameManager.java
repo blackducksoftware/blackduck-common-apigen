@@ -35,8 +35,8 @@ public class ClassNameManager {
     public static final String URL_SINGLE_RESPONSE = addClass("UrlSingleResponse", RESPONSES_PACKAGE);
     public static final String URL_MULTIPLE_RESPONSES = addClass("UrlMultipleResponses", RESPONSES_PACKAGE);
 
-    public static final String HTTP_URL = addClass("HttpUrl", "com.synopsys.integration.rest");
-    public static final String INTEGRATION_EXCEPTION = addClass("IntegrationException", "com.synopsys.integration.exception");
+    public static final String HTTP_URL = addClass("HttpUrl", "com.blackduck.integration.rest");
+    public static final String INTEGRATION_EXCEPTION = addClass("IntegrationException", "com.blackduck.integration.exception");
     public static final String BLACKDUCK_PATH_RESPONSE = addClass("BlackDuckPathResponse", RESPONSES_PACKAGE);
     public static final String BLACKDUCK_PATH_SINGLE_RESPONSE = addClass("BlackDuckPathSingleResponse", RESPONSES_PACKAGE);
     public static final String BLACKDUCK_PATH_MULTIPLE_RESPONSE = addClass("BlackDuckPathMultipleResponses", RESPONSES_PACKAGE);

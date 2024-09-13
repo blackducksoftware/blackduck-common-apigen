@@ -7,21 +7,15 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import static java.lang.String.join;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.blackduck.integration.create.apigen.data.NameAndPathManager;
+import com.blackduck.integration.create.apigen.data.UtilStrings;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.blackduck.integration.create.apigen.data.NameAndPathManager;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.String.join;
 
 @Component
 public class NameParser {

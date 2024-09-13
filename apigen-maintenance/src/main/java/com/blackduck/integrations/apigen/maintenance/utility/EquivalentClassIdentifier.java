@@ -7,15 +7,11 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
 import com.sun.org.apache.bcel.internal.classfile.Field;
 import com.sun.org.apache.bcel.internal.classfile.JavaClass;
+
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class EquivalentClassIdentifier {
 

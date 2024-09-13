@@ -7,6 +7,10 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
+import com.blackduck.integrations.apigen.maintenance.model.ClassCharacteristics;
+import com.blackduck.integrations.apigen.maintenance.model.Field;
+import com.sun.org.apache.bcel.internal.classfile.JavaClass;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,13 +19,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
-import com.blackduck.integrations.apigen.maintenance.model.ClassCharacteristics;
-import com.blackduck.integrations.apigen.maintenance.model.Field;
-
 public class ClassFinder {
     public Set<String> findClasses(File apiDirectory, ClassCharacteristics classCharacteristics) throws IOException {
-        File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/synopsys/integration/blackduck/api");
+        File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/blackduck/integration/blackduck/api");
         File generatedDirectory = new File(apiBuildDirectory, "generated");
         List<File> excludedDirectories = Arrays.asList(
             new File(generatedDirectory, "discovery"),

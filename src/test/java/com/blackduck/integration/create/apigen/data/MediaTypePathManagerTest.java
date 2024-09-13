@@ -1,8 +1,14 @@
 package com.blackduck.integration.create.apigen.data;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.blackduck.integration.create.apigen.data.mediatype.MediaTypePathManager;
+import com.blackduck.integration.create.apigen.data.mediatype.MediaTypePathUtility;
+import com.blackduck.integration.create.apigen.exception.NullMediaTypeException;
+import com.blackduck.integration.create.apigen.model.MediaTypeData;
+import com.blackduck.integration.create.apigen.model.MediaTypeDefinition;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -11,16 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.blackduck.integration.create.apigen.data.mediatype.MediaTypePathUtility;
-import com.blackduck.integration.create.apigen.exception.NullMediaTypeException;
-import com.blackduck.integration.create.apigen.model.MediaTypeData;
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import com.blackduck.integration.create.apigen.data.mediatype.MediaTypePathManager;
-import com.blackduck.integration.create.apigen.model.MediaTypeDefinition;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MediaTypePathManagerTest {
     @Test

@@ -7,18 +7,18 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
+import com.sun.org.apache.bcel.internal.classfile.ClassParser;
+import com.sun.org.apache.bcel.internal.classfile.JavaClass;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.sun.org.apache.bcel.internal.classfile.ClassParser;
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
-
 public class ClassDirectoryToJavaClassesConverter {
     public List<JavaClass> convertBdCommonApiGeneratedToJavaClassObjects(File apiDirectory) throws IOException {
-        File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/synopsys/integration/blackduck/api");
+        File apiBuildDirectory = new File(apiDirectory, "build/classes/java/main/com/blackduck/integration/blackduck/api");
         File generatedDirectory = new File(apiBuildDirectory, "generated");
         List<File> excludedDirectories = Arrays.asList(
             new File(generatedDirectory, "discovery")

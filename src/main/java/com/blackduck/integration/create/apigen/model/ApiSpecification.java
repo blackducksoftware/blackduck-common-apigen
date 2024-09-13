@@ -7,10 +7,10 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
-import java.io.File;
-
 import com.blackduck.integration.create.apigen.Application;
 import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
+
+import java.io.File;
 
 public class ApiSpecification {
     private File root;

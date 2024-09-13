@@ -14,7 +14,7 @@ public class UtilStrings {
 
     public static final String GENERATED = "generated";
     public static final String MANUAL = "manual";
-    public static final String GENERATED_CLASS_PATH_PREFIX = "com.synopsys.integration.blackduck.api.generated.";
+    public static final String GENERATED_CLASS_PATH_PREFIX = "com.blackduck.integration.blackduck.api.generated.";
     public static final String CORE_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, "core");
     public static final String MANUAL_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, MANUAL);
     public static final String DEPRECATED_CLASS_PATH_PREFIX = GENERATED_CLASS_PATH_PREFIX.replace(GENERATED, "generated.deprecated");

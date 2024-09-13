@@ -7,11 +7,11 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
+import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+
 import java.io.File;
 import java.util.List;
-
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import com.blackduck.integration.create.apigen.data.mediatype.MediaTypes;
 
 public interface ApiParser {
     List<ResponseDefinition> parseApi(File target, MediaTypes mediaTypes);

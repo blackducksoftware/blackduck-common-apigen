@@ -7,15 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
-import static com.blackduck.integration.create.apigen.data.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.TEMPORARY_CLASS_PATH_PREFIX;
+import com.blackduck.integration.create.apigen.data.*;
 
-import com.blackduck.integration.create.apigen.data.ClassCategories;
-import com.blackduck.integration.create.apigen.data.ClassCategoryData;
-import com.blackduck.integration.create.apigen.data.ClassSourceEnum;
-import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
+import static com.blackduck.integration.create.apigen.data.UtilStrings.*;
 
 public class ResultClassData {
 

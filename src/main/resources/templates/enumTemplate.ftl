@@ -1,7 +1,7 @@
 <#include "licenseHeader.ftl">
 package ${packageName};
 
-import com.synopsys.integration.util.EnumUtils;
+import com.blackduck.integration.util.EnumUtils;
 
 <#if hasNewName??>
 // ${className} is now called ${newName}

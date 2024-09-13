@@ -7,14 +7,14 @@
  */
 package com.blackduck.integrations.apigen.maintenance;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.blackduck.integrations.apigen.maintenance.model.ApiDiff;
 import com.blackduck.integrations.apigen.maintenance.utility.ApiDiffFinder;
 import com.blackduck.integrations.apigen.maintenance.utility.DirectoryFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class can be used to compare two blackduck-common-api directories (a "test" and a "control") via ApiDiffFinder.

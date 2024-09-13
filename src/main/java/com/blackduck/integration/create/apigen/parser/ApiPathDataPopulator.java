@@ -7,15 +7,11 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.blackduck.integration.create.apigen.data.NameAndPathManager;
 import com.blackduck.integration.create.apigen.model.ApiPathData;
 import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+
+import java.util.*;
 
 public class ApiPathDataPopulator {
     final NameAndPathManager nameAndPathManager;

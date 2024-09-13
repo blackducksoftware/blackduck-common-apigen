@@ -7,13 +7,12 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.util.List;
-
+import com.blackduck.integration.create.apigen.data.DuplicateOverrides;
+import com.blackduck.integration.create.apigen.model.FieldDefinition;
 import com.blackduck.integration.create.apigen.model.ResponseDefinition;
 import org.springframework.stereotype.Component;
 
-import com.blackduck.integration.create.apigen.data.DuplicateOverrides;
-import com.blackduck.integration.create.apigen.model.FieldDefinition;
+import java.util.List;
 
 @Component
 public class DuplicateTypeOverrider {

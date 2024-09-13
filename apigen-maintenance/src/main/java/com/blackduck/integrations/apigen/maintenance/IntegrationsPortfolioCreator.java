@@ -7,13 +7,13 @@
  */
 package com.blackduck.integrations.apigen.maintenance;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.blackduck.integrations.apigen.maintenance.utility.DirectoryFinder;
 import com.blackduck.integrations.apigen.maintenance.utility.GithubProjectCloner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * This class can be used to create a local portfolio of Integrations projects.

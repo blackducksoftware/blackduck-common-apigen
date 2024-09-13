@@ -7,10 +7,10 @@
  */
 package com.blackduck.integration.create.apigen.data.mediatype;
 
+import com.blackduck.integration.create.apigen.model.MediaTypeDefinition;
+
 import java.util.Arrays;
 import java.util.List;
-
-import com.blackduck.integration.create.apigen.model.MediaTypeDefinition;
 
 public class ExtraMediaTypeDefinitions {
     public static final String CODE_LOCATIONS_PATH = "/api/projects/%s/versions/%s/code-locations";

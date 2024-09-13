@@ -7,10 +7,10 @@
  */
 package com.blackduck.integration.create.apigen;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import freemarker.template.TemplateExceptionHandler;
+import freemarker.template.Version;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,11 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import freemarker.template.TemplateExceptionHandler;
-import freemarker.template.Version;
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 
 /**
  * To Use: Specify path to API specification source at {@link #PATH_TO_API_SPECIFICATION}, path to where API output should be generated at {@link #PATH_TO_API_GENERATED_DIRECTORY}.

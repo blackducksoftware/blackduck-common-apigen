@@ -7,34 +7,16 @@
  */
 package com.blackduck.integration.create.apigen.generation.finder;
 
-import static com.blackduck.integration.create.apigen.data.UtilStrings.COMPONENT_BASE_CLASS;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.CORE_CLASS_PATH_PREFIX;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.GENERATED_CLASS_PATH_PREFIX;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.MANUAL_CLASS_PATH_PREFIX;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.RESPONSE_BASE_CLASS;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.TEMPORARY_CLASS_PATH_PREFIX;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.VIEW_BASE_CLASS;
+import com.blackduck.integration.create.apigen.data.*;
+import com.blackduck.integration.create.apigen.model.*;
+import com.blackduck.integration.create.apigen.parser.NameParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.blackduck.integration.create.apigen.data.ClassCategories;
-import com.blackduck.integration.create.apigen.data.ClassCategoryData;
-import com.blackduck.integration.create.apigen.data.ClassSourceEnum;
-import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
-import com.blackduck.integration.create.apigen.data.LinkResponseDefinitions;
-import com.blackduck.integration.create.apigen.data.NameAndPathManager;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
-import com.blackduck.integration.create.apigen.model.FieldDefinition;
-import com.blackduck.integration.create.apigen.model.LinkData;
-import com.blackduck.integration.create.apigen.model.LinkDefinition;
-import com.blackduck.integration.create.apigen.model.LinksAndImportsData;
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import com.blackduck.integration.create.apigen.model.ResultClassData;
-import com.blackduck.integration.create.apigen.parser.NameParser;
+import static com.blackduck.integration.create.apigen.data.UtilStrings.*;
 
 @Component
 public class ImportFinder {

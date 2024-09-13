@@ -7,9 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
-import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Optional;
 
 public enum ClassTypeEnum {
     VIEW(UtilStrings.VIEW_BASE_CLASS),

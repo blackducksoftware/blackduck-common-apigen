@@ -7,21 +7,7 @@
  */
 package com.blackduck.integration.create.apigen.generation.generators;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.blackduck.integration.create.apigen.data.ClassCategories;
-import com.blackduck.integration.create.apigen.data.ClassCategoryData;
-import com.blackduck.integration.create.apigen.data.ClassSourceEnum;
-import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
-import com.blackduck.integration.create.apigen.data.NameAndPathManager;
-import com.blackduck.integration.create.apigen.data.TypeTranslator;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
+import com.blackduck.integration.create.apigen.data.*;
 import com.blackduck.integration.create.apigen.generation.FileGenerationData;
 import com.blackduck.integration.create.apigen.generation.GeneratorDataManager;
 import com.blackduck.integration.create.apigen.generation.finder.FilePathUtil;
@@ -30,9 +16,15 @@ import com.blackduck.integration.create.apigen.generation.finder.InputDataFinder
 import com.blackduck.integration.create.apigen.model.ClassTypeData;
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
 import com.blackduck.integration.create.apigen.parser.NameParser;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class ComponentGenerator extends ClassGenerator {

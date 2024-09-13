@@ -7,20 +7,19 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.blackduck.integration.create.apigen.data.MissingFieldsAndLinks;
+import com.blackduck.integration.create.apigen.data.UtilStrings;
+import com.blackduck.integration.create.apigen.model.FieldData;
+import com.blackduck.integration.create.apigen.model.FieldDefinition;
+import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.blackduck.integration.create.apigen.data.MissingFieldsAndLinks;
-import com.blackduck.integration.create.apigen.data.UtilStrings;
-import com.blackduck.integration.create.apigen.model.FieldData;
-import com.blackduck.integration.create.apigen.model.FieldDefinition;
-import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)

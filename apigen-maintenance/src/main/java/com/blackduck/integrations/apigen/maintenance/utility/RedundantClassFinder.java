@@ -7,6 +7,8 @@
  */
 package com.blackduck.integrations.apigen.maintenance.utility;
 
+import com.sun.org.apache.bcel.internal.classfile.JavaClass;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 public class RedundantClassFinder {
     public void identifyGeneratedTemporaryClasses(File apiDirectory) throws IOException {

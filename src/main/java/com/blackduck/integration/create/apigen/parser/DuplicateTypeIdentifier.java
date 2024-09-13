@@ -7,15 +7,14 @@
  */
 package com.blackduck.integration.create.apigen.parser;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import com.blackduck.integration.create.apigen.data.DuplicateOverrides;
+import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.blackduck.integration.create.apigen.data.DuplicateOverrides;
-import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class DuplicateTypeIdentifier {

@@ -17,6 +17,6 @@ apply plugin: 'com.blackduck.integration.simple'
 dependencies {
     api 'org.apache.bcel:bcel:6.5.0'
 
-    implementation 'com.blackduck.integration:integration-common:24.0.0'
+    implementation 'com.blackduck.integration:integration-common:27.0.1'
     implementation 'org.slf4j:slf4j-api:1.7.30'
 }

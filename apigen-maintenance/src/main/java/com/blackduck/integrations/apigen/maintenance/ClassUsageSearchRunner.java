@@ -7,9 +7,9 @@
  */
 package com.blackduck.integrations.apigen.maintenance;
 
-import java.io.IOException;
-
 import com.blackduck.integrations.apigen.maintenance.utility.ClassUsageSearcher;
+
+import java.io.IOException;
 
 /**
  * This class can be used to search Integrations projects for usage of specific classes in blackduck-common-api via ClassUsageSearcher.

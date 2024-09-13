@@ -1,20 +1,17 @@
 package com.blackduck.integration.create.apigen.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.jupiter.api.Test;
-
 import com.blackduck.integration.create.apigen.data.DuplicateOverrides;
 import com.blackduck.integration.create.apigen.data.MissingFieldsAndLinks;
 import com.blackduck.integration.create.apigen.data.TypeTranslator;
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
 import com.blackduck.integration.create.apigen.model.RawFieldDefinition;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FieldDefinitionProcessorTest {
 

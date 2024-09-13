@@ -7,9 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.generation;
 
-import java.util.Map;
-
 import freemarker.template.Template;
+
+import java.util.Map;
 
 public class FileGenerationData {
     private String className;

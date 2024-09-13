@@ -7,12 +7,11 @@
  */
 package com.blackduck.integration.create.apigen.generation.generators;
 
-import java.io.IOException;
-
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+
+import java.io.IOException;
 
 public abstract class ClassGenerator {
 

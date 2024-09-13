@@ -7,7 +7,7 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
-import com.synopsys.integration.util.Stringable;
+import com.blackduck.integration.util.Stringable;
 
 public class MediaTypeDefinition extends Stringable {
     public final String pathRegex;

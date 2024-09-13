@@ -7,10 +7,10 @@
  */
 package com.blackduck.integrations.apigen.maintenance.model;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
 
 
 public class ClassCharacteristicsBuilder {

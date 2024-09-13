@@ -7,7 +7,7 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
-import com.synopsys.integration.util.Stringable;
+import com.blackduck.integration.util.Stringable;
 
 public abstract class Definition extends Stringable {
 }

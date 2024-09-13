@@ -7,13 +7,13 @@
  */
 package com.blackduck.integrations.apigen.maintenance;
 
+import com.blackduck.integrations.apigen.maintenance.model.ClassCharacteristics;
+import com.blackduck.integrations.apigen.maintenance.model.ClassCharacteristicsBuilder;
+import com.blackduck.integrations.apigen.maintenance.utility.ClassFinder;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-
-import com.blackduck.integrations.apigen.maintenance.utility.ClassFinder;
-import com.blackduck.integrations.apigen.maintenance.model.ClassCharacteristics;
-import com.blackduck.integrations.apigen.maintenance.model.ClassCharacteristicsBuilder;
 
 /***
  * This class can be used to search blackduck-common-api for classes that have certain characteristics via ClassFinder.

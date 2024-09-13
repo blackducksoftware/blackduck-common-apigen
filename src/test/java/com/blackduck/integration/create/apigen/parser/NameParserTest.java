@@ -1,11 +1,10 @@
 package com.blackduck.integration.create.apigen.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import com.blackduck.integration.create.apigen.data.NameAndPathManager;
 import org.junit.jupiter.api.Test;
 
-import com.blackduck.integration.create.apigen.data.NameAndPathManager;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NameParserTest {
 

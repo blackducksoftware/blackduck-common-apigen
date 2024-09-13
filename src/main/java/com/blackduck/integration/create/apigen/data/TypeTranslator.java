@@ -7,16 +7,14 @@
  */
 package com.blackduck.integration.create.apigen.data;
 
-import static com.blackduck.integration.create.apigen.data.UtilStrings.ARRAY;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.OBJECT;
-import static com.blackduck.integration.create.apigen.data.UtilStrings.STRING;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import static com.blackduck.integration.create.apigen.data.UtilStrings.*;
 
 @Component
 public class TypeTranslator {

@@ -1,15 +1,5 @@
 package com.blackduck.integration.create.apigen.generation.finder;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import com.blackduck.integration.create.apigen.model.ResponseDefinition;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import com.blackduck.integration.create.apigen.data.ClassCategories;
 import com.blackduck.integration.create.apigen.data.LinkResponseDefinitions;
 import com.blackduck.integration.create.apigen.data.NameAndPathManager;
@@ -17,6 +7,15 @@ import com.blackduck.integration.create.apigen.data.UtilStrings;
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
 import com.blackduck.integration.create.apigen.model.LinkDefinition;
 import com.blackduck.integration.create.apigen.model.LinksAndImportsData;
+import com.blackduck.integration.create.apigen.model.ResponseDefinition;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImportFinderTest {
 
@@ -48,9 +47,9 @@ public class ImportFinderTest {
 
         LinksAndImportsData linksAndImportsData = importFinder.findLinkAndImportsData(response);
         Set<String> imports = linksAndImportsData.getImports();
-        Assertions.assertTrue(imports.contains("com.synopsys.integration.blackduck.api.generated.view.RoleAssignmentView"));
-        Assertions.assertTrue(imports.contains("com.synopsys.integration.blackduck.api.core.response.LinkResponse"));
-        Assertions.assertTrue(imports.contains("com.synopsys.integration.blackduck.api.core.response.LinkMultipleResponses"));
-        Assertions.assertTrue(imports.contains("com.synopsys.integration.blackduck.api.generated.response.AssignedProjectView"));
+        Assertions.assertTrue(imports.contains("com.blackduck.integration.blackduck.api.generated.view.RoleAssignmentView"));
+        Assertions.assertTrue(imports.contains("com.blackduck.integration.blackduck.api.core.response.LinkResponse"));
+        Assertions.assertTrue(imports.contains("com.blackduck.integration.blackduck.api.core.response.LinkMultipleResponses"));
+        Assertions.assertTrue(imports.contains("com.blackduck.integration.blackduck.api.generated.response.AssignedProjectView"));
     }
 }

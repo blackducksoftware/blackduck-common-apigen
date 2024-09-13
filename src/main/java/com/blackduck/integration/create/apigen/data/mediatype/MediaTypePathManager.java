@@ -7,23 +7,15 @@
  */
 package com.blackduck.integration.create.apigen.data.mediatype;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.blackduck.integration.create.apigen.exception.NullMediaTypeException;
 import com.blackduck.integration.create.apigen.model.MediaTypeData;
 import com.blackduck.integration.create.apigen.model.MediaTypeDefinition;
 import com.blackduck.integration.create.apigen.model.ResponseDefinition;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class MediaTypePathManager {

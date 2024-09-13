@@ -7,13 +7,13 @@
  */
 package com.blackduck.integration.create.apigen;
 
-import java.io.File;
-import java.net.URISyntaxException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.net.URISyntaxException;
 
 @Component
 public class GeneratorConfig {

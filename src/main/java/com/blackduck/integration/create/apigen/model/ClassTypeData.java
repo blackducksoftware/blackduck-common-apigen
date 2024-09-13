@@ -7,9 +7,9 @@
  */
 package com.blackduck.integration.create.apigen.model;
 
-import com.blackduck.integration.create.apigen.generation.finder.FilePathUtil;
 import com.blackduck.integration.create.apigen.data.ClassTypeEnum;
 import com.blackduck.integration.create.apigen.data.UtilStrings;
+import com.blackduck.integration.create.apigen.generation.finder.FilePathUtil;
 
 public class ClassTypeData {
 

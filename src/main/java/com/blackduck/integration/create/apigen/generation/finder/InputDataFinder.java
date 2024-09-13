@@ -7,22 +7,16 @@
  */
 package com.blackduck.integration.create.apigen.generation.finder;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Component;
-
 import com.blackduck.integration.create.apigen.data.ImportComparator;
 import com.blackduck.integration.create.apigen.data.UtilStrings;
 import com.blackduck.integration.create.apigen.model.ClassTypeData;
 import com.blackduck.integration.create.apigen.model.FieldDefinition;
 import com.blackduck.integration.create.apigen.model.LinkData;
 import com.blackduck.integration.create.apigen.parser.NameParser;
+import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class InputDataFinder {

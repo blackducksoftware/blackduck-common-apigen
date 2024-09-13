@@ -7,7 +7,7 @@
  */
 package com.blackduck.integration.create.apigen.exception;
 
-import com.synopsys.integration.exception.IntegrationException;
+import com.blackduck.integration.exception.IntegrationException;
 
 public class NullMediaTypeException extends IntegrationException {
 
